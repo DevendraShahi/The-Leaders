@@ -1,0 +1,138 @@
+[
+    {
+        "id": "narayan-gopal",
+        "name": "Narayan Gopal",
+        "slug": "narayan-gopal",
+        "role": "The Voice",
+        "years": "1939 - 1990",
+        "party": "Cultural Icon",
+        "status": "Legend",
+        "desc": "He sang the soul of a nation. His voice was the revolution of the heart, echoing the pain and love of a people in transition.",
+        "bio": "Narayan Gopal Guruacharya is by far the most prominent and popular singer in the history of Nepali music. Known as 'Swar Samrat' (Emperor of Voice), his songs define the golden era of modern Nepali music. He was not just a singer but a cultural revolutionary who gave voice to the common man's emotions.",
+        "image": "https://images.unsplash.com/photo-1517482317130-10f845ad055c?q=80&w=2669&auto=format&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2670&auto=format&fit=crop",
+        "stats": {
+            "songs": "500+",
+            "awards": "15+",
+            "influence": "Eternal"
+        },
+        "timeline": [
+            {
+                "year": "1939",
+                "event": "Born in Kilagal, Kathmandu."
+            },
+            {
+                "year": "1960",
+                "event": "First recorded song for Radio Nepal."
+            },
+            {
+                "year": "1990",
+                "event": "Passed away, leaving a void in Nepali music."
+            }
+        ]
+    },
+    {
+        "id": "bp-koirala",
+        "name": "Bishweshwar P. Koirala",
+        "slug": "bp-koirala",
+        "role": "The Democratic Spirit",
+        "years": "1914 - 1982",
+        "party": "Nepali Congress",
+        "status": "Statesman",
+        "desc": "Fought for freedom with a pen in one hand and conviction in the other. The architect of Nepali democracy.",
+        "bio": "Bishweshwar Prasad Koirala was the first democratically elected Prime Minister of Nepal. A prolific writer and a steadfast socialist, he spent years in prison fighting against the autocratic Rana regime and later the Panchayat system. His vision of democratic socialism remains a guiding light for Nepali politics.",
+        "image": "https://images.unsplash.com/photo-1497914856014-a9062325c88b?q=80&w=2669&auto=format&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=2674&auto=format&fit=crop",
+        "stats": {
+            "terms": "1",
+            "books": "6",
+            "years_prison": "14"
+        },
+        "timeline": [
+            {
+                "year": "1914",
+                "event": "Born in Varanasi, India."
+            },
+            {
+                "year": "1959",
+                "event": "Elected as the first democratic Prime Minister."
+            },
+            {
+                "year": "1960",
+                "event": "Imprisoned after the Royal Coup."
+            },
+            {
+                "year": "1982",
+                "event": "Died in Kathmandu."
+            }
+        ]
+    },
+    {
+        "id": "pasang-lhamu",
+        "name": "Pasang Lhamu Sherpa",
+        "slug": "pasang-lhamu",
+        "role": "The Summit Breaker",
+        "years": "1961 - 1993",
+        "party": "Mountaineer",
+        "status": "National Hero",
+        "desc": "She conquered the roof of the world and shattered the glass ceiling. A testament to Sherpa resilience.",
+        "bio": "Pasang Lhamu Sherpa was the first Nepali woman to summit Mount Everest. Her determination paved the way for future generations of women climbers. She lost her life during the descent, but her legacy as a trailblazer remains immortal.",
+        "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1483012720275-c081e944b087?q=80&w=2670&auto=format&fit=crop",
+        "stats": {
+            "summits": "1",
+            "attempts": "4",
+            "legacy": "Pioneer"
+        },
+        "timeline": [
+            {
+                "year": "1961",
+                "event": "Born in Lukla, Solukhumbu."
+            },
+            {
+                "year": "1993",
+                "event": " Reached the summit of Everest."
+            },
+            {
+                "year": "1993",
+                "event": "Tragically perished on the descent."
+            }
+        ]
+    },
+    {
+        "id": "prithvi-narayan",
+        "name": "Prithvi Narayan Shah",
+        "slug": "prithvi-narayan",
+        "role": "The Unifier",
+        "years": "1723 - 1775",
+        "party": "Kingdom of Gorkha",
+        "status": "King",
+        "desc": "He forged a nation from fragmented states. The father of modern Nepal.",
+        "bio": "Prithvi Narayan Shah was the King of Gorkha who unified the warring principalities of the Himalayas into the modern nation of Nepal. His military campaigns and diplomatic strategies laid the foundation for the country's sovereignty.",
+        "image": "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?q=80&w=2669&auto=format&fit=crop",
+        "cover": "https://images.unsplash.com/photo-1544186591-64d50c950d8a?q=80&w=2670&auto=format&fit=crop",
+        "stats": {
+            "reign": "32 Years",
+            "battles": "Multiple",
+            "founded": "Nepal"
+        },
+        "timeline": [
+            {
+                "year": "1723",
+                "event": "Born in Gorkha."
+            },
+            {
+                "year": "1743",
+                "event": "Ascended to the throne of Gorkha."
+            },
+            {
+                "year": "1768",
+                "event": "Conquered Kathmandu Valley."
+            },
+            {
+                "year": "1775",
+                "event": "Died in Nuwakot."
+            }
+        ]
+    }
+]

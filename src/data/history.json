@@ -1,0 +1,97 @@
+[
+    {
+        "era": "The Rana Regime",
+        "period": "1846 - 1951",
+        "desc": "A century of isolation and absolute rule.",
+        "events": [
+            {
+                "year": "1846",
+                "title": "The Kot Massacre",
+                "desc": "Jung Bahadur Rana seizes power in a bloody coup at the palace armory, initiating 104 years of hereditary rule.",
+                "image": "/img/history/dramatic_history.jpeg"
+            },
+            {
+                "year": "1950",
+                "title": "The Revolution Begins",
+                "desc": "The Nepali Congress launches an armed struggle to overthrow the Ranas, supported by King Tribhuvan.",
+                "image": "/img/history/rana-1.jpg"
+            }
+        ]
+    },
+    {
+        "era": "The Democratic Experiment",
+        "period": "1951 - 1960",
+        "desc": "A brief glimmer of hope before the shadows returned.",
+        "events": [
+            {
+                "year": "1951",
+                "title": "Dawn of Democracy",
+                "desc": "King Tribhuvan returns, ending Rana rule. A coalition government is formed.",
+                "image": "/img/history/Nepali_Congress_1951.jpg"
+            },
+            {
+                "year": "1959",
+                "title": "The First Election",
+                "desc": "B.P. Koirala becomes the first democratically elected Prime Minister in a landslide victory.",
+                "image": "/img/history/BP-election.jpg"
+            }
+        ]
+    },
+    {
+        "era": "The Panchayat Era",
+        "period": "1960 - 1990",
+        "desc": "Silence falls. The King takes absolute control.",
+        "events": [
+            {
+                "year": "1960",
+                "title": "The Royal Coup",
+                "desc": "King Mahendra dissolves parliament, arrests B.P. Koirala, and bans political parties.",
+                "image": "/img/history/coup-2016.jpg"
+            },
+            {
+                "year": "1980",
+                "title": "The Referendum",
+                "desc": "Student protests force a referendum on the Panchayat system, which survives by a narrow, rigged margin.",
+                "image": "https://images.unsplash.com/photo-1517482317130-10f845ad055c?q=80&w=2669&auto=format&fit=crop"
+            }
+        ]
+    },
+    {
+        "era": "The People's War",
+        "period": "1996 - 2006",
+        "desc": "A decade of fire and blood.",
+        "events": [
+            {
+                "year": "1996",
+                "title": "The Insurgency Begins",
+                "desc": "The Maoists launch an armed rebellion in Rolpa and Rukum, demanding a republic.",
+                "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop"
+            },
+            {
+                "year": "2001",
+                "title": "The Royal Massacre",
+                "desc": "King Birendra and his family are gunned down during a dinner gathering. Crown Prince Dipendra is blamed.",
+                "image": "https://images.unsplash.com/photo-1507608616759-54f48f0af0ee?q=80&w=2574&auto=format&fit=crop"
+            }
+        ]
+    },
+    {
+        "era": "The Republic",
+        "period": "2008 - Present",
+        "desc": "A new dawn, still chasing stability.",
+        "events": [
+            {
+                "year": "2008",
+                "title": "Monarchy Abolished",
+                "desc": "The Constituent Assembly declares Nepal a Federal Democratic Republic. The Shah dynasty ends.",
+                "image": "https://images.unsplash.com/photo-1483012720275-c081e944b087?q=80&w=2670&auto=format&fit=crop"
+            },
+            {
+                "year": "2015",
+                "title": "The Constitution",
+                "desc": "After years of delay and devastating earthquakes, a new constitution is finally promulgated.",
+                "image": "https://images.unsplash.com/photo-1627844642262-6da98fe3c937?q=80&w=2574&auto=format&fit=crop"
+            }
+        ]
+    }
+]
