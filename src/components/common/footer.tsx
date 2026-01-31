@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 
@@ -9,12 +10,9 @@ export function Footer() {
                     {/* Brand */}
                     <div className="space-y-4">
                         <Link href="/" className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-primary rounded-sm flex items-center justify-center text-primary-foreground font-serif font-bold text-xl">
-                                L
+                            <div className="relative w-32 h-32">
+                                <Image src="/logo.svg" alt="The Leaders" fill className="object-contain" />
                             </div>
-                            <span className="font-serif text-2xl font-bold tracking-tight text-foreground">
-                                The Leaders
-                            </span>
                         </Link>
                         <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
                             Honoring the legacy of those who shaped our nation. A premium archive of history, biography, and leadership.
@@ -25,13 +23,19 @@ export function Footer() {
                     <div>
                         <h4 className="font-serif font-bold text-lg mb-6 text-foreground">Explore</h4>
                         <ul className="space-y-3">
-                            {["Leaders", "History", "Parties", "Timeline"].map((item) => (
-                                <li key={item}>
+                            {[
+                                { name: "Leaders", href: "/leaders" },
+                                { name: "History", href: "/history" },
+                                { name: "Election 2026", href: "/election-2026" },
+                                { name: "Parties", href: "#" }, // Placeholder
+                                { name: "Timeline", href: "#" }  // Placeholder
+                            ].map((item) => (
+                                <li key={item.name}>
                                     <Link
-                                        href="#"
+                                        href={item.href}
                                         className="text-muted-foreground hover:text-primary transition-colors text-sm"
                                     >
-                                        {item}
+                                        {item.name}
                                     </Link>
                                 </li>
                             ))}
@@ -45,7 +49,11 @@ export function Footer() {
                             {["Privacy Policy", "Terms of Service", "Cookie Policy", "Contact Us"].map((item) => (
                                 <li key={item}>
                                     <Link
-                                        href="#"
+                                        href={
+                                            item === "Terms of Service" ? "/terms" :
+                                                item === "Contact Us" ? "/contact" :
+                                                    "#"
+                                        }
                                         className="text-muted-foreground hover:text-primary transition-colors text-sm"
                                     >
                                         {item}

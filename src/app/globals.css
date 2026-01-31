@@ -48,12 +48,68 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
+  --animate-border-beam: border-beam calc(var(--duration)*1s) infinite linear;
+
+  @keyframes border-beam {
+    100% {
+      offset-distance: 100%;
+    }
+  }
 }
 
 :root {
   --radius: 0.2rem;
-  /* Sharp corners for aggressive look */
 
+  /* Cold Paper: Investigation Dossier */
+  --background: oklch(0.97 0.01 200);
+  /* Cold Off-White */
+  --foreground: oklch(0.10 0.02 0);
+  /* Ink Black */
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.10 0.02 0);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.10 0.02 0);
+
+  --primary: oklch(0.55 0.25 25);
+  /* Visceral Red (Kept) */
+  --primary-foreground: oklch(0.98 0 0);
+
+  --secondary: oklch(0.96 0.01 200);
+  --secondary-foreground: oklch(0.10 0.02 0);
+
+  --muted: oklch(0.96 0.01 200);
+  --muted-foreground: oklch(0.40 0.02 0);
+
+  --accent: oklch(0.96 0.01 200);
+  --accent-foreground: oklch(0.10 0.02 0);
+
+  --destructive: oklch(0.55 0.25 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(0.92 0.01 200);
+  --input: oklch(0.92 0.01 200);
+  --ring: oklch(0.55 0.25 25);
+
+  --chart-1: oklch(0.55 0.25 25);
+  --chart-2: oklch(0.65 0.20 45);
+  --chart-3: oklch(0.85 0.15 85);
+  --chart-4: oklch(0.45 0.10 280);
+  --chart-5: oklch(0.35 0.10 0);
+
+  --sidebar: oklch(0.98 0.01 200);
+  --sidebar-foreground: oklch(0.10 0.02 0);
+  --sidebar-primary: oklch(0.55 0.25 25);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: oklch(0.96 0.01 200);
+  --sidebar-accent-foreground: oklch(0.10 0.02 0);
+  --sidebar-border: oklch(0.92 0.01 200);
+  --sidebar-ring: oklch(0.55 0.25 25);
+}
+
+.dark {
   /* Monkey Man: Gritty, Neon Noir, Intense Red */
   --background: oklch(0.10 0.02 0);
   /* Inky Black */
@@ -129,6 +185,12 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  html {
+    overflow-x: hidden;
   }
 
   /* Film Grain Effect */
@@ -152,5 +214,39 @@
   h5,
   h6 {
     @apply font-bebas uppercase tracking-wide;
+  }
+
+  /* Custom animation utilities for countdown */
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  @keyframes blob {
+
+    0%,
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+  }
+
+  /* Gradient radial utility */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 }

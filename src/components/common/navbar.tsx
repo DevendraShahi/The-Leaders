@@ -1,22 +1,24 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-// NavigationMenu imports removed for cleaner custom implementation
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { FontToggle } from "@/components/font-toggle";
-
 
 const links = [
     { href: "/", label: "Home" },
     { href: "/leaders", label: "Leaders" },
     { href: "/history", label: "History" },
+    { href: "/election-2026", label: "Election 2026" },
+    { href: "/articles", label: "Articles" },
     { href: "/about", label: "About Us" },
 ];
 
@@ -36,7 +38,7 @@ export function Navbar() {
     return (
         <motion.header
             className={cn(
-                "fixed top-0 left-0 right-0 z-[100] transition-all duration-300 border-b border-transparent",
+                "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b border-transparent",
                 isScrolled
                     ? "bg-background/95 backdrop-blur-md border-primary/20 py-2 shadow-xl shadow-foreground/5"
                     : "bg-transparent py-4"
@@ -48,12 +50,15 @@ export function Navbar() {
             <div className="container mx-auto px-4 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="w-10 h-10 bg-primary flex items-center justify-center text-black font-bebas text-3xl group-hover:bg-accent transition-colors shadow-[0_0_15px_rgba(229,9,20,0.5)]">
-                        L
+                    <div className="relative w-10 h-10 md:w-10 md:h-10 overflow-hidden rounded-sm transition-transform group-hover:scale-105">
+                        <Image
+                            src="/logo.svg"
+                            alt="The Leaders"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
                     </div>
-                    <span className="font-bebas text-4xl tracking-tighter text-foreground uppercase drop-shadow-md group-hover:text-primary transition-colors">
-                        The Leaders
-                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -78,34 +83,39 @@ export function Navbar() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3">
-                    <AnimatePresence>
-                        {isSearchOpen ? (
-                            <motion.div
-                                initial={{ width: 0, opacity: 0 }}
-                                animate={{ width: 240, opacity: 1 }}
-                                exit={{ width: 0, opacity: 0 }}
-                                className="overflow-hidden"
-                            >
-                                <Input
-                                    placeholder="SEARCH LEADERS..."
-                                    className="h-10 bg-black/50 border-primary/50 text-white placeholder:text-zinc-500 font-bebas tracking-widest focus-visible:ring-primary uppercase"
-                                    autoFocus
-                                    onBlur={() => setIsSearchOpen(false)}
-                                />
-                            </motion.div>
-                        ) : (
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => setIsSearchOpen(true)}
-                                className="hover:text-primary hover:bg-primary/10"
-                            >
-                                <Search className="h-5 w-5" />
-                            </Button>
-                        )}
-                    </AnimatePresence>
+                    <div className="hidden sm:block">
+                        <AnimatePresence>
+                            {isSearchOpen ? (
+                                <motion.div
+                                    initial={{ width: 0, opacity: 0 }}
+                                    animate={{ width: 240, opacity: 1 }}
+                                    exit={{ width: 0, opacity: 0 }}
+                                    className="overflow-hidden"
+                                >
+                                    <Input
+                                        placeholder="SEARCH LEADERS..."
+                                        className="h-10 bg-black/50 border-primary/50 text-white placeholder:text-zinc-500 font-bebas tracking-widest focus-visible:ring-primary uppercase"
+                                        autoFocus
+                                        onBlur={() => setIsSearchOpen(false)}
+                                    />
+                                </motion.div>
+                            ) : (
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => setIsSearchOpen(true)}
+                                    className="hover:text-primary hover:bg-primary/10"
+                                >
+                                    <Search className="h-5 w-5" />
+                                </Button>
+                            )}
+                        </AnimatePresence>
+                    </div>
 
-                    <FontToggle />
+                    <ThemeToggle />
+                    <div className="hidden sm:block">
+                        <FontToggle />
+                    </div>
 
                     <div className="hidden md:block">
                         <Button variant="default" className="font-bebas text-xl tracking-wider bg-primary text-black hover:bg-accent rounded-none">
@@ -126,7 +136,7 @@ export function Navbar() {
                                     <div className="font-bebas text-4xl text-primary uppercase">
                                         The Leaders
                                     </div>
-                                    <nav className="flex flex-col gap-4">
+                                    <nav className="flex flex-col gap-4 px-4">
                                         {links.map((link) => (
                                             <Link
                                                 key={link.href}

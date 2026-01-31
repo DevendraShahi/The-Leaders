@@ -1,0 +1,302 @@
+[
+    {
+        "name": "Humla",
+        "FID": "Humla"
+    },
+    {
+        "name": "Darchula",
+        "FID": "Darchula"
+    },
+    {
+        "name": "Bajhang",
+        "FID": "Bajhang"
+    },
+    {
+        "name": "Mugu",
+        "FID": "Mugu"
+    },
+    {
+        "name": "Bajura",
+        "FID": "Bajura"
+    },
+    {
+        "name": "Baitadi",
+        "FID": "Baitadi"
+    },
+    {
+        "name": "Dolpa",
+        "FID": "Dolpa"
+    },
+    {
+        "name": "Jumla",
+        "FID": "Jumla"
+    },
+    {
+        "name": "Kalikot",
+        "FID": "Kalikot"
+    },
+    {
+        "name": "Doti",
+        "FID": "Doti"
+    },
+    {
+        "name": "Dadeldhura",
+        "FID": "Dadeldhura"
+    },
+    {
+        "name": "Achham",
+        "FID": "Achham"
+    },
+    {
+        "name": "Mustang",
+        "FID": "Mustang"
+    },
+    {
+        "name": "Dailekh",
+        "FID": "Dailekh"
+    },
+    {
+        "name": "Jajarkot",
+        "FID": "Jajarkot"
+    },
+    {
+        "name": "Kanchanpur",
+        "FID": "Kanchanpur"
+    },
+    {
+        "name": "Kailali",
+        "FID": "Kailali"
+    },
+    {
+        "name": "Rukum",
+        "FID": "Rukum"
+    },
+    {
+        "name": "Surkhet",
+        "FID": "Surkhet"
+    },
+    {
+        "name": "Manang",
+        "FID": "Manang"
+    },
+    {
+        "name": "Myagdi",
+        "FID": "Myagdi"
+    },
+    {
+        "name": "Gorkha",
+        "FID": "Gorkha"
+    },
+    {
+        "name": "Bardiya",
+        "FID": "Bardiya"
+    },
+    {
+        "name": "Salyan",
+        "FID": "Salyan"
+    },
+    {
+        "name": "Baglung",
+        "FID": "Baglung"
+    },
+    {
+        "name": "Kaski",
+        "FID": "Kaski"
+    },
+    {
+        "name": "Rolpa",
+        "FID": "Rolpa"
+    },
+    {
+        "name": "Lamjung",
+        "FID": "Lamjung"
+    },
+    {
+        "name": "Parbat",
+        "FID": "Parbat"
+    },
+    {
+        "name": "Rasuwa",
+        "FID": "Rasuwa"
+    },
+    {
+        "name": "Pyuthan",
+        "FID": "Pyuthan"
+    },
+    {
+        "name": "Dhading",
+        "FID": "Dhading"
+    },
+    {
+        "name": "Banke",
+        "FID": "Banke"
+    },
+    {
+        "name": "Gulmi",
+        "FID": "Gulmi"
+    },
+    {
+        "name": "Dang",
+        "FID": "Dang"
+    },
+    {
+        "name": "Syangja",
+        "FID": "Syangja"
+    },
+    {
+        "name": "Sindhupalchok",
+        "FID": "Sindhupalchok"
+    },
+    {
+        "name": "Dolakha",
+        "FID": "Dolakha"
+    },
+    {
+        "name": "Tanahu",
+        "FID": "Tanahu"
+    },
+    {
+        "name": "Arghakhanchi",
+        "FID": "Arghakhanchi"
+    },
+    {
+        "name": "Solukhumbu",
+        "FID": "Solukhumbu"
+    },
+    {
+        "name": "Nuwakot",
+        "FID": "Nuwakot"
+    },
+    {
+        "name": "Sankhuwasabha",
+        "FID": "Sankhuwasabha"
+    },
+    {
+        "name": "Palpa",
+        "FID": "Palpa"
+    },
+    {
+        "name": "Taplejung",
+        "FID": "Taplejung"
+    },
+    {
+        "name": "Chitwan",
+        "FID": "Chitwan"
+    },
+    {
+        "name": "Nawalparasi",
+        "FID": "Nawalparasi"
+    },
+    {
+        "name": "Kapilbastu",
+        "FID": "Kapilbastu"
+    },
+    {
+        "name": "Ramechhap",
+        "FID": "Ramechhap"
+    },
+    {
+        "name": "Kathmandu",
+        "FID": "Kathmandu"
+    },
+    {
+        "name": "Rupandehi",
+        "FID": "Rupandehi"
+    },
+    {
+        "name": "Kavrepalanchok",
+        "FID": "Kavrepalanchok"
+    },
+    {
+        "name": "Bhaktapur",
+        "FID": "Bhaktapur"
+    },
+    {
+        "name": "Makwanpur",
+        "FID": "Makwanpur"
+    },
+    {
+        "name": "Lalitpur",
+        "FID": "Lalitpur"
+    },
+    {
+        "name": "Okhaldhunga",
+        "FID": "Okhaldhunga"
+    },
+    {
+        "name": "Bhojpur",
+        "FID": "Bhojpur"
+    },
+    {
+        "name": "Parsa",
+        "FID": "Parsa"
+    },
+    {
+        "name": "Sindhuli",
+        "FID": "Sindhuli"
+    },
+    {
+        "name": "Khotang",
+        "FID": "Khotang"
+    },
+    {
+        "name": "Panchthar",
+        "FID": "Panchthar"
+    },
+    {
+        "name": "Bara",
+        "FID": "Bara"
+    },
+    {
+        "name": "Terhathum",
+        "FID": "Terhathum"
+    },
+    {
+        "name": "Rautahat",
+        "FID": "Rautahat"
+    },
+    {
+        "name": "Dhankuta",
+        "FID": "Dhankuta"
+    },
+    {
+        "name": "Sarlahi",
+        "FID": "Sarlahi"
+    },
+    {
+        "name": "Udayapur",
+        "FID": "Udayapur"
+    },
+    {
+        "name": "Mahottari",
+        "FID": "Mahottari"
+    },
+    {
+        "name": "Ilam",
+        "FID": "Ilam"
+    },
+    {
+        "name": "Dhanusa",
+        "FID": "Dhanusa"
+    },
+    {
+        "name": "Siraha",
+        "FID": "Siraha"
+    },
+    {
+        "name": "Saptari",
+        "FID": "Saptari"
+    },
+    {
+        "name": "Morang",
+        "FID": "Morang"
+    },
+    {
+        "name": "Sunsari",
+        "FID": "Sunsari"
+    },
+    {
+        "name": "Jhapa",
+        "FID": "Jhapa"
+    }
+]

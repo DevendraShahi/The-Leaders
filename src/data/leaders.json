@@ -1,137 +1,57 @@
 [
     {
-        "id": "narayan-gopal",
-        "name": "Narayan Gopal",
-        "slug": "narayan-gopal",
-        "role": "The Voice",
-        "years": "1939 - 1990",
-        "party": "Cultural Icon",
-        "status": "Legend",
-        "desc": "He sang the soul of a nation. His voice was the revolution of the heart, echoing the pain and love of a people in transition.",
-        "bio": "Narayan Gopal Guruacharya is by far the most prominent and popular singer in the history of Nepali music. Known as 'Swar Samrat' (Emperor of Voice), his songs define the golden era of modern Nepali music. He was not just a singer but a cultural revolutionary who gave voice to the common man's emotions.",
-        "image": "https://images.unsplash.com/photo-1517482317130-10f845ad055c?q=80&w=2669&auto=format&fit=crop",
-        "cover": "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=2670&auto=format&fit=crop",
-        "stats": {
-            "songs": "500+",
-            "awards": "15+",
-            "influence": "Eternal"
-        },
-        "timeline": [
-            {
-                "year": "1939",
-                "event": "Born in Kilagal, Kathmandu."
-            },
-            {
-                "year": "1960",
-                "event": "First recorded song for Radio Nepal."
-            },
-            {
-                "year": "1990",
-                "event": "Passed away, leaving a void in Nepali music."
-            }
-        ]
-    },
-    {
         "id": "bp-koirala",
-        "name": "Bishweshwar P. Koirala",
+        "name": "Bishweshwar Prasad Koirala",
         "slug": "bp-koirala",
         "role": "The Democratic Spirit",
         "years": "1914 - 1982",
         "party": "Nepali Congress",
         "status": "Statesman",
-        "desc": "Fought for freedom with a pen in one hand and conviction in the other. The architect of Nepali democracy.",
-        "bio": "Bishweshwar Prasad Koirala was the first democratically elected Prime Minister of Nepal. A prolific writer and a steadfast socialist, he spent years in prison fighting against the autocratic Rana regime and later the Panchayat system. His vision of democratic socialism remains a guiding light for Nepali politics.",
-        "image": "https://images.unsplash.com/photo-1497914856014-a9062325c88b?q=80&w=2669&auto=format&fit=crop",
-        "cover": "https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=2674&auto=format&fit=crop",
+        "desc": "Led the struggle against Rana oligarchy and royal autocracy, and articulated a vision of democratic socialism that still shapes Nepal’s political imagination.",
+        "bio": "Bishweshwar Prasad Koirala, widely known as B.P. Koirala, is remembered as the first democratically elected Prime Minister of Nepal and one of the principal architects of the country’s modern democratic movement.[web:1][web:39] Born in Varanasi in 1914 to a politically active family that had taken refuge in India due to its opposition to the Rana regime, he grew up in an environment where discussions of liberty, nationalism, and social justice were part of everyday life.[web:1][web:41] As a young man, he studied in India and became involved in both Indian and Nepali political circles, participating in anti‑colonial activism and absorbing the ideas of social democracy and socialism that were circulating among regional leaders.[web:41][web:43] These early experiences helped shape his conviction that Nepal needed not only political freedom but also deep social and economic reforms.\n\nKoirala emerged as a central figure in the anti‑Rana struggle in the 1940s, organizing labour strikes such as the 1947 Biratnagar Jute Mill strike and building underground networks to challenge the century‑old oligarchy.[web:41][web:44] In 1947 he played a key role in the formation of the Nepali National Congress, which later merged with another group to become the Nepali Congress, a party that would lead the revolution against Rana rule.[web:1][web:42] From exile in India, Koirala and his colleagues coordinated political agitation, armed resistance, and diplomatic efforts, working closely with King Tribhuvan who had also turned against the Ranas.[web:42][web:44] The 1950–51 movement, to which Koirala devoted his organizational skills and personal courage, succeeded in ending the 104‑year Rana autocracy and opening the way to constitutional experiments and party politics in Nepal.[web:42][web:44]\n\nAfter the overthrow of the Ranas, Koirala briefly served as Home Minister in the Rana–Congress coalition government formed in 1951, where he began to translate his democratic ideas into administrative practice.[web:41] He consistently argued that democracy required not only elections but also civil liberties, rule of law, and accountable institutions, and he pressed for a fully elected constituent assembly and parliamentary system.[web:39][web:45] When Nepal finally held its first general election under a new constitution in 1959, the Nepali Congress won a strong majority and Koirala became Prime Minister, heading the country’s first democratic government.[web:1][web:39] His administration attempted to pursue land reform, expand education and healthcare, and lay the foundations for a developmental state guided by the principles of democratic socialism, although implementation was constrained by limited resources and entrenched social interests.[web:42][web:45]\n\nKoirala’s core political philosophy was democratic socialism, which he defined as the synthesis of political freedom and economic equality in a poor, agrarian country like Nepal.[web:39][web:43] He argued that formal rights alone could not satisfy people whose lives were marked by poverty, caste discrimination, and lack of opportunity, and he insisted that the state had a responsibility to undertake redistributive reforms while protecting pluralism and civil liberties.[web:43][web:45] In office, he sought to abolish feudal land relations, curb the power of hereditary elites, and extend the reach of the state into rural development, reflecting his belief that democracy must have a material base to endure.[web:42][web:45] At the same time, he supported a constitutional monarchy, hoping to reconcile the institution of kingship with popular sovereignty and parliamentary accountability rather than destroy it outright.[web:41][web:51]\n\nHis tenure as Prime Minister was abruptly cut short on 15 December 1960, when King Mahendra dismissed the elected government, dissolved parliament, and arrested Koirala along with many of his colleagues, introducing the partyless Panchayat system.[web:1][web:49] Koirala spent much of the subsequent decade in prison, including long periods of solitary confinement, and his health deteriorated as a result, yet he refused to formally renounce his political beliefs.[web:1][web:41] International pressure and domestic considerations eventually led to his release and exile; from abroad he continued to criticize the Panchayat regime and call for the restoration of multiparty democracy.[web:44][web:46] When he returned to Nepal in the late 1970s, despite the risk of re‑arrest, he framed his decision as a moral duty to struggle inside the country rather than from afar, reinforcing his image as a leader who accepted personal sacrifice for political principle.[web:41][web:46]\n\nKoirala’s later years were marked by both political engagement and intellectual production, even as his health worsened.[web:1][web:20] He participated in debates around the 1980 national referendum on the political system, where he campaigned for multiparty democracy although the reformed Panchayat option narrowly prevailed.[web:46] In parallel, he wrote extensively: his novels such as \"Tin Ghumti,\" \"Modiain,\" and \"Sumnima\" explored existential themes, gender relations, and social change, while his political writings and memoirs reflected on freedom, responsibility, and the moral burdens of leadership.[web:1][web:41] This dual legacy as both politician and writer has made him a unique figure in Nepali public life, bridging activism, governance, and literature.\n\nB.P. Koirala died in Kathmandu on 21 July 1982, but his ideas continued to influence the democratic movements that eventually brought down the Panchayat system in 1990.[web:1][web:49] Many political actors across party lines still invoke his commitment to civil liberties, social justice, and national independence, although interpretations of his legacy vary depending on contemporary ideological debates.[web:42][web:48] In Nepali political history, he is widely regarded as a foundational leader whose vision of democratic socialism remains a reference point in discussions about how to combine political freedom with economic transformation.[web:39][web:43] His life story, marked by imprisonment, exile, electoral victory, and literary creativity, has come to symbolize the long and unfinished struggle for a more just and democratic Nepal.[web:1][web:42]",
+        "image": "https://upload.wikimedia.org/wikipedia/commons/2/2b/BP_Koirala.jpg",
+        "cover": "https://images.unsplash.com/photo-1558618047-3c8c76ca335c?q=80&w=2670&auto=format&fit=crop",
         "stats": {
             "terms": "1",
-            "books": "6",
-            "years_prison": "14"
+            "books": "6+",
+            "years_prison": "8+"
         },
         "timeline": [
             {
                 "year": "1914",
-                "event": "Born in Varanasi, India."
+                "event": "Born in Varanasi, India, into a politically active family exiled for opposing the Rana oligarchy.[web:1][web:41]"
+            },
+            {
+                "year": "1947",
+                "event": "Helps organize the Biratnagar Jute Mill strike and rises as a key anti‑Rana leader; active in formation of Nepali National Congress.[web:41][web:44]"
+            },
+            {
+                "year": "1950–1951",
+                "event": "Plays central role in the revolution that ends 104 years of Rana rule and opens the path to constitutional government.[web:42][web:44]"
+            },
+            {
+                "year": "1951",
+                "event": "Serves as Home Minister in the Rana–Congress coalition government formed after the revolution.[web:41]"
             },
             {
                 "year": "1959",
-                "event": "Elected as the first democratic Prime Minister."
+                "event": "Leads Nepali Congress to victory in Nepal’s first general elections and becomes the first democratically elected Prime Minister.[web:1][web:39]"
             },
             {
                 "year": "1960",
-                "event": "Imprisoned after the Royal Coup."
+                "event": "King Mahendra stages a royal coup, dismisses Koirala’s government, dissolves parliament, and imprisons him, inaugurating the Panchayat system.[web:1][web:49]"
+            },
+            {
+                "year": "1968",
+                "event": "Released from long imprisonment amid international and domestic pressure, later spending years in exile while opposing Panchayat rule.[web:1][web:41]"
+            },
+            {
+                "year": "1980",
+                "event": "Advocates multiparty democracy during the national referendum on the political system, keeping democratic discourse alive despite the Panchayat victory.[web:42][web:46]"
             },
             {
                 "year": "1982",
-                "event": "Died in Kathmandu."
-            }
-        ]
-    },
-    {
-        "id": "pasang-lhamu",
-        "name": "Pasang Lhamu Sherpa",
-        "slug": "pasang-lhamu",
-        "role": "The Summit Breaker",
-        "years": "1961 - 1993",
-        "party": "Mountaineer",
-        "status": "National Hero",
-        "desc": "She conquered the roof of the world and shattered the glass ceiling. A testament to Sherpa resilience.",
-        "bio": "Pasang Lhamu Sherpa was the first Nepali woman to summit Mount Everest. Her determination paved the way for future generations of women climbers. She lost her life during the descent, but her legacy as a trailblazer remains immortal.",
-        "image": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop",
-        "cover": "https://images.unsplash.com/photo-1483012720275-c081e944b087?q=80&w=2670&auto=format&fit=crop",
-        "stats": {
-            "summits": "1",
-            "attempts": "4",
-            "legacy": "Pioneer"
-        },
-        "timeline": [
-            {
-                "year": "1961",
-                "event": "Born in Lukla, Solukhumbu."
-            },
-            {
-                "year": "1993",
-                "event": " Reached the summit of Everest."
-            },
-            {
-                "year": "1993",
-                "event": "Tragically perished on the descent."
-            }
-        ]
-    },
-    {
-        "id": "prithvi-narayan",
-        "name": "Prithvi Narayan Shah",
-        "slug": "prithvi-narayan",
-        "role": "The Unifier",
-        "years": "1723 - 1775",
-        "party": "Kingdom of Gorkha",
-        "status": "King",
-        "desc": "He forged a nation from fragmented states. The father of modern Nepal.",
-        "bio": "Prithvi Narayan Shah was the King of Gorkha who unified the warring principalities of the Himalayas into the modern nation of Nepal. His military campaigns and diplomatic strategies laid the foundation for the country's sovereignty.",
-        "image": "https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?q=80&w=2669&auto=format&fit=crop",
-        "cover": "https://images.unsplash.com/photo-1544186591-64d50c950d8a?q=80&w=2670&auto=format&fit=crop",
-        "stats": {
-            "reign": "32 Years",
-            "battles": "Multiple",
-            "founded": "Nepal"
-        },
-        "timeline": [
-            {
-                "year": "1723",
-                "event": "Born in Gorkha."
-            },
-            {
-                "year": "1743",
-                "event": "Ascended to the throne of Gorkha."
-            },
-            {
-                "year": "1768",
-                "event": "Conquered Kathmandu Valley."
-            },
-            {
-                "year": "1775",
-                "event": "Died in Nuwakot."
+                "event": "Dies in Kathmandu on 21 July, leaving a lasting legacy as a democratic socialist leader and literary figure.[web:1][web:39]"
             }
         ]
     }

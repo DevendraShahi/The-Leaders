@@ -13,6 +13,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "i.scdn.co",
       },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "en.wikipedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "annapurnaexpress.prixacdn.net",
+      },
+      {
+        protocol: "https",
+        hostname: "photos1.blogger.com",
+      },
     ],
   },
 };

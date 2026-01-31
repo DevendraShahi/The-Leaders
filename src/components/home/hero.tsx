@@ -33,9 +33,9 @@ export function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="text-7xl md:text-9xl font-bebas font-bold tracking-tighter text-white mb-6 uppercase leading-none drop-shadow-2xl"
+                    className="text-5xl md:text-9xl font-bebas font-bold tracking-tighter text-white mb-6 uppercase leading-none drop-shadow-2xl"
                 >
-                    The <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary to-black stroke-white text-stroke-1">Leaders</span> <br />
+                    The <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary dark:to-black to-black/5 stroke-foreground text-stroke-1">Leaders</span> <br />
                     <span className="text-primary tracking-normal">of Nepal</span>
                 </motion.h1>
 

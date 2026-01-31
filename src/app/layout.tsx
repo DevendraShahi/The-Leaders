@@ -46,29 +46,64 @@ export const metadata: Metadata = {
   description: "A premium archive of Nepal's leaders",
 };
 
+import { ThemeProvider } from "@/components/theme-provider";
 import { FontProvider } from "@/components/font-provider";
 import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
 
 // ... existing imports
 
-export default function RootLayout({
+import { headers } from "next/headers";
+import { getSettings } from "@/lib/settings";
+import MaintenancePage from "@/components/common/MaintenancePage";
+
+// ... existing imports
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "";
+
+  // Fetch settings
+  const settings = await getSettings();
+  const isMaintenanceMode = settings?.maintenanceMode || false;
+  const isAdminRoute = pathname.startsWith("/admin") || pathname.startsWith("/api/admin") || pathname.startsWith("/api/auth");
+
+  // Bypass maintenance for admin routes or if disabled
+  const showContent = !isMaintenanceMode || isAdminRoute;
+
+  if (!showContent) {
+    return (
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} antialiased bg-background text-foreground`}>
+          <MaintenancePage />
+        </body>
+      </html>
+    );
+  }
+
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} antialiased bg-background text-foreground`}
       >
-        <FontProvider>
-          <Navbar />
-          <main className="min-h-screen pt-16">
-            {children}
-          </main>
-          <Footer />
-        </FontProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <FontProvider>
+            <Navbar />
+            <main className="min-h-screen pt-16">
+              {children}
+            </main>
+            <Footer />
+          </FontProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
