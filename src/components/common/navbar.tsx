@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Search, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FontToggle } from "@/components/font-toggle";
@@ -126,6 +126,7 @@ export function Navbar() {
                                 </Button>
                             </SheetTrigger>
                             <SheetContent side="right" className="w-[85vw] sm:w-[350px] border-l border-border bg-background p-6">
+                                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                                 <div className="flex flex-col h-full mt-6">
                                     <div className="font-knight text-4xl text-primary tracking-wide mb-8">
                                         THE <br /> LEADERS
