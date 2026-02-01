@@ -99,7 +99,7 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
                                 <span className="w-8 h-[2px] bg-primary"></span>
                                 The Story
                             </h2>
-                            <p className="text-lg md:text-xl text-foreground font-manrope leading-relaxed whitespace-pre-line">
+                            <p className="text-lg text-foreground/80 font-manrope leading-relaxed whitespace-pre-line">
                                 {getLoc(leader.bio)}
                             </p>
                         </motion.div>
@@ -139,7 +139,7 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
                                     <div key={index} className="relative pl-8">
                                         <span className="absolute left-0 top-1.5 w-4 h-4 bg-black border-2 border-primary rounded-full z-10" />
                                         <span className="block text-primary font-bebas text-xl tracking-widest mb-1">{item.year}</span>
-                                        <p className="text-muted-foreground font-manrope">{getLoc(item.event)}</p>
+                                        <p className="text-foreground/80 font-manrope">{getLoc(item.event)}</p>
                                     </div>
                                 ))}
                             </div>

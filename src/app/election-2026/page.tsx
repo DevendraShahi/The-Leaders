@@ -66,7 +66,7 @@ export default async function ElectionDashboard() {
                                 <div className="h-32 bg-primary/10 rounded mb-2 flex items-center justify-center text-primary/40 font-bebas text-4xl">
                                     PR LIST
                                 </div>
-                                <Button variant="link" className="px-0 text-primary" asChild>
+                                <Button variant="link" asChild>
                                     <Link href="/election-2026/pr-candidates">View Full List <ArrowRight className="ml-2 h-4 w-4" /></Link>
                                 </Button>
                             </CardContent>
@@ -78,7 +78,7 @@ export default async function ElectionDashboard() {
                             </CardHeader>
                             <CardContent>
                                 <div className="h-32 bg-muted/10 rounded mb-2" />
-                                <Button variant="link" className="px-0 text-primary" asChild>
+                                <Button variant="link" asChild>
                                     <Link href="/election-2026/profiles">Compare Parties <ArrowRight className="ml-2 h-4 w-4" /></Link>
                                 </Button>
                             </CardContent>
@@ -148,7 +148,7 @@ export default async function ElectionDashboard() {
                                 <p className="text-sm text-muted-foreground">No recent fact checks.</p>
                             )}
 
-                            <Button variant="link" className="mt-2 px-0 text-destructive" asChild>
+                            <Button variant="link" className="mt-2" asChild>
                                 <Link href="/election-2026/fact-checks">See All Verifications</Link>
                             </Button>
                         </CardContent>

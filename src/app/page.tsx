@@ -1,5 +1,5 @@
 import ElectionCountdown from "@/components/home/ElectionCountdown";
-import { LeadersGrid } from "@/components/home/leaders-grid";
+import { LeadersGrid } from "@/components/home/LeadersGrid";
 import { Timeline } from "@/components/home/timeline";
 import { Manifesto } from "@/components/home/manifesto";
 import { NewsSection } from "@/components/home/news-section";

@@ -4,17 +4,17 @@ import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
 
 export function Footer() {
     return (
-        <footer className="bg-background border-t border-border pt-16 pb-8">
-            <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <footer className="bg-background border-t border-border mt-auto">
+            <div className="container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
                     {/* Brand */}
                     <div className="space-y-4">
-                        <Link href="/" className="flex items-center gap-2">
-                            <div className="relative w-32 h-32">
-                                <Image src="/logo.svg" alt="The Leaders" fill className="object-contain" />
-                            </div>
+                        <Link href="/" className="flex items-center gap-2 group w-fit">
+                            <span className="font-knight text-center text-5xl md:text-7xl text-primary tracking-wide leading-none transition-transform duration-300 group-hover:scale-105">
+                                THE <br /> LEADERS
+                            </span>
                         </Link>
-                        <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
+                        <p className="text-muted-foreground text-sm leading-relaxed">
                             Honoring the legacy of those who shaped our nation. A premium archive of history, biography, and leadership.
                         </p>
                     </div>
@@ -27,8 +27,8 @@ export function Footer() {
                                 { name: "Leaders", href: "/leaders" },
                                 { name: "History", href: "/history" },
                                 { name: "Election 2026", href: "/election-2026" },
-                                { name: "Parties", href: "#" }, // Placeholder
-                                { name: "Timeline", href: "#" }  // Placeholder
+                                { name: "Parties", href: "/parties" },
+                                { name: "Timeline", href: "/history" }
                             ].map((item) => (
                                 <li key={item.name}>
                                     <Link
@@ -46,13 +46,16 @@ export function Footer() {
                     <div>
                         <h4 className="font-serif font-bold text-lg mb-6 text-foreground">Legal</h4>
                         <ul className="space-y-3">
-                            {["Privacy Policy", "Terms of Service", "Cookie Policy", "Contact Us"].map((item) => (
+                            {["Privacy Policy", "Terms of Service", "Cookie Policy", "Accessibility", "Contact Us"].map((item) => (
                                 <li key={item}>
                                     <Link
                                         href={
                                             item === "Terms of Service" ? "/terms" :
                                                 item === "Contact Us" ? "/contact" :
-                                                    "#"
+                                                    item === "Accessibility" ? "/accessibility" :
+                                                        item === "Privacy Policy" ? "/privacy-policy" :
+                                                            item === "Cookie Policy" ? "/cookie-policy" :
+                                                                "#"
                                         }
                                         className="text-muted-foreground hover:text-primary transition-colors text-sm"
                                     >

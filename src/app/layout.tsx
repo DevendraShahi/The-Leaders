@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Bebas_Neue, Anton, Cinzel, Oswald, Six_Caps, Fjalla_One } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
 const manrope = Manrope({
@@ -41,6 +42,11 @@ const fjalla = Fjalla_One({
   subsets: ["latin"],
 });
 
+const knight = localFont({
+  src: "../../public/fonts/KnightWarrior.otf",
+  variable: "--font-knight",
+});
+
 export const metadata: Metadata = {
   title: "The Leaders",
   description: "A premium archive of Nepal's leaders",
@@ -78,7 +84,7 @@ export default async function RootLayout({
   if (!showContent) {
     return (
       <html lang="en" suppressHydrationWarning>
-        <body className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} antialiased bg-background text-foreground`}>
+        <body className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} ${knight.variable} antialiased bg-background text-foreground`}>
           <MaintenancePage />
         </body>
       </html>
@@ -88,7 +94,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} antialiased bg-background text-foreground`}
+        className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} ${knight.variable} antialiased bg-background text-foreground`}
       >
         <ThemeProvider
           attribute="class"
@@ -98,7 +104,7 @@ export default async function RootLayout({
         >
           <FontProvider>
             <Navbar />
-            <main className="min-h-screen pt-16">
+            <main className="min-h-screen py-[2.5rem] md:py-18">
               {children}
             </main>
             <Footer />

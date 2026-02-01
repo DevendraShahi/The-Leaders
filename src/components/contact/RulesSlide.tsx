@@ -61,13 +61,12 @@ export function RulesSlide({ onNext, onPrev }: RulesSlideProps) {
                 <Button
                     variant="ghost"
                     onClick={onPrev}
-                    className="text-muted-foreground hover:text-foreground"
                 >
                     <ArrowLeft className="mr-2 w-4 h-4" /> Back
                 </Button>
                 <Button
                     onClick={onNext}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 rounded-full"
+                    size="lg"
                 >
                     I Understand & Agree
                     <ArrowRight className="ml-2 w-4 h-4" />

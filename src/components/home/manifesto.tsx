@@ -34,13 +34,13 @@ export function Manifesto() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 1 }}
                 >
-                    <h2 className="text-4xl md:text-7xl lg:text-8xl font-bebas font-bold text-white uppercase leading-none tracking-tight mb-8">
+                    <h2 className="text-4xl md:text-7xl lg:text-8xl font-bebas font-bold text-foreground uppercase leading-none tracking-tight mb-8">
                         "We do not inherit <br />
                         <span className="text-primary mx-2">the earth</span> <br />
                         from our ancestors..."
                     </h2>
-                    <p className="text-xl md:text-3xl text-zinc-400 font-bebas tracking-widest uppercase">
-                        ...we borrow it from our <span className="text-white border-b-2 border-primary">children</span>.
+                    <p className="text-xl md:text-3xl text-muted-foreground font-bebas tracking-widest uppercase">
+                        ...we borrow it from our <span className="text-foreground border-b-2 border-primary">children</span>.
                     </p>
                 </motion.div>
             </div>

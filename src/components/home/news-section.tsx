@@ -9,7 +9,7 @@ export async function NewsSection() {
     }
 
     return (
-        <section className="py-20 bg-zinc-50 dark:bg-zinc-900 border-t border-zinc-200 dark:border-zinc-800">
+        <section className="py-24 bg-background border-t border-border/10">
             <div className="container px-4 mx-auto">
                 <div className="mb-12 text-center">
                     <h2 className="text-4xl md:text-6xl font-bebas font-bold text-foreground uppercase tracking-tight">

@@ -92,14 +92,12 @@ export function MessageSlide({ data, updateData, onNext, onPrev }: MessageSlideP
                 <Button
                     variant="ghost"
                     onClick={onPrev}
-                    className="text-muted-foreground hover:text-foreground"
                 >
                     <ArrowLeft className="mr-2 w-4 h-4" /> Back
                 </Button>
                 <Button
                     onClick={onNext}
                     disabled={!isValid}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 rounded-full disabled:opacity-50"
                 >
                     Next Step
                     <ArrowRight className="ml-2 w-4 h-4" />

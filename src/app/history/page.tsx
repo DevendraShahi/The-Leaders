@@ -42,7 +42,7 @@ export default function HistoryPage() {
                     >
                         Timeline of <span className="text-primary">Chaos</span>
                     </motion.h1>
-                    <p className="max-w-2xl mx-auto text-zinc-400 font-manrope text-lg font-light tracking-wide">
+                    <p className="max-w-2xl mx-auto text-foreground/80 font-manrope text-lg font-light tracking-wide">
                         From the blood of Kot to the birth of a Republic. The history of Nepal is written in fire.
                     </p>
                 </div>
@@ -101,7 +101,7 @@ export default function HistoryPage() {
 
                                             <span className="text-primary font-bebas text-5xl tracking-tighter block mb-2">{event.year}</span>
                                             <h3 className="text-3xl text-foreground font-bebas uppercase tracking-wide mb-3 group-hover:text-primary transition-colors">{event.title}</h3>
-                                            <p className="text-muted-foreground font-manrope leading-relaxed">{event.desc}</p>
+                                            <p className="text-foreground/80 font-manrope text-lg leading-relaxed">{event.desc}</p>
 
                                             {/* Corner Accents */}
                                             <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary/0 group-hover:border-primary transition-all duration-300" />

@@ -54,8 +54,8 @@ export function ClosingSlide({ data, updateData }: ClosingSlideProps) {
                             key={feeling}
                             onClick={() => handleSelectFeeling(feeling)}
                             className={`px-6 py-2 rounded-full border transition-all duration-300 ${selectedFeeling === feeling
-                                    ? "bg-primary text-primary-foreground border-primary"
-                                    : "border-border text-muted-foreground hover:border-primary/50"
+                                ? "bg-primary text-primary-foreground border-primary"
+                                : "border-border text-muted-foreground hover:border-primary/50"
                                 }`}
                         >
                             {feeling}
@@ -66,7 +66,7 @@ export function ClosingSlide({ data, updateData }: ClosingSlideProps) {
 
             <div className="pt-4">
                 <Link href="/">
-                    <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+                    <Button variant="ghost">
                         Return to Homepage
                     </Button>
                 </Link>

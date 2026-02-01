@@ -15,7 +15,7 @@ export default async function LeaderProfile({ params }: { params: Promise<{ slug
                 <h1 className="text-6xl font-bebas text-primary mb-4">404 - File Not Found</h1>
                 <p className="text-zinc-500 mb-8 font-manrope">The requested dossier does not exist or has been redacted.</p>
                 <Link href="/leaders">
-                    <Button variant="outline" className="font-bebas text-xl">Return to Roster</Button>
+                    <Button variant="outline">Return to Roster</Button>
                 </Link>
             </div>
         );

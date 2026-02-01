@@ -32,7 +32,7 @@ export function WelcomeSlide({ onNext }: WelcomeSlideProps) {
                 <Button
                     onClick={onNext}
                     size="lg"
-                    className="group bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-6 rounded-full font-sans text-lg tracking-wide transition-all duration-300 transform hover:scale-105"
+                    className="group"
                 >
                     Begin Journey
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

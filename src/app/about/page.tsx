@@ -275,19 +275,12 @@ export default function AboutPage() {
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                             <Link href="/leaders">
-                                <Button
-                                    size="lg"
-                                    className="bg-[#B71C1C] hover:bg-[#B71C1C]/90 text-white font-mono text-sm tracking-widest px-8 py-6 uppercase border border-[#B71C1C] transition-all duration-300 hover:shadow-[0_0_20px_rgba(183,28,28,0.5)]"
-                                >
+                                <Button size="lg">
                                     Discover Leaders
                                 </Button>
                             </Link>
                             <Link href="/election-2026">
-                                <Button
-                                    size="lg"
-                                    variant="outline"
-                                    className="border-foreground/20 text-foreground hover:bg-foreground/5 hover:border-foreground/40 font-mono text-sm tracking-widest px-8 py-6 uppercase transition-all duration-300"
-                                >
+                                <Button size="lg" variant="outline">
                                     Explore Election Data
                                 </Button>
                             </Link>

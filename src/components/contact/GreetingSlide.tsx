@@ -191,7 +191,7 @@ export function GreetingSlide({ data, onNext }: GreetingSlideProps) {
                 <Button
                     onClick={onNext}
                     size="lg"
-                    className="group bg-primary text-primary-foreground hover:bg-primary/90 px-10 py-6 rounded-full text-lg tracking-wide transition-all duration-300"
+                    className="group"
                 >
                     Let's Continue
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />

@@ -144,7 +144,7 @@ export default function ElectionCountdown() {
     return (
         <motion.section
             style={{ opacity }}
-            className="relative min-h-screen w-full overflow-hidden bg-black flex items-center justify-center"
+            className="relative min-h-screen mt-6 md:m-0 w-full overflow-hidden bg-black flex items-center justify-center"
         >
             {/* Particle Canvas Background */}
             <canvas ref={canvasRef} className="absolute inset-0 opacity-60" />
@@ -262,19 +262,12 @@ export default function ElectionCountdown() {
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
                     >
                         <Link href="/election-2026">
-                            <Button
-                                size="lg"
-                                className="bg-[#B71C1C] hover:bg-[#B71C1C]/90 text-white font-mono text-sm tracking-widest px-8 py-6 uppercase border border-[#B71C1C] transition-all duration-300 hover:shadow-[0_0_20px_rgba(183,28,28,0.5)]"
-                            >
+                            <Button size="lg">
                                 Explore Election Data
                             </Button>
                         </Link>
                         <Link href="/leaders">
-                            <Button
-                                size="lg"
-                                variant="outline"
-                                className="border-white/20 text-white hover:bg-white/5 hover:border-white/40 font-mono text-sm tracking-widest px-8 py-6 uppercase transition-all duration-300"
-                            >
+                            <Button size="lg" variant="outline">
                                 View Leaders
                             </Button>
                         </Link>

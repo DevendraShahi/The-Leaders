@@ -39,8 +39,8 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
             party.candidates.forEach(candidate => {
                 const enriched = { ...candidate, party_name: party.party_name };
 
-                // Apply Search
-                if (searchTerm && !enriched.name.toLowerCase().includes(searchTerm.toLowerCase())) return;
+                // Apply Search (with null safety)
+                if (searchTerm && (!enriched.name || !enriched.name.toLowerCase().includes(searchTerm.toLowerCase()))) return;
 
                 // Apply District Filter (Global Store)
                 // Apply District Filter (Global Store) -- MATCHING WITH ENGLISH DATA NOW
@@ -252,8 +252,8 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {candidates.map((candidate) => (
-                                                <tr key={candidate.voter_id || Math.random()} className="border-b hover:bg-muted/5 transition-colors">
+                                            {candidates.map((candidate, index) => (
+                                                <tr key={`${candidate.voter_id}-${candidate.sn}-${index}`} className="border-b hover:bg-muted/5 transition-colors">
                                                     <td className="px-6 py-4 font-medium">{candidate.sn}</td>
                                                     <td className="px-6 py-4 font-bold text-primary">{candidate.name}</td>
                                                     <td className="px-6 py-4">{candidate.group}</td>

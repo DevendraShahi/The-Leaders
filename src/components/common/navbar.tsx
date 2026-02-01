@@ -25,6 +25,7 @@ const links = [
 export function Navbar() {
     const [isScrolled, setIsScrolled] = React.useState(false);
     const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+    const [isSheetOpen, setIsSheetOpen] = React.useState(false);
     const pathname = usePathname();
 
     React.useEffect(() => {
@@ -38,27 +39,21 @@ export function Navbar() {
     return (
         <motion.header
             className={cn(
-                "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b border-transparent",
+                "fixed top-0 left-0 right-0 z-40 transition-all duration-300 border-b",
                 isScrolled
-                    ? "bg-background/95 backdrop-blur-md border-primary/20 py-2 shadow-xl shadow-foreground/5"
-                    : "bg-transparent py-4"
+                    ? "bg-background/95 backdrop-blur-md border-border py-1 shadow-sm"
+                    : "bg-background/80 backdrop-blur-sm border-transparent py-1"
             )}
             initial={{ y: -100 }}
             animate={{ y: 0 }}
             transition={{ duration: 0.5 }}
         >
-            <div className="container mx-auto px-4 flex items-center justify-between">
-                {/* Logo */}
+            <div className="container mx-auto px-4 flex items-center justify-between h-14 md:h-16">
+                {/* Logo - Left Aligned */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <div className="relative w-10 h-10 md:w-10 md:h-10 overflow-hidden rounded-sm transition-transform group-hover:scale-105">
-                        <Image
-                            src="/logo.svg"
-                            alt="The Leaders"
-                            fill
-                            className="object-contain"
-                            priority
-                        />
-                    </div>
+                    <span className="font-knight text-2xl text-center md:text-xl lg:text-xl text-primary tracking-wide leading-none pt-1 transition-transform duration-300 group-hover:scale-105">
+                        THE <br /> LEADERS
+                    </span>
                 </Link>
 
                 {/* Desktop Navigation */}
@@ -69,10 +64,10 @@ export function Navbar() {
                                 key={link.href}
                                 href={link.href}
                                 className={cn(
-                                    "relative px-5 py-2 text-lg font-bebas tracking-widest uppercase transition-all duration-300 group border border-transparent hover:border-primary/30",
+                                    "relative px-5 py-2 text-sm font-medium uppercase transition-all duration-200 rounded",
                                     pathname === link.href
-                                        ? "bg-primary text-black shadow-[0_0_15px_rgba(229,9,20,0.4)]"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-foreground/5"
+                                        ? "bg-primary text-primary-foreground"
+                                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
                                 )}
                             >
                                 <span className="block">{link.label}</span>
@@ -93,8 +88,8 @@ export function Navbar() {
                                     className="overflow-hidden"
                                 >
                                     <Input
-                                        placeholder="SEARCH LEADERS..."
-                                        className="h-10 bg-black/50 border-primary/50 text-white placeholder:text-zinc-500 font-bebas tracking-widest focus-visible:ring-primary uppercase"
+                                        placeholder="Search..."
+                                        className="h-10 bg-background border-border focus-visible:ring-ring"
                                         autoFocus
                                         onBlur={() => setIsSearchOpen(false)}
                                     />
@@ -104,7 +99,6 @@ export function Navbar() {
                                     variant="ghost"
                                     size="icon"
                                     onClick={() => setIsSearchOpen(true)}
-                                    className="hover:text-primary hover:bg-primary/10"
                                 >
                                     <Search className="h-5 w-5" />
                                 </Button>
@@ -118,41 +112,50 @@ export function Navbar() {
                     </div>
 
                     <div className="hidden md:block">
-                        <Button variant="default" className="font-bebas text-xl tracking-wider bg-primary text-black hover:bg-accent rounded-none">
-                            <span>Subscribe</span>
+                        <Button variant="default" size="default">
+                            Subscribe
                         </Button>
                     </div>
 
                     {/* Mobile Menu */}
                     <div className="md:hidden">
-                        <Sheet>
+                        <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                             <SheetTrigger asChild>
                                 <Button variant="ghost" size="icon">
                                     <Menu className="h-6 w-6" />
                                 </Button>
                             </SheetTrigger>
-                            <SheetContent side="right" className="w-[300px] border-l-primary/20 bg-black">
-                                <div className="flex flex-col gap-8 mt-8">
-                                    <div className="font-bebas text-4xl text-primary uppercase">
-                                        The Leaders
+                            <SheetContent side="right" className="w-[85vw] sm:w-[350px] border-l border-border bg-background p-6">
+                                <div className="flex flex-col h-full mt-6">
+                                    <div className="font-knight text-4xl text-primary tracking-wide mb-8">
+                                        THE <br /> LEADERS
                                     </div>
-                                    <nav className="flex flex-col gap-4 px-4">
+                                    <nav className="flex flex-col gap-2">
                                         {links.map((link) => (
                                             <Link
                                                 key={link.href}
                                                 href={link.href}
+                                                onClick={() => setIsSheetOpen(false)}
                                                 className={cn(
-                                                    "text-2xl font-bebas uppercase tracking-wide transition-colors pb-2 border-b",
+                                                    "text-lg font-medium uppercase transition-all duration-200 py-3 px-4 rounded-md",
                                                     pathname === link.href
-                                                        ? "text-primary border-primary pl-2"
-                                                        : "text-white/80 border-white/10 hover:text-white hover:pl-2"
+                                                        ? "bg-primary/10 text-primary font-bold translate-x-2"
+                                                        : "text-muted-foreground hover:text-foreground hover:bg-accent hover:translate-x-1"
                                                 )}
                                             >
                                                 {link.label}
                                             </Link>
                                         ))}
                                     </nav>
-                                    <Button className="w-full font-bebas text-xl bg-primary text-black hover:bg-accent">SUBSCRIBE</Button>
+
+                                    <div className="mt-auto mb-8 space-y-4">
+                                        <Button size="lg" className="w-full font-bebas tracking-wide text-xl">
+                                            Subscribe
+                                        </Button>
+                                        <div className="flex justify-center gap-4">
+                                            {/* Mobile specific toggles or social links could go here if needed */}
+                                        </div>
+                                    </div>
                                 </div>
                             </SheetContent>
                         </Sheet>
