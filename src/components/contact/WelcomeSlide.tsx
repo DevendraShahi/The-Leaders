@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { MessageSquareText, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface WelcomeSlideProps {
@@ -17,7 +17,7 @@ export function WelcomeSlide({ onNext }: WelcomeSlideProps) {
                 transition={{ duration: 1, delay: 0.2 }}
                 className="inline-flex items-center justify-center p-4 bg-primary/5 rounded-full mb-8"
             >
-                <Sparkles className="w-8 h-8 text-primary opacity-80" strokeWidth={1} />
+                <MessageSquareText className="w-8 h-8 text-primary opacity-80" strokeWidth={1} />
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bebas text-foreground uppercase tracking-wide leading-none">

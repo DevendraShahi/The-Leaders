@@ -47,15 +47,27 @@ const knight = localFont({
   variable: "--font-knight",
 });
 
-export const metadata: Metadata = {
+import { constructMetadata } from "@/lib/metadata";
+
+export const metadata = constructMetadata({
   title: "The Leaders",
-  description: "A premium archive of Nepal's leaders",
-};
+  description: "A comprehensive digital platform showcasing the life, achievements, and political legacy of Rt. Hon. Sher Bahadur Deuba, former Prime Minister of Nepal and President of Nepali Congress.",
+  canonical: "/",
+  keywords: [
+    "political biography",
+    "Nepal history",
+    "democratic leadership",
+    "Nepal Congress party",
+    "election 2026",
+    "Nepal manifesto",
+  ],
+});
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { FontProvider } from "@/components/font-provider";
 import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
+import { CustomCursor } from "@/components/ui/custom-cursor";
 
 // ... existing imports
 
@@ -103,6 +115,7 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <FontProvider>
+            <CustomCursor />
             <Navbar />
             <main className="min-h-screen py-[2.5rem] md:py-18">
               {children}

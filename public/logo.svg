@@ -6,11 +6,33 @@
    width="931.62634"
    version="1.1"
    id="svg1"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.51980028"
+     inkscape:cx="549.24942"
+     inkscape:cy="523.2779"
+     inkscape:window-width="1512"
+     inkscape:window-height="949"
+     inkscape:window-x="0"
+     inkscape:window-y="33"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
   <defs
      id="defs4">
     <rect
@@ -34,21 +56,23 @@
   <g
      id="layer1"
      transform="translate(-34.186825,-215.59508)">
-    <text
-       xml:space="preserve"
+    <g
        id="text1"
-       style="font-weight:300;font-size:293.333px;line-height:1;font-family:'American Typewriter';-inkscape-font-specification:'American Typewriter, Light';text-align:center;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect1);fill:#aa0000;stroke-width:7;stroke-linejoin:round;stroke-opacity:0.299435"
-       transform="translate(0.55997009,141.03948)"><tspan
-         x="311.12019"
-         y="286.92841"
-         id="tspan6"><tspan
-           style="font-weight:normal;font-family:'KNIGHT WARRIOR';-inkscape-font-specification:'KNIGHT WARRIOR'"
-           id="tspan1">THE
-</tspan></tspan><tspan
-         x="32.747339"
-         y="643.07227"
-         id="tspan8"><tspan
-           style="font-weight:normal;font-family:'KNIGHT WARRIOR';-inkscape-font-specification:'KNIGHT WARRIOR'"
-           id="tspan7">LEADERS</tspan></tspan></text>
+       style="font-weight:300;font-size:293.333px;line-height:1;font-family:'American Typewriter';-inkscape-font-specification:'American Typewriter, Light';text-align:center;white-space:pre;fill:#aa0000;stroke-width:7;stroke-linejoin:round;stroke-opacity:0.299435"
+       transform="translate(0.55997009,141.03948)"
+       aria-label="THE&#10;LEADERS">
+      <path
+         style="font-weight:normal;font-family:'KNIGHT WARRIOR';-inkscape-font-specification:'KNIGHT WARRIOR'"
+         d="M 394.57333,381.19539 V 212.82224 h 22.58664 l 15.25332,-43.99995 h -119.9732 l 15.25331,43.99995 h 22.58664 v 168.37315 z m 164.85364,0 v -212.3731 h -44.29328 v 84.18658 h -36.07996 v -84.18658 h -44.29329 v 84.18658 h -16.13331 l 16.13331,43.99995 v 84.18657 h 44.29329 v -84.18657 h 36.07996 v 84.18657 z m 127.01299,0 v -43.99995 h -65.99993 v -40.18662 h 65.99993 l -15.25332,-43.99995 h -50.74661 v -40.18663 h 65.99993 L 671.18664,168.82229 H 562.65343 l 13.49332,43.99995 v 40.18663 h -16.13332 l 16.13332,43.99995 v 84.18657 z"
+         id="path2"
+         sodipodi:nodetypes="cccccccccccccccccccccccccccccccccccccccccc" />
+      <path
+         style="font-weight:normal;font-family:'KNIGHT WARRIOR';-inkscape-font-specification:'KNIGHT WARRIOR'"
+         d="M 155.65387,643.07227 V 599.07232 H 92.880605 V 430.69917 H 33.627338 l 15.253316,43.99995 v 168.37315 z m 126.42631,0 V 599.07232 H 216.08025 V 558.8857 h 65.99993 l -15.25331,-43.99995 h -50.74662 v -40.18663 h 65.99993 L 266.82687,430.69917 H 158.29365 l 13.49332,43.99995 v 40.18663 h -16.13331 l 16.13331,43.99995 v 84.18657 z m 122.9063,-212.3731 h -43.99995 -63.0666 l 15.25332,44.29329 -3.22666,40.18662 h -19.06665 l 15.25332,43.99995 -6.74666,84.18657 h 43.99995 l 7.03999,-84.18657 h 21.11998 l 7.03999,84.18657 h 43.99995 z m -51.03994,84.47991 3.51999,-40.18662 h 7.03999 l 3.52,40.18662 z m 165.73332,127.89319 c 18.18664,-0.58667 33.73329,-14.95998 36.37329,-32.55996 V 466.19247 c -1.46667,-19.35998 -17.01331,-34.90663 -36.37329,-35.4933 H 422.2933 l 15.54665,43.99995 v 168.37315 z m -7.91999,-43.99995 H 481.8399 v -124.3732 h 29.91997 z m 171.30669,43.99995 V 599.07232 H 617.06664 V 558.8857 h 65.99992 l -15.25331,-43.99995 h -50.74661 v -40.18663 h 65.99992 L 667.81325,430.69917 H 559.28003 l 13.49332,43.99995 v 40.18663 h -16.13331 l 16.13331,43.99995 v 84.18657 z m 141.97299,0 v -67.75992 l -23.17331,-13.19999 23.46664,-13.49332 V 430.69917 H 685.1197 l 15.25332,43.99995 v 168.37315 h 44.29328 v -48.10661 l 13.19999,-7.62666 c 15.25331,9.09332 7.62665,4.69333 23.1733,13.49332 v 42.23995 z M 744.6663,544.21905 v -69.51993 h 36.37329 v 48.39995 z m 220.5864,98.85322 V 541.57905 l -80.66658,-46.34662 v -20.53331 h 36.37329 v 26.98664 L 965.2527,487.31244 V 430.69917 H 840.29283 v 89.7599 l 80.66658,46.63995 v 31.9733 h -36.37329 v -35.49329 l -44.29329,14.37331 v 65.11993 z"
+         id="path3"
+         inkscape:export-filename="logo.svg"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+    </g>
   </g>
 </svg>

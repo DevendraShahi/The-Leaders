@@ -50,12 +50,12 @@ async function updateLeader(request: NextRequest, { user, params }: { user: any,
         }
 
         // Log activity
-        await ActivityLog.create({
-            adminId: user.userId,
+        await ActivityLog.create({ // Assuming AdminLog is meant to be ActivityLog based on imports, or AdminLog needs to be imported. Sticking to ActivityLog for now to avoid new import errors.
+            adminId: user.userId, // Assuming session.userId is meant to be user.userId based on function signature.
             action: 'update',
             entityType: 'Leader',
             entityId: leader._id.toString(),
-            description: `Updated leader: ${leader.name.en}`,
+            description: `Updated leader: ${typeof leader.name === 'string' ? leader.name : leader.name.en}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
@@ -86,7 +86,7 @@ async function deleteLeader(request: NextRequest, { user, params }: { user: any,
             action: 'delete',
             entityType: 'Leader',
             entityId: id,
-            description: `Deleted leader: ${leader.name.en}`,
+            description: `Deleted leader: ${typeof leader.name === 'string' ? leader.name : leader.name.en}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });

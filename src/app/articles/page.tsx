@@ -3,7 +3,7 @@ import { ArticleGrid } from "@/components/home/article-grid";
 
 
 export const metadata = {
-    title: "Articles | The Leaders",
+    title: "Articles",
     description: "Read the latest news and perspectives from The Leaders of Nepal.",
 };
 

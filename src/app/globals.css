@@ -194,6 +194,13 @@
     @apply bg-background text-foreground font-sans antialiased;
     overflow-x: hidden;
     width: 100%;
+    cursor: none;
+    /* Hide default cursor for custom cursor */
+  }
+
+  /* Hide cursor on all elements to use custom cursor */
+  * {
+    cursor: none !important;
   }
 
   html {

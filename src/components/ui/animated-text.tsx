@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 interface AnimatedTextProps {
@@ -12,15 +12,18 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const cursorRef = useRef({ x: 0, y: 0 });
     const blobRef = useRef<HTMLDivElement>(null);
+    const [isMounted, setIsMounted] = useState(false);
 
     // Use specialized refs for performance (gsap.quickTo)
     const quickToRefs = useRef<any[]>([]);
 
     useEffect(() => {
+        setIsMounted(true);
+
         if (!containerRef.current) return;
 
         const container = containerRef.current;
-        const letters = container.querySelectorAll(".letter-wrapper"); // Select wrappers now
+        const letters = container.querySelectorAll(".letter-wrapper");
         const blob = blobRef.current;
 
         // Set up 3D space
@@ -33,12 +36,15 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
         const xTo = gsap.quickTo(blob, "x", { duration: 0.6, ease: "power3.out" });
         const yTo = gsap.quickTo(blob, "y", { duration: 0.6, ease: "power3.out" });
 
-        // Initialize quickTo for each letter's inner span
-        const letterElements = document.querySelectorAll(".letter-inner");
-
         // Setup initial ambient animation on the WRAPPERS (outer)
         // This ensures ambient motion is independent of magnetic motion (inner)
         letters.forEach((wrapper, index) => {
+            // Set initial visible state BEFORE animation
+            gsap.set(wrapper, {
+                opacity: 1,
+                scale: 1,
+            });
+
             gsap.to(wrapper, {
                 y: "random(-4, 4)",
                 duration: 3 + (index % 3),
@@ -46,20 +52,28 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                 repeat: -1,
                 yoyo: true,
                 delay: index * 0.1,
-                force3D: true, // Prevent flicker
-            });
-
-            // Initial reveal on wrapper
-            gsap.from(wrapper, {
-                duration: 1.5,
-                opacity: 0,
-                scale: 0,
-                rotationY: -180,
-                z: -200,
-                delay: index * 0.05,
-                ease: "back.out(1.5)",
                 force3D: true,
             });
+
+            // Initial reveal animation using fromTo for guaranteed visibility
+            gsap.fromTo(wrapper,
+                {
+                    opacity: 0,
+                    scale: 0,
+                    rotationY: -180,
+                    z: -200,
+                },
+                {
+                    duration: 1.5,
+                    opacity: 1,
+                    scale: 1,
+                    rotationY: 0,
+                    z: 0,
+                    delay: index * 0.05,
+                    ease: "back.out(1.5)",
+                    force3D: true,
+                }
+            );
         });
 
         const updateLetterPositions = () => {
@@ -126,7 +140,7 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                         rotationY: rotateY,
                         rotationX: rotateX,
                         scale: scale,
-                        color: `hsl(0, 100%, ${50 + smoothStrength * 50}%)`, // Shifts to white
+                        color: `hsl(0, 100%, ${50 + smoothStrength * 50}%)`,
                         textShadow: `0 0 ${20 + smoothStrength * 30}px rgba(183, 28, 28, ${0.4 + smoothStrength * 0.4})`,
                         duration: 0.1,
                         overwrite: "auto",
@@ -200,6 +214,8 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                     style={{
                         transformStyle: "preserve-3d",
                         backfaceVisibility: "hidden",
+                        opacity: isMounted ? undefined : 1, // Ensure visible before animation
+                        transform: isMounted ? undefined : "scale(1) rotateY(0deg) translateZ(0px)",
                     }}
                 >
                     <span
@@ -208,7 +224,7 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                             transformStyle: "preserve-3d",
                             backfaceVisibility: "hidden",
                             WebkitFontSmoothing: "antialiased",
-                            color: "var(--foreground)", // Default theme color
+                            color: "var(--foreground)",
                             transition: "color 0.1s linear",
                             textShadow: "0 0 10px rgba(183, 28, 28, 0.3)",
                         }}

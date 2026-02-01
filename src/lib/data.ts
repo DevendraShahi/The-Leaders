@@ -1,8 +1,8 @@
 import dbConnect from "@/lib/db";
 import Article, { IArticle } from "@/models/Article";
 import { cache } from "react";
+import { logger } from "@/lib/logger";
 
-// Cache the result for request deduplication
 // Cache the result for request deduplication
 export const getArticles = cache(async (limit: number = 3) => {
     try {
@@ -18,7 +18,7 @@ export const getArticles = cache(async (limit: number = 3) => {
         // To be safe for serialization across boundary if needed (though mostly server side):
         return JSON.parse(JSON.stringify(articles)) as IArticle[];
     } catch (error) {
-        console.error("Failed to fetch articles:", error);
+        logger.error("Failed to fetch articles", { error, limit });
         return [];
     }
 });
@@ -30,7 +30,8 @@ export const getArticleBySlug = cache(async (slug: string) => {
         if (!article) return null;
         return JSON.parse(JSON.stringify(article)) as IArticle;
     } catch (error) {
-        console.error(`Failed to fetch article with slug ${slug}:`, error);
+        logger.error("Failed to fetch article by slug", { error, slug });
         return null;
     }
 });
+

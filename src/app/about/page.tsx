@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AnimatedLogoText } from "@/components/ui/animated-text";
 
+// Metadata is set in layout.tsx for client components
+
 const VALUES = [
     {
         icon: Shield,
