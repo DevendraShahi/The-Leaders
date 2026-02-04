@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
-
+reactCompiler: false,
   // Production optimization
   compress: true,
 
