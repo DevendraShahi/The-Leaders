@@ -1,408 +1,353 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/components/admin/AuthProvider';
-import BilingualInput from '@/components/admin/BilingualInput';
-import BilingualRichText from '@/components/admin/BilingualRichText';
-import ImageUploader from '@/components/admin/ImageUploader';
-import { PendingImage } from '@/components/admin/RichTextEditor';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
-import { Save, ArrowLeft, Loader2, Calendar } from 'lucide-react';
+import { useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Save, ArrowLeft, Image as ImageIcon, Calendar, Tag, FileText } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/components/admin/AuthProvider";
+import ImageUploader from "@/components/admin/ImageUploader";
+import BilingualInput from "@/components/admin/BilingualInput";
+import RichTextEditor from "@/components/admin/RichTextEditor";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-// Simple button if UI import fails
-function ButtonCustom({ children, disabled, onClick, className, variant = 'primary' }: any) {
-    const base = "inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
-    const styles = {
-        primary: "bg-blue-600 text-white hover:bg-blue-700",
-        secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
-    };
-    return (
-        <button
-            disabled={disabled}
-            onClick={onClick}
-            className={`${base} ${styles[variant as keyof typeof styles]} ${className}`}
-        >
-            {children}
-        </button>
-    );
+interface ArticleFormProps {
+    initialData?: any;
+    id: string;
 }
 
-export default function ArticleForm({ initialData, id }: { initialData?: any, id: string }) {
+export default function ArticleForm({ initialData, id }: ArticleFormProps) {
     const router = useRouter();
     const { token } = useAuth();
     const [loading, setLoading] = useState(false);
-    const [pendingImagesEn, setPendingImagesEn] = useState<PendingImage[]>([]);
-    const [pendingImagesNe, setPendingImagesNe] = useState<PendingImage[]>([]);
 
-    // Form State
-    const [formData, setFormData] = useState({
-        title: { en: '', ne: '' },
-        content: { en: '', ne: '' },
-        excerpt: { en: '', ne: '' },
-        author: { en: '', ne: '' },
-        category: { en: '', ne: '' },
-        slug: '',
-        image: '',
-        status: 'draft', // draft, published, archived
+    // Helper to normalize bilingual fields
+    const normalize = (val: any) => {
+        if (!val) return { en: "", ne: "" };
+        if (typeof val === 'string') return { en: val, ne: "" };
+        return {
+            en: val.en || "",
+            ne: val.ne || ""
+        };
+    };
+
+    const defaults = initialData ? {
+        ...initialData,
+        title: normalize(initialData.title),
+        excerpt: normalize(initialData.excerpt),
+        content: normalize(initialData.content),
+        author: normalize(initialData.author),
+        category: normalize(initialData.category),
+    } : {
+        title: { en: "", ne: "" },
+        excerpt: { en: "", ne: "" },
+        content: { en: "", ne: "" },
+        author: { en: "Editorial Team", ne: "सम्म्पादकीय समूह" },
+        category: { en: "Politics", ne: "राजनीति" },
+        slug: "",
+        image: "",
+        tags: [],
+        status: "draft",
         isFeatured: false,
-        eventDate: '', // YYYY-MM-DD
-        tags: '', // Comma separated
+        publishedDate: new Date().toISOString()
+    };
+
+    const form = useForm({
+        defaultValues: defaults
     });
 
-    useEffect(() => {
-        if (initialData) {
-            setFormData({
-                title: initialData.title || { en: '', ne: '' },
-                content: initialData.content || { en: '', ne: '' },
-                excerpt: initialData.excerpt || { en: '', ne: '' },
-                author: initialData.author || { en: '', ne: '' },
-                category: initialData.category || { en: '', ne: '' },
-                slug: initialData.slug || '',
-                image: initialData.image || '',
-                status: initialData.status || 'draft',
-                isFeatured: initialData.isFeatured || false,
-                eventDate: initialData.eventDate ? new Date(initialData.eventDate).toISOString().split('T')[0] : '',
-                tags: initialData.tags ? initialData.tags.join(', ') : '',
-            });
-        }
-    }, [initialData]);
+    const { control, handleSubmit, setValue, watch } = form;
 
-    const handleChange = (field: string, value: any, lang?: 'en' | 'ne') => {
-        setFormData(prev => {
-            if (lang) {
-                return {
-                    ...prev,
-                    [field]: { ...prev[field as keyof typeof prev] as any, [lang]: value }
-                };
-            }
-            return { ...prev, [field]: value };
-        });
+    // Tag management
+    const [tagInput, setTagInput] = useState("");
+    const tags = watch("tags") || [];
+
+    const addTag = () => {
+        if (tagInput.trim() && !tags.includes(tagInput.trim())) {
+            setValue("tags", [...tags, tagInput.trim()]);
+            setTagInput("");
+        }
     };
 
-    const generateSlug = () => {
-        const slug = formData.title.en
-            .toLowerCase()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/(^-|-$)+/g, '');
-        handleChange('slug', slug);
+    const removeTag = (tagToRemove: string) => {
+        setValue("tags", tags.filter((tag: string) => tag !== tagToRemove));
     };
 
-    const handleSubmit = async () => {
-        // Validate: At least one title (EN or NE) and slug are required
-        if ((!formData.title.en && !formData.title.ne) || !formData.slug) {
-            toast.error('At least one title (EN or NE) and Slug are required');
-            return;
-        }
-
-        // Validate: At least one author (EN or NE) is required
-        if (!formData.author.en && !formData.author.ne) {
-            toast.error('At least one author (EN or NE) is required');
-            return;
-        }
-
+    const onSubmit = async (data: any) => {
         setLoading(true);
-        const uploadToastId = toast.loading('Processing images...');
+        const method = id === "new" ? "POST" : "PUT";
+        const endpoint = id === "new" ? "/api/admin/articles" : `/api/admin/articles/${id}`;
 
         try {
-            // Upload all pending images first
-            let contentEn = formData.content.en;
-            let contentNe = formData.content.ne;
-
-            // Upload English content images
-            for (const pendingImage of pendingImagesEn) {
-                try {
-                    const formDataUpload = new FormData();
-                    formDataUpload.append('file', pendingImage.file);
-                    formDataUpload.append('category', 'article');
-
-                    const res = await fetch('/api/admin/media/upload', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: formDataUpload
-                    });
-
-                    if (res.ok) {
-                        const data = await res.json();
-                        const cloudinaryUrl = data.data.media.secureUrl;
-                        // Replace blob URL with Cloudinary URL
-                        contentEn = contentEn.replace(pendingImage.blobUrl, cloudinaryUrl);
-                    }
-                } catch (error) {
-                    console.error('Failed to upload image:', error);
-                }
-            }
-
-            // Upload Nepali content images
-            for (const pendingImage of pendingImagesNe) {
-                try {
-                    const formDataUpload = new FormData();
-                    formDataUpload.append('file', pendingImage.file);
-                    formDataUpload.append('category', 'article');
-
-                    const res = await fetch('/api/admin/media/upload', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: formDataUpload
-                    });
-
-                    if (res.ok) {
-                        const data = await res.json();
-                        const cloudinaryUrl = data.data.media.secureUrl;
-                        // Replace blob URL with Cloudinary URL
-                        contentNe = contentNe.replace(pendingImage.blobUrl, cloudinaryUrl);
-                    }
-                } catch (error) {
-                    console.error('Failed to upload image:', error);
-                }
-            }
-
-            toast.success('Images uploaded successfully', { id: uploadToastId });
-            toast.loading('Saving article...');
-
-            const payload = {
-                ...formData,
-                content: { en: contentEn, ne: contentNe }, // Use updated content with Cloudinary URLs
-                tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
-            };
-
-            const url = id === 'new' ? '/api/admin/articles' : `/api/admin/articles/${id}`;
-            const method = id === 'new' ? 'POST' : 'PUT';
-
-            const res = await fetch(url, {
+            const res = await fetch(endpoint, {
                 method,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(data)
             });
 
-            const responseData = await res.json();
-
             if (res.ok) {
-                toast.success(`Article ${id === 'new' ? 'created' : 'updated'} successfully`);
-                // Clear pending images after successful submission
-                setPendingImagesEn([]);
-                setPendingImagesNe([]);
-                router.push('/admin/content?type=articles');
+                toast.success(id === "new" ? "Article created successfully" : "Article updated successfully");
+                router.push("/admin/content?type=articles");
+                router.refresh();
             } else {
-                toast.error(responseData.error || 'Operation failed');
+                const error = await res.json();
+                toast.error(error.error || "Failed to save article");
             }
         } catch (error) {
             console.error(error);
-            toast.error('An error occurred');
+            toast.error("An error occurred while saving");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="space-y-6 max-w-5xl mx-auto pb-10">
-            <div className="flex items-center justify-between">
-                <ButtonCustom variant="secondary" onClick={() => router.back()} className="gap-2">
-                    <ArrowLeft className="h-4 w-4" /> Back
-                </ButtonCustom>
-                <div className="flex gap-3">
-                    <ButtonCustom
-                        disabled={loading}
-                        onClick={() => handleChange('status', 'draft')}
-                        variant="secondary"
-                    >
-                        Save as Draft
-                    </ButtonCustom>
-                    <ButtonCustom
-                        disabled={loading}
-                        onClick={() => {
-                            handleChange('status', 'published');
-                            setTimeout(handleSubmit, 100); // Hack to ensure state update before submit? No, setState is async. 
-                            // Better: create separate submit handler or pass status to submit.
-                            // I'll update status then call save manually or just pass it in payload construction?
-                            // I'll update state and let user click Save or just separate Save Button.
-                            // Let's make "Publish" button that sets status AND submits.
-                        }}
-                        className="bg-green-600 hover:bg-green-700 text-white"
-                    >
-                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Publish Now'}
-                    </ButtonCustom>
-
-                    <ButtonCustom
-                        disabled={loading}
-                        onClick={handleSubmit}
-                        className="gap-2"
-                    >
-                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                        Save
-                    </ButtonCustom>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Content Column */}
-                <div className="lg:col-span-2 space-y-6 bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-                    <div className="space-y-4">
-                        <BilingualInput
-                            label="Article Title"
-                            valueEn={formData.title.en}
-                            valueNe={formData.title.ne}
-                            onChangeEn={(v) => handleChange('title', v, 'en')}
-                            onChangeNe={(v) => handleChange('title', v, 'ne')}
-                            placeholderEn="Enter article title"
-                            placeholderNe="लेखको शीर्षक लेख्नुहोस्"
-                            required
+        <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 animate-in fade-in duration-500 pb-20">
+                {/* Header Actions */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
+                    <div className="flex items-center gap-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="rounded-none h-10 w-10 border-border"
+                            onClick={() => router.back()}
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                        </Button>
+                        <div>
+                            <h1 className="font-bebas text-3xl md:text-4xl text-foreground tracking-wide">
+                                {id === 'new' ? 'New Article' : 'Edit Article'}
+                            </h1>
+                            <p className="text-muted-foreground font-manrope text-sm">
+                                Manage editorial content and translations.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <FormField
+                            control={control}
+                            name="status"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className="w-[140px] h-10 rounded-none border-border font-mono text-xs uppercase bg-card">
+                                            <SelectValue placeholder="Status" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className="rounded-none">
+                                        <SelectItem value="draft">Draft</SelectItem>
+                                        <SelectItem value="published">Published</SelectItem>
+                                        <SelectItem value="archived">Archived</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            )}
                         />
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                            className="font-mono uppercase text-xs font-bold tracking-wider rounded-none h-10 px-6 bg-primary hover:bg-primary/90 text-primary-foreground min-w-[140px]"
+                        >
+                            {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                            Save Article
+                        </Button>
+                    </div>
+                </div>
 
-                        <div className="flex gap-4">
-                            <div className="flex-1">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                    Slug (URL)
-                                </label>
-                                <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={formData.slug}
-                                        onChange={(e) => handleChange('slug', e.target.value)}
-                                        className="flex-1 rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                                        placeholder="article-url-slug"
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Content Column */}
+                    <div className="space-y-8 lg:col-span-2">
+                        {/* Title & Excerpt */}
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide">Core Content</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-6 pt-6">
+                                <BilingualInput form={form} name="title" label="Article Title" />
+
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <FormField
+                                        control={control}
+                                        name="excerpt.en"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="font-mono text-xs uppercase">Excerpt (English)</FormLabel>
+                                                <FormControl>
+                                                    <Textarea {...field} className="rounded-none border-border min-h-[100px]" placeholder="Brief summary..." />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
                                     />
-                                    <button
-                                        onClick={generateSlug}
-                                        className="px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-md text-xs font-medium hover:bg-gray-200"
-                                    >
-                                        Generate
-                                    </button>
+                                    <FormField
+                                        control={control}
+                                        name="excerpt.ne"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="font-mono text-xs uppercase">Excerpt (Nepali)</FormLabel>
+                                                <FormControl>
+                                                    <Textarea {...field} className="rounded-none border-border min-h-[100px]" placeholder="संक्षिप्त सारांश..." />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
                                 </div>
-                            </div>
-                        </div>
+                            </CardContent>
+                        </Card>
 
-                        <div className="border-t border-gray-100 dark:border-gray-800 my-4" />
+                        {/* Rich Text Editor */}
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide flex items-center gap-2">
+                                    <FileText className="h-4 w-4" /> Full Article Body
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-0 p-0">
+                                {/* Using Tabs for EN/NE Content Editing if I had tabs, otherwise stack */}
+                                <div className="p-4 border-b border-border bg-muted/10 font-mono text-xs uppercase text-muted-foreground">
+                                    English Content
+                                </div>
+                                <div className="p-0 border-b border-border">
+                                    <FormField
+                                        control={control}
+                                        name="content.en"
+                                        render={({ field }) => (
+                                            <RichTextEditor
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                placeholder="Write article in English..."
+                                            />
+                                        )}
+                                    />
+                                </div>
+                                <div className="p-4 border-b border-border bg-muted/10 font-mono text-xs uppercase text-muted-foreground">
+                                    Nepali Content
+                                </div>
+                                <div className="p-0">
+                                    <FormField
+                                        control={control}
+                                        name="content.ne"
+                                        render={({ field }) => (
+                                            <RichTextEditor
+                                                value={field.value}
+                                                onChange={field.onChange}
+                                                placeholder="नेपालीमा लेख लेख्नुहोस्..."
+                                            />
+                                        )}
+                                    />
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </div>
 
+                    {/* Sidebar Column */}
+                    <div className="space-y-8 lg:col-span-1">
 
-                        <BilingualRichText
-                            label="Content"
-                            valueEn={formData.content.en}
-                            valueNe={formData.content.ne}
-                            onChangeEn={(v) => handleChange('content', v, 'en')}
-                            onChangeNe={(v) => handleChange('content', v, 'ne')}
-                            onPendingImagesChangeEn={setPendingImagesEn}
-                            onPendingImagesChangeNe={setPendingImagesNe}
-                            placeholderEn="Write the article content..."
-                            placeholderNe="यहाँ आफ्नो लेख लेख्नुहोस्..."
-                        />
+                        {/* Featured Image */}
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide flex items-center gap-2">
+                                    <ImageIcon className="h-4 w-4" /> Media
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-6">
+                                <FormField
+                                    control={control}
+                                    name="image"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-mono text-xs uppercase">Featured Image</FormLabel>
+                                            <FormControl>
+                                                <div className="aspect-video bg-muted/20 border-2 border-dashed border-border hover:border-primary/50 transition-colors">
+                                                    <ImageUploader
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        folder="articles"
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </CardContent>
+                        </Card>
 
-                        <BilingualInput
-                            label="Author Name"
-                            valueEn={formData.author.en}
-                            valueNe={formData.author.ne}
-                            onChangeEn={(v) => handleChange('author', v, 'en')}
-                            onChangeNe={(v) => handleChange('author', v, 'ne')}
-                            placeholderEn="e.g. Editorial Team"
-                            placeholderNe="e.g. सम्पादकीय समूह"
-                            required
-                        />
+                        {/* Metadata */}
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide">Attributes</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-6 pt-6">
+                                <div className="flex items-center space-x-2 border p-3 rounded-none bg-muted/10">
+                                    <FormField
+                                        control={control}
+                                        name="isFeatured"
+                                        render={({ field }) => (
+                                            <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                                                <FormControl>
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={field.value}
+                                                        onChange={field.onChange}
+                                                        className="h-4 w-4 rounded-none border-gray-300 text-primary focus:ring-primary"
+                                                    />
+                                                </FormControl>
+                                                <div className="space-y-1 leading-none">
+                                                    <FormLabel className="font-mono text-xs uppercase font-bold cursor-pointer">
+                                                        Mark as Featured
+                                                    </FormLabel>
+                                                </div>
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
 
-                        <BilingualInput
-                            label="Excerpt (Short Summary)"
-                            type="textarea"
-                            valueEn={formData.excerpt.en}
-                            valueNe={formData.excerpt.ne}
-                            onChangeEn={(v) => handleChange('excerpt', v, 'en')}
-                            onChangeNe={(v) => handleChange('excerpt', v, 'ne')}
-                            placeholderEn="Brief summary for list view"
-                        />
+                                <BilingualInput form={form} name="author" label="Author Name" />
+                                <BilingualInput form={form} name="category" label="Category" />
+
+                                <div className="space-y-2">
+                                    <label className="font-mono text-xs uppercase font-medium">Tags</label>
+                                    <div className="flex gap-2">
+                                        <Input
+                                            value={tagInput}
+                                            onChange={(e) => setTagInput(e.target.value)}
+                                            onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                                            className="rounded-none border-border h-8 text-sm"
+                                            placeholder="Add tag..."
+                                        />
+                                        <Button
+                                            type="button"
+                                            onClick={addTag}
+                                            variant="outline"
+                                            size="sm"
+                                            className="rounded-none h-8 font-mono uppercase"
+                                        >
+                                            Add
+                                        </Button>
+                                    </div>
+                                    <div className="flex flex-wrap gap-1.5 mt-2">
+                                        {tags.map((tag: string) => (
+                                            <span key={tag} className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono border border-border bg-muted/50 text-muted-foreground uppercase">
+                                                {tag}
+                                                <button onClick={() => removeTag(tag)} className="ml-1 hover:text-destructive">×</button>
+                                            </span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
-
-                {/* Sidebar Column */}
-                <div className="space-y-6">
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">Publishing</h3>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Status
-                            </label>
-                            <select
-                                value={formData.status}
-                                onChange={(e) => handleChange('status', e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                            >
-                                <option value="draft">Draft</option>
-                                <option value="published">Published</option>
-                                <option value="archived">Archived</option>
-                            </select>
-                        </div>
-
-                        <div className="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                id="isFeatured"
-                                checked={formData.isFeatured}
-                                onChange={(e) => handleChange('isFeatured', e.target.checked)}
-                                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
-                            />
-                            <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Feature on Homepage
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">Media</h3>
-                        <ImageUploader
-                            label="Cover Image"
-                            category="article"
-                            value={formData.image}
-                            onChange={(url) => handleChange('image', url)}
-                        />
-                    </div>
-
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">Metadata</h3>
-
-                        <BilingualInput
-                            label="Category"
-                            valueEn={formData.category.en}
-                            valueNe={formData.category.ne}
-                            onChangeEn={(v) => handleChange('category', v, 'en')}
-                            onChangeNe={(v) => handleChange('category', v, 'ne')}
-                            placeholderEn="e.g. Politics"
-                            placeholderNe="e.g. राजनीति"
-                        />
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Tags (Comma separated)
-                            </label>
-                            <input
-                                type="text"
-                                value={formData.tags}
-                                onChange={(e) => handleChange('tags', e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                                placeholder="news, updates, nepal"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
-                                <Calendar className="h-4 w-4" /> Event Date (Optional)
-                            </label>
-                            <p className="text-xs text-gray-500 mb-2">Used for "Day to Remember"</p>
-                            <input
-                                type="date"
-                                value={formData.eventDate}
-                                onChange={(e) => handleChange('eventDate', e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+            </form>
+        </Form>
     );
 }

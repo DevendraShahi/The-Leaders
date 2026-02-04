@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, XCircle, CheckCircle, AlertTriangle } from "lucide-react";
+import { ShieldCheck, XCircle, CheckCircle, AlertTriangle, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface FactCheckCardProps {
@@ -16,10 +15,38 @@ interface FactCheckCardProps {
 export function FactCheckCard({ claim, claimBy, verdict, analysis, date }: FactCheckCardProps) {
     const getVerdictConfig = (v: string) => {
         switch (v) {
-            case "true": return { color: "text-green-500", bg: "bg-green-500/10", border: "border-green-500/20", icon: CheckCircle, label: "True" };
-            case "false": return { color: "text-red-500", bg: "bg-red-500/10", border: "border-red-500/20", icon: XCircle, label: "False" };
-            case "misleading": return { color: "text-orange-500", bg: "bg-orange-500/10", border: "border-orange-500/20", icon: AlertTriangle, label: "Misleading" };
-            default: return { color: "text-gray-500", bg: "bg-gray-500/10", border: "border-gray-500/20", icon: ShieldCheck, label: "Unverified" };
+            case "true":
+                return {
+                    color: "text-green-600 dark:text-green-500",
+                    bg: "bg-green-50 dark:bg-green-950/20",
+                    border: "border-green-600/40",
+                    icon: CheckCircle,
+                    label: "Verified True"
+                };
+            case "false":
+                return {
+                    color: "text-primary",
+                    bg: "bg-primary/5",
+                    border: "border-primary/40",
+                    icon: XCircle,
+                    label: "Confirmed False"
+                };
+            case "misleading":
+                return {
+                    color: "text-orange-600 dark:text-orange-500",
+                    bg: "bg-orange-50 dark:bg-orange-950/20",
+                    border: "border-orange-600/40",
+                    icon: AlertTriangle,
+                    label: "Misleading"
+                };
+            default:
+                return {
+                    color: "text-muted-foreground",
+                    bg: "bg-secondary",
+                    border: "border-border",
+                    icon: ShieldCheck,
+                    label: "Unverified"
+                };
         }
     };
 
@@ -27,25 +54,34 @@ export function FactCheckCard({ claim, claimBy, verdict, analysis, date }: FactC
     const Icon = config.icon;
 
     return (
-        <Card className={cn("hover:shadow-md transition-shadow h-full flex flex-col border-l-4", config.border.replace("/20", "/80"))}>
-            <CardHeader className="pb-2">
-                <div className="flex justify-between items-start mb-2">
-                    <Badge variant="outline" className={cn("font-bold uppercase tracking-wider flex items-center gap-1", config.color, config.bg, "border-transparent")}>
-                        <Icon className="h-3 w-3" /> {config.label}
+        <Card className={cn("h-full flex flex-col bg-card border-l-4 hover:shadow-md transition-all duration-300 rounded-none", config.border)}>
+            <CardHeader className="pb-3">
+                <div className="flex justify-between items-start mb-3">
+                    <Badge className={cn("font-mono uppercase tracking-wider flex items-center gap-1.5 text-xs border rounded-none", config.color, config.bg, config.border)}>
+                        <Icon className="h-3.5 w-3.5" />
+                        {config.label}
                     </Badge>
-                    <span className="text-xs text-muted-foreground">{format(new Date(date), "MMM d")}</span>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground font-mono">
+                        <Calendar className="h-3 w-3" />
+                        {format(new Date(date), "MMM d")}
+                    </div>
                 </div>
-                <CardTitle className="bg-muted/30 p-3 rounded-md text-lg font-serif italic border-l-2 border-primary/20">
+
+                <CardTitle className="bg-secondary/50 border-l-2 border-primary p-3 text-base font-manrope italic leading-snug rounded-none">
                     "{claim}"
                 </CardTitle>
-                <div className="text-xs text-muted-foreground mt-1 uppercase tracking-wide font-bold">
-                    Claimed by: {claimBy}
+
+                <div className="text-xs text-muted-foreground mt-2 font-mono uppercase tracking-wide">
+                    — {claimBy}
                 </div>
             </CardHeader>
-            <CardContent className="flex-1">
-                <p className="text-sm text-foreground/80 leading-relaxed font-manrope">
-                    {analysis}
-                </p>
+
+            <CardContent className="flex-1 pt-0">
+                <div className="pt-4 border-t border-border">
+                    <p className="text-sm text-foreground leading-relaxed font-manrope">
+                        {analysis}
+                    </p>
+                </div>
             </CardContent>
         </Card>
     );

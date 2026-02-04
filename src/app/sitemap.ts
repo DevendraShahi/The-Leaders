@@ -59,7 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.7,
         },
         {
-            url: `${baseUrl}/parties`,
+            url: `${baseUrl}/election-2026/parties`,
             lastModified: currentDate,
             changeFrequency: 'monthly',
             priority: 0.7,

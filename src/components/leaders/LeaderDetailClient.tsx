@@ -7,27 +7,18 @@ import { ArrowLeft } from "lucide-react";
 import { ILeader } from "@/models/Leader";
 
 // Helper to get localized string
-const getLoc = (field: string | { en: string; ne: string } | undefined | null) => {
+const getLoc = (field: any) => {
     if (!field) return "";
     if (typeof field === 'string') return field;
     return field.en || field.ne || "";
 };
 
-// Helper for stats: handles Map or Object
-const getStats = (leader: ILeader) => {
-    // Check if stats.en exists and is an object
-    const statsObj = leader.stats?.en || leader.stats || {};
-    // If it's a Mongoose Map, convert to object (though .lean() usually handles this if configured, but let's be safe)
-    if (statsObj instanceof Map) {
-        return Object.fromEntries(statsObj);
-    }
-    return statsObj;
-};
+
 
 export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
     if (!leader) return null;
 
-    const stats = getStats(leader);
+
 
     return (
         <div className="min-h-screen bg-background">
@@ -106,11 +97,15 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
 
                         {/* Key Stats Cards */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            {Object.entries(stats).map(([key, value], index) => (
+                            {Object.entries(leader.stats || {}).map(([key, value]) => (
                                 <div key={key} className="bg-card border border-border p-6 hover:border-primary/30 transition-colors">
                                     <div>
-                                        <span className="block text-muted-foreground font-bebas text-sm tracking-widest uppercase mb-2">{key.replace(/_/g, ' ')}</span>
-                                        <span className="block text-4xl font-bebas text-foreground tracking-wide">{value as string}</span>
+                                        <span className="block text-muted-foreground font-bebas text-sm tracking-widest uppercase mb-2">
+                                            {key.replace(/_/g, ' ')}
+                                        </span>
+                                        <span className="block text-4xl font-bebas text-foreground tracking-wide">
+                                            {getLoc(value)}
+                                        </span>
                                     </div>
                                 </div>
                             ))}

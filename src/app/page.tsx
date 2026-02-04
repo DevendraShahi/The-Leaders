@@ -11,7 +11,7 @@ export default function Home() {
       <LeadersGrid />
       <NewsSection />
       <Manifesto />
-      <Timeline />
+      <Timeline limit={2} showViewAll={true} />
     </div>
   );
 }

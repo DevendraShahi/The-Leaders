@@ -75,27 +75,31 @@ export function CustomCursor() {
         style.id = 'custom-cursor-style';
         style.innerHTML = `
             @media (min-width: 1024px) {
-                html,
-                html *,
-                body,
-                body * {
+                body:not(.is-loading),
+                body:not(.is-loading) *,
+                html:not(.is-loading),
+                html:not(.is-loading) * {
                     cursor: none !important;
                 }
                 
-                a,
-                button,
-                input,
-                textarea,
-                select {
-                    cursor: none !important;
+                body.is-loading,
+                body.is-loading * {
+                    cursor: auto !important;
+                }
+
+                /* Hide custom cursor when loading */
+                body.is-loading .custom-cursor-element {
+                    display: none !important;
                 }
             }
         `;
         document.head.appendChild(style);
 
-        // Also set directly on html and body
-        document.documentElement.style.cursor = 'none';
-        document.body.style.cursor = 'none';
+        // Only set direct style if not loading (though class check handles it better)
+        if (!document.body.classList.contains('is-loading')) {
+            document.documentElement.style.cursor = 'none';
+            document.body.style.cursor = 'none';
+        }
 
         return () => {
             const existingStyle = document.getElementById('custom-cursor-style');
@@ -146,7 +150,7 @@ export function CustomCursor() {
             {/* Outer cursor ring - Hidden on mobile/tablet */}
             <div
                 ref={cursorOuterRef}
-                className="hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
+                className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
                 style={{ willChange: "transform" }}
             >
                 <div className="relative w-10 h-10">
@@ -177,7 +181,7 @@ export function CustomCursor() {
             {/* Inner cursor dot - Hidden on mobile/tablet */}
             <div
                 ref={cursorInnerRef}
-                className="hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999]"
+                className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999]"
                 style={{ willChange: "transform" }}
             >
                 <div className="w-2 h-2 rounded-full bg-[#B71C1C]" />

@@ -2,12 +2,13 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h'; // Changed to 24 hours for security
 
 export interface JWTPayload {
     userId: string;
     email: string;
-    role?: string;
+    role: 'superadmin' | 'cto' | 'editorial' | 'cmo';
+    permissions?: any; // Will contain IPermissions from Admin model
 }
 
 /**

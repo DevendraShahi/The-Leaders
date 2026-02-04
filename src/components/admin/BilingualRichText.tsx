@@ -66,7 +66,7 @@ export default function BilingualRichText({
             <div className="mt-2">
                 <div className={activeTab === 'en' ? 'block' : 'hidden'}>
                     <RichTextEditor
-                        content={valueEn}
+                        value={valueEn}
                         onChange={onChangeEn}
                         onPendingImagesChange={onPendingImagesChangeEn}
                         placeholder={placeholderEn}
@@ -74,7 +74,7 @@ export default function BilingualRichText({
                 </div>
                 <div className={activeTab === 'ne' ? 'block' : 'hidden'}>
                     <RichTextEditor
-                        content={valueNe}
+                        value={valueNe}
                         onChange={onChangeNe}
                         onPendingImagesChange={onPendingImagesChangeNe}
                         placeholder={placeholderNe}

@@ -6,8 +6,9 @@ import { DataTable } from '@/components/admin/DataTable';
 import { articleColumns, leaderColumns, historyColumns } from './columns';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { toast } from 'sonner';
-import { Plus, Loader2 } from 'lucide-react';
+import { Plus, Loader2, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from "@/components/ui/button";
 
 function ContentList() {
     const searchParams = useSearchParams();
@@ -20,9 +21,6 @@ function ContentList() {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-
-    const activeTabClass = "bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 shadow-sm";
-    const inactiveTabClass = "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200";
 
     const fetchContent = async () => {
         if (!token) return;
@@ -65,20 +63,10 @@ function ContentList() {
         if (!confirm('Are you sure you want to delete this item?')) return;
 
         try {
-            // Need to map plural type to single for route if needed? 
-            // My API routes are plural: /api/admin/articles/[id]
-            // Wait, columns.tsx passes 'article' (singular) for route, but delete API might be plural based path.
-            // My API: /api/admin/articles/[id]
-            // So if type is 'articles', path is correct.
-            // If deleteType is 'article', I need to pluralize it.
-
-            // Let's fix columns.tsx to pass plural or handle mapping here.
-            // columns.tsx passes 'article', 'leader', 'history'.
-
             const mapping: any = {
                 'article': 'articles',
                 'leader': 'leaders',
-                'history': 'history' // history is same plural/singular effectively in my routes
+                'history': 'history'
             };
 
             const routeType = mapping[deleteType] || deleteType;
@@ -108,50 +96,71 @@ function ContentList() {
         }
     };
 
+    // Editorial Theme Classes
+    const tabBase = "flex-1 sm:flex-none px-6 py-2 text-sm font-mono uppercase tracking-wider transition-all border-b-2";
+    const activeTab = "border-primary text-primary font-bold bg-primary/5";
+    const inactiveTab = "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted";
+
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="space-y-8 animate-in fade-in duration-500">
+            {/* Header Section */}
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-border pb-6">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Content Management</h1>
-                    <p className="text-sm text-gray-500">Manage all your website content in one place</p>
+                    <h1 className="font-bebas text-4xl text-foreground tracking-wide">Content Management</h1>
+                    <p className="text-muted-foreground font-manrope text-sm mt-1">
+                        Secure administration for The Leaders archive.
+                    </p>
                 </div>
 
-                <Link
-                    href={`/admin/content/${type === 'leaders' ? 'leader' : type === 'history' ? 'history' : 'article'}/new`}
-                    className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
-                >
-                    <Plus className="h-4 w-4" />
-                    Add New {type === 'history' ? 'Event' : type.slice(0, -1)}
-                </Link>
+                <div className="flex items-center gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={fetchContent}
+                        className="rounded-none font-mono uppercase text-xs h-10 border-border"
+                    >
+                        <RefreshCw className={`h-3.5 w-3.5 mr-2 ${loading ? 'animate-spin' : ''}`} />
+                        Refresh
+                    </Button>
+
+                    <Link
+                        href={`/admin/content/${type === 'leaders' ? 'leader' : type === 'history' ? 'history' : 'article'}/new`}
+                        className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 transition-colors text-sm font-bold font-mono uppercase tracking-wider rounded-none h-10 shadow-sm"
+                    >
+                        <Plus className="h-4 w-4" />
+                        New {type === 'history' ? 'Event' : type.slice(0, -1)}
+                    </Link>
+                </div>
             </div>
 
-            {/* Type Switcher Tabs */}
-            <div className="bg-gray-100 dark:bg-gray-900 p-1 rounded-xl inline-flex w-full sm:w-auto">
+            {/* Type Switcher Tabs - Minimalist Editorial Style */}
+            <div className="flex w-full sm:w-auto border-b border-border">
                 <button
                     onClick={() => handleTabChange('articles')}
-                    className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-medium transition-all ${type === 'articles' ? activeTabClass : inactiveTabClass}`}
+                    className={`${tabBase} ${type === 'articles' ? activeTab : inactiveTab}`}
                 >
                     Articles
                 </button>
                 <button
                     onClick={() => handleTabChange('leaders')}
-                    className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-medium transition-all ${type === 'leaders' ? activeTabClass : inactiveTabClass}`}
+                    className={`${tabBase} ${type === 'leaders' ? activeTab : inactiveTab}`}
                 >
                     Leaders
                 </button>
                 <button
                     onClick={() => handleTabChange('history')}
-                    className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-medium transition-all ${type === 'history' ? activeTabClass : inactiveTabClass}`}
+                    className={`${tabBase} ${type === 'history' ? activeTab : inactiveTab}`}
                 >
                     History
                 </button>
             </div>
 
-            {/* Content Table */}
-            <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-                {loading ? (
-                    <div className="flex items-center justify-center h-64">
-                        <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            {/* Content Table - Clean & Sharp */}
+            <div className="bg-card border border-border rounded-none shadow-sm">
+                {loading && data.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center h-64 text-muted-foreground">
+                        <Loader2 className="h-8 w-8 animate-spin mb-2 text-primary" />
+                        <span className="font-mono text-xs uppercase tracking-widest">Loading Records...</span>
                     </div>
                 ) : (
                     <DataTable
@@ -169,7 +178,7 @@ export default function ContentPage() {
     return (
         <Suspense fallback={
             <div className="flex items-center justify-center min-h-[60vh]">
-                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         }>
             <ContentList />

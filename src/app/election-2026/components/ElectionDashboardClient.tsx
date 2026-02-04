@@ -236,6 +236,13 @@ export default function ElectionDashboardClient({
                                     gradient: "from-[#B71C1C]/10 to-transparent"
                                 },
                                 {
+                                    title: "Political Parties",
+                                    description: "Explore registered parties and their symbols",
+                                    link: "/election-2026/parties",
+                                    linkText: "View Parties",
+                                    gradient: "from-blue-500/10 to-transparent"
+                                },
+                                {
                                     title: "Party Manifestos",
                                     description: "Compare policies and promises across political parties",
                                     link: "/election-2026/profiles",
@@ -261,7 +268,7 @@ export default function ElectionDashboardClient({
                                         <CardContent>
                                             <div className={`mb-4 flex h-32 items-center justify-center rounded-lg bg-gradient-to-br ${feature.gradient} border border-border/30`}>
                                                 <span className="font-bebas text-4xl uppercase tracking-wider text-foreground/20">
-                                                    {index === 0 ? "PR LIST" : "Manifestos"}
+                                                    {index === 0 ? "PR LIST" : index === 1 ? "PARTIES" : "Manifestos"}
                                                 </span>
                                             </div>
                                             <Button variant="link" asChild className="group/btn p-0">

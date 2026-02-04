@@ -10,6 +10,7 @@ const navItems = [
     { name: "Fact Checks", href: "/election-2026/fact-checks" },
     { name: "PR Candidates", href: "/election-2026/pr-candidates" },
     { name: "Profiles", href: "/election-2026/profiles" },
+    { name: "Parties", href: "/election-2026/parties" },
 ];
 
 export function ElectionNavbar() {

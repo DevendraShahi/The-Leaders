@@ -1,21 +1,15 @@
-"use client";
-
-import { ElectionNavbar } from "@/components/election/ElectionNavbar";
-import { ElectionProviders } from "@/components/election/ElectionProviders";
+import { ElectionLayoutClient } from "@/components/election/ElectionLayoutClient";
 
 export default function ElectionLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
+    // Maintenance is now handled globally in RootLayout via MaintenanceGuard
+
     return (
-        <ElectionProviders>
-            <div className="flex min-h-screen flex-col bg-background">
-                <ElectionNavbar />
-                <main className="flex-1">
-                    {children}
-                </main>
-            </div>
-        </ElectionProviders>
+        <ElectionLayoutClient>
+            {children}
+        </ElectionLayoutClient>
     );
 }

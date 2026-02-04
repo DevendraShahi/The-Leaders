@@ -1,5 +1,9 @@
 import { getDailyBriefs, getFactChecks } from "@/lib/election-data";
-import AnalyticsDashboard from "./components/AnalyticsDashboard";
+import dynamic from "next/dynamic";
+
+const AnalyticsDashboard = dynamic(() => import("./components/AnalyticsDashboard"), {
+    loading: () => <div className="min-h-screen flex items-center justify-center">Loading Election Data...</div>,
+});
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -4,6 +4,7 @@ import path from "path";
 export interface PartyDTO {
     id?: number | string;
     name: string;
+    shortName?: string; // e.g., "CPN-UML"
     slug?: string;
     logo?: string;
     symbol?: string; // From user updated JSON
@@ -12,6 +13,26 @@ export interface PartyDTO {
     foundedYear?: number;
     regDate?: string; // From user updated JSON
     manifestoSummary?: string;
+    status?: string; // e.g., "National Party", "Parliamentary"
+    ranking?: {
+        overall: number;
+        electoral_power: number;
+        historical_legacy: number;
+        popularity_index: number;
+    };
+    performance?: {
+        total_seats_hor: number;
+        fptp_seats?: number;
+        pr_seats?: number;
+        pr_votes_2022?: number;
+        pr_votes_2022_aggregate?: number; // For unified parties
+        pr_vote_percentage?: number;
+        provincial_seats_total?: number;
+        national_assembly_seats?: number;
+        local_heads?: number;
+        special_note?: string;
+        election_2026_status?: string;
+    };
 }
 
 export interface CandidateDTO {

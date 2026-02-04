@@ -147,15 +147,18 @@ export default function MediaLibrary() {
     };
 
     return (
-        <div className="space-y-6 h-[calc(100vh-100px)] flex flex-col">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Media Library</h1>
+        <div className="space-y-6 h-[calc(100vh-100px)] flex flex-col font-manrope">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
+                <div className="flex flex-col">
+                    <h1 className="text-3xl font-bebas tracking-wide text-foreground uppercase">Media Library</h1>
+                    <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Manage your digital assets</p>
+                </div>
 
                 <div className="flex gap-2">
                     {selectedIds.length > 0 && (
                         <button
                             onClick={handleDelete}
-                            className="flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
+                            className="flex items-center gap-2 px-4 py-2 bg-destructive/10 text-destructive border border-destructive hover:bg-destructive hover:text-white transition-colors uppercase text-xs font-bold tracking-wider rounded-none"
                         >
                             <Trash2 className="h-4 w-4" />
                             Delete ({selectedIds.length})
@@ -165,7 +168,7 @@ export default function MediaLibrary() {
                     <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                        className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:opacity-50 uppercase text-xs font-bold tracking-wider rounded-none"
                     >
                         {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                         Upload
@@ -182,24 +185,24 @@ export default function MediaLibrary() {
             </div>
 
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 bg-white dark:bg-gray-900 p-4 rounded-xl border border-gray-200 dark:border-gray-800">
-                <div className="flex items-center gap-2 flex-1 bg-gray-100 dark:bg-gray-800 rounded-lg px-3">
-                    <Search className="h-4 w-4 text-gray-500" />
+            <div className="flex flex-col sm:flex-row gap-4 bg-card p-4 border border-border rounded-none">
+                <div className="flex items-center gap-2 flex-1 bg-background border border-input px-3 transition-colors focus-within:border-primary">
+                    <Search className="h-4 w-4 text-muted-foreground" />
                     <input
                         type="text"
-                        placeholder="Search filename..."
+                        placeholder="SEARCH FILENAME..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-transparent border-none py-2 text-sm focus:ring-0"
+                        className="w-full bg-transparent border-none py-2 text-sm focus:ring-0 placeholder:text-muted-foreground/50 font-mono"
                     />
                 </div>
 
-                <div className="flex items-center gap-2 min-w-[200px]">
-                    <Filter className="h-4 w-4 text-gray-500" />
+                <div className="flex items-center gap-2 min-w-[200px] border border-input bg-background px-2">
+                    <Filter className="h-4 w-4 text-muted-foreground" />
                     <select
                         value={categoryFilter}
                         onChange={(e) => setCategoryFilter(e.target.value)}
-                        className="w-full bg-gray-100 dark:bg-gray-800 border-none rounded-lg py-2 text-sm focus:ring-0"
+                        className="w-full bg-transparent border-none py-2 text-sm focus:ring-0 uppercase font-bold text-muted-foreground"
                     >
                         <option value="">All Categories</option>
                         <option value="article">Articles</option>
@@ -211,15 +214,15 @@ export default function MediaLibrary() {
             </div>
 
             {/* Grid */}
-            <div className="flex-1 overflow-y-auto min-h-0 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 sm:p-6">
+            <div className="flex-1 overflow-y-auto min-h-0 bg-card border border-border p-4 sm:p-6 rounded-none">
                 {loading ? (
                     <div className="flex items-center justify-center h-full">
-                        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
                     </div>
                 ) : media.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-gray-500">
-                        <ImageIcon className="h-12 w-12 mb-4 opacity-20" />
-                        <p>No images found</p>
+                    <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+                        <ImageIcon className="h-16 w-16 mb-4 opacity-20" />
+                        <p className="font-bebas text-xl tracking-wide">No images found</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -227,10 +230,10 @@ export default function MediaLibrary() {
                             <div
                                 key={item._id}
                                 className={`
-                                    group relative aspect-square rounded-lg overflow-hidden border transition-all cursor-pointer
+                                    group relative aspect-square overflow-hidden border transition-all cursor-pointer rounded-none
                                     ${selectedIds.includes(item._id)
-                                        ? 'border-blue-500 ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-black'
-                                        : 'border-gray-200 dark:border-gray-800 hover:border-blue-300'}
+                                        ? 'border-primary ring-2 ring-primary ring-offset-2 ring-offset-background'
+                                        : 'border-border hover:border-primary/50'}
                                 `}
                                 onClick={() => toggleSelection(item._id)}
                             >
@@ -241,18 +244,18 @@ export default function MediaLibrary() {
                                 />
 
                                 {/* Overlay info */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end">
-                                    <p className="text-white text-xs truncate font-medium">
+                                <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity p-3 flex flex-col justify-end">
+                                    <p className="text-white text-xs truncate font-mono">
                                         {item.originalFilename}
                                     </p>
-                                    <p className="text-gray-300 text-[10px]">
+                                    <p className="text-gray-400 text-[10px] uppercase font-bold tracking-wider">
                                         {format(new Date(item.createdAt), 'MMM d')} • {(item.size / 1024).toFixed(1)}KB
                                     </p>
                                 </div>
 
                                 {/* Checkbox */}
                                 {selectedIds.includes(item._id) && (
-                                    <div className="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-1">
+                                    <div className="absolute top-2 right-2 bg-primary text-primary-foreground p-1 rounded-none shadow-sm">
                                         <Check className="h-3 w-3" />
                                     </div>
                                 )}
@@ -264,7 +267,7 @@ export default function MediaLibrary() {
                                             e.stopPropagation();
                                             copyToClipboard(item.secureUrl);
                                         }}
-                                        className="p-1.5 bg-black/50 hover:bg-black/70 text-white rounded-md backdrop-blur-sm"
+                                        className="p-1.5 bg-background/80 hover:bg-background text-foreground rounded-none backdrop-blur-sm border border-border"
                                         title="Copy URL"
                                     >
                                         <Copy className="h-3 w-3" />
@@ -282,17 +285,17 @@ export default function MediaLibrary() {
                     <button
                         onClick={() => setPage(p => Math.max(1, p - 1))}
                         disabled={page === 1}
-                        className="px-4 py-2 text-sm bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg disabled:opacity-50"
+                        className="px-6 py-2 text-xs font-bold uppercase tracking-wider bg-card border border-border hover:bg-muted disabled:opacity-50 rounded-none transition-colors"
                     >
                         Previous
                     </button>
-                    <span className="flex items-center px-4 text-sm text-gray-600 dark:text-gray-400">
+                    <span className="flex items-center px-4 text-sm font-mono text-muted-foreground">
                         Page {page} of {totalPages}
                     </span>
                     <button
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
-                        className="px-4 py-2 text-sm bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg disabled:opacity-50"
+                        className="px-6 py-2 text-xs font-bold uppercase tracking-wider bg-card border border-border hover:bg-muted disabled:opacity-50 rounded-none transition-colors"
                     >
                         Next
                     </button>

@@ -364,7 +364,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                     transition={{ duration: 0.8, delay: 0.3 }}
                     className="absolute bottom-0 left-0 right-0 z-10"
                 >
-                    <div className="container mx-auto px-4 sm:px-6 pb-12 sm:pb-16 pt-24">
+                    <div className="container mx-auto px-6 sm:px-8 pb-12 sm:pb-16 pt-24">
                         {/* Language Switch - Segmented Control */}
                         <motion.div
                             initial={{ opacity: 0, y: -20 }}
@@ -372,12 +372,12 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                             transition={{ duration: 0.6, delay: 0.5 }}
                             className="relative z-20 mb-8"
                         >
-                            <div className="inline-flex bg-white/10 backdrop-blur-md p-1 rounded-lg border border-white/20">
+                            <div className="inline-flex bg-white/10 backdrop-blur-md p-1 rounded-none border border-white/20">
                                 <Button
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => lang !== "en" && toggleLang()}
-                                    className={`relative z-10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 rounded-md ${lang === "en"
+                                    className={`relative z-10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 rounded-none ${lang === "en"
                                         ? "bg-white text-black shadow-sm"
                                         : "text-white/70 hover:text-white hover:bg-white/10"
                                         }`}
@@ -388,8 +388,8 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                     variant="ghost"
                                     size="sm"
                                     onClick={() => lang !== "ne" && toggleLang()}
-                                    className={`relative z-10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 rounded-md ${lang === "ne"
-                                        ? "bg-red-600 text-white shadow-sm"
+                                    className={`relative z-10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider transition-all duration-300 rounded-none ${lang === "ne"
+                                        ? "bg-primary text-white shadow-sm"
                                         : "text-white/70 hover:text-white hover:bg-white/10"
                                         }`}
                                 >
@@ -403,37 +403,18 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                             initial={{ y: 30, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.7, delay: 0.6 }}
-                            className="mb-6"
+                            className="mb-8"
                         >
 
-                            <div className="flex items-center gap-3 mb-3">
-                                {/* Title */}
-                                <motion.h1
-                                    layout
-                                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] sm:leading-[0.95] max-w-4xl lg:max-w-5xl uppercase tracking-tighter"
-                                >
-                                    <AnimatePresence mode="wait">
-                                        <motion.span
-                                            key={lang}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            transition={{ duration: 0.4 }}
-                                            className="block"
-                                        >
-                                            {article.title[lang]}
-                                        </motion.span>
-                                    </AnimatePresence>
-                                </motion.h1>
-
+                            <div className="flex flex-col gap-4 mb-3">
                                 {/* Category Label with Layout Animation */}
                                 <motion.div
                                     layout
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                                     className="flex items-center gap-3"
                                 >
-                                    <div className="w-1 h-6 bg-red-600" />
-                                    <span className="text-red-500 text-xs sm:text-sm font-bold uppercase tracking-[0.2em] relative">
+                                    <div className="w-8 h-1 bg-primary" />
+                                    <span className="text-primary text-sm sm:text-base font-bold uppercase tracking-[0.2em] relative font-mono">
                                         <AnimatePresence mode="wait">
                                             <motion.span
                                                 key={lang}
@@ -448,6 +429,25 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                         </AnimatePresence>
                                     </span>
                                 </motion.div>
+
+                                {/* Title */}
+                                <motion.h1
+                                    layout
+                                    className="font-bebas text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white leading-[0.9] max-w-5xl uppercase tracking-wide"
+                                >
+                                    <AnimatePresence mode="wait">
+                                        <motion.span
+                                            key={lang}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.4 }}
+                                            className="block"
+                                        >
+                                            {article.title[lang]}
+                                        </motion.span>
+                                    </AnimatePresence>
+                                </motion.h1>
                             </div>
                         </motion.div>
 
@@ -456,12 +456,12 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                             initial={{ y: 20, opacity: 0 }}
                             animate={{ y: 0, opacity: 1 }}
                             transition={{ duration: 0.6, delay: 0.8 }}
-                            className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-white/80"
+                            className="flex flex-col sm:flex-row sm:items-center gap-6 sm:gap-8 text-white/80 border-t border-white/10 pt-6"
                         >
                             {/* Author Block */}
                             <div className="flex items-center gap-4">
                                 <div className="relative">
-                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white font-bold text-lg shadow-lg ring-2 ring-white/10">
+                                    <div className="w-10 h-10 rounded-none bg-primary flex items-center justify-center text-white font-bebas text-xl shadow-lg border border-white/10">
                                         <AnimatePresence mode="wait">
                                             <motion.span
                                                 key={lang}
@@ -474,10 +474,9 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                             </motion.span>
                                         </AnimatePresence>
                                     </div>
-                                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-black" />
                                 </div>
                                 <div>
-                                    <p className="text-base font-bold text-white leading-tight">
+                                    <p className="text-sm font-bold text-white leading-tight font-manrope uppercase tracking-wide">
                                         <AnimatePresence mode="wait">
                                             <motion.span
                                                 key={lang}
@@ -491,19 +490,19 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                             </motion.span>
                                         </AnimatePresence>
                                     </p>
-                                    <p className="text-[10px] text-red-400 uppercase tracking-widest font-semibold mt-0.5">Author</p>
+                                    <p className="text-[10px] text-primary uppercase tracking-widest font-mono mt-0.5">Author</p>
                                 </div>
                             </div>
 
                             <div className="hidden sm:block w-px h-8 bg-white/10" />
 
                             {/* Meta Block - Simplified for Mobile */}
-                            <div className="flex flex-row items-center gap-4 pl-0 sm:pl-0 sm:border-0 w-full sm:w-auto mt-2 sm:mt-0">
-                                <div className="flex items-center gap-2">
-                                    <Calendar className="h-4 w-4 text-red-500" />
+                            <div className="flex flex-row items-center gap-6 p-0 w-full sm:w-auto">
+                                <div className="flex items-center gap-3">
+                                    <Calendar className="h-4 w-4 text-primary" />
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase text-white/40 font-bold tracking-wider leading-none mb-0.5">Published</span>
-                                        <span className="text-xs font-medium text-white">
+                                        <span className="text-[10px] uppercase text-white/40 font-mono tracking-wider leading-none mb-0.5">Published</span>
+                                        <span className="text-sm font-bold text-white font-bebas tracking-wide">
                                             {new Date(article.publishedDate).toLocaleDateString(
                                                 lang === "en" ? "en-US" : "ne-NP",
                                                 { year: 'numeric', month: 'short', day: 'numeric' }
@@ -514,11 +513,11 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
 
                                 <div className="w-px h-6 bg-white/10" />
 
-                                <div className="flex items-center gap-2.5">
-                                    <Clock className="h-4 w-4 text-red-500" />
+                                <div className="flex items-center gap-3">
+                                    <Clock className="h-4 w-4 text-primary" />
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase text-white/40 font-bold tracking-wider leading-none mb-0.5">Read Time</span>
-                                        <span className="text-xs font-medium text-white">8 min</span>
+                                        <span className="text-[10px] uppercase text-white/40 font-mono tracking-wider leading-none mb-0.5">Read Time</span>
+                                        <span className="text-sm font-bold text-white font-bebas tracking-wide">8 min</span>
                                     </div>
                                 </div>
                             </div>
@@ -527,18 +526,18 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                 </motion.div>
 
                 {/* Bottom Accent Line */}
-                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-600 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent" />
             </motion.div>
 
             {/* Main Content Area */}
-            <div className="container mx-auto px-4 sm:px-6 py-10 sm:py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-16">
+            <div className="container mx-auto px-6 sm:px-8 py-12 sm:py-20">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 sm:gap-16">
                     {/* Article Content */}
                     <motion.div
                         initial={{ y: 40, opacity: 0 }}
                         animate={{ y: 0, opacity: 1 }}
                         transition={{ duration: 0.7, delay: 0.4 }}
-                        className="lg:col-span-7 xl:col-span-8"
+                        className="lg:col-span-8"
                     >
                         {/* Article Text with Dynamic Styling */}
                         <article className={`max-w-none ${fontSizeClasses[fontSize]} ${fontFamilyClasses[fontFamily]} ${lineHeightClasses[lineHeight]}`}>

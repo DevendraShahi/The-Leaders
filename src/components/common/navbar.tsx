@@ -121,7 +121,7 @@ export function Navbar() {
                     <div className="md:hidden">
                         <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
                             <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon">
+                                <Button variant="ghost" size="icon" suppressHydrationWarning>
                                     <Menu className="h-6 w-6" />
                                 </Button>
                             </SheetTrigger>

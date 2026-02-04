@@ -62,9 +62,16 @@ async function updateLeader(request: NextRequest, { user, params }: { user: any,
 
         return apiResponse({ leader });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Update leader error:', error);
-        return apiError('Failed to update leader', 500);
+
+        // Handle Mongoose Validation Errors
+        if (error.name === 'ValidationError') {
+            const messages = Object.values(error.errors).map((err: any) => err.message);
+            return apiError(messages.join(', '), 400, error.errors);
+        }
+
+        return apiError(error.message || 'Failed to update leader', 500);
     }
 }
 

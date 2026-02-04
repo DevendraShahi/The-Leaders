@@ -40,11 +40,24 @@ export async function POST(request: NextRequest) {
             return apiError('Invalid credentials', 401);
         }
 
+        // 5.5 Auto-migrate admin if permissions field is missing
+        if (!admin.permissions) {
+            const { getDefaultPermissions } = await import('@/lib/rbac');
+            // Map old 'editor' role to 'editorial'
+            if (admin.role === 'editor' as any) {
+                admin.role = 'editorial';
+            }
+            admin.permissions = getDefaultPermissions(admin.role);
+            await admin.save();
+            console.log(`✅ Auto-migrated admin: ${admin.email} (${admin.role})`);
+        }
+
         // 6. Generate token
         const token = generateToken({
             userId: admin._id.toString(),
             email: admin.email,
-            role: admin.role
+            role: admin.role,
+            permissions: admin.permissions
         });
 
         // 7. Update last login
@@ -61,8 +74,8 @@ export async function POST(request: NextRequest) {
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
 
-        // 9. Return success
-        return apiResponse({
+        // 9. Create response with cookie
+        const response = apiResponse({
             message: 'Login successful',
             token,
             user: {
@@ -73,6 +86,17 @@ export async function POST(request: NextRequest) {
                 avatar: admin.avatar
             }
         });
+
+        // Set httpOnly cookie for middleware authentication
+        response.cookies.set('auth-token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 86400, // 24 hours
+            path: '/',
+        });
+
+        return response;
 
     } catch (error) {
         console.error('Login error:', error);

@@ -1,232 +1,336 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/components/admin/AuthProvider';
-import BilingualInput from '@/components/admin/BilingualInput';
-import BilingualRichText from '@/components/admin/BilingualRichText';
-import ImageUploader from '@/components/admin/ImageUploader';
-import { toast } from 'sonner';
-import { Save, ArrowLeft, Loader2, Calendar } from 'lucide-react';
+import { useState } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2, Save, ArrowLeft, Plus, Trash, Calendar, MapPin, Link as LinkIcon, AlertCircle, Image as ImageIcon } from "lucide-react";
+import { toast } from "sonner";
+import { useAuth } from "@/components/admin/AuthProvider";
+import ImageUploader from "@/components/admin/ImageUploader";
+import BilingualInput from "@/components/admin/BilingualInput";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { format } from "date-fns";
 
-function ButtonCustom({ children, disabled, onClick, className, variant = 'primary' }: any) {
-    const base = "inline-flex items-center justify-center rounded-lg px-4 py-2 font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
-    const styles = {
-        primary: "bg-blue-600 text-white hover:bg-blue-700",
-        secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700",
-    };
-    return (
-        <button
-            disabled={disabled}
-            onClick={onClick}
-            className={`${base} ${styles[variant as keyof typeof styles]} ${className}`}
-        >
-            {children}
-        </button>
-    );
+interface HistoryFormProps {
+    initialData?: any;
+    id: string;
 }
 
-export default function HistoryForm({ initialData, id }: { initialData?: any, id: string }) {
+export default function HistoryForm({ initialData, id }: HistoryFormProps) {
     const router = useRouter();
     const { token } = useAuth();
     const [loading, setLoading] = useState(false);
 
-    // Form State
-    const [formData, setFormData] = useState({
-        title: { en: '', ne: '' },
-        content: { en: '', ne: '' },
-        date: '',
-        image: '',
-        status: 'draft',
-        isFeatured: false,
-        order: 0,
+    const form = useForm({
+        defaultValues: initialData || {
+            title: { en: "", ne: "" },
+            date: new Date().toISOString(),
+            content: { en: "", ne: "" },
+            image: "",
+            location: "",
+            significance: "High",
+            status: "draft",
+            timeline: [] // Sub-events
+        }
     });
 
-    useEffect(() => {
-        if (initialData) {
-            setFormData({
-                title: initialData.title || { en: '', ne: '' },
-                content: initialData.content || { en: '', ne: '' },
-                date: initialData.date ? new Date(initialData.date).toISOString().split('T')[0] : '',
-                image: initialData.image || '',
-                status: initialData.status || 'draft',
-                isFeatured: initialData.isFeatured || false,
-                order: initialData.order || 0,
-            });
-        }
-    }, [initialData]);
+    const { control, handleSubmit } = form;
 
-    const handleChange = (field: string, value: any, lang?: 'en' | 'ne') => {
-        setFormData(prev => {
-            if (lang) {
-                return {
-                    ...prev,
-                    [field]: { ...prev[field as keyof typeof prev] as any, [lang]: value }
-                };
-            }
-            return { ...prev, [field]: value };
-        });
-    };
+    // Sub-events timeline
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: "timeline"
+    });
 
-    const handleSubmit = async () => {
-        if ((!formData.title.en && !formData.title.ne) || !formData.date) {
-            toast.error('At least one title (EN or NE) and Date are required');
-            return;
-        }
-
+    const onSubmit = async (data: any) => {
         setLoading(true);
-        try {
-            const url = id === 'new' ? '/api/admin/history' : `/api/admin/history/${id}`;
-            const method = id === 'new' ? 'POST' : 'PUT';
+        const method = id === "new" ? "POST" : "PUT";
+        const endpoint = id === "new" ? "/api/admin/history" : `/api/admin/history/${id}`;
 
-            const res = await fetch(url, {
+        try {
+            const res = await fetch(endpoint, {
                 method,
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(data)
             });
 
-            const responseData = await res.json();
-
             if (res.ok) {
-                toast.success(`Event ${id === 'new' ? 'created' : 'updated'} successfully`);
-                router.push('/admin/content?type=history');
+                toast.success(id === "new" ? "History event created" : "History event updated");
+                router.push("/admin/content?type=history");
+                router.refresh();
             } else {
-                toast.error(responseData.error || 'Operation failed');
+                const error = await res.json();
+                toast.error(error.error || "Failed to save history event");
             }
         } catch (error) {
             console.error(error);
-            toast.error('An error occurred');
+            toast.error("An error occurred while saving");
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="space-y-6 max-w-5xl mx-auto pb-10">
-            <div className="flex items-center justify-between">
-                <ButtonCustom variant="secondary" onClick={() => router.back()} className="gap-2">
-                    <ArrowLeft className="h-4 w-4" /> Back
-                </ButtonCustom>
-                <div className="flex gap-3">
-                    <ButtonCustom
-                        disabled={loading}
-                        onClick={() => handleChange('status', 'draft')}
-                        variant="secondary"
-                    >
-                        Save as Draft
-                    </ButtonCustom>
-                    <ButtonCustom
-                        disabled={loading}
-                        onClick={handleSubmit}
-                        className="gap-2"
-                    >
-                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
-                        Save Event
-                    </ButtonCustom>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Main Content Column */}
-                <div className="lg:col-span-2 space-y-6 bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800">
-                    <div className="space-y-4">
-                        <BilingualInput
-                            label="Event Title"
-                            valueEn={formData.title.en}
-                            valueNe={formData.title.ne}
-                            onChangeEn={(v) => handleChange('title', v, 'en')}
-                            onChangeNe={(v) => handleChange('title', v, 'ne')}
-                            placeholderEn="e.g. Establishment of Democracy"
-                            placeholderNe="e.g. प्रजातन्त्रको स्थापना"
-                            required
+        <Form {...form}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 animate-in fade-in duration-500 pb-20">
+                {/* Header Actions */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-6">
+                    <div className="flex items-center gap-4">
+                        <Button
+                            type="button"
+                            variant="outline"
+                            size="icon"
+                            className="rounded-none h-10 w-10 border-border"
+                            onClick={() => router.back()}
+                        >
+                            <ArrowLeft className="h-4 w-4" />
+                        </Button>
+                        <div>
+                            <h1 className="font-bebas text-3xl md:text-4xl text-foreground tracking-wide">
+                                {id === 'new' ? 'New Historical Event' : 'Edit Event'}
+                            </h1>
+                            <p className="text-muted-foreground font-manrope text-sm">
+                                Document creating significant political moments.
+                            </p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <FormField
+                            control={control}
+                            name="status"
+                            render={({ field }) => (
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className="w-[140px] h-10 rounded-none border-border font-mono text-xs uppercase bg-card">
+                                            <SelectValue placeholder="Status" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent className="rounded-none">
+                                        <SelectItem value="draft">Draft</SelectItem>
+                                        <SelectItem value="published">Published</SelectItem>
+                                        <SelectItem value="archived">Archived</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            )}
                         />
-
-                        <div className="border-t border-gray-100 dark:border-gray-800 my-4" />
-
-                        <BilingualRichText
-                            label="Description / Details"
-                            valueEn={formData.content.en}
-                            valueNe={formData.content.ne}
-                            onChangeEn={(v) => handleChange('content', v, 'en')}
-                            onChangeNe={(v) => handleChange('content', v, 'ne')}
-                            placeholderEn="Describe the historical event..."
-                        />
+                        <Button
+                            type="submit"
+                            disabled={loading}
+                            className="font-mono uppercase text-xs font-bold tracking-wider rounded-none h-10 px-6 bg-primary hover:bg-primary/90 text-primary-foreground min-w-[140px]"
+                        >
+                            {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Save className="h-4 w-4 mr-2" />}
+                            Save Event
+                        </Button>
                     </div>
                 </div>
 
-                {/* Sidebar Column */}
-                <div className="space-y-6">
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">Event Details</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Content */}
+                    <div className="space-y-8 lg:col-span-2">
+                        {/* Title & Date */}
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide">Event Details</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-6 pt-6">
+                                <BilingualInput form={form} name="title" label="Event Name" />
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Status
-                            </label>
-                            <select
-                                value={formData.status}
-                                onChange={(e) => handleChange('status', e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                            >
-                                <option value="draft">Draft</option>
-                                <option value="published">Published</option>
-                                <option value="archived">Archived</option>
-                            </select>
-                        </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <FormField
+                                        control={control}
+                                        name="date"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="font-mono text-xs uppercase">Primary Date</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type="date"
+                                                        {...field}
+                                                        value={field.value ? format(new Date(field.value), 'yyyy-MM-dd') : ''}
+                                                        onChange={(e) => field.onChange(new Date(e.target.value).toISOString())}
+                                                        className="rounded-none border-border"
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                    <FormField
+                                        control={control}
+                                        name="location"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel className="font-mono text-xs uppercase">Location (Optional)</FormLabel>
+                                                <FormControl>
+                                                    <Input {...field} className="rounded-none border-border" placeholder="e.g. Kathmandu, Narayanhiti" />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                                <FormField
+                                    control={control}
+                                    name="content.en"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-mono text-xs uppercase">Description (English)</FormLabel>
+                                            <FormControl>
+                                                <Textarea {...field} className="rounded-none border-border min-h-[100px]" placeholder="Detailed description..." />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="content.ne"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-mono text-xs uppercase">Description (Nepali)</FormLabel>
+                                            <FormControl>
+                                                <Textarea {...field} className="rounded-none border-border min-h-[100px]" placeholder="विस्तृत विवरण..." />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </CardContent>
+                        </Card>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-2">
-                                <Calendar className="h-4 w-4" /> Date of Event
-                            </label>
-                            <p className="text-xs text-gray-500 mb-2">Required for timeline</p>
-                            <input
-                                type="date"
-                                value={formData.date}
-                                onChange={(e) => handleChange('date', e.target.value)}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                            />
-                        </div>
+                        {/* Sub-Events Timeline */}
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border flex flex-row items-center justify-between">
+                                <CardTitle className="font-bebas text-lg tracking-wide">Key Moments / Sub-Events</CardTitle>
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => append({ date: new Date().toISOString(), title: "", description: "" })}
+                                    className="h-7 text-xs font-mono uppercase rounded-none border-primary/20 text-primary hover:bg-primary/5"
+                                >
+                                    <Plus className="h-3 w-3 mr-1" /> Add Sub-Event
+                                </Button>
+                            </CardHeader>
+                            <CardContent className="p-6 space-y-6">
+                                {fields.map((field, index) => (
+                                    <div key={field.id} className="relative pl-6 border-l-2 border-primary/10 group">
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            onClick={() => remove(index)}
+                                            className="absolute -left-9 top-0 h-6 w-6 text-muted-foreground hover:text-destructive hover:bg-transparent rounded-none"
+                                        >
+                                            <Trash className="h-3 w-3" />
+                                        </Button>
+                                        <div className="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-primary" />
 
-                        <div className="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                id="isFeatured"
-                                checked={formData.isFeatured}
-                                onChange={(e) => handleChange('isFeatured', e.target.checked)}
-                                className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
-                            />
-                            <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                                Highlight Event
-                            </label>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Timeline Order
-                            </label>
-                            <input
-                                type="number"
-                                value={formData.order}
-                                onChange={(e) => handleChange('order', parseInt(e.target.value))}
-                                className="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm"
-                            />
-                        </div>
+                                        <div className="grid grid-cols-1 gap-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                <div className="col-span-1">
+                                                    <Input
+                                                        type="date"
+                                                        {...form.register(`timeline.${index}.date`)}
+                                                        className="rounded-none border-border text-xs"
+                                                    />
+                                                </div>
+                                                <div className="col-span-2">
+                                                    <Input
+                                                        {...form.register(`timeline.${index}.title`)}
+                                                        placeholder="Sub-event title..."
+                                                        className="rounded-none border-border font-bold text-sm"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Textarea
+                                                {...form.register(`timeline.${index}.description`)}
+                                                placeholder="Brief detail of this moment..."
+                                                className="rounded-none border-border min-h-[60px] text-sm resize-none"
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                                {fields.length === 0 && (
+                                    <div className="text-center py-8 text-muted-foreground font-mono text-xs uppercase">
+                                        No sub-events added. Use this for multi-stage historical events.
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
                     </div>
 
-                    <div className="bg-white dark:bg-gray-900 p-6 rounded-xl border border-gray-200 dark:border-gray-800 space-y-4">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">Image</h3>
-                        <ImageUploader
-                            label="Event Image"
-                            category="history"
-                            value={formData.image}
-                            onChange={(url) => handleChange('image', url)}
-                        />
+                    {/* Sidebar */}
+                    <div className="space-y-8 lg:col-span-1">
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide flex items-center gap-2">
+                                    <ImageIcon className="h-4 w-4" /> Visual Evidence
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="pt-6">
+                                <FormField
+                                    control={control}
+                                    name="image"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-mono text-xs uppercase">Historical Photo</FormLabel>
+                                            <FormControl>
+                                                <div className="aspect-video bg-muted/20 border-2 border-dashed border-border hover:border-primary/50 transition-colors">
+                                                    <ImageUploader
+                                                        value={field.value}
+                                                        onChange={field.onChange}
+                                                        folder="history"
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </CardContent>
+                        </Card>
+
+                        <Card className="rounded-none border-border shadow-sm">
+                            <CardHeader className="py-3 px-4 bg-muted/30 border-b border-border">
+                                <CardTitle className="font-bebas text-lg tracking-wide">Classification</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-4 pt-6">
+                                <FormField
+                                    control={control}
+                                    name="significance"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-mono text-xs uppercase">Impact Level</FormLabel>
+                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                <FormControl>
+                                                    <SelectTrigger className="rounded-none border-border">
+                                                        <SelectValue placeholder="Select impact" />
+                                                    </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent className="rounded-none">
+                                                    <SelectItem value="High">Global / National Shift</SelectItem>
+                                                    <SelectItem value="Medium">Major Policy / Reform</SelectItem>
+                                                    <SelectItem value="Low">Minor / Regional</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
-            </div>
-        </div>
+            </form>
+        </Form>
     );
 }

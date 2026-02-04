@@ -9,7 +9,7 @@ import { Search, ArrowUpRight } from "lucide-react";
 import { ILeader } from "@/models/Leader";
 
 // Helper to get localized string (defaulting to 'en')
-const getLoc = (field: string | { en: string; ne: string } | undefined | null) => {
+const getLoc = (field: any) => {
     if (!field) return "";
     if (typeof field === 'string') return field;
     return field.en || field.ne || "";

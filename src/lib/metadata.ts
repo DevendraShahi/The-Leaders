@@ -11,6 +11,7 @@ interface MetadataParams {
     publishedTime?: string;
     modifiedTime?: string;
     noIndex?: boolean;
+    icons?: any;
 }
 
 export function constructMetadata({
@@ -24,6 +25,7 @@ export function constructMetadata({
     publishedTime,
     modifiedTime,
     noIndex = false,
+    icons,
 }: MetadataParams): Metadata {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://theleaders.com.np';
     const fullTitle = title === 'The Leaders' || title.includes('The Leaders |') ? title : `The Leaders | ${title}`;
@@ -53,7 +55,7 @@ export function constructMetadata({
         robots: noIndex
             ? { index: false, follow: false }
             : { index: true, follow: true, googleBot: { index: true, follow: true } },
-        icons: {
+        icons: icons || {
             icon: '/logo.svg',
             shortcut: '/logo.svg',
             apple: '/logo.svg',

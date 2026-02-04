@@ -1,956 +1,1242 @@
 {
     "parties": [
         {
-            "id": 1,
-            "name": "Nepal Majdoor Kishan Party",
-            "leader": "Narayan Man Bijukchhe",
-            "symbol": "Madal",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 2,
-            "name": "Nepal Communist Party (Marxist-Leninist)",
-            "leader": "C.P. Mainali",
-            "symbol": "Sickle and Star",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 3,
-            "name": "Gandhivadi Party Nepal",
-            "leader": "Lal Bahadur Rana",
-            "symbol": "Sheep",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 4,
-            "name": "Nagarik Shakti, Nepal",
-            "leader": "Dev Prakash Tripathi",
-            "symbol": "Trishul",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 5,
-            "name": "United Nepal Democratic Party",
-            "leader": "Shree Muskan Paudel",
-            "symbol": "Male Figure",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 6,
-            "name": "Churebhavar Loktantrik Party",
-            "leader": "Bhumiraj Niraula",
-            "symbol": "Football",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 7,
-            "name": "Rastriya Mukti Andolan, Nepal",
-            "leader": "Dr. Jaywant Vikram Shah",
-            "symbol": "Hexagon",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 8,
-            "name": "Rastriya Yatharthavadi Party, Nepal",
-            "leader": "Bishnu Bahadur Karki",
-            "symbol": "Motorcycle",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 9,
-            "name": "Nepal Samabeshi Party",
-            "leader": "Motilal Bharati",
-            "symbol": "Parrot",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 10,
-            "name": "Rastriya Ekta Party Prajatantravadi",
-            "leader": "Sharad Chandra Dahal",
-            "symbol": "Nepal Map",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 11,
-            "name": "Nepali Greens Party",
-            "leader": "Babukaji Shrestha",
-            "symbol": "Himalaya",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 12,
-            "name": "Nepal Janata Party",
-            "leader": "Tribhuvan Nath Pathak",
-            "symbol": "Lotus",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 13,
-            "name": "Rastriya Prajatantra Party",
-            "leader": "Rajendra Lingden",
-            "symbol": "Plough (Halo)",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 14,
-            "name": "Nepal Pariwar Dal",
-            "leader": "Ek Nath Dhakal",
-            "symbol": "Key",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 15,
-            "name": "Madhesh Terai Forum",
-            "leader": "Amar Prasad Yadav",
-            "symbol": "Bucket",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 16,
-            "name": "Nepal Naulo Janwadi Party",
-            "leader": "Dr. Ganga Lal Shrestha",
-            "symbol": "Pigeon with Letter",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 17,
-            "name": "Janasewa Loktantrik Party",
-            "leader": "Bhakta Bahadur Lama",
-            "symbol": "Dharahara",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 18,
-            "name": "Nepal Communist Party (Marxist)",
-            "leader": "Ambika Prasad Chaulagain",
-            "symbol": "Spade (Kodalo)",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 19,
-            "name": "Nepal Communist Party",
-            "leader": "Lok Narayan Subedi",
-            "symbol": "Hammer and Spade",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 20,
-            "name": "Janadhikar Forum Madhesi",
-            "leader": "Bhagyanath Prasad Sah",
-            "symbol": "Spinning Wheel (Charkha)",
-            "regDate": "2073-08-30"
-        },
-        {
             "id": 21,
             "name": "CPN (Unified Marxist-Leninist)",
+            "shortName": "CPN-UML",
             "leader": "K.P. Sharma Oli",
             "symbol": "Sun",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 22,
-            "name": "Sanghiya Loktantrik Rastriya Manch",
-            "leader": "Kumar Lingden",
-            "symbol": "Khukuri in Sheath",
-            "regDate": "2073-08-30"
+            "regDate": "2073-08-30",
+            "status": "National Party",
+            "ranking": {
+                "overall": 1,
+                "electoral_power": 1,
+                "historical_legacy": 2,
+                "popularity_index": 3
+            },
+            "performance": {
+                "total_seats_hor": 78,
+                "fptp_seats": 44,
+                "pr_seats": 34,
+                "pr_votes_2022": 2845641,
+                "pr_vote_percentage": 26.95,
+                "national_assembly_seats": 10,
+                "provincial_seats_total": 161
+            }
         },
         {
             "id": 23,
             "name": "Nepali Congress",
+            "shortName": "NC",
             "leader": "Gagan Kumar Thapa",
             "symbol": "Tree",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 24,
-            "name": "Rastriya Janamorcha",
-            "leader": "Chitra Bahadur K.C.",
-            "symbol": "Glass",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 25,
-            "name": "Shiva Sena Nepal",
-            "leader": "Anil Basnet",
-            "symbol": "Damaru",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 26,
-            "name": "Bahujan Shakti Party",
-            "leader": "Biswendra Paswan",
-            "symbol": "Jug",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 27,
-            "name": "Nepal Manavtavadi Party",
-            "leader": "Megh Bahadur Kami",
-            "symbol": "Well (Inar)",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 28,
-            "name": "Khambuwan Rastriya Morcha, Nepal",
-            "leader": "Ram Kumar Rai",
-            "symbol": "Hammer",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 29,
-            "name": "Sanghiya Nepal Party",
-            "leader": "Rukmini Chaudhary",
-            "symbol": "Cow",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 30,
-            "name": "Nepal Samajwadi Congress",
-            "leader": "Govinda Prasad Niraula",
-            "symbol": "Letter 'D'",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 31,
-            "name": "Nepal Janata Sanrakshan Party",
-            "leader": "Hukum Bahadur Lama",
-            "symbol": "Doko (Basket)",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 32,
-            "name": "Bahujan Samaj Party Nepal",
-            "leader": "Pujan Mahara",
-            "symbol": "Duck",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 33,
-            "name": "Jana-Rastrabadi Party Nepal",
-            "leader": "Min Nath Devkota",
-            "symbol": "Running Tap",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 34,
-            "name": "Samajwadi Party Nepal",
-            "leader": "Manoj Kumar Khadka",
-            "symbol": "Sukunda",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 35,
-            "name": "Nepali Janata Dal",
-            "leader": "Hari Charan Sah",
-            "symbol": "Whistle",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 36,
-            "name": "Rastrabadi Ekta Party",
-            "leader": "Uma Shrestha",
-            "symbol": "Pigeon",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 37,
-            "name": "Janapriya Loktantrik Party",
-            "leader": "Sidman Tamang",
-            "symbol": "Vajra",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 38,
-            "name": "Lok Dal",
-            "leader": "Kaushal Kumar Singh",
-            "symbol": "Sewing Machine",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 39,
-            "name": "Deshbhakta Samaj",
-            "leader": "Drona Adhikari",
-            "symbol": "Deer (Jarayo)",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 40,
-            "name": "Miteri Party Nepal",
-            "leader": "Khadka Bahadur Dewan",
-            "symbol": "Horse",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 41,
-            "name": "Akhanda Sudurpaschim Party Nepal",
-            "leader": "Khagendra Raj Awasthi",
-            "symbol": "Teapot",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 42,
-            "name": "Sanghiya Vikasvadi Party Nepal",
-            "leader": "Tej Bahadur Pal",
-            "symbol": "Bridge",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 43,
-            "name": "Rastriya Vikas Party",
-            "leader": "Nilu Kumari",
-            "symbol": "Elephant",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 44,
-            "name": "Nepa: Rastriya Party",
-            "leader": "Dr. Vijay Prakash Saiju",
-            "symbol": "Ring",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 45,
-            "name": "Rastriya Ekta Manch",
-            "leader": "Bijendra Lal Joshi",
-            "symbol": "Torchlight",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 46,
-            "name": "Janajagaran Party Nepal",
-            "leader": "Dr. Bishnu Prasad Khanal",
-            "symbol": "Clock",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 47,
-            "name": "Nepalvad",
-            "leader": "Kiran Kumar Sharma Paudel",
-            "symbol": "Star Cluster",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 48,
-            "name": "Vikasshil Janata Party",
-            "leader": "Pritam Mukhiya",
-            "symbol": "Tortoise",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 49,
-            "name": "Rastriya Nagarik Party",
-            "leader": "Shukra Bahadur Gurung",
-            "symbol": "Kite",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 50,
-            "name": "Nepal Janamukti Party",
-            "leader": "Khadga Prasad Palungwa",
-            "symbol": "House",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 51,
-            "name": "Trimul Nepal",
-            "leader": "Bharatmani Dahal",
-            "symbol": "Tripod (Odan)",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 52,
-            "name": "Nepal Communist Party (United)",
-            "leader": "Kedar Chandra Sharma",
-            "symbol": "Sickle",
-            "regDate": "2082-07-27"
-        },
-        {
-            "id": 53,
-            "name": "Rastrabadi Yuva Morcha",
-            "leader": "Shyam Kumar Thapa",
-            "symbol": "Spectacles",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 54,
-            "name": "Rastriya Ekta Dal",
-            "leader": "Binay Yadav",
-            "symbol": "Tulsi Plant in Circle",
-            "regDate": "2073-08-30"
-        },
-        {
-            "id": 55,
-            "name": "Aitihasik Janata Party",
-            "leader": "Badri Narayan Thakur",
-            "symbol": "Tractor",
-            "regDate": "2073-08-08"
-        },
-        {
-            "id": 56,
-            "name": "Amul Parivartan Republican Party Nepal",
-            "leader": "Bharat Giri",
-            "symbol": "Heart (Prem)",
-            "regDate": "2073-12-01"
-        },
-        {
-            "id": 57,
-            "name": "Jana Prajatantrik Party, Nepal",
-            "leader": "Gyan Bahadur Tamang",
-            "symbol": "Rhino",
-            "regDate": "2073-12-01"
-        },
-        {
-            "id": 58,
-            "name": "Mongol National Organization",
-            "leader": "Buddha Lal Meche",
-            "symbol": "Rooster",
-            "regDate": "2073-12-01"
-        },
-        {
-            "id": 59,
-            "name": "Nepal Sanghiya Samajbadi Party",
-            "leader": "Md. Rizwan Ansari",
-            "symbol": "Bus",
-            "regDate": "2073-12-01"
-        },
-        {
-            "id": 60,
-            "name": "Rastriya Samajbadi Party Nepal",
-            "leader": "Rudra Jang Pulami",
-            "symbol": "Earth",
-            "regDate": "2073-12-01"
-        },
-        {
-            "id": 61,
-            "name": "Nepal ka lagi Nepali Party",
-            "leader": "Bal Krishna Neupane",
-            "symbol": "Conch in Circle",
-            "regDate": "2074-03-28"
-        },
-        {
-            "id": 62,
-            "name": "Nepali Janashramdan Sanskriti Party",
-            "leader": "Krishna Kumar Rai",
-            "symbol": "Person Carrying Stone",
-            "regDate": "2074-03-30"
-        },
-        {
-            "id": 63,
-            "name": "Nepali Congress (B.P.)",
-            "leader": "Sushil Man Sherchan",
-            "symbol": "Karuwa (Water Vessel)",
-            "regDate": "2074-03-30"
-        },
-        {
-            "id": 64,
-            "name": "Bibeksheel Sajha Party",
-            "leader": "Samikchya Baskota",
-            "symbol": "Balance Scales",
-            "regDate": "2074-05-02"
-        },
-        {
-            "id": 65,
-            "name": "Samajik Loktantrik Party",
-            "leader": "Kumar Rai",
-            "symbol": "Three Stone Stove",
-            "regDate": "2074-12-02"
-        },
-        {
-            "id": 66,
-            "name": "Prajatantrik Party Nepal",
-            "leader": "Dr. Taranath Luitel",
-            "symbol": "Saw",
-            "regDate": "2074-12-02"
-        },
-        {
-            "id": 67,
-            "name": "Nepal Matribhumi Party",
-            "leader": "Om Prakash Bishwakarma",
-            "symbol": "Lit Lamp (Diyo)",
-            "regDate": "2074-12-02"
-        },
-        {
-            "id": 68,
-            "name": "Nepal Loktantrik Party",
-            "leader": "Gita Chhetri",
-            "symbol": "Namaste Hands",
-            "regDate": "2075-04-31"
-        },
-        {
-            "id": 69,
-            "name": "Rastriya Communist Party",
-            "leader": "Punya Bahadur Lama",
-            "symbol": "Radio",
-            "regDate": "2075-05-24"
-        },
-        {
-            "id": 70,
-            "name": "Rastriya Prajatantra Party Nepal",
-            "leader": "Kamal Thapa",
-            "symbol": "Arrow",
-            "regDate": "2075-12-25"
-        },
-        {
-            "id": 71,
-            "name": "Janamat Party",
-            "leader": "Dr. C.K. Raut",
-            "symbol": "Loudspeaker",
-            "regDate": "2076-02-06"
-        },
-        {
-            "id": 72,
-            "name": "Rastriya Samunnati Party",
-            "leader": "Numnath Pyakurel",
-            "symbol": "Computer",
-            "regDate": "2076-04-23"
-        },
-        {
-            "id": 73,
-            "name": "Maoist Communist Party, Nepal",
-            "leader": "Ram Narayan Prasad Pal",
-            "symbol": "Farmer Ploughing",
-            "regDate": "2076-05-15"
-        },
-        {
-            "id": 74,
-            "name": "Nepal Communist Party Marxist (Pushpalal)",
-            "leader": "Man Dhwaj Gurung",
-            "symbol": "Pickaxe",
-            "regDate": "2076-05-15"
-        },
-        {
-            "id": 75,
-            "name": "Nepal Sadbhavana Party",
-            "leader": "Anil Kumar Jha",
-            "symbol": "Palm Print",
-            "regDate": "2076-08-26"
-        },
-        {
-            "id": 76,
-            "name": "Rastriya Sajha Party",
-            "leader": "Bhupi Rai",
-            "symbol": "Dhaka Topi",
-            "regDate": "2076-08-27"
-        },
-        {
-            "id": 77,
-            "name": "Janata Samajbadi Party, Nepal",
-            "leader": "Upendra Yadav",
-            "symbol": "Tilted Umbrella",
-            "regDate": "2077-03-25"
-        },
-        {
-            "id": 78,
-            "name": "Janatako Janabadi Party, Nepal",
-            "leader": "Sandhya Tiwari",
-            "symbol": "Snake (Cobra)",
-            "regDate": "2077-05-03"
-        },
-        {
-            "id": 79,
-            "name": "Sachet Nepali Party",
-            "leader": "Punya Prasad Prasai",
-            "symbol": "Lion with Flag",
-            "regDate": "2077-10-09"
-        },
-        {
-            "id": 80,
-            "name": "Nationalist People's Party",
-            "leader": "Indra Bahadur Thapa",
-            "symbol": "Tokosero",
-            "regDate": "2077-11-11"
-        },
-        {
-            "id": 81,
-            "name": "Nepal Communist Party Parivartan",
-            "leader": "Jogman Lama",
-            "symbol": "Damphu with Bird",
-            "regDate": "2078-04-04"
-        },
-        {
-            "id": 82,
-            "name": "Loktantrik Samajbadi Party Nepal",
-            "leader": "Mahantha Thakur",
-            "symbol": "Bicycle",
-            "regDate": "2078-05-09"
-        },
-        {
-            "id": 83,
-            "name": "Bahujan Ekta Party Nepal",
-            "leader": "Harinandan Kumar Ranjan",
-            "symbol": "Seven Step Ladder",
-            "regDate": "2078-05-18"
-        },
-        {
-            "id": 84,
-            "name": "Nepal Nagarik Party",
-            "leader": "Surendra Bhandari",
-            "symbol": "Stone Spout",
-            "regDate": "2078-05-23"
-        },
-        {
-            "id": 85,
-            "name": "Rastriya Sadbhavana Party",
-            "leader": "Nripendra Kumar Singh",
-            "symbol": "Mace (Gada)",
-            "regDate": "2078-07-14"
-        },
-        {
-            "id": 86,
-            "name": "Unnat Loktantra Party",
-            "leader": "Bhadra Prasad Nepal",
-            "symbol": "Open Book",
-            "regDate": "2078-07-14"
-        },
-        {
-            "id": 87,
-            "name": "Rastriya Janata Party Nepal",
-            "leader": "Hari Narayan Yadav",
-            "symbol": "Torch Held by Hand",
-            "regDate": "2078-07-16"
-        },
-        {
-            "id": 88,
-            "name": "Nepal Bibeksheel Party",
-            "leader": "Karma Lama Tamang",
-            "symbol": "Dog Head",
-            "regDate": "2078-07-30"
-        },
-        {
-            "id": 89,
-            "name": "Terai-Madhesh Loktantrik Party",
-            "leader": "Brishesh Chandra Lal",
-            "symbol": "Pitcher with Coconut",
-            "regDate": "2078-08-09"
-        },
-        {
-            "id": 90,
-            "name": "Rastriya Gaurav Party",
-            "leader": "Tikaram Puri",
-            "symbol": "Five-faced Rudraksha",
-            "regDate": "2078-09-16"
-        },
-        {
-            "id": 91,
-            "name": "Aam Janata Party",
-            "leader": "Prabhu Sah",
-            "symbol": "Mobile Phone",
-            "regDate": "2078-09-30"
-        },
-        {
-            "id": 92,
-            "name": "Janata Pragatisheel Party, Nepal",
-            "leader": "Hridayesh Tripathi",
-            "symbol": "Farmer with Spade",
-            "regDate": "2078-11-03"
-        },
-        {
-            "id": 93,
-            "name": "Samyukta Nagarik Party",
-            "leader": "Dal Mardan Kami",
-            "symbol": "Guitar",
-            "regDate": "2078-11-03"
-        },
-        {
-            "id": 94,
-            "name": "Pragatisheel Loktantrik Party",
-            "leader": "Durga Sob",
-            "symbol": "Open Eye",
-            "regDate": "2078-11-05"
-        },
-        {
-            "id": 95,
-            "name": "Ujjwal Bhavishya Party",
-            "leader": "Prabhash Basnyat",
-            "symbol": "Two Feet",
-            "regDate": "2078-11-04"
-        },
-        {
-            "id": 96,
-            "name": "Deshbhakta Loktantrik Party, Nepal",
-            "leader": "Manmohan Shamsher Rana",
-            "symbol": "Open Lock",
-            "regDate": "2078-11-29"
+            "regDate": "2073-08-30",
+            "status": "National Party",
+            "ranking": {
+                "overall": 2,
+                "electoral_power": 2,
+                "historical_legacy": 1,
+                "popularity_index": 2
+            },
+            "performance": {
+                "total_seats_hor": 89,
+                "fptp_seats": 57,
+                "pr_seats": 32,
+                "pr_votes_2022": 2715225,
+                "pr_vote_percentage": 25.71,
+                "national_assembly_seats": 24,
+                "provincial_seats_total": 175
+            }
+        },
+        {
+            "id": 116,
+            "name": "Nepal Communist Party (Maoist Centre)",
+            "shortName": "CPN-MC",
+            "leader": "Pushpa Kamal Dahal",
+            "symbol": "Rose in Circle",
+            "regDate": "2082-08-02",
+            "status": "National Party",
+            "ranking": {
+                "overall": 3,
+                "electoral_power": 3,
+                "historical_legacy": 3,
+                "popularity_index": 5
+            },
+            "performance": {
+                "total_seats_hor": 32,
+                "fptp_seats": 18,
+                "pr_seats": 14,
+                "pr_votes_2022": 1175684,
+                "pr_vote_percentage": 11.13,
+                "national_assembly_seats": 17,
+                "provincial_seats_total": 82
+            }
         },
         {
             "id": 97,
             "name": "Rastriya Swatantra Party",
+            "shortName": "RSP",
             "leader": "Rabi Lamichhane",
             "symbol": "Bell (Ghanti)",
-            "regDate": "2079-03-17"
+            "regDate": "2079-03-17",
+            "status": "National Party",
+            "ranking": {
+                "overall": 4,
+                "electoral_power": 4,
+                "historical_legacy": 5,
+                "popularity_index": 1
+            },
+            "performance": {
+                "total_seats_hor": 20,
+                "fptp_seats": 7,
+                "pr_seats": 13,
+                "pr_votes_2022": 1130344,
+                "pr_vote_percentage": 10.70,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
         },
         {
-            "id": 98,
-            "name": "Desh Vikas Party",
-            "leader": "Sandhya Khanal",
-            "symbol": "Cane (Lauro)",
-            "regDate": "2079-03-29"
+            "id": 13,
+            "name": "Rastriya Prajatantra Party",
+            "shortName": "RPP",
+            "leader": "Rajendra Lingden",
+            "symbol": "Plough (Halo)",
+            "regDate": "2073-08-30",
+            "status": "National Party",
+            "ranking": {
+                "overall": 5,
+                "electoral_power": 5,
+                "historical_legacy": 4,
+                "popularity_index": 4
+            },
+            "performance": {
+                "total_seats_hor": 14,
+                "fptp_seats": 7,
+                "pr_seats": 7,
+                "pr_votes_2022": 588849,
+                "pr_vote_percentage": 5.58,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 28
+            }
         },
         {
-            "id": 99,
-            "name": "Punarjagaran Party, Nepal",
-            "leader": "Shyam Babu Gautam",
-            "symbol": "Lit Candle",
-            "regDate": "2079-04-12"
+            "id": 77,
+            "name": "Janata Samajbadi Party, Nepal",
+            "shortName": "JSP-N",
+            "leader": "Upendra Yadav",
+            "symbol": "Tilted Umbrella",
+            "regDate": "2077-03-25",
+            "status": "National Party",
+            "ranking": {
+                "overall": 6,
+                "electoral_power": 6,
+                "historical_legacy": 4,
+                "popularity_index": 7
+            },
+            "performance": {
+                "total_seats_hor": 12,
+                "fptp_seats": 7,
+                "pr_seats": 5,
+                "pr_votes_2022": 421314,
+                "pr_vote_percentage": 3.99,
+                "national_assembly_seats": 2,
+                "provincial_seats_total": 20
+            }
         },
         {
-            "id": 100,
-            "name": "Samabeshi Samajwadi Party Nepal",
-            "leader": "Kishor Kumar Bishwas",
-            "symbol": "Wall Clock",
-            "regDate": "2079-11-14"
-        },
-        {
-            "id": 101,
-            "name": "Rastrabadi Kendra Nepal",
-            "leader": "Chandra Bahadur Thapa",
-            "symbol": "Lantern",
-            "regDate": "2079-12-26"
-        },
-        {
-            "id": 102,
-            "name": "Rastriya Samata Party Nepal",
-            "leader": "Bijay Prakash Nishad",
-            "symbol": "Bow Pointing Up",
-            "regDate": "2079-12-26"
+            "id": 71,
+            "name": "Janamat Party",
+            "shortName": "JP",
+            "leader": "Dr. C.K. Raut",
+            "symbol": "Loudspeaker",
+            "regDate": "2076-02-06",
+            "status": "National Party",
+            "ranking": {
+                "overall": 7,
+                "electoral_power": 7,
+                "historical_legacy": 5,
+                "popularity_index": 6
+            },
+            "performance": {
+                "total_seats_hor": 6,
+                "fptp_seats": 1,
+                "pr_seats": 5,
+                "pr_votes_2022": 394655,
+                "pr_vote_percentage": 3.74,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 13
+            }
         },
         {
             "id": 103,
-            "name": "Pragatisheel Samajwadi Party",
-            "leader": "Tulsi Raj Giri",
-            "symbol": "Marigold Flower",
-            "regDate": "2080-09-29"
+            "name": "CPN (Unified Socialist)",
+            "shortName": "CPN-US",
+            "leader": "Madhav Kumar Nepal",
+            "symbol": "Pen",
+            "regDate": "2078-05-09",
+            "status": "Parliamentary",
+            "ranking": {
+                "overall": 8,
+                "electoral_power": 8,
+                "historical_legacy": 3,
+                "popularity_index": 8
+            },
+            "performance": {
+                "total_seats_hor": 10,
+                "fptp_seats": 10,
+                "pr_seats": 0,
+                "pr_votes_2022": 298391,
+                "pr_vote_percentage": 2.83,
+                "national_assembly_seats": 8,
+                "provincial_seats_total": 24
+            }
         },
         {
-            "id": 104,
-            "name": "National Republic Nepal",
-            "leader": "Thamman Bahadur Budha Magar",
-            "symbol": "Flying Bee",
-            "regDate": "2080-11-09"
+            "id": 82,
+            "name": "Loktantrik Samajbadi Party Nepal",
+            "shortName": "LSP-N",
+            "leader": "Mahantha Thakur",
+            "symbol": "Bicycle",
+            "regDate": "2078-05-09",
+            "status": "Parliamentary",
+            "ranking": {
+                "overall": 9,
+                "electoral_power": 9,
+                "historical_legacy": 4,
+                "popularity_index": 9
+            },
+            "performance": {
+                "total_seats_hor": 4,
+                "fptp_seats": 4,
+                "pr_seats": 0,
+                "pr_votes_2022": 167367,
+                "pr_vote_percentage": 1.58,
+                "national_assembly_seats": 1,
+                "provincial_seats_total": 12
+            }
         },
         {
-            "id": 105,
-            "name": "Janata Samajbadi Party",
-            "leader": "Ashok Kumar Rai",
-            "symbol": "Fist (Mutthi)",
-            "regDate": "2081-01-24"
-        },
-        {
-            "id": 106,
-            "name": "Parivartan Party",
-            "leader": "Ramesh Nalyu",
-            "symbol": "Butterfly",
-            "regDate": "2081-06-21"
-        },
-        {
-            "id": 107,
-            "name": "Nepal Janajagriti Party",
-            "leader": "Dhuplal Prasad Sahani",
-            "symbol": "Fish",
-            "regDate": "2081-08-19"
-        },
-        {
-            "id": 108,
-            "name": "Rastriya Mukti Party Nepal",
-            "leader": "Rajendra Mahato",
-            "symbol": "Gas Cylinder",
-            "regDate": "2081-10-08"
-        },
-        {
-            "id": 109,
-            "name": "Rastriya Janamukti Party",
-            "leader": "Keshav Bahadur Thapa Magar",
-            "symbol": "Handshake",
-            "regDate": "2082-06-24"
+            "id": 112,
+            "name": "Nagarik Unmukti Party",
+            "shortName": "NUPA",
+            "leader": "Resham Chaudhary",
+            "symbol": "Chakiya (Grinding Stone)",
+            "regDate": "2082-07-25",
+            "status": "Parliamentary",
+            "ranking": {
+                "overall": 10,
+                "electoral_power": 10,
+                "historical_legacy": 5,
+                "popularity_index": 4
+            },
+            "performance": {
+                "total_seats_hor": 4,
+                "fptp_seats": 4,
+                "pr_seats": 0,
+                "pr_votes_2022": 271722,
+                "pr_vote_percentage": 2.57,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 12
+            }
         },
         {
             "id": 110,
             "name": "Shram Sanskriti Party",
-            "leader": "Harka Raj Rai",
+            "shortName": "SSP",
+            "leader": "Harka Raj Rai (Sampang)",
             "symbol": "Soil in Basket",
-            "regDate": "2082-07-16"
+            "regDate": "2082-07-16",
+            "status": "Emerging Force",
+            "ranking": {
+                "overall": 11,
+                "electoral_power": 13,
+                "historical_legacy": 5,
+                "popularity_index": 2
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 0,
+                "pr_vote_percentage": 0.00,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0,
+                "special_note": "Founded post-2022. Holds Mayoral seat in Dharan as heritage."
+            }
         },
         {
-            "id": 111,
-            "name": "Gatisheel Loktantrik Party",
-            "leader": "Dinesh Raj Prasai",
-            "symbol": "Deepjyoti",
-            "regDate": "2082-07-23"
+            "id": 1,
+            "name": "Nepal Majdoor Kishan Party",
+            "shortName": "NMKP",
+            "leader": "Narayan Man Bijukchhe",
+            "symbol": "Madal",
+            "regDate": "2073-08-30",
+            "status": "Regional Strength",
+            "ranking": {
+                "overall": 12,
+                "electoral_power": 11,
+                "historical_legacy": 2,
+                "popularity_index": 7
+            },
+            "performance": {
+                "total_seats_hor": 1,
+                "fptp_seats": 1,
+                "pr_seats": 0,
+                "pr_votes_2022": 75168,
+                "pr_vote_percentage": 0.71,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 3
+            }
         },
         {
-            "id": 112,
-            "name": "Nagarik Unmukti Party Nepal",
-            "leader": "Shreya KC (Contact)",
-            "symbol": "Chakiya (Grinding Stone)",
-            "regDate": "2082-07-25"
+            "id": 24,
+            "name": "Rastriya Janamorcha",
+            "shortName": "RJ",
+            "leader": "Chitra Bahadur K.C.",
+            "symbol": "Glass",
+            "regDate": "2073-08-30",
+            "status": "Parliamentary",
+            "ranking": {
+                "overall": 13,
+                "electoral_power": 12,
+                "historical_legacy": 3,
+                "popularity_index": 10
+            },
+            "performance": {
+                "total_seats_hor": 1,
+                "fptp_seats": 1,
+                "pr_seats": 0,
+                "pr_votes_2022": 46504,
+                "pr_vote_percentage": 0.44,
+                "national_assembly_seats": 1,
+                "provincial_seats_total": 1
+            }
         },
         {
-            "id": 113,
-            "name": "Nepali Communist Party",
-            "leader": "Mukti Narayan Pradhan",
-            "symbol": "Five Pointed Star",
-            "regDate": "2082-07-29"
+            "id": 105,
+            "name": "Janata Samajbadi Party",
+            "shortName": "JSP",
+            "leader": "Ashok Kumar Rai",
+            "symbol": "Fist (Mutthi)",
+            "regDate": "2081-01-24",
+            "status": "Parliamentary",
+            "ranking": {
+                "overall": 14,
+                "electoral_power": 8,
+                "historical_legacy": 5,
+                "popularity_index": 8
+            },
+            "performance": {
+                "total_seats_hor": 7,
+                "fptp_seats": 7,
+                "pr_seats": 0,
+                "pr_votes_2022": 0,
+                "pr_vote_percentage": 0.00,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0,
+                "special_note": "Formed via May 2024 split from JSP-Nepal with 7 federal MPs."
+            }
         },
         {
-            "id": 114,
-            "name": "Rastriya Parivartan Party",
-            "leader": "Rajesh Patel",
-            "symbol": "Flute",
-            "regDate": "2082-07-30"
+            "id": 61,
+            "name": "Hamro Nepali Party",
+            "shortName": "HNP",
+            "leader": "Ananta Raj Ghimire",
+            "symbol": "Stick (Lauro)",
+            "regDate": "2074-03-28",
+            "status": "Extra-Parliamentary",
+            "ranking": {
+                "overall": 15,
+                "electoral_power": 15,
+                "historical_legacy": 5,
+                "popularity_index": 5
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 55743,
+                "pr_vote_percentage": 0.53,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 2,
+                "special_note": "Gained popularity during 'Lauro Campaign'. Holds Bagmati Provincial seats."
+            }
         },
         {
-            "id": 115,
-            "name": "Rastriya Janamat Party",
-            "leader": "Riyaz Ahmed Shesh",
-            "symbol": "Bulldozer",
-            "regDate": "2082-08-01"
+            "id": 58,
+            "name": "Mongol National Organisation",
+            "shortName": "MNO",
+            "leader": "Buddha Lal Meche",
+            "symbol": "Rooster",
+            "regDate": "2073-12-01",
+            "status": "Regional/Ethnic",
+            "ranking": {
+                "overall": 16,
+                "electoral_power": 16,
+                "historical_legacy": 4,
+                "popularity_index": 12
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 49000,
+                "pr_vote_percentage": 0.46,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 2,
+            "name": "NCP (Marxist-Leninist)",
+            "shortName": "CPN-ML",
+            "leader": "C.P. Mainali",
+            "symbol": "Sickle and Star",
+            "regDate": "2073-08-30",
+            "status": "Established Small",
+            "ranking": {
+                "overall": 17,
+                "electoral_power": 17,
+                "historical_legacy": 2,
+                "popularity_index": 15
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 30599,
+                "pr_vote_percentage": 0.29,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 50,
+            "name": "Nepal Janamukti Party",
+            "shortName": "NJP",
+            "leader": "Khadga Prasad Palungwa",
+            "symbol": "House",
+            "regDate": "2073-08-30",
+            "status": "Established Small",
+            "ranking": {
+                "overall": 18,
+                "electoral_power": 18,
+                "historical_legacy": 3,
+                "popularity_index": 14
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 23934,
+                "pr_vote_percentage": 0.23,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 92,
+            "name": "Janata Pragatisheel Party",
+            "shortName": "JPP",
+            "leader": "Hridayesh Tripathi",
+            "symbol": "Farmer with Spade",
+            "regDate": "2078-11-03",
+            "status": "Extra-Parliamentary",
+            "ranking": {
+                "overall": 19,
+                "electoral_power": 19,
+                "historical_legacy": 4,
+                "popularity_index": 13
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 18059,
+                "pr_vote_percentage": 0.17,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 64,
+            "name": "Bibeksheel Sajha Party",
+            "shortName": "BSP",
+            "leader": "Samikchya Baskota",
+            "symbol": "Balance Scales",
+            "regDate": "2074-05-02",
+            "status": "Declining/Merged",
+            "ranking": {
+                "overall": 20,
+                "electoral_power": 25,
+                "historical_legacy": 3,
+                "popularity_index": 10
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 4049,
+                "pr_vote_percentage": 0.04,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0,
+                "special_note": "Significant decline after Rabindra Mishra joined RPP. Recent reports of splinter factions merging with RSP (Jan 2026)."
+            }
+        },
+        {
+            "id": 14,
+            "name": "Nepal Pariwar Dal",
+            "shortName": "NPD",
+            "leader": "Ek Nath Dhakal",
+            "symbol": "Key",
+            "regDate": "2073-08-30",
+            "status": "Extra-Parliamentary",
+            "ranking": {
+                "overall": 21,
+                "electoral_power": 30,
+                "historical_legacy": 3,
+                "popularity_index": 20
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 15482,
+                "pr_vote_percentage": 0.15,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0,
+                "special_note": "President Ek Nath Dhakal contested 2022 in alliance with CPN-UML."
+            }
+        },
+        {
+            "id": 18,
+            "name": "Nepal Communist Party (Marxist)",
+            "shortName": "CPN-M",
+            "leader": "Prakash Adhikari",
+            "symbol": "Spade (Kodalo)",
+            "regDate": "2073-08-30",
+            "status": "Extra-Parliamentary",
+            "ranking": {
+                "overall": 22,
+                "electoral_power": 35,
+                "historical_legacy": 2,
+                "popularity_index": 45
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 2235,
+                "pr_vote_percentage": 0.02,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 12,
+            "name": "Nepal Janata Party",
+            "shortName": "NJP",
+            "leader": "Tribhuvan Nath Pathak",
+            "symbol": "Lotus",
+            "regDate": "2073-08-30",
+            "status": "Local Presence",
+            "ranking": {
+                "overall": 23,
+                "electoral_power": 32,
+                "historical_legacy": 3,
+                "popularity_index": 30
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 4500,
+                "pr_vote_percentage": 0.04,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0,
+                "local_heads": 2
+            }
+        },
+        {
+            "id": 16,
+            "name": "Nepal Naulo Janwadi Party",
+            "shortName": "NNJP",
+            "leader": "Dr. Ganga Lal Shrestha",
+            "symbol": "Pigeon with Letter",
+            "regDate": "2073-08-30",
+            "status": "Extra-Parliamentary",
+            "ranking": {
+                "overall": 24,
+                "electoral_power": 40,
+                "historical_legacy": 4,
+                "popularity_index": 50
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 17902,
+                "pr_vote_percentage": 0.17,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0,
+                "special_note": "Votes combined with allied smaller groups in 2022."
+            }
+        },
+        {
+            "id": 5,
+            "name": "United Nepal Democratic Party",
+            "shortName": "UNDP",
+            "leader": "Shree Muskan Paudel",
+            "symbol": "Male Figure",
+            "regDate": "2073-08-30",
+            "status": "Inactive/Small",
+            "ranking": {
+                "overall": 25,
+                "electoral_power": 110,
+                "historical_legacy": 4,
+                "popularity_index": 95
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 0,
+                "pr_vote_percentage": 0.0,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 11,
+            "name": "Nepali Greens Party",
+            "shortName": "NGP",
+            "leader": "Babukaji Shrestha",
+            "symbol": "Himalaya",
+            "regDate": "2073-08-30",
+            "status": "Niche/Small",
+            "ranking": {
+                "overall": 26,
+                "electoral_power": 90,
+                "historical_legacy": 4,
+                "popularity_index": 60
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 1200,
+                "pr_vote_percentage": 0.01,
+                "national_assembly_seats": 0,
+                "provincial_seats_total": 0
+            }
+        },
+        {
+            "id": 1,
+            "name": "Nepal Majdoor Kishan Party",
+            "shortName": "NMKP",
+            "leader": "Narayan Man Bijukchhe (Rohit)",
+            "symbol": "Madal",
+            "regDate": "2073-08-30",
+            "status": "Regional Strength",
+            "ranking": {
+                "overall": 27,
+                "electoral_power": 15,
+                "historical_legacy": 2,
+                "popularity_index": 18
+            },
+            "performance": {
+                "total_seats_hor": 1,
+                "fptp_seats": 1,
+                "pr_seats": 0,
+                "pr_votes_2022": 75168,
+                "pr_vote_percentage": 0.71,
+                "provincial_seats_total": 3,
+                "local_heads": 1,
+                "special_note": "Absolute dominance in Bhaktapur; unique North Korean-style development model."
+            }
+        },
+        {
+            "id": 24,
+            "name": "Rastriya Janamorcha",
+            "shortName": "RJM",
+            "leader": "Chitra Bahadur K.C.",
+            "symbol": "Glass",
+            "regDate": "2073-08-30",
+            "status": "Parliamentary",
+            "ranking": {
+                "overall": 28,
+                "electoral_power": 20,
+                "historical_legacy": 3,
+                "popularity_index": 25
+            },
+            "performance": {
+                "total_seats_hor": 1,
+                "fptp_seats": 1,
+                "pr_seats": 0,
+                "pr_votes_2022": 46504,
+                "pr_vote_percentage": 0.44,
+                "national_assembly_seats": 1,
+                "provincial_seats_total": 1,
+                "special_note": "Staunchly anti-federalist; holds strategic power in Baglung/Pyuthan."
+            }
+        },
+        {
+            "id": 89,
+            "name": "Terai-Madhesh Loktantrik Party",
+            "shortName": "TMLP",
+            "leader": "Brikhesh Chandra Lal",
+            "symbol": "Pitcher with Coconut",
+            "regDate": "2078-08-09",
+            "status": "Regional/Madhesh",
+            "ranking": {
+                "overall": 29,
+                "electoral_power": 45,
+                "historical_legacy": 4,
+                "popularity_index": 15
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 7486,
+                "pr_vote_percentage": 0.07,
+                "local_heads": 1,
+                "special_note": "Revived in 2021 by veterans who left LSP. Strong in Mahottari local levels."
+            }
+        },
+        {
+            "id": 22,
+            "name": "Sanghiya Loktantrik Rastriya Manch",
+            "shortName": "SLRM",
+            "leader": "Kumar Lingden",
+            "symbol": "Khukuri in Sheath",
+            "regDate": "2073-08-30",
+            "status": "Regional/Limbuwan",
+            "ranking": {
+                "overall": 30,
+                "electoral_power": 50,
+                "historical_legacy": 4,
+                "popularity_index": 22
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 3406,
+                "pr_vote_percentage": 0.03,
+                "provincial_seats_total": 0,
+                "special_note": "Primary advocate for Limbuwan state; consistently influential in Koshi Province politics."
+            }
+        },
+        {
+            "id": 75,
+            "name": "Nepal Sadbhavana Party",
+            "shortName": "NSP",
+            "leader": "Ram Naresh Raya (Acting)",
+            "symbol": "Palm Print",
+            "regDate": "2076-08-26",
+            "status": "Legacy/Madhesh",
+            "ranking": {
+                "overall": 31,
+                "electoral_power": 60,
+                "historical_legacy": 2,
+                "popularity_index": 40
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 5200,
+                "pr_vote_percentage": 0.05,
+                "special_note": "The original party of the Madhesh movement (Gajendra Narayan Singh heritage)."
+            }
+        },
+        {
+            "id": 20,
+            "name": "Janadhikar Forum Madhesi",
+            "shortName": "JFM",
+            "leader": "Bhagyanath Prasad Sah",
+            "symbol": "Spinning Wheel (Charkha)",
+            "regDate": "2073-08-30",
+            "status": "Inactive/Legacy",
+            "ranking": {
+                "overall": 32,
+                "electoral_power": 120,
+                "historical_legacy": 3,
+                "popularity_index": 90
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 0,
+                "pr_vote_percentage": 0.0
+            }
+        },
+        {
+            "id": 26,
+            "name": "Bahujan Shakti Party",
+            "shortName": "BSP-Nepal",
+            "leader": "Biswendra Paswan",
+            "symbol": "Jug",
+            "regDate": "2073-08-30",
+            "status": "Active (Dalit Rights)",
+            "ranking": {
+                "overall": 33,
+                "electoral_power": 45,
+                "historical_legacy": 3,
+                "popularity_index": 35
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 9435,
+                "pr_vote_percentage": 0.09,
+                "special_note": "A vocal advocate for 14% Dalit representation in state apparatus."
+            }
+        },
+        {
+            "id": 32,
+            "name": "Bahujan Samaj Party Nepal",
+            "shortName": "BSPN",
+            "leader": "Ganga Prasad Mahara",
+            "symbol": "Giraffe",
+            "regDate": "2073-08-30",
+            "status": "Active",
+            "ranking": {
+                "overall": 34,
+                "electoral_power": 55,
+                "historical_legacy": 4,
+                "popularity_index": 42
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 1200,
+                "pr_vote_percentage": 0.01,
+                "special_note": "Inspired by India's BSP; historically low vote share but consistent presence."
+            }
+        },
+        {
+            "id": 11,
+            "name": "Nepali Greens Party",
+            "shortName": "NGP",
+            "leader": "Babukaji Shrestha",
+            "symbol": "Himalaya",
+            "regDate": "2073-08-30",
+            "status": "Active (Environmental)",
+            "ranking": {
+                "overall": 35,
+                "electoral_power": 70,
+                "historical_legacy": 4,
+                "popularity_index": 28
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 1500,
+                "pr_vote_percentage": 0.01,
+                "special_note": "Focused on climate justice; gaining traction in Kathmandu's environmental circles."
+            }
+        },
+        {
+            "id": 18,
+            "name": "Nepal Communist Party (Marxist)",
+            "shortName": "NCP-M",
+            "leader": "Ambika Prasad Chaulagain",
+            "symbol": "Spade (Kodalo)",
+            "regDate": "2073-08-30",
+            "status": "Merged (Nov 2025)",
+            "ranking": {
+                "overall": 36,
+                "electoral_power": 136,
+                "historical_legacy": 2,
+                "popularity_index": 136
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "special_note": "Merged into the unified 'Nepali Communist Party' (id: 116) on Nov 5, 2025."
+            }
+        },
+        {
+            "id": 25,
+            "name": "Shiva Sena Nepal",
+            "shortName": "SSN",
+            "leader": "Anil Basnet",
+            "symbol": "Damaru",
+            "regDate": "2073-08-30",
+            "status": "Active (Religious)",
+            "ranking": {
+                "overall": 37,
+                "electoral_power": 60,
+                "historical_legacy": 3,
+                "popularity_index": 33
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 4200,
+                "pr_vote_percentage": 0.04
+            }
+        },
+        {
+            "id": 44,
+            "name": "Nepa: Rastriya Party",
+            "shortName": "NRP",
+            "leader": "Dr. Vijay Prakash Saiju",
+            "symbol": "Ring",
+            "regDate": "2073-08-30",
+            "status": "Active (Ethnic/Newar)",
+            "ranking": {
+                "overall": 38,
+                "electoral_power": 50,
+                "historical_legacy": 3,
+                "popularity_index": 45
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "fptp_seats": 0,
+                "pr_seats": 0,
+                "pr_votes_2022": 8200,
+                "pr_vote_percentage": 0.07,
+                "special_note": "Strong advocacy for Nepal Bhasa and Newar rights in Kathmandu valley."
+            }
         },
         {
             "id": 116,
-            "name": "Nepal Communist Party (Maoist)",
+            "name": "Nepali Communist Party",
+            "shortName": "NCP",
             "leader": "Pushpa Kamal Dahal (Coordinator)",
             "symbol": "Rose in Circle",
-            "regDate": "2082-08-02"
+            "regDate": "2082-08-02",
+            "status": "National Party (Unified)",
+            "ranking": {
+                "overall": 66,
+                "electoral_power": 3,
+                "historical_legacy": 1,
+                "popularity_index": 5
+            },
+            "performance": {
+                "total_seats_hor": 42,
+                "pr_votes_2022_aggregate": 1474075,
+                "special_note": "A massive unified block formed on Nov 5, 2025, merging the Maoist Centre, Unified Socialist, and 8 other groups."
+            }
         },
         {
-            "id": 117,
-            "name": "Rastra Nirman Dal Nepal",
-            "leader": "Akbar Khan",
-            "symbol": "Water Bottle in Circle",
-            "regDate": "2082-08-03"
+            "id": 91,
+            "name": "Aam Janata Party",
+            "shortName": "AJP",
+            "leader": "Prabhu Sah",
+            "symbol": "Mobile Phone",
+            "regDate": "2078-09-30",
+            "status": "Parliamentary (Active)",
+            "ranking": {
+                "overall": 67,
+                "electoral_power": 67,
+                "historical_legacy": 5,
+                "popularity_index": 12
+            },
+            "performance": {
+                "total_seats_hor": 1,
+                "fptp_seats": 1,
+                "pr_seats": 0,
+                "special_note": "Prabhu Sah remains a highly influential independent-style power broker in Rautahat."
+            }
         },
         {
-            "id": 118,
-            "name": "Rastriya Urjashil Party, Nepal",
-            "leader": "Yogendra Mandal",
-            "symbol": "Tube Well",
-            "regDate": "2082-08-04"
-        },
-        {
-            "id": 119,
-            "name": "People First Party",
-            "leader": "Prashant Singh",
-            "symbol": "Victory Hand Sign",
-            "regDate": "2082-08-05"
+            "id": 94,
+            "name": "Pragatisheel Loktantrik Party",
+            "shortName": "PLP",
+            "leader": "Baburam Bhattarai",
+            "symbol": "Open Eye",
+            "regDate": "2078-11-05",
+            "status": "Strategic Front",
+            "ranking": {
+                "overall": 68,
+                "electoral_power": 80,
+                "historical_legacy": 2,
+                "popularity_index": 18
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "special_note": "A minority splinter following the Nov 2025 merger, focusing on intellectual socialist discourse."
+            }
         },
         {
             "id": 120,
             "name": "Ujyalo Nepal Party",
-            "leader": "Anup Kumar Upadhyay",
+            "shortName": "UNP",
+            "leader": "Kul Man Ghising (Unofficial Figurehead)",
             "symbol": "Lit Bulb",
-            "regDate": "2082-08-05"
+            "regDate": "2082-08-05",
+            "status": "Emerging/Anti-Corruption",
+            "ranking": {
+                "overall": 69,
+                "electoral_power": 136,
+                "historical_legacy": 5,
+                "popularity_index": 4
+            },
+            "performance": {
+                "special_note": "New for 2026. Leveraging the 'Loadshedding-end' legacy; high urban traction."
+            }
         },
         {
-            "id": 121,
-            "name": "Swabhiman Party",
-            "leader": "Satyawan Kumar Singh",
-            "symbol": "Woman Carrying Crops",
-            "regDate": "2082-08-07"
+            "id": 108,
+            "name": "Rastriya Mukti Party Nepal",
+            "shortName": "RMPN",
+            "leader": "Rajendra Mahato",
+            "symbol": "Gas Cylinder",
+            "regDate": "2081-10-08",
+            "status": "Regional (Madhesh)",
+            "ranking": {
+                "overall": 70,
+                "electoral_power": 75,
+                "historical_legacy": 3,
+                "popularity_index": 15
+            },
+            "performance": {
+                "special_note": "Focuses on 'Samyukta Rashtrabadi' ideology, pulling veteran votes from JSP and LSP."
+            }
+        },
+        {
+            "id": 53,
+            "name": "Rastrabadi Yuva Morcha",
+            "shortName": "RYM",
+            "leader": "Shyam Kumar Thapa",
+            "symbol": "Spectacles",
+            "regDate": "2073-08-30",
+            "status": "Seniority/Inactive",
+            "ranking": {
+                "overall": 71,
+                "electoral_power": 120,
+                "historical_legacy": 4,
+                "popularity_index": 110
+            },
+            "performance": {
+                "pr_votes_2022": 450,
+                "pr_vote_percentage": 0.00
+            }
+        },
+        {
+            "id": 70,
+            "name": "Rastriya Prajatantra Party Nepal",
+            "shortName": "RPP-N",
+            "leader": "Kamal Thapa",
+            "symbol": "Arrow",
+            "regDate": "2075-12-25",
+            "status": "Active (Right-wing)",
+            "ranking": {
+                "overall": 72,
+                "electoral_power": 72,
+                "historical_legacy": 2,
+                "popularity_index": 12
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "pr_votes_2022": 12340,
+                "pr_vote_percentage": 0.12,
+                "election_2026_status": "Contesting",
+                "special_note": "Re-established by Kamal Thapa after leaving the main RPP. Heavily active in Makwanpur."
+            }
+        },
+        {
+            "id": 63,
+            "name": "Nepali Congress (B.P.)",
+            "shortName": "NC-BP",
+            "leader": "Sushil Man Sherchan",
+            "symbol": "Karuwa",
+            "regDate": "2074-03-30",
+            "status": "Active (Legacy Splinter)",
+            "ranking": {
+                "overall": 73,
+                "electoral_power": 75,
+                "historical_legacy": 3,
+                "popularity_index": 45
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "pr_votes_2022": 12502,
+                "pr_vote_percentage": 0.12,
+                "election_2026_status": "Contesting"
+            }
+        },
+        {
+            "id": 35,
+            "name": "Nepali Janata Dal",
+            "shortName": "NJD",
+            "leader": "Hari Charan Sah",
+            "symbol": "Whistle",
+            "regDate": "2073-08-30",
+            "status": "Active",
+            "ranking": {
+                "overall": 74,
+                "electoral_power": 80,
+                "historical_legacy": 4,
+                "popularity_index": 65
+            },
+            "performance": {
+                "total_seats_hor": 0,
+                "pr_votes_2022": 10137,
+                "pr_vote_percentage": 0.10,
+                "election_2026_status": "Contesting"
+            }
+        },
+        {
+            "id": 51,
+            "name": "Trimul Nepal",
+            "shortName": "TN",
+            "leader": "Bharatmani Dahal",
+            "symbol": "Tripod (Odan)",
+            "regDate": "2073-08-30",
+            "status": "Active",
+            "ranking": {
+                "overall": 75,
+                "electoral_power": 110,
+                "historical_legacy": 5,
+                "popularity_index": 90
+            },
+            "performance": {
+                "pr_votes_2022": 2500,
+                "election_2026_status": "Registered"
+            }
+        },
+        {
+            "id": 41,
+            "name": "Akhanda Sudurpaschim Party Nepal",
+            "shortName": "ASPN",
+            "leader": "Khagendra Raj Awasthi",
+            "symbol": "Teapot",
+            "regDate": "2073-08-30",
+            "status": "Regional Splinter",
+            "ranking": {
+                "overall": 76,
+                "electoral_power": 95,
+                "historical_legacy": 4,
+                "popularity_index": 80
+            },
+            "performance": {
+                "special_note": "A regional advocacy group for the Far-West; most members absorbed by larger parties for 2026."
+            }
+        },
+        {
+            "id": 40,
+            "name": "Miteri Party Nepal",
+            "shortName": "MPN",
+            "leader": "Khadka Bahadur Dewan",
+            "symbol": "Horse",
+            "regDate": "2073-08-30",
+            "status": "Active",
+            "ranking": {
+                "overall": 77,
+                "electoral_power": 85,
+                "historical_legacy": 5,
+                "popularity_index": 55
+            },
+            "performance": {
+                "pr_votes_2022": 7043,
+                "pr_vote_percentage": 0.07,
+                "election_2026_status": "Contesting"
+            }
+        },
+        {
+            "id": 113,
+            "name": "Pragatisheel Loktantrik Party",
+            "shortName": "PDP",
+            "leader": "Baburam Bhattarai / Santosh Pariyar",
+            "symbol": "Open Eye",
+            "regDate": "2082-08-20",
+            "status": "Active (Reformist)",
+            "ranking": {
+                "overall": 101,
+                "electoral_power": 101,
+                "historical_legacy": 2,
+                "popularity_index": 5
+            },
+            "performance": {
+                "total_seats_hor": 1,
+                "election_2026_status": "Contesting",
+                "special_note": "Formed Nov 20, 2025. Merged Baburam's NSP with Janardan Sharma's youth campaign. Santosh Pariyar (ex-RSP) serves as Spokesperson."
+            }
+        },
+        {
+            "id": 120,
+            "name": "Ujyalo Nepal Party",
+            "shortName": "UNP",
+            "leader": "Anup Kumar Upadhyay",
+            "symbol": "Lit Bulb",
+            "regDate": "2082-08-05",
+            "status": "Active (Technocratic)",
+            "ranking": {
+                "overall": 102,
+                "electoral_power": 120,
+                "historical_legacy": 5,
+                "popularity_index": 4
+            },
+            "performance": {
+                "election_2026_status": "Contesting",
+                "special_note": "Gained massive traction post-protest; primary focus is 'Energy Independence & Governance'."
+            }
         },
         {
             "id": 122,
             "name": "Hamro Party Nepal",
+            "shortName": "HPN",
             "leader": "Khagendra Sunar",
-            "symbol": "Like Sign (Thumbs Up)",
-            "regDate": "2082-08-07"
+            "symbol": "Thumbs Up",
+            "regDate": "2082-08-07",
+            "status": "Active (Gen-Z)",
+            "ranking": {
+                "overall": 103,
+                "electoral_power": 122,
+                "historical_legacy": 5,
+                "popularity_index": 9
+            },
+            "performance": {
+                "election_2026_status": "Contesting",
+                "special_note": "A primary vehicle for Dalit youth and anti-discrimination activists."
+            }
         },
         {
-            "id": 123,
-            "name": "Nagarik Sarbochchata Party Nepal",
-            "leader": "Ratna Prasad Shrestha",
-            "symbol": "Fist Holding Paddy",
-            "regDate": "2082-08-07"
-        },
-        {
-            "id": 124,
-            "name": "Janadesh Party Nepal",
-            "leader": "Raman Kumar Karna",
-            "symbol": "Hand Holding Mic",
-            "regDate": "2082-08-08"
-        },
-        {
-            "id": 125,
-            "name": "Sarvabhaum Nagarik Party",
-            "leader": "Ganesh Kumar Mandal",
-            "symbol": "24 Spoke Wheel",
-            "regDate": "2082-08-08"
-        },
-        {
-            "id": 126,
-            "name": "Nagarik Sewa Party",
-            "leader": "Shreya KC",
-            "symbol": "Scooter",
-            "regDate": "2082-08-08"
-        },
-        {
-            "id": 127,
-            "name": "Jay Matribhumi Party",
-            "leader": "Suresh Kumar Karki",
-            "symbol": "Mother with Child",
-            "regDate": "2082-08-09"
-        },
-        {
-            "id": 128,
-            "name": "Pragatisheel Nagarik Party",
-            "leader": "Sabin Sigdel",
-            "symbol": "Plant Sprouting",
-            "regDate": "2082-08-10"
-        },
-        {
-            "id": 129,
-            "name": "Sarvodaya Party",
-            "leader": "Deepak Kumar Sah",
-            "symbol": "Corn Cob",
-            "regDate": "2082-08-10"
-        },
-        {
-            "id": 130,
-            "name": "Samunnat Nepal Party",
-            "leader": "Sarbendra Khanal",
-            "symbol": "Men/Women Shaking Hands",
-            "regDate": "2082-08-10"
-        },
-        {
-            "id": 131,
-            "name": "Nagarik Bachau Dal, Nepal",
-            "leader": "Madhav Prasad Khatiwada",
-            "symbol": "Rabbit",
-            "regDate": "2082-08-11"
-        },
-        {
-            "id": 132,
-            "name": "Nepal Janasewa Party",
-            "leader": "Prakash Khadka",
-            "symbol": "Shoes (Black & White)",
-            "regDate": "2082-08-11"
-        },
-        {
-            "id": 133,
-            "name": "Samabeshi Samajwadi Party",
-            "leader": "Numa Limbu",
-            "symbol": "Shrivatsa",
-            "regDate": "2082-08-14"
-        },
-        {
-            "id": 134,
-            "name": "Aawaj Party",
-            "leader": "Balram Thapa Magar",
-            "symbol": "Ear Listening",
-            "regDate": "2082-08-14"
-        },
-        {
-            "id": 135,
-            "name": "Janata Loktantrik Party, Nepal",
-            "leader": "Ashok Kumar Yadav",
-            "symbol": "Buffalo",
-            "regDate": "2082-08-14"
+            "id": 104,
+            "name": "National Republic Nepal",
+            "shortName": "NRN",
+            "leader": "Thamman Bahadur Budha Magar",
+            "symbol": "Flying Bee",
+            "regDate": "2080-11-09",
+            "status": "Active (Republican)",
+            "ranking": {
+                "overall": 104,
+                "electoral_power": 104,
+                "historical_legacy": 5,
+                "popularity_index": 50
+            },
+            "performance": {
+                "pr_votes_2022": 0,
+                "election_2026_status": "Registered"
+            }
         },
         {
             "id": 136,
             "name": "Jan Adhikar Party",
+            "shortName": "JAP",
             "leader": "Sharad Singh Yadav",
             "symbol": "Not Listed",
-            "regDate": "2082-08-14"
+            "regDate": "2082-08-14",
+            "status": "New Registration",
+            "ranking": {
+                "overall": 105,
+                "electoral_power": 136,
+                "historical_legacy": 5,
+                "popularity_index": 120
+            },
+            "performance": {
+                "special_note": "Last registered party in the current EC list for the 2026 cycle."
+            }
         }
     ],
     "districts": [
@@ -973,6 +1259,32 @@
             "province": "Koshi",
             "status": "declared",
             "winner": "nepali-congress"
+        }
+    ],
+    "candidates": [
+        {
+            "name": "Gagan Thapa",
+            "slug": "gagan-thapa",
+            "party": "nepali-congress",
+            "constituency": "Kathmandu-4",
+            "district": "Kathmandu",
+            "bio": "General Secretary of Nepali Congress and former Health Minister.",
+            "photo": "/images/candidates/gagan.jpg",
+            "incumbent": true,
+            "status": "active",
+            "votes": 25000
+        },
+        {
+            "name": "Rajan Bhattarai",
+            "slug": "rajan-bhattarai",
+            "party": "cpn-uml",
+            "constituency": "Kathmandu-4",
+            "district": "Kathmandu",
+            "bio": "UML central committee member and foreign affairs expert.",
+            "photo": "/images/candidates/rajan.jpg",
+            "incumbent": false,
+            "status": "active",
+            "votes": 22000
         }
     ],
     "candidates": [

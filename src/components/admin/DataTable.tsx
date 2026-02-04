@@ -13,36 +13,10 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Search, Trash } from "lucide-react"
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Search, Trash, ChevronLeft, ChevronRight } from "lucide-react"
 
-import { Button } from "@/components/ui/button" // Need to check if UI components exist or create custom
-// Since user project is clean, I probably don't have shadcn components installed.
-// I'll Use standard tailwind elements instead of generic imports that might fail.
-
-function ButtonCustom({ children, className, variant = "primary", size = "md", ...props }: any) {
-    const base = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background";
-    const variants = {
-        primary: "bg-blue-600 text-white hover:bg-blue-700",
-        outline: "border border-input hover:bg-accent hover:text-accent-foreground dark:border-gray-700",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        destructive: "bg-red-500 text-white hover:bg-red-600",
-    };
-    const sizes = {
-        sm: "h-9 px-3",
-        md: "h-10 py-2 px-4",
-        icon: "h-10 w-10",
-    };
-    return <button className={`${base} ${variants[variant as keyof typeof variants]} ${sizes[size as keyof typeof sizes]} ${className}`} {...props}>{children}</button>
-}
-
-function InputCustom({ className, ...props }: any) {
-    return (
-        <input
-            className={`flex h-10 w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:border-gray-700 dark:text-white ${className}`}
-            {...props}
-        />
-    )
-}
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -86,48 +60,47 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="w-full space-y-4">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 w-full max-w-sm">
-                    <Search className="h-4 w-4 text-gray-500" />
-                    {searchKey && (
-                        <InputCustom
-                            placeholder={`Search...`}
-                            value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
-                            onChange={(event: any) =>
-                                table.getColumn(searchKey)?.setFilterValue(event.target.value)
-                            }
-                            className="max-w-sm"
-                        />
-                    )}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 border-b border-border bg-card">
+                <div className="relative w-full max-w-sm">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    <Input
+                        placeholder="SEARCH RECORDS..."
+                        value={(table.getColumn(searchKey || "")?.getFilterValue() as string) ?? ""}
+                        onChange={(event) =>
+                            table.getColumn(searchKey || "")?.setFilterValue(event.target.value)
+                        }
+                        className="pl-9 h-10 rounded-none border-border font-mono text-xs uppercase tracking-wider placeholder:text-muted-foreground/50 focus-visible:ring-primary"
+                    />
                 </div>
 
                 <div className="flex items-center gap-2">
                     {selectedRows.length > 0 && onDelete && (
-                        <ButtonCustom
+                        <Button
                             variant="destructive"
                             size="sm"
+                            className="rounded-none font-mono uppercase text-xs h-10 animate-in fade-in"
                             onClick={() => {
                                 const originalRows = selectedRows.map(row => row.original);
                                 onDelete(originalRows);
                                 setRowSelection({});
                             }}
                         >
-                            <Trash className="mr-2 h-4 w-4" />
+                            <Trash className="mr-2 h-3.5 w-3.5" />
                             Delete ({selectedRows.length})
-                        </ButtonCustom>
+                        </Button>
                     )}
                 </div>
             </div>
 
-            <div className="rounded-md border dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
+            <div className="border-t border-b border-border bg-card overflow-hidden">
                 <div className="relative w-full overflow-auto">
                     <table className="w-full caption-bottom text-sm">
-                        <thead className="[&_tr]:border-b dark:[&_tr]:border-gray-800">
+                        <thead className="[&_tr]:border-b [&_tr]:border-border">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
                                     {headerGroup.headers.map((header) => {
                                         return (
-                                            <th key={header.id} className="h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0">
+                                            <th key={header.id} className="h-10 px-4 text-left align-middle font-bebas tracking-wide text-lg text-muted-foreground font-normal [&:has([role=checkbox])]:pr-0 uppercase">
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
@@ -140,13 +113,13 @@ export function DataTable<TData, TValue>({
                                 </tr>
                             ))}
                         </thead>
-                        <tbody className="[&_tr:last-child]:border-0">
+                        <tbody className="[&_tr:last-child]:border-0 font-manrope">
                             {table.getRowModel().rows?.length ? (
                                 table.getRowModel().rows.map((row) => (
                                     <tr
                                         key={row.id}
                                         data-state={row.getIsSelected() && "selected"}
-                                        className="border-b transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50 data-[state=selected]:bg-muted dark:border-gray-800"
+                                        className="border-b border-border/50 transition-colors hover:bg-muted/30 data-[state=selected]:bg-muted"
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <td key={cell.id} className="p-4 align-middle [&:has([role=checkbox])]:pr-0">
@@ -162,9 +135,9 @@ export function DataTable<TData, TValue>({
                                 <tr>
                                     <td
                                         colSpan={columns.length}
-                                        className="h-24 text-center text-gray-500"
+                                        className="h-32 text-center text-muted-foreground font-mono text-sm uppercase tracking-wide"
                                     >
-                                        No results.
+                                        No results found.
                                     </td>
                                 </tr>
                             )}
@@ -173,28 +146,33 @@ export function DataTable<TData, TValue>({
                 </div>
             </div>
 
-            <div className="flex items-center justify-end space-x-2 py-4">
-                <div className="flex-1 text-sm text-muted-foreground">
+            <div className="flex items-center justify-between px-4 py-2 border-t border-border bg-muted/20">
+                <div className="flex-1 text-xs font-mono text-muted-foreground uppercase tracking-wide">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
                     {table.getFilteredRowModel().rows.length} row(s) selected.
                 </div>
-                <div className="space-x-2">
-                    <ButtonCustom
+                <div className="flex items-center space-x-2">
+                    <Button
                         variant="outline"
                         size="sm"
+                        className="rounded-none h-8 w-8 p-0"
                         onClick={() => table.previousPage()}
                         disabled={!table.getCanPreviousPage()}
                     >
-                        Previous
-                    </ButtonCustom>
-                    <ButtonCustom
+                        <ChevronLeft className="h-4 w-4" />
+                    </Button>
+                    <div className="text-xs font-mono font-bold mx-2">
+                        PAGE {table.getState().pagination.pageIndex + 1}
+                    </div>
+                    <Button
                         variant="outline"
                         size="sm"
+                        className="rounded-none h-8 w-8 p-0"
                         onClick={() => table.nextPage()}
                         disabled={!table.getCanNextPage()}
                     >
-                        Next
-                    </ButtonCustom>
+                        <ChevronRight className="h-4 w-4" />
+                    </Button>
                 </div>
             </div>
         </div>

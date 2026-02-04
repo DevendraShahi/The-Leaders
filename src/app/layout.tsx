@@ -49,59 +49,57 @@ const knight = localFont({
 
 import { constructMetadata } from "@/lib/metadata";
 
-export const metadata = constructMetadata({
-  title: "The Leaders",
-  description: "A comprehensive digital platform showcasing the life, achievements, and political legacy of Rt. Hon. Sher Bahadur Deuba, former Prime Minister of Nepal and President of Nepali Congress.",
-  canonical: "/",
-  keywords: [
-    "political biography",
-    "Nepal history",
-    "democratic leadership",
-    "Nepal Congress party",
-    "election 2026",
-    "Nepal manifesto",
-  ],
-});
+
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { FontProvider } from "@/components/font-provider";
 import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
 import { CustomCursor } from "@/components/ui/custom-cursor";
+import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
 
 // ... existing imports
 
 import { headers } from "next/headers";
-import { getSettings } from "@/lib/settings";
-import MaintenancePage from "@/components/common/MaintenancePage";
+import { getSettings } from "@/lib/maintenance-check";
+import MaintenanceGuard from "@/components/layout/MaintenanceGuard";
+import LayoutStructureWrapper from "@/components/layout/LayoutStructureWrapper";
+import { Toaster } from "@/components/ui/sonner";
 
 // ... existing imports
+
+export async function generateMetadata() {
+  const settings = await getSettings();
+
+  return constructMetadata({
+    title: settings?.siteName?.en || "The Leaders",
+    description: settings?.siteDescription?.en || "A comprehensive digital platform showcasing the life, achievements, and political legacy of Rt. Hon. Sher Bahadur Deuba.",
+    canonical: "/",
+    keywords: settings?.metaKeywords || [
+      "political biography",
+      "Nepal history",
+      "democratic leadership",
+      "Nepal Congress party",
+      "election 2026",
+      "Nepal manifesto",
+    ],
+    icons: settings?.faviconUrl ? {
+      icon: settings.faviconUrl,
+      shortcut: settings.faviconUrl,
+      apple: settings.faviconUrl,
+    } : undefined
+  });
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || "";
-
-  // Fetch settings
+  // Fetch settings for client-side maintenance check & social links
   const settings = await getSettings();
-  const isMaintenanceMode = settings?.maintenanceMode || false;
-  const isAdminRoute = pathname.startsWith("/admin") || pathname.startsWith("/api/admin") || pathname.startsWith("/api/auth");
-
-  // Bypass maintenance for admin routes or if disabled
-  const showContent = !isMaintenanceMode || isAdminRoute;
-
-  if (!showContent) {
-    return (
-      <html lang="en" suppressHydrationWarning>
-        <body className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} ${knight.variable} antialiased bg-background text-foreground`}>
-          <MaintenancePage />
-        </body>
-      </html>
-    );
-  }
+  const maintenanceSettings = settings?.maintenance || null;
+  const socialLinks = settings?.socialLinks || [];
 
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
@@ -115,15 +113,19 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <FontProvider>
-            <CustomCursor />
-            <Navbar />
-            <main className="min-h-screen py-[2.5rem] md:py-18">
-              {children}
-            </main>
-            <Footer />
+            <GlobalLoadingProvider>
+              <MaintenanceGuard maintenanceSettings={maintenanceSettings}>
+                <CustomCursor />
+                <LayoutStructureWrapper socialLinks={socialLinks}>
+                  {children}
+                </LayoutStructureWrapper>
+
+              </MaintenanceGuard>
+              <Toaster position="bottom-right" />
+            </GlobalLoadingProvider>
           </FontProvider>
         </ThemeProvider>
       </body>
-    </html>
+    </html >
   );
 }

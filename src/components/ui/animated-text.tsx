@@ -18,7 +18,7 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
     const quickToRefs = useRef<any[]>([]);
 
     useEffect(() => {
-        setIsMounted(true);
+        const mountTimer = setTimeout(() => setIsMounted(true), 0);
 
         if (!containerRef.current) return;
 
@@ -166,13 +166,21 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
 
         const handleMouseMove = (e: MouseEvent) => {
             cursorRef.current = { x: e.clientX, y: e.clientY };
-            requestAnimationFrame(updateLetterPositions);
+            // Simple throttle for RAF
+            if (!container.dataset.ticking) {
+                container.dataset.ticking = "true";
+                requestAnimationFrame(() => {
+                    updateLetterPositions();
+                    if (container) delete container.dataset.ticking;
+                });
+            }
         };
 
         window.addEventListener("mousemove", handleMouseMove);
 
         // Cleanup
         return () => {
+            clearTimeout(mountTimer);
             window.removeEventListener("mousemove", handleMouseMove);
             gsap.killTweensOf(letters);
             gsap.killTweensOf(container);

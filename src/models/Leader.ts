@@ -3,29 +3,29 @@ import mongoose, { Schema, Model, models } from "mongoose";
 export interface ILeader {
     _id?: string;
     slug: string; // URL friendly ID
-    name: string | {
+    name: {
         en: string;
         ne: string;
     };
     // Description / Short bio for cards
-    desc: string | {
+    desc: {
         en: string;
         ne: string;
     };
-    bio: string | {
+    bio: {
         en: string;
         ne: string;
     };
-    party: string | {
+    party: {
         en: string;
         ne: string;
     };
-    position: string | {
+    position: {
         en: string;
         ne: string; // Role like 'The Voice', 'The Democratic Spirit'
     };
     // Era / Years active or lifespan e.g. "1914 - 1982"
-    years: string | {
+    years: {
         en: string;
         ne: string;
     };
@@ -33,15 +33,15 @@ export interface ILeader {
     cover: string; // Cover/Background image
 
     // Key Stats (flexible key-value pairs)
-    stats: Record<string, string> | {
-        en: Record<string, string>;
-        ne: Record<string, string>;
-    };
+    stats: Record<string, {
+        en: string;
+        ne: string;
+    }>;
 
     // Timeline events
     timeline: {
         year: string;
-        event: string | {
+        event: {
             en: string;
             ne: string;
         };
@@ -67,24 +67,48 @@ export interface ILeader {
     lastModifiedBy?: mongoose.Types.ObjectId;
 }
 
+
+
 const LeaderSchema = new Schema<ILeader>(
     {
         slug: { type: String, required: true, unique: true, index: true },
-        name: { type: Schema.Types.Mixed, required: true },
-        desc: { type: Schema.Types.Mixed, required: true },
-        bio: { type: Schema.Types.Mixed, required: true },
-        party: { type: Schema.Types.Mixed, required: true },
-        position: { type: Schema.Types.Mixed, required: true },
-        years: { type: Schema.Types.Mixed, required: true },
+        name: {
+            en: { type: String, default: '', required: false },
+            ne: { type: String, default: '', required: false }
+        },
+        desc: {
+            en: { type: String, default: '', required: false },
+            ne: { type: String, default: '', required: false }
+        },
+        bio: {
+            en: { type: String, default: '', required: false },
+            ne: { type: String, default: '', required: false }
+        },
+        party: {
+            en: { type: String, default: '', required: false },
+            ne: { type: String, default: '', required: false }
+        },
+        position: {
+            en: { type: String, default: '', required: false },
+            ne: { type: String, default: '', required: false }
+        },
+        years: {
+            en: { type: String, default: '', required: false },
+            ne: { type: String, default: '', required: false }
+        },
 
         image: { type: String, required: false, default: '' },
         cover: { type: String, required: false, default: '' },
 
-        stats: { type: Schema.Types.Mixed },
+        // New Dynamic Stats Structure (Mixed to support legacy Object data during migration)
+        stats: { type: Schema.Types.Mixed, default: [] },
 
         timeline: [{
             year: { type: String, required: true },
-            event: { type: Schema.Types.Mixed, required: true }
+            event: {
+                en: { type: String, default: '' },
+                ne: { type: String, default: '' }
+            }
         }],
 
         socialLinks: [
@@ -117,6 +141,11 @@ const LeaderSchema = new Schema<ILeader>(
 LeaderSchema.index({ order: 1 });
 LeaderSchema.index({ status: 1 });
 
-const Leader: Model<ILeader> = models.Leader || mongoose.model("Leader", LeaderSchema);
+// Prevent Mongoose overwrite warning in development
+if (mongoose.models.Leader) {
+    delete mongoose.models.Leader;
+}
+
+const Leader: Model<ILeader> = mongoose.model("Leader", LeaderSchema);
 
 export default Leader;

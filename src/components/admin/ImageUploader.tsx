@@ -9,6 +9,7 @@ interface ImageUploaderProps {
     value?: string;
     onChange: (url: string) => void;
     category?: 'article' | 'leader' | 'history' | 'general';
+    folder?: string;
     label?: string;
     className?: string;
 }
@@ -17,6 +18,7 @@ export default function ImageUploader({
     value,
     onChange,
     category = 'general',
+    folder,
     label = "Cover Image",
     className
 }: ImageUploaderProps) {
@@ -60,6 +62,7 @@ export default function ImageUploader({
         const formData = new FormData();
         formData.append('file', file);
         formData.append('category', category);
+        if (folder) formData.append('folder', folder);
 
         try {
             const res = await fetch('/api/admin/media/upload', {
@@ -85,7 +88,7 @@ export default function ImageUploader({
 
     return (
         <div className={className}>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">
                 {label}
             </label>
 
@@ -105,42 +108,42 @@ export default function ImageUploader({
                     onDrop={handleDrop}
                     onClick={() => fileInputRef.current?.click()}
                     className={`
-                        relative border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors
+                        relative border-2 border-dashed rounded-none p-8 text-center cursor-pointer transition-colors
                         ${isDragging
-                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                            : 'border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600'}`}
+                            ? 'border-primary bg-primary/5'
+                            : 'border-border hover:border-primary/50 hover:bg-muted/20'}`}
                 >
                     {isUploading ? (
                         <div className="flex flex-col items-center justify-center py-4">
-                            <Loader2 className="h-10 w-10 text-blue-500 animate-spin mb-2" />
-                            <p className="text-sm text-gray-500">Uploading...</p>
+                            <Loader2 className="h-10 w-10 text-primary animate-spin mb-2" />
+                            <p className="text-xs font-mono uppercase text-muted-foreground">Uploading...</p>
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-4">
-                            <div className="bg-gray-100 dark:bg-gray-800 p-3 rounded-full mb-3">
-                                <Upload className="h-6 w-6 text-gray-500" />
+                            <div className="bg-muted p-3 rounded-full mb-3">
+                                <Upload className="h-6 w-6 text-muted-foreground" />
                             </div>
-                            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <p className="text-sm font-bold font-manrope text-foreground">
                                 Click to upload or drag and drop
                             </p>
-                            <p className="text-xs text-gray-500 mt-1">
-                                SVG, PNG, JPG or GIF (max. 5MB)
+                            <p className="text-[10px] uppercase font-bold text-muted-foreground mt-1 tracking-wider">
+                                SVM, PNG, JPG (Max 5MB)
                             </p>
                         </div>
                     )}
                 </div>
             ) : (
-                <div className="relative rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 group">
+                <div className="relative rounded-none overflow-hidden border border-border bg-muted group">
                     <img
                         src={value}
                         alt="Uploaded preview"
                         className="w-full h-48 object-cover object-center"
                     />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                         <button
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
-                            className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-sm transition-colors"
+                            className="p-2 bg-background/80 hover:bg-background text-foreground rounded-full backdrop-blur-sm transition-colors border border-border"
                             title="Replace Image"
                         >
                             <Upload className="h-5 w-5" />
@@ -148,7 +151,7 @@ export default function ImageUploader({
                         <button
                             type="button"
                             onClick={() => onChange('')}
-                            className="p-2 bg-red-500/80 hover:bg-red-600/80 text-white rounded-full backdrop-blur-sm transition-colors"
+                            className="p-2 bg-destructive/80 hover:bg-destructive text-destructive-foreground rounded-full backdrop-blur-sm transition-colors border border-destructive"
                             title="Remove Image"
                         >
                             <X className="h-5 w-5" />

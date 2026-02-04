@@ -29,7 +29,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
     // Memoized filtering
     const filteredCandidates = useMemo(() => {
-        let results: PRCandidate[] = [];
+        const results: PRCandidate[] = [];
 
         // First flatten
         initialData.forEach(party => {

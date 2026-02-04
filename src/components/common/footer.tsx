@@ -1,8 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Instagram, Twitter, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Twitter, Linkedin, Globe } from "lucide-react";
 
-export function Footer() {
+export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
+    // Map of icon names to components
+    const IconMap: Record<string, any> = {
+        facebook: Facebook,
+        twitter: Twitter,
+        instagram: Instagram,
+        linkedin: Linkedin,
+        youtube: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" /><path d="m10 15 5-3-5-3z" /></svg>
+    };
+
     return (
         <footer className="bg-background border-t border-border mt-auto">
             <div className="container mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-16">
@@ -27,7 +36,7 @@ export function Footer() {
                                 { name: "Leaders", href: "/leaders" },
                                 { name: "History", href: "/history" },
                                 { name: "Election 2026", href: "/election-2026" },
-                                { name: "Parties", href: "/parties" },
+                                { name: "Parties", href: "/election-2026/parties" },
                                 { name: "Timeline", href: "/history" }
                             ].map((item) => (
                                 <li key={item.name}>
@@ -73,15 +82,24 @@ export function Footer() {
                             Subscribe to get the latest biographies and historical insights.
                         </p>
                         <div className="flex gap-4 mt-6">
-                            {[Facebook, Twitter, Instagram, Linkedin].map((Icon, i) => (
-                                <a
-                                    key={i}
-                                    href="#"
-                                    className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
-                                >
-                                    <Icon className="w-5 h-5" />
-                                </a>
-                            ))}
+                            {socialLinks && socialLinks.length > 0 ? (
+                                socialLinks.map((link, i) => {
+                                    const Icon = IconMap[link.platform] || Globe;
+                                    return (
+                                        <a
+                                            key={i}
+                                            href={link.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                                        >
+                                            <Icon className="w-5 h-5" />
+                                        </a>
+                                    );
+                                })
+                            ) : (
+                                <p className="text-sm text-muted-foreground italic">No social links configured.</p>
+                            )}
                         </div>
                     </div>
                 </div>

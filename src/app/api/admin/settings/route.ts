@@ -4,6 +4,8 @@ import Settings from '@/models/Settings';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+export const dynamic = 'force-dynamic';
+
 // GET: Fetch settings
 async function getSettings(request: NextRequest) {
     try {

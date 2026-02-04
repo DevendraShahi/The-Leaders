@@ -3,7 +3,7 @@ import Leader, { ILeader } from "@/models/Leader";
 
 // Helper to serialize Mongoose document
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const serialize = (obj: any) => JSON.parse(JSON.stringify(obj));
+const serialize = (obj: any) => obj ? JSON.parse(JSON.stringify(obj)) : null;
 
 export async function getLeaders() {
     await dbConnect();

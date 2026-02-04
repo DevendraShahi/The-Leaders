@@ -26,7 +26,12 @@ export function FontToggle() {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-10 px-3 hover:bg-primary/10 hover:text-primary gap-2 bg-black/50 border border-transparent hover:border-primary/20">
+                <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-10 px-3 hover:bg-primary/10 hover:text-primary gap-2 bg-black/50 border border-transparent hover:border-primary/20"
+                    suppressHydrationWarning
+                >
                     <Type className="h-5 w-5" />
                     <span className="hidden sm:inline font-bebas tracking-wide text-sm">{FONT_LABELS[currentFont]}</span>
                     <ChevronDown className="h-4 w-4 opacity-50" />
