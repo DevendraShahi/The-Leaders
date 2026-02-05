@@ -14,7 +14,8 @@ import {
     LogOut,
     ChevronLeft,
     Sparkles,
-    UserCog
+    UserCog,
+    Mail
 } from 'lucide-react';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -31,22 +32,15 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
     const pathname = usePathname();
     const { logout, user } = useAuth();
 
-    // All possible navigation items with role restrictions
-    const allNavItems = [
-        { label: 'Dashboard', href: '/admin', icon: LayoutDashboard, roles: ['superadmin', 'cto', 'editorial', 'cmo'] },
-        { label: 'Articles', href: '/admin/content?type=articles', icon: FileText, roles: ['superadmin', 'editorial'] },
-        { label: 'Leaders', href: '/admin/content?type=leaders', icon: Users, roles: ['superadmin', 'editorial'] },
-        { label: 'History', href: '/admin/content?type=history', icon: History, roles: ['superadmin', 'editorial'] },
-        { label: 'Media', href: '/admin/media', icon: ImageIcon, roles: ['superadmin', 'editorial'] },
-        { label: 'Manage Admins', href: '/admin/users', icon: UserCog, roles: ['superadmin'] },
-        { label: 'Analytics', href: '/admin/analytics', icon: Sparkles, roles: ['superadmin', 'cmo', 'editorial'] },
-        { label: 'Settings', href: '/admin/settings', icon: Settings, roles: ['superadmin', 'cto'] },
+    const navItems = [
+        { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+        { label: 'Articles', href: '/admin/content?type=articles', icon: FileText },
+        { label: 'Leaders', href: '/admin/content?type=leaders', icon: Users },
+        { label: 'History', href: '/admin/content?type=history', icon: History },
+        { label: 'Media', href: '/admin/media', icon: ImageIcon },
+        { label: 'Messages', href: '/admin/messages', icon: Mail },
+        { label: 'Settings', href: '/admin/settings', icon: Settings },
     ];
-
-    // Filter nav items based on user role
-    const navItems = allNavItems.filter(item =>
-        user?.role && item.roles.includes(user.role)
-    );
 
     const sidebarVariants = {
         expanded: { width: '16rem' },
@@ -84,6 +78,26 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
 
                 {/* Navigation */}
                 <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+                    {/* SuperAdmin Only: Manage Admins */}
+                    {user?.role === 'superadmin' && (
+                        <Link
+                            href="/admin/users"
+                            className={cn(
+                                "flex items-center gap-3 px-3 py-3 transition-all group border-l-2",
+                                pathname === '/admin/users'
+                                    ? "bg-primary/5 border-primary text-primary"
+                                    : "border-transparent hover:bg-muted text-muted-foreground hover:text-foreground"
+                            )}
+                            title={isCollapsed ? 'Manage Admins' : undefined}
+                            onClick={() => setMobileOpen(false)}
+                        >
+                            <UserCog className={cn("h-5 w-5 flex-shrink-0", pathname === '/admin/users' ? "text-primary" : "text-muted-foreground group-hover:text-foreground")} />
+                            {!isCollapsed && (
+                                <span className="font-mono text-sm uppercase tracking-wider font-medium">Manage Admins</span>
+                            )}
+                        </Link>
+                    )}
+
                     {navItems.map((item) => {
                         const isActive = pathname === item.href || (item.href !== '/admin' && pathname?.startsWith(item.href.split('?')[0]));
                         return (

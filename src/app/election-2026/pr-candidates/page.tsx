@@ -27,9 +27,6 @@ export default async function PRCandidatesPage() {
                         <div className="h-[400px] md:h-[600px] w-full">
                             <ElectionMap className="w-full h-full" />
                         </div>
-                        <div className="absolute bottom-4 right-4 bg-background/80 backdrop-blur p-2 rounded text-xs text-muted-foreground border pointer-events-none">
-                            Click a district to filter candidates
-                        </div>
                         <div className="absolute top-4 left-4 pointer-events-none">
                             {/* <h3 className="font-bebas text-2xl text-primary drop-shadow-sm">Interactive District Filter</h3> */}
                         </div>

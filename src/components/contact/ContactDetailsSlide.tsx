@@ -11,9 +11,10 @@ interface ContactDetailsSlideProps {
     updateData: (data: Partial<ContactFormData>) => void;
     onNext: () => void;
     onPrev: () => void;
+    isSubmitting?: boolean;
 }
 
-export function ContactDetailsSlide({ data, updateData, onNext, onPrev }: ContactDetailsSlideProps) {
+export function ContactDetailsSlide({ data, updateData, onNext, onPrev, isSubmitting }: ContactDetailsSlideProps) {
     const isValid = data.email.includes("@");
 
     return (
@@ -36,6 +37,7 @@ export function ContactDetailsSlide({ data, updateData, onNext, onPrev }: Contac
                         value={data.email}
                         onChange={(e) => updateData({ email: e.target.value })}
                         className="pl-12 h-14 bg-background/50 border-border/50 focus:border-primary text-lg"
+                        disabled={isSubmitting}
                     />
                 </div>
 
@@ -47,6 +49,7 @@ export function ContactDetailsSlide({ data, updateData, onNext, onPrev }: Contac
                         value={data.phone}
                         onChange={(e) => updateData({ phone: e.target.value })}
                         className="pl-12 h-14 bg-background/50 border-border/50 focus:border-primary text-lg"
+                        disabled={isSubmitting}
                     />
                 </div>
             </div>
@@ -55,15 +58,16 @@ export function ContactDetailsSlide({ data, updateData, onNext, onPrev }: Contac
                 <Button
                     variant="ghost"
                     onClick={onPrev}
+                    disabled={isSubmitting}
                 >
                     <ArrowLeft className="mr-2 w-4 h-4" /> Back
                 </Button>
                 <Button
                     onClick={onNext}
-                    disabled={!isValid}
+                    disabled={!isValid || isSubmitting}
                 >
-                    Submit Feedback
-                    <ArrowRight className="ml-2 w-4 h-4" />
+                    {isSubmitting ? "Sending..." : "Submit Feedback"}
+                    {!isSubmitting && <ArrowRight className="ml-2 w-4 h-4" />}
                 </Button>
             </div>
         </div>

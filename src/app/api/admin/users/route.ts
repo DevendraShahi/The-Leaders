@@ -13,9 +13,9 @@ export const GET = requireRole(['superadmin'])(async (request, { admin }) => {
     try {
         await dbConnect();
 
-        // Fetch all non-superadmin accounts
+        // Fetch all accounts including superadmins
         const users = await Admin.find(
-            { role: { $ne: 'superadmin' } },
+            {}, // No filter - return all admins
             { passwordHash: 0 } // Exclude password
         )
             .sort({ createdAt: -1 })

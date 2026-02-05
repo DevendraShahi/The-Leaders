@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, Linkedin, Globe } from "lucide-react";
+import { SubscribeForm } from "./subscribe-form";
 
 export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
     // Map of icon names to components
@@ -9,7 +10,8 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
         twitter: Twitter,
         instagram: Instagram,
         linkedin: Linkedin,
-        youtube: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" /><path d="m10 15 5-3-5-3z" /></svg>
+        youtube: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" /><path d="m10 15 5-3-5-3z" /></svg>,
+        tiktok: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v4a9 9 0 0 1-9-9" /></svg>
     };
 
     return (
@@ -81,6 +83,7 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                         <p className="text-muted-foreground text-sm mb-4">
                             Subscribe to get the latest biographies and historical insights.
                         </p>
+                        <SubscribeForm />
                         <div className="flex gap-4 mt-6">
                             {socialLinks && socialLinks.length > 0 ? (
                                 socialLinks.map((link, i) => {

@@ -16,15 +16,18 @@ export type ElectionPages = 'dashboard' | 'parties' | 'candidates' | 'dailyBrief
 // Revalidates every 60 seconds to balance performance and freshness
 export const revalidate = 60;
 
-export const getSettings = cache(async () => {
-    // noStore(); // Removed to allow caching with revalidation
-    await dbConnect();
-    const settings = await Settings.findOne().lean();
-    if (!settings) return null;
+import { unstable_cache } from 'next/cache';
 
-    // Serialize to handle ObjectId and other non-plain objects
-    return JSON.parse(JSON.stringify(settings)) as ISettings;
-});
+export const getSettings = unstable_cache(
+    async () => {
+        await dbConnect();
+        const settings = await Settings.findOne().lean();
+        if (!settings) return null;
+        return JSON.parse(JSON.stringify(settings)) as ISettings;
+    },
+    ['settings-cache'],
+    { revalidate: 60, tags: ['settings'] }
+);
 
 export async function checkMaintenance(
     context: { group: 'public', page?: PublicPages } | { group: 'election', page?: ElectionPages }

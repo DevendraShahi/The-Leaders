@@ -84,7 +84,11 @@ export interface ElectionData {
     factChecks: FactCheckDTO[];
 }
 
-export async function getElectionData(): Promise<ElectionData> {
+import { cache } from "react";
+
+// ... existing interfaces ...
+
+export const getElectionData = cache(async (): Promise<ElectionData> => {
     // Check if we are on the server
     if (typeof window !== "undefined") {
         throw new Error("getElectionData can only be called on the server");
@@ -105,7 +109,7 @@ export async function getElectionData(): Promise<ElectionData> {
             factChecks: [],
         };
     }
-}
+});
 
 export async function getDailyBriefs() {
     const data = await getElectionData();

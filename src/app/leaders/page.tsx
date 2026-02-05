@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     description: "Profiles of influential political leaders in Nepal.",
 };
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
 
 export default async function LeadersPage() {
     const leaders = await getLeaders();

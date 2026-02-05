@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ElectionMap } from "@/components/election/ElectionMap";
-import { KathmanduValleyCallout } from "./KathmanduValleyCallout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImpressivePieChart } from "./charts/ImpressivePieChart";
 import { TurnoutTrendChart } from "./charts/TurnoutTrendChart";
@@ -97,11 +96,6 @@ export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: Ana
                         {/* Backgroundless map container with Overlay */}
                         <div className="relative h-[500px] w-full max-w-5xl overflow-hidden rounded-xl p-1 md:h-[600px] md:p-4">
                             <ElectionMap className="h-full w-full" />
-
-                            {/* Inset Map/Control for Kathmandu Valley - Positioned center-right, slightly bottom */}
-                            <div className="absolute right-4 top-[30%] z-10 w-32 -translate-y-1/2 md:right-8">
-                                <KathmanduValleyCallout />
-                            </div>
                         </div>
                         <p className="mt-4 text-center text-sm text-muted-foreground md:mt-6">
                             {selectedDistrict

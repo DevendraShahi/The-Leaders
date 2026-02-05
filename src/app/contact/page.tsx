@@ -39,49 +39,87 @@ const INITIAL_DATA: ContactFormData = {
 export default function ContactPage() {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<ContactFormData>(INITIAL_DATA);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submittedId, setSubmittedId] = useState<string | null>(null);
     const backgroundRef = useRef<HTMLDivElement>(null);
 
     // GSAP Ambient Background Animation
-    useEffect(() => {
-        if (!backgroundRef.current) return;
-
-        const particles = Array.from({ length: 20 }).map(() => {
-            const el = document.createElement("div");
-            el.className = "absolute rounded-full bg-primary/5 blur-xl pointer-events-none";
-            backgroundRef.current?.appendChild(el);
-            return el;
-        });
-
-        particles.forEach((el) => {
-            const size = Math.random() * 300 + 50;
-            gsap.set(el, {
-                width: size,
-                height: size,
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                opacity: Math.random() * 0.3,
-            });
-
-            gsap.to(el, {
-                x: "random(-200, 200)",
-                y: "random(-200, 200)",
-                duration: "random(10, 20)",
-                ease: "sine.inOut",
-                repeat: -1,
-                yoyo: true,
-            });
-        });
-
-        return () => {
-            // Cleanup if needed, though particles are child elements
-        };
-    }, []);
+    // ... (keep useEffect) ...
 
     const nextStep = () => setStep((prev) => prev + 1);
     const prevStep = () => setStep((prev) => Math.max(0, prev - 1));
 
     const updateData = (data: Partial<ContactFormData>) => {
         setFormData((prev) => ({ ...prev, ...data }));
+    };
+
+    const handleSubmit = async () => {
+        setIsSubmitting(true);
+        try {
+            let attachmentUrl = "";
+
+            // 1. Upload File if exists
+            if (formData.file) {
+                const uploadFormData = new FormData();
+                uploadFormData.append("file", formData.file);
+
+                const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: uploadFormData,
+                });
+
+                if (!uploadRes.ok) throw new Error("Failed to upload attachment");
+                const uploadData = await uploadRes.json();
+                attachmentUrl = uploadData.url;
+            }
+
+            // 2. Submit Contact Data
+            const submissionData = {
+                ...formData,
+                file: undefined, // Don't send file object to contact API
+                attachmentUrl,   // Send the Cloudinary URL
+            };
+
+            console.log("Submitting contact with attachmentUrl:", attachmentUrl);
+            console.log("Full submission data:", submissionData);
+
+            const res = await fetch("/api/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(submissionData),
+            });
+
+            if (!res.ok) throw new Error("Failed to send message");
+
+            const data = await res.json();
+            if (data.contact && data.contact._id) {
+                setSubmittedId(data.contact._id);
+            }
+
+            nextStep(); // Move to Closing Slide
+        } catch (error) {
+            console.error(error);
+            alert("Failed to send message. Please try again.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleFeelingSubmit = async (feeling: string) => {
+        // Update local state just in case
+        updateData({ feeling });
+
+        if (submittedId) {
+            try {
+                await fetch("/api/contact", {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: submittedId, feeling }),
+                });
+            } catch (error) {
+                console.error("Failed to update feeling", error);
+            }
+        }
     };
 
     const renderStep = () => {
@@ -91,8 +129,18 @@ export default function ContactPage() {
             case 2: return <PersonalSlide data={formData} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
             case 3: return <GreetingSlide data={formData} onNext={nextStep} />;
             case 4: return <MessageSlide data={formData} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
-            case 5: return <ContactDetailsSlide data={formData} updateData={updateData} onNext={nextStep} onPrev={prevStep} />;
-            case 6: return <ClosingSlide data={formData} updateData={updateData} />;
+            case 5: return <ContactDetailsSlide
+                data={formData}
+                updateData={updateData}
+                onNext={handleSubmit}  // Pass submit handler instead of nextStep
+                onPrev={prevStep}
+                isSubmitting={isSubmitting} // Pass loading state
+            />;
+            case 6: return <ClosingSlide
+                data={formData}
+                updateData={updateData}
+                onFeelingSelected={handleFeelingSubmit}
+            />;
             default: return null;
         }
     };

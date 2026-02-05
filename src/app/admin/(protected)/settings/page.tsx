@@ -23,7 +23,7 @@ export default function SettingsPage() {
         logoUrl: '',
         faviconUrl: '',
         socialLinks: {
-            facebook: '', twitter: '', instagram: '', linkedin: '', youtube: ''
+            facebook: '', twitter: '', instagram: '', linkedin: '', youtube: '', tiktok: ''
         },
         features: {
             enableComments: false,
@@ -46,7 +46,7 @@ export default function SettingsPage() {
 
                     // Transform Array -> Object for UI
                     const socialLinksObj = {
-                        facebook: '', twitter: '', instagram: '', linkedin: '', youtube: ''
+                        facebook: '', twitter: '', instagram: '', linkedin: '', youtube: '', tiktok: ''
                     };
                     if (Array.isArray(s.socialLinks)) {
                         s.socialLinks.forEach((link: any) => {
@@ -70,6 +70,7 @@ export default function SettingsPage() {
                             ...s.features
                         }
                     });
+
                 }
             } catch (error) {
                 console.error(error);
@@ -251,7 +252,8 @@ export default function SettingsPage() {
                             { key: 'twitter', icon: Twitter, color: 'text-sky-500' },
                             { key: 'instagram', icon: Instagram, color: 'text-pink-600' },
                             { key: 'linkedin', icon: Linkedin, color: 'text-blue-700' },
-                            { key: 'youtube', icon: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" /><path d="m10 15 5-3-5-3z" /></svg>, color: 'text-red-600' }
+                            { key: 'youtube', icon: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17" /><path d="m10 15 5-3-5-3z" /></svg>, color: 'text-red-600' },
+                            { key: 'tiktok', icon: (props: any) => <svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v4a9 9 0 0 1-9-9" /></svg>, color: 'text-black dark:text-white' }
                         ].map(({ key, icon: Icon, color }) => (
                             <div key={key} className="flex items-center gap-3">
                                 <div className={`w-8 h-8 flex items-center justify-center bg-muted/30 rounded-full`}>

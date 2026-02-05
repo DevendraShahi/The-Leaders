@@ -8,12 +8,12 @@ if (!MONGODB_URI) {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface MongooseCache {
-    conn: any;
-    promise: Promise<any> | null;
+  conn: any;
+  promise: Promise<any> | null;
 }
 
 declare global {
-   
+
   var mongoose: MongooseCache;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */

@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     description: "Track Nepal's 2026 election results, analyze political trends, view district-wise data, and stay updated with real-time election analytics and insights.",
 };
 
+export const revalidate = 3600;
+
 export default async function ElectionDashboard() {
     const briefs = await getDailyBriefs();
     const factChecks = await getFactChecks();

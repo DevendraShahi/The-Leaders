@@ -20,10 +20,14 @@ export default function AdminUsersPage() {
 
     const fetchAdmins = async () => {
         try {
-            const res = await fetch('/api/admin/users');
+            const res = await fetch('/api/admin/users', {
+                credentials: 'include'
+            });
             const data = await res.json();
             if (data.success) {
                 setAdmins(data.data);
+            } else {
+                console.error('Failed to fetch admins:', data.error);
             }
         } catch (error) {
             console.error('Failed to fetch admins:', error);
@@ -38,6 +42,7 @@ export default function AdminUsersPage() {
         try {
             const res = await fetch(`/api/admin/users/${id}`, {
                 method: 'DELETE',
+                credentials: 'include'
             });
             if (res.ok) {
                 fetchAdmins();
@@ -53,6 +58,7 @@ export default function AdminUsersPage() {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isActive: !admin.isActive }),
+                credentials: 'include'
             });
             if (res.ok) {
                 fetchAdmins();
@@ -127,27 +133,35 @@ export default function AdminUsersPage() {
                                 </td>
                                 <td className="px-6 py-4">
                                     <div className="flex items-center justify-end gap-2">
-                                        <button
-                                            onClick={() => handleToggleActive(admin)}
-                                            className="p-2 hover:bg-muted transition-colors"
-                                            title={admin.isActive ? 'Deactivate' : 'Activate'}
-                                        >
-                                            {admin.isActive ? <PowerOff size={18} /> : <Power size={18} />}
-                                        </button>
-                                        <button
-                                            onClick={() => setEditingAdmin(admin)}
-                                            className="p-2 hover:bg-muted transition-colors"
-                                            title="Edit"
-                                        >
-                                            <Edit size={18} />
-                                        </button>
-                                        <button
-                                            onClick={() => handleDelete(admin._id)}
-                                            className="p-2 hover:bg-destructive/10 text-destructive transition-colors"
-                                            title="Delete"
-                                        >
-                                            <Trash2 size={18} />
-                                        </button>
+                                        {admin.role !== 'superadmin' ? (
+                                            <>
+                                                <button
+                                                    onClick={() => handleToggleActive(admin)}
+                                                    className="p-2 hover:bg-muted transition-colors"
+                                                    title={admin.isActive ? 'Deactivate' : 'Activate'}
+                                                >
+                                                    {admin.isActive ? <PowerOff size={18} /> : <Power size={18} />}
+                                                </button>
+                                                <button
+                                                    onClick={() => setEditingAdmin(admin)}
+                                                    className="p-2 hover:bg-muted transition-colors"
+                                                    title="Edit"
+                                                >
+                                                    <Edit size={18} />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(admin._id)}
+                                                    className="p-2 hover:bg-destructive/10 text-destructive transition-colors"
+                                                    title="Delete"
+                                                >
+                                                    <Trash2 size={18} />
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <span className="text-xs text-muted-foreground italic px-2">
+                                                Super Admin
+                                            </span>
+                                        )}
                                     </div>
                                 </td>
                             </tr>
@@ -194,6 +208,7 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
+                credentials: 'include'
             });
 
             if (res.ok) {
@@ -307,6 +322,7 @@ function EditAdminModal({ admin, onClose, onSuccess }: { admin: AdminUser; onClo
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
+                credentials: 'include'
             });
 
             if (res.ok) {

@@ -20,7 +20,9 @@ interface PRCandidateViewerProps {
 }
 
 export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
-    const { selectedDistrict, setSelectedDistrict } = useElectionStore();
+    // Optimization: Select only what we need to prevent re-renders when 'hoveredDistrict' changes
+    const selectedDistrict = useElectionStore((state) => state.selectedDistrict);
+    const setSelectedDistrict = useElectionStore((state) => state.setSelectedDistrict);
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedParty, setSelectedParty] = useState<string>("all");
     const [selectedGender, setSelectedGender] = useState<string>("all");

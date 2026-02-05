@@ -154,8 +154,17 @@ function PartyGridContent({ parties }: PartyGridProps) {
 
         const q = filters.query.trim().toLowerCase();
 
-        // Filter
-        const result = parties.filter((party) => {
+        // 1. Deduplicate by Name (Robustness Fix)
+        const uniquePartiesMap = new Map();
+        parties.forEach(p => {
+            if (!uniquePartiesMap.has(p.name)) {
+                uniquePartiesMap.set(p.name, p);
+            }
+        });
+        const uniqueParties = Array.from(uniquePartiesMap.values());
+
+        // 2. Filter
+        const result = uniqueParties.filter((party) => {
             const seatsHoR = party.performance?.total_seats_hor ?? 0;
             const seatsNA = party.performance?.national_assembly_seats ?? 0;
 

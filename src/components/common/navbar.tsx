@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { FontToggle } from "@/components/font-toggle";
+import { SubscribeDialog } from "./subscribe-dialog";
 
 const links = [
     { href: "/", label: "Home" },
@@ -112,9 +113,11 @@ export function Navbar() {
                     </div>
 
                     <div className="hidden md:block">
-                        <Button variant="default" size="default">
-                            Subscribe
-                        </Button>
+                        <SubscribeDialog>
+                            <Button variant="default" size="default">
+                                Subscribe
+                            </Button>
+                        </SubscribeDialog>
                     </div>
 
                     {/* Mobile Menu */}
@@ -150,9 +153,11 @@ export function Navbar() {
                                     </nav>
 
                                     <div className="mt-auto mb-8 space-y-4">
-                                        <Button size="lg" className="w-full font-bebas tracking-wide text-xl">
-                                            Subscribe
-                                        </Button>
+                                        <SubscribeDialog>
+                                            <Button size="lg" className="w-full font-bebas tracking-wide text-xl">
+                                                Subscribe
+                                            </Button>
+                                        </SubscribeDialog>
                                         <div className="flex justify-center gap-4">
                                             {/* Mobile specific toggles or social links could go here if needed */}
                                         </div>
