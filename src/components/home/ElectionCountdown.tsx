@@ -1,21 +1,20 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Calendar, Users, MapPin, Vote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 // Election headlines for the ticker (simplified, no emojis)
+// Election headlines for the ticker (Real Daily Briefs)
 const HEADLINES = [
-    "56 Political Parties Registered for 2026 General Election",
-    "275 House Representatives to be Elected on March 5",
-    "Election Commission Finalizes All Polling Stations",
-    "165 Direct Seats + 110 PR Seats Up for Grabs",
-    "Election Code of Conduct in Full Effect",
-    "High-Altitude Regions Prepared for Voting Despite Weather Challenges",
-    "Campaign Period: February 15 - March 2, 2026",
-    "Vote Counting to Begin Immediately After Polls Close at 5 PM",
+    "Digital integrity push: Election Commission partners with TikTok and enlists the Advertising Board to curb misinformation and defamatory ads, signalling tighter oversight.",
+    "Representation gaps exposed: Final PR lists show women are a majority among 3,135 list candidates, yet overall only about 11% of roughly 3,484 total candidates are women.",
+    "Rules, security and key races: Integrated Security Plan deploys over 300,000 personnel and stricter code-of-conduct rules on manifestos, money and appointments take effect.",
+    "Election 2026: High-profile contests pit ex–prime ministers against newcomers like Balen Shah.",
+    "March 5 Polls: 56 Political Parties Registered for 2026 General Election.",
+    "Voter turnout projected to reach record highs in localized regions.",
 ];
 
 interface TimeLeft {
@@ -32,12 +31,27 @@ interface Particle {
     vy: number;
 }
 
+// Helper to convert to Nepali digits
+const toNepaliDigits = (num: number) => {
+    const nepaliMap = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+    return num.toString().split('').map(d => nepaliMap[parseInt(d)] || d).join('');
+};
+
 export default function ElectionCountdown() {
     const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
     const [mounted, setMounted] = useState(false);
+    const [lang, setLang] = useState<"en" | "np">("en"); // Lifted state
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const { scrollYProgress } = useScroll();
     const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+    // Language toggle interval
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setLang(prev => prev === "en" ? "np" : "en");
+        }, 4000);
+        return () => clearInterval(timer);
+    }, []);
 
     // Particle animation on canvas
     useEffect(() => {
@@ -139,7 +153,38 @@ export default function ElectionCountdown() {
         return () => clearInterval(timer);
     }, []);
 
+    const [headlines, setHeadlines] = useState<string[]>([]);
+
+    // Fetch headlines
+    useEffect(() => {
+        const fetchHeadlines = async () => {
+            try {
+                const res = await fetch('/api/settings');
+                const data = await res.json();
+                if (data.success && data.data?.tickerHeadlines?.length > 0) {
+                    setHeadlines(data.data.tickerHeadlines);
+                } else {
+                    // Fallback if no headlines in DB
+                    setHeadlines([
+                        "Election 2026: March 5th Polls Confirmed",
+                        "EC Nepal announces strict code of conduct for upcoming elections",
+                        "Voter registration closes with record 18M+ eligible voters",
+                        "Daily briefings available now in The Leaders dashboard"
+                    ]);
+                }
+            } catch (err) {
+                console.error("Failed to fetch ticker:", err);
+            }
+        };
+        fetchHeadlines();
+    }, []);
+
+    // ... (rest of effects)
+
     if (!mounted) return null;
+
+    // Use fetched headlines or fallback/hardcoded if desired
+    const tickerContent = headlines.length > 0 ? headlines : HEADLINES;
 
     return (
         <motion.section
@@ -159,7 +204,7 @@ export default function ElectionCountdown() {
                     animate={{ x: [0, -2400] }}
                     transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
                 >
-                    {[...HEADLINES, ...HEADLINES, ...HEADLINES].map((headline, i) => (
+                    {[...tickerContent, ...tickerContent, ...tickerContent].map((headline, i) => (
                         <span key={i} className="text-white/60 font-mono text-xs tracking-widest uppercase">
                             {headline}
                         </span>
@@ -171,24 +216,8 @@ export default function ElectionCountdown() {
             <div className="container mx-auto px-4 py-24 relative z-10">
                 <div className="max-w-6xl mx-auto space-y-20">
 
-                    {/* Header */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className="text-center space-y-6"
-                    >
-                        <div className="inline-block border border-[#B71C1C]/30 px-6 py-2">
-                            <span className="text-[#B71C1C] font-mono text-sm tracking-[0.3em] uppercase">
-                                Nepal General Election
-                            </span>
-                        </div>
-                        <h1 className="text-7xl md:text-8xl lg:text-9xl font-bebas text-white uppercase tracking-tighter leading-[0.9]">
-                            March 5
-                            <br />
-                            <span className="text-[#B71C1C]">2026</span>
-                        </h1>
-                    </motion.div>
+                    {/* Header with Bilingual Animation */}
+                    <AnimatedHeader lang={lang} />
 
                     {/* Countdown Timer */}
                     <motion.div
@@ -198,12 +227,12 @@ export default function ElectionCountdown() {
                         className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
                     >
                         {[
-                            { value: timeLeft.days, label: "Days" },
-                            { value: timeLeft.hours, label: "Hours" },
-                            { value: timeLeft.minutes, label: "Minutes" },
-                            { value: timeLeft.seconds, label: "Seconds" },
+                            { value: timeLeft.days, label: lang === 'en' ? "Days" : "दिन" },
+                            { value: timeLeft.hours, label: lang === 'en' ? "Hours" : "घण्टा" },
+                            { value: timeLeft.minutes, label: lang === 'en' ? "Minutes" : "मिनेट" },
+                            { value: timeLeft.seconds, label: lang === 'en' ? "Seconds" : "सेकेन्ड" },
                         ].map((item, index) => (
-                            <div key={item.label} className="relative group">
+                            <div key={index} className="relative group">
                                 {/* Minimal border frame */}
                                 <div className="absolute inset-0 border border-white/10 group-hover:border-[#B71C1C]/30 transition-colors duration-500" />
                                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#B71C1C] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -211,16 +240,20 @@ export default function ElectionCountdown() {
 
                                 {/* Content */}
                                 <div className="relative p-8 md:p-10 flex flex-col items-center justify-center bg-black/40">
-                                    <motion.div
-                                        key={item.value}
-                                        initial={{ opacity: 0, y: 10 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -10 }}
-                                        transition={{ duration: 0.3 }}
-                                        className="text-6xl md:text-7xl font-mono font-bold text-white tabular-nums"
-                                    >
-                                        {String(item.value).padStart(2, "0")}
-                                    </motion.div>
+                                    <AnimatePresence mode="wait">
+                                        <motion.div
+                                            key={`${item.value}-${lang}`}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -10 }}
+                                            transition={{ duration: 0.3 }}
+                                            className="text-6xl md:text-7xl font-mono font-bold text-white tabular-nums"
+                                        >
+                                            {lang === 'en'
+                                                ? String(item.value).padStart(2, "0")
+                                                : toNepaliDigits(item.value).padStart(2, "०")}
+                                        </motion.div>
+                                    </AnimatePresence>
                                     <div className="mt-3 text-white/40 font-mono text-xs tracking-[0.2em] uppercase">
                                         {item.label}
                                     </div>
@@ -292,5 +325,54 @@ export default function ElectionCountdown() {
                 </div>
             </div>
         </motion.section>
+    );
+}
+
+function AnimatedHeader({ lang }: { lang: "en" | "np" }) {
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="text-center space-y-6"
+        >
+            <div className="inline-block border border-[#B71C1C]/30 px-6 py-2">
+                <span className="text-[#B71C1C] font-mono text-sm tracking-[0.3em] uppercase">
+                    Nepal General Election
+                </span>
+            </div>
+
+            <div className="h-[180px] sm:h-[220px] flex items-center justify-center overflow-hidden">
+                <AnimatePresence mode="wait">
+                    {lang === "en" ? (
+                        <motion.h1
+                            key="en"
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-7xl md:text-8xl lg:text-9xl font-bebas text-white uppercase tracking-tighter leading-[0.9]"
+                        >
+                            March 5
+                            <br />
+                            <span className="text-[#B71C1C]">2026</span>
+                        </motion.h1>
+                    ) : (
+                        <motion.h1
+                            key="np"
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ y: -20, opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="text-7xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-[0.9]"
+                        >
+                            फागुन २१
+                            <br />
+                            <span className="text-[#B71C1C]">२०८२</span>
+                        </motion.h1>
+                    )}
+                </AnimatePresence>
+            </div>
+        </motion.div>
     );
 }

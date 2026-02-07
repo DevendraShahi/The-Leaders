@@ -8,6 +8,7 @@ const navItems = [
     { name: "Grand Central", href: "/election-2026" },
     { name: "Daily Brief", href: "/election-2026/daily-brief" },
     { name: "Fact Checks", href: "/election-2026/fact-checks" },
+    { name: "Election Articles", href: "/election-2026/analyses" },
     { name: "PR Candidates", href: "/election-2026/pr-candidates" },
     { name: "Profiles", href: "/election-2026/profiles" },
     { name: "Parties", href: "/election-2026/parties" },
@@ -21,7 +22,7 @@ export function ElectionNavbar() {
     }, []);
 
     return (
-        <div className="w-full border-b border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-[3.5rem] md:top-20 z-40 transition-[top] duration-300">
+        <div className="w-full border-b border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-[3.5rem] md:top-20 z-30 transition-[top] duration-300">
             <div className="mx-auto flex h-14 max-w-7xl items-center px-4 sm:px-6 lg:px-8 overflow-x-auto no-scrollbar">
                 <div className="flex items-center min-w-max">
                     <Link href="/election-2026" className="mr-4 md:mr-6 flex items-center space-x-2">

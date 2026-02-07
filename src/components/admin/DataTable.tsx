@@ -123,10 +123,24 @@ export function DataTable<TData, TValue>({
                                     >
                                         {row.getVisibleCells().map((cell) => (
                                             <td key={cell.id} className="p-4 align-middle [&:has([role=checkbox])]:pr-0">
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext()
-                                                )}
+                                                {(() => {
+                                                    const rendered = flexRender(
+                                                        cell.column.columnDef.cell,
+                                                        cell.getContext()
+                                                    ) as any;
+                                                    if (rendered && typeof rendered === "object") {
+                                                        if (Array.isArray(rendered)) return rendered;
+                                                        if (rendered.$$typeof) return rendered;
+                                                        if (rendered.en) return rendered.en;
+                                                        if (rendered.ne) return rendered.ne;
+                                                        try {
+                                                            return JSON.stringify(rendered);
+                                                        } catch {
+                                                            return "";
+                                                        }
+                                                    }
+                                                    return rendered;
+                                                })()}
                                             </td>
                                         ))}
                                     </tr>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { Shield, BookOpen, MessageSquare, Database, Award, Sparkles, Archive, Lightbulb } from "lucide-react";
+import { Shield, MessageSquare, Award, Sparkles, Archive, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AnimatedLogoText } from "@/components/ui/animated-text";
@@ -124,7 +124,7 @@ export default function AboutPage() {
 
                             <div className="space-y-6 text-foreground/80 text-lg leading-relaxed">
                                 <p className="text-2xl md:text-3xl font-bebas text-foreground leading-tight">
-                                    We aren't here to tell you what to think; we're here to provide the architectural blueprints for you to build your own perspective.
+                                    We aren&apos;t here to tell you what to think; we&apos;re here to provide the architectural blueprints for you to build your own perspective.
                                 </p>
                                 <p>
                                     In an era of fleeting headlines and fragmented truths, <span className="text-[#B71C1C] font-bebas text-xl">The Leaders</span> stands as the <strong>Grand Central Station for political information</strong>—a central hub where depth meets history, and where well-reasoned debate is not just welcomed, but celebrated.
@@ -186,7 +186,7 @@ export default function AboutPage() {
                         >
                             <h2 className="text-5xl md:text-6xl font-bebas text-foreground uppercase mb-4">Why We Stand Out</h2>
                             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                                We've mastered the art of being serious about information while staying playful and engaging in its delivery.
+                                We&apos;ve mastered the art of being serious about information while staying playful and engaging in its delivery.
                             </p>
                         </motion.div>
 
@@ -235,7 +235,7 @@ export default function AboutPage() {
                             <h2 className="text-4xl md:text-5xl font-bebas text-foreground uppercase">Our Commitment</h2>
                             <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
                                 <p>
-                                    We remain dedicated to maintaining this platform as a <strong className="text-foreground">transparent, credible, and accessible</strong> resource for all citizens interested in Nepal's political journey.
+                                    We remain dedicated to maintaining this platform as a <strong className="text-foreground">transparent, credible, and accessible</strong> resource for all citizens interested in Nepal&apos;s political journey.
                                 </p>
                                 <p>
                                     While we keep certain operational details confidential to protect our independence, our content and methodologies are always open to scrutiny and feedback.

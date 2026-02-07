@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { uploadImage } from "@/lib/cloudinary";
+import { optimizeImageForUpload } from "@/lib/image";
 
 export async function POST(req: Request) {
     try {
@@ -11,9 +12,15 @@ export async function POST(req: Request) {
         }
 
         const buffer = Buffer.from(await file.arrayBuffer());
+        const optimized = await optimizeImageForUpload(buffer, file.type || undefined);
 
         // Upload to Cloudinary using existing utility
-        const result = await uploadImage(buffer, "general", `contact-${Date.now()}`);
+        const result = await uploadImage(
+            optimized.buffer,
+            "general",
+            `contact-${Date.now()}`,
+            optimized.mimeType || file.type || undefined
+        );
 
         return NextResponse.json({ url: result.secureUrl });
     } catch (error) {

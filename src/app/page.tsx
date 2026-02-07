@@ -1,4 +1,5 @@
 import ElectionCountdown from "@/components/home/ElectionCountdown";
+import { ElectionSpecial } from "@/components/home/ElectionSpecial";
 import { LeadersGrid } from "@/components/home/LeadersGrid";
 import { Timeline } from "@/components/home/timeline";
 import { Manifesto } from "@/components/home/manifesto";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <ElectionCountdown />
+      <ElectionSpecial />
       <LeadersGrid />
       <NewsSection />
       <Manifesto />

@@ -1,7 +1,5 @@
-import { cache } from 'react';
 import dbConnect from '@/lib/db';
 import Settings, { ISettings } from '@/models/Settings';
-import { unstable_noStore as noStore } from 'next/cache';
 
 export interface MaintenanceCheckResult {
     isBlocked: boolean;

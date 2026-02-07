@@ -104,7 +104,6 @@ export function DistrictNewsPanel({ district, data: initialData, onClose }: Dist
                                 <div className="rounded-lg bg-muted/10 p-4">
                                     {wikiInfo.thumbnail && (
                                         <div className="mb-3 h-40 w-full overflow-hidden rounded-md">
-                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img
                                                 src={wikiInfo.thumbnail.source}
                                                 alt={wikiInfo.title}

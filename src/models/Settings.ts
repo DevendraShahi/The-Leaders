@@ -24,6 +24,7 @@ export interface ISettings {
         icon?: string;
     }[];
     metaKeywords?: string[];
+    tickerHeadlines?: string[];
 
     // Maintenance
     maintenance: {
@@ -94,6 +95,9 @@ const SettingsSchema = new Schema<ISettings>(
             },
         ],
         metaKeywords: [{ type: String }],
+
+        // Dynamic Content
+        tickerHeadlines: [{ type: String }],
 
 
         // Advanced Maintenance System

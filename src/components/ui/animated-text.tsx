@@ -14,9 +14,6 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
     const blobRef = useRef<HTMLDivElement>(null);
     const [isMounted, setIsMounted] = useState(false);
 
-    // Use specialized refs for performance (gsap.quickTo)
-    const quickToRefs = useRef<any[]>([]);
-
     useEffect(() => {
         const mountTimer = setTimeout(() => setIsMounted(true), 0);
 
@@ -107,7 +104,7 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                 });
             }
 
-            letters.forEach((wrapper, i) => {
+            letters.forEach((wrapper) => {
                 const inner = wrapper.querySelector(".letter-inner") as HTMLElement;
                 if (!inner) return;
 

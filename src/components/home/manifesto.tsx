@@ -35,9 +35,9 @@ export function Manifesto() {
                     transition={{ duration: 1 }}
                 >
                     <h2 className="text-4xl md:text-7xl lg:text-8xl font-bebas font-bold text-foreground uppercase leading-none tracking-tight mb-8">
-                        "We do not inherit <br />
+                        &ldquo;We do not inherit <br />
                         <span className="text-primary mx-2">the earth</span> <br />
-                        from our ancestors..."
+                        from our ancestors&hellip;&rdquo;
                     </h2>
                     <p className="text-xl md:text-3xl text-muted-foreground font-bebas tracking-widest uppercase">
                         ...we borrow it from our <span className="text-foreground border-b-2 border-primary">children</span>.

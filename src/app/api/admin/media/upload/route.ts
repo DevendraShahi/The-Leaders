@@ -4,6 +4,7 @@ import Media from '@/models/Media';
 import ActivityLog from '@/models/ActivityLog';
 import { uploadImage, MediaCategory } from '@/lib/cloudinary';
 import { withAuth, apiResponse, apiError } from '@/lib/middleware';
+import { optimizeImageForUpload } from '@/lib/image';
 
 async function uploadMedia(request: NextRequest, { user }: { user: any }) {
     try {
@@ -23,9 +24,15 @@ async function uploadMedia(request: NextRequest, { user }: { user: any }) {
         // Convert file to array buffer for upload
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
+        const optimized = await optimizeImageForUpload(buffer, file.type || undefined);
 
         // Upload to Cloudinary
-        const uploadResult = await uploadImage(buffer, category, file.name.split('.')[0]);
+        const uploadResult = await uploadImage(
+            optimized.buffer,
+            category,
+            file.name.split('.')[0],
+            optimized.mimeType || file.type || undefined
+        );
 
         // Save to Database
         const media = await Media.create({

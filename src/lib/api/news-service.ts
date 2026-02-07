@@ -80,7 +80,7 @@ export async function fetchTrendingTopics(): Promise<TrendingTopic[]> {
             mentions: Math.floor(Math.random() * 5000) + 1000, // Mock metric
             trend: "up"
         }));
-    } catch (error) {
+    } catch {
         return [];
     }
 }

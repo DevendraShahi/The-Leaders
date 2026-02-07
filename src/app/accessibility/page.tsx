@@ -7,8 +7,7 @@ import {
     Smartphone,
     Layers,
     CheckCircle2,
-    Mail,
-    ArrowRight
+    Mail
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -88,7 +87,7 @@ export default function AccessibilityPage() {
                             <div className="space-y-4 max-w-2xl">
                                 <h2 className="text-3xl font-bebas tracking-wide text-foreground">Our Commitment</h2>
                                 <p className="text-lg leading-relaxed text-muted-foreground font-manrope">
-                                    "The Leaders" is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.
+                                    &ldquo;The Leaders&rdquo; is committed to ensuring digital accessibility for people with disabilities. We are continually improving the user experience for everyone and applying the relevant accessibility standards.
                                 </p>
                             </div>
                         </div>
@@ -129,7 +128,7 @@ export default function AccessibilityPage() {
                                     The Web Content Accessibility Guidelines (WCAG) defines requirements for designers and developers to improve accessibility for people with disabilities. It defines three levels of conformance: Level A, Level AA, and Level AAA.
                                 </p>
                                 <p>
-                                    "The Leaders" is <strong>partially conformant</strong> with WCAG 2.1 Level AA. Partially conformant means that some parts of the content do not fully conform to the accessibility standard, though we are actively working to address these gaps.
+                                    &ldquo;The Leaders&rdquo; is <strong>partially conformant</strong> with WCAG 2.1 Level AA. Partially conformant means that some parts of the content do not fully conform to the accessibility standard, though we are actively working to address these gaps.
                                 </p>
                             </div>
                         </div>
@@ -139,7 +138,7 @@ export default function AccessibilityPage() {
                             <div className="space-y-6">
                                 <h2 className="text-2xl font-bebas tracking-wide text-foreground">Technical Specifications</h2>
                                 <p className="text-muted-foreground font-manrope">
-                                    Accessibility of "The Leaders" relies on the following technologies to work with the particular combination of web browser and any assistive technologies or plugins installed on your computer:
+                                    Accessibility of &ldquo;The Leaders&rdquo; relies on the following technologies to work with the particular combination of web browser and any assistive technologies or plugins installed on your computer:
                                 </p>
                                 <ul className="flex flex-wrap gap-2">
                                     {["HTML", "WAI-ARIA", "CSS", "JavaScript"].map((tech) => (
@@ -153,7 +152,7 @@ export default function AccessibilityPage() {
                             <div className="space-y-6 bg-secondary/5 p-8 rounded-lg border border-border/50">
                                 <h2 className="text-2xl font-bebas tracking-wide text-foreground">Feedback & Contact</h2>
                                 <p className="text-muted-foreground font-manrope">
-                                    We welcome your feedback on the accessibility of "The Leaders". Please let us know if you encounter accessibility barriers on our platform.
+                                    We welcome your feedback on the accessibility of &ldquo;The Leaders&rdquo;. Please let us know if you encounter accessibility barriers on our platform.
                                 </p>
 
                                 <Button className="w-full sm:w-auto font-bebas tracking-wider" asChild>

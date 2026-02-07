@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, JWTPayload } from '@/lib/auth';
+import { verifyToken } from '@/lib/auth';
 import { IAdmin } from '@/models/Admin';
-import { hasPermission, canAccessRoute } from '@/lib/rbac';
+import { hasPermission } from '@/lib/rbac';
 import dbConnect from '@/lib/db';
 import Admin from '@/models/Admin';
 import AuditLog from '@/models/AuditLog';

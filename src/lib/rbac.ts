@@ -123,6 +123,8 @@ export function canAccessRoute(admin: IAdmin, route: string): boolean {
  * Sanitize admin object for API response - remove sensitive fields
  */
 export function sanitizeAdminForResponse(admin: IAdmin): Partial<IAdmin> {
-    const { passwordHash, ...safeAdmin } = admin;
+    const { passwordHash, ...rest } = admin;
+    void passwordHash;
+    const safeAdmin = rest;
     return safeAdmin;
 }

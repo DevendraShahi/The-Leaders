@@ -5,18 +5,11 @@ import { PremiumLoader } from "@/components/ui/premium-loader";
 import { TopProgressBar } from "@/components/ui/top-progress-bar";
 
 export function GlobalLoadingProvider({ children }: { children: React.ReactNode }) {
-    const [showInitialLoader, setShowInitialLoader] = useState(true);
-
-    useEffect(() => {
-        // Show initial loader for first visit only
+    const [showInitialLoader, setShowInitialLoader] = useState(() => {
+        if (typeof window === "undefined") return true;
         const hasVisited = sessionStorage.getItem("has-visited");
-
-        if (hasVisited) {
-            // Already visited in this session, don't show loader
-            setShowInitialLoader(false);
-        }
-        // If not visited, we wait for PremiumLoader to call onComplete
-    }, []);
+        return !hasVisited;
+    });
 
     const handleLoaderComplete = () => {
         setShowInitialLoader(false);

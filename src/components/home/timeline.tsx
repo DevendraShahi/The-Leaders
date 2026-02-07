@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { timelineData, TimelineSeries, TimelineEpisode } from "@/data/timeline-data";
-import { ExternalLink, Calendar, ArrowRight } from "lucide-react";
+import { ExternalLink, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?: boolean }) {
@@ -25,7 +25,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                         Historical Archives
                     </span>
                     <h2 className="text-5xl md:text-6xl font-bebas text-foreground uppercase tracking-wide leading-none">
-                        Nepal's <span className="text-primary">Political Journey</span>
+                        Nepal&apos;s <span className="text-primary">Political Journey</span>
                     </h2>
                     <p className="text-muted-foreground font-manrope text-lg max-w-2xl mx-auto">
                         Explore the defining eras that shaped the modern republic.
@@ -407,7 +407,7 @@ function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
     );
 }
 
-function VerticalConnectionNode({ isFirst, isLast, index }: { isFirst?: boolean; isLast?: boolean; index: number }) {
+function VerticalConnectionNode({ index }: { index: number }) {
     return (
         <motion.svg
             width="24"

@@ -10,6 +10,48 @@ interface PremiumPieChartProps {
     data: PartyProjection[];
 }
 
+const PremiumPieTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+        const data = payload[0];
+        return (
+            <div className="rounded-lg border border-border bg-background p-4 shadow-xl">
+                <p className="font-bebas text-xl text-foreground">{data.name}</p>
+                <div className="mt-2 space-y-1">
+                    <p className="text-sm text-muted-foreground">
+                        Seats: <span className="font-bold text-foreground">{data.value}</span>
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                        Vote Share: <span className="font-bold text-[#B71C1C]">{data.payload.percentage}%</span>
+                    </p>
+                </div>
+            </div>
+        );
+    }
+    return null;
+};
+
+const PremiumPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    if (percent < 0.05) return null;
+
+    return (
+        <text
+            x={x}
+            y={y}
+            fill="white"
+            textAnchor={x > cx ? "start" : "end"}
+            dominantBaseline="central"
+            className="font-bebas text-sm drop-shadow-lg"
+        >
+            {`${(percent * 100).toFixed(0)}%`}
+        </text>
+    );
+};
+
 export function PremiumPieChart({ data }: PremiumPieChartProps) {
     const totalSeats = data.reduce((sum, party) => sum + party.projectedSeats, 0);
 
@@ -20,48 +62,6 @@ export function PremiumPieChart({ data }: PremiumPieChartProps) {
         percentage: party.voteSharePercentage,
         change: party.change
     }));
-
-    const CustomTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0];
-            return (
-                <div className="rounded-lg border border-border bg-background p-4 shadow-xl">
-                    <p className="font-bebas text-xl text-foreground">{data.name}</p>
-                    <div className="mt-2 space-y-1">
-                        <p className="text-sm text-muted-foreground">
-                            Seats: <span className="font-bold text-foreground">{data.value}</span>
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                            Vote Share: <span className="font-bold text-[#B71C1C]">{data.payload.percentage}%</span>
-                        </p>
-                    </div>
-                </div>
-            );
-        }
-        return null;
-    };
-
-    const CustomLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
-        const RADIAN = Math.PI / 180;
-        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-        const x = cx + radius * Math.cos(-midAngle * RADIAN);
-        const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-        if (percent < 0.05) return null;
-
-        return (
-            <text
-                x={x}
-                y={y}
-                fill="white"
-                textAnchor={x > cx ? 'start' : 'end'}
-                dominantBaseline="central"
-                className="font-bebas text-sm drop-shadow-lg"
-            >
-                {`${(percent * 100).toFixed(0)}%`}
-            </text>
-        );
-    };
 
     return (
         <motion.div
@@ -89,7 +89,7 @@ export function PremiumPieChart({ data }: PremiumPieChartProps) {
                                         cx="50%"
                                         cy="50%"
                                         labelLine={false}
-                                        label={CustomLabel}
+                                        label={PremiumPieLabel}
                                         outerRadius={150}
                                         innerRadius={60}
                                         fill="#8884d8"
@@ -107,7 +107,7 @@ export function PremiumPieChart({ data }: PremiumPieChartProps) {
                                             />
                                         ))}
                                     </Pie>
-                                    <Tooltip content={<CustomTooltip />} />
+                                    <Tooltip content={<PremiumPieTooltip />} />
                                 </PieChart>
                             </ResponsiveContainer>
 

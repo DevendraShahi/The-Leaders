@@ -120,7 +120,7 @@ export default function ImageUploader({
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-4">
-                            <div className="bg-muted p-3 rounded-full mb-3">
+                            <div className="bg-muted p-3 rounded-none mb-3">
                                 <Upload className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <p className="text-sm font-bold font-manrope text-foreground">
@@ -143,7 +143,7 @@ export default function ImageUploader({
                         <button
                             type="button"
                             onClick={() => fileInputRef.current?.click()}
-                            className="p-2 bg-background/80 hover:bg-background text-foreground rounded-full backdrop-blur-sm transition-colors border border-border"
+                            className="p-2 bg-background/80 hover:bg-background text-foreground rounded-none backdrop-blur-sm transition-colors border border-border"
                             title="Replace Image"
                         >
                             <Upload className="h-5 w-5" />
@@ -151,7 +151,7 @@ export default function ImageUploader({
                         <button
                             type="button"
                             onClick={() => onChange('')}
-                            className="p-2 bg-destructive/80 hover:bg-destructive text-destructive-foreground rounded-full backdrop-blur-sm transition-colors border border-destructive"
+                            className="p-2 bg-destructive/80 hover:bg-destructive text-destructive-foreground rounded-none backdrop-blur-sm transition-colors border border-destructive"
                             title="Remove Image"
                         >
                             <X className="h-5 w-5" />

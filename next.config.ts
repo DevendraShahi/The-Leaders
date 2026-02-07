@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import bundleAnalyzer from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
@@ -44,6 +45,8 @@ const nextConfig: NextConfig = {
 
   // Experimental optimizations
   experimental: {
+    proxyClientMaxBodySize: '25mb',
+    serverActions: { bodySizeLimit: '25mb' },
     optimizePackageImports: [
       'lucide-react',
       '@radix-ui/react-avatar',
@@ -114,9 +117,8 @@ const nextConfig: NextConfig = {
 };
 
 // Bundle analyzer wrapper
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
 });
 
 export default withBundleAnalyzer(nextConfig);
-

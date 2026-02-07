@@ -45,7 +45,6 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                     >
                         {/* Image container */}
                         <div className="relative h-48 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img
                                 src={article.image || "https://placehold.co/600x400/png?text=Article"}
                                 alt={article.title[lang]}

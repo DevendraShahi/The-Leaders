@@ -1,4 +1,4 @@
-import mongoose, { Schema, Model, models } from "mongoose";
+import mongoose, { Schema, Model } from "mongoose";
 
 export interface ILeader {
     _id?: string;

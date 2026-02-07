@@ -3,7 +3,18 @@ import mongoose, { Schema, Model, models } from "mongoose";
 export interface IActivityLog {
     adminId: mongoose.Types.ObjectId;
     action: 'create' | 'update' | 'delete' | 'login' | 'logout' | 'publish' | 'unpublish' | 'bulk_action';
-    entityType: 'Article' | 'Leader' | 'History' | 'Media' | 'Settings' | 'Admin' | 'Auth';
+    entityType:
+        | 'Article'
+        | 'Leader'
+        | 'History'
+        | 'Media'
+        | 'Settings'
+        | 'Admin'
+        | 'Auth'
+        | 'ElectionContent'
+        | 'DailyBrief'
+        | 'FactCheck'
+        | 'ElectionArticle';
     entityId?: string;
     description: string;
     metadata?: any;
@@ -23,7 +34,19 @@ const ActivityLogSchema = new Schema<IActivityLog>(
         },
         entityType: {
             type: String,
-            enum: ['Article', 'Leader', 'History', 'Media', 'Settings', 'Admin', 'Auth'],
+            enum: [
+                'Article',
+                'Leader',
+                'History',
+                'Media',
+                'Settings',
+                'Admin',
+                'Auth',
+                'ElectionContent',
+                'DailyBrief',
+                'FactCheck',
+                'ElectionArticle'
+            ],
             required: true
         },
         entityId: { type: String },
@@ -42,6 +65,12 @@ ActivityLogSchema.index({ adminId: 1 });
 ActivityLogSchema.index({ createdAt: -1 });
 ActivityLogSchema.index({ entityType: 1, entityId: 1 });
 
-const ActivityLog: Model<IActivityLog> = models.ActivityLog || mongoose.model("ActivityLog", ActivityLogSchema);
+const modelName = "ActivityLog";
+if (models[modelName] && process.env.NODE_ENV !== "production") {
+    delete models[modelName];
+}
+
+const ActivityLog: Model<IActivityLog> =
+    (models[modelName] as Model<IActivityLog>) || mongoose.model(modelName, ActivityLogSchema);
 
 export default ActivityLog;

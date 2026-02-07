@@ -10,22 +10,22 @@ interface AgeDistributionChartProps {
     data: DemographicsData;
 }
 
-export function AgeDistributionChart({ data }: AgeDistributionChartProps) {
-    const CustomTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload;
-            return (
-                <div className="rounded-lg border border-border bg-background p-3 shadow-lg">
-                    <p className="font-bebas text-lg text-foreground">Age {data.range}</p>
-                    <p className="text-sm text-[#B71C1C]">
-                        {data.count.toLocaleString()} voters
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
+const AgeDistributionTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload;
+        return (
+            <div className="rounded-lg border border-border bg-background p-3 shadow-lg">
+                <p className="font-bebas text-lg text-foreground">Age {data.range}</p>
+                <p className="text-sm text-[#B71C1C]">
+                    {data.count.toLocaleString()} voters
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
 
+export function AgeDistributionChart({ data }: AgeDistributionChartProps) {
     const totalVoters = data.ageDistribution.reduce((sum, item) => sum + item.count, 0);
 
     return (
@@ -82,7 +82,7 @@ export function AgeDistributionChart({ data }: AgeDistributionChartProps) {
                                 tickFormatter={(value) => `${(value / 1000).toFixed(0)}K`}
                                 label={{ value: 'Number of Voters', angle: -90, position: 'insideLeft' }}
                             />
-                            <Tooltip content={<CustomTooltip />} />
+                            <Tooltip content={<AgeDistributionTooltip />} />
                             <Bar
                                 dataKey="count"
                                 fill="url(#ageGradient)"

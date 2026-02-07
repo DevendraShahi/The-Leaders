@@ -230,12 +230,12 @@ function PartyGridContent({ parties }: PartyGridProps) {
             <div className="flex flex-col space-y-4 bg-background/50 backdrop-blur-sm sticky top-0 z-30 py-4 border-b border-transparent data-[stuck=true]:border-border transition-colors">
                 <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
 
-                    {/* Search */}
-                    <div className="relative w-full md:max-w-xl">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none" />
+                    {/* Search - Premium Sharp Input */}
+                    <div className="relative w-full md:max-w-xl group">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors pointer-events-none" />
                         <Input
                             placeholder="Search by party, leader, or symbol..."
-                            className="pl-12 h-12 text-base border-border focus-visible:ring-primary rounded-none shadow-sm bg-background"
+                            className="pl-12 h-12 text-base border-border focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary rounded-none shadow-sm bg-background/80 transition-all font-manrope placeholder:text-muted-foreground/70"
                             value={filters.query}
                             onChange={(e) => updateQuery(e.target.value)}
                         />
@@ -244,14 +244,14 @@ function PartyGridContent({ parties }: PartyGridProps) {
                     <div className="flex flex-wrap gap-2 w-full md:w-auto">
 
                         {/* Structure Filters (Clean Toggles) */}
-                        <div className="flex items-center gap-2 bg-background border border-input rounded-none px-3 h-12 shadow-sm">
+                        <div className="flex items-center gap-0 bg-background border border-input rounded-none h-12 shadow-sm p-1">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-full px-2 gap-1.5 hover:bg-transparent">
-                                        <Filter className="h-4 w-4 text-muted-foreground" />
-                                        <span className="font-mono text-xs uppercase tracking-wide">Filters</span>
+                                    <Button variant="ghost" size="sm" className="h-full px-4 rounded-none gap-2 hover:bg-muted text-muted-foreground hover:text-foreground font-mono uppercase text-xs tracking-wider border-r border-transparent hover:border-border">
+                                        <Filter className="h-3.5 w-3.5" />
+                                        <span>Filters</span>
                                         {(filters.hasSeats || filters.inParliament) &&
-                                            <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem] text-[10px] bg-primary/10 text-primary border-primary/20">
+                                            <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem] text-[10px] bg-primary/10 text-primary border-primary/20 rounded-none">
                                                 {[filters.hasSeats, filters.inParliament].filter(Boolean).length}
                                             </Badge>
                                         }
@@ -263,35 +263,35 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                     <DropdownMenuCheckboxItem
                                         checked={filters.hasSeats}
                                         onCheckedChange={toggleSeats}
-                                        className="font-manrope text-sm cursor-pointer"
+                                        className="font-manrope text-sm cursor-pointer rounded-none focus:bg-primary/5 focus:text-primary"
                                     >
                                         Has HoR Seats
                                     </DropdownMenuCheckboxItem>
                                     <DropdownMenuCheckboxItem
                                         checked={filters.inParliament}
                                         onCheckedChange={toggleParliament}
-                                        className="font-manrope text-sm cursor-pointer"
+                                        className="font-manrope text-sm cursor-pointer rounded-none focus:bg-primary/5 focus:text-primary"
                                     >
                                         In Parliament (HoR/NA)
                                     </DropdownMenuCheckboxItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
 
-                            <div className="w-px h-6 bg-border mx-1" />
+                            <div className="w-px h-6 bg-border/50 mx-1" />
 
                             {/* Sort Dropdown */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <Button variant="ghost" size="sm" className="h-full px-2 gap-1.5 hover:bg-transparent">
-                                        <SortAsc className="h-4 w-4 text-muted-foreground" />
-                                        <span className="font-mono text-xs uppercase tracking-wide hidden sm:inline">Sort:</span>
-                                        <span className="font-mono text-xs uppercase font-bold text-primary truncate max-w-[100px]">
+                                    <Button variant="ghost" size="sm" className="h-full px-4 rounded-none gap-2 hover:bg-muted text-muted-foreground hover:text-foreground font-mono uppercase text-xs tracking-wider">
+                                        <SortAsc className="h-3.5 w-3.5" />
+                                        <span className="hidden sm:inline">Sort:</span>
+                                        <span className="font-bold text-primary truncate max-w-[100px]">
                                             {SORT_OPTIONS.find(o => o.value === filters.sort)?.label}
                                         </span>
                                         <ChevronDown className="h-3 w-3 opacity-50" />
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="w-56 rounded-none border-border">
+                                <DropdownMenuContent align="end" className="w-56 rounded-none border-border key-sort">
                                     <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">Sort Basis</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuRadioGroup
@@ -299,7 +299,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                         onValueChange={(v) => updateSort(v as SortBasis)}
                                     >
                                         {SORT_OPTIONS.map(option => (
-                                            <DropdownMenuRadioItem key={option.value} value={option.value} className="font-manrope text-sm gap-2 cursor-pointer">
+                                            <DropdownMenuRadioItem key={option.value} value={option.value} className="font-manrope text-sm gap-2 cursor-pointer rounded-none focus:bg-primary/5 focus:text-primary">
                                                 <option.icon className="h-3 w-3 text-muted-foreground" />
                                                 {option.label}
                                             </DropdownMenuRadioItem>
@@ -311,10 +311,10 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                         value={filters.sortDir}
                                         onValueChange={(v) => updateSortDir(v as "asc" | "desc")}
                                     >
-                                        <DropdownMenuRadioItem value="asc" className="font-manrope text-sm">
+                                        <DropdownMenuRadioItem value="asc" className="font-manrope text-sm rounded-none focus:bg-primary/5 focus:text-primary">
                                             {filters.sort === 'votes' ? 'Low to High' : 'Rank 1 → Last (Best First)'}
                                         </DropdownMenuRadioItem>
-                                        <DropdownMenuRadioItem value="desc" className="font-manrope text-sm">
+                                        <DropdownMenuRadioItem value="desc" className="font-manrope text-sm rounded-none focus:bg-primary/5 focus:text-primary">
                                             {filters.sort === 'votes' ? 'High to Low (Most Votes)' : 'Last → Rank 1'}
                                         </DropdownMenuRadioItem>
                                     </DropdownMenuRadioGroup>
@@ -326,7 +326,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
 
                 {/* Filter Summary & Reset */}
                 <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground font-mono pb-2">
-                    <span className="flex items-center gap-1.5 bg-secondary/50 px-2 py-1 border border-border/50">
+                    <span className="flex items-center gap-1.5 bg-secondary/50 px-2 py-1 border border-border/50 rounded-none">
                         <Filter className="h-3 w-3" />
                         Showing <span className="text-foreground font-bold">{processedParties.length}</span> of {parties.length}
                     </span>

@@ -1,4 +1,4 @@
-import { getDailyBriefs, getFactChecks } from "@/lib/election-data";
+import { getDailyBriefs, getFactChecks, getElectionArticles } from "@/lib/election-data";
 import dynamic from "next/dynamic";
 
 const AnalyticsDashboard = dynamic(() => import("./components/AnalyticsDashboard"), {
@@ -16,6 +16,7 @@ export const revalidate = 3600;
 export default async function ElectionDashboard() {
     const briefs = await getDailyBriefs();
     const factChecks = await getFactChecks();
+    const electionArticles = await getElectionArticles(3);
     const latestBrief = briefs[0];
     const latestFactCheck = factChecks[0];
 
@@ -23,6 +24,7 @@ export default async function ElectionDashboard() {
         <AnalyticsDashboard
             latestBrief={latestBrief}
             latestFactCheck={latestFactCheck}
+            electionArticles={electionArticles}
         />
     );
 }

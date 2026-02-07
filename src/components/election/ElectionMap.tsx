@@ -1,207 +1,208 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
+import { useMemo, useState } from "react";
 import { useElectionStore } from "@/lib/election-store";
 import { cn } from "@/lib/utils";
-
-interface DistrictPath {
-    id: string;
-    d: string;
-}
-
-interface DistrictLabel {
-    id: string;
-    x: number;
-    y: number;
-}
+import { Map as MapIcon, Loader2, AlertTriangle, Type } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { geoJsonToPath, calculateGeoJsonCentroid, type GeoJSON } from "@/lib/map-utils";
 
 export function ElectionMap({ className }: { className?: string }) {
+    // 1. Feature: Maintain Store Integration
     const { selectedDistrict, setSelectedDistrict } = useElectionStore();
     const { hoveredDistrict, setHoveredDistrict } = useElectionStore();
 
-    const [paths, setPaths] = useState<DistrictPath[]>([]);
-    const [labels, setLabels] = useState<DistrictLabel[]>([]);
-    const svgRef = useRef<SVGSVGElement>(null);
-    const pathRefs = useRef<{ [key: string]: SVGPathElement | null }>({});
+    // Local UI state
+    const [showLabels, setShowLabels] = useState(true);
 
-    // 1. Fetch SVG Text
-    const { data: svgText, isLoading, isError } = useQuery({
-        queryKey: ["election-map-svg"],
+    // 2. Data: Fetch Updated GeoJSON
+    const { data: districtData, isLoading, isError } = useQuery({
+        queryKey: ["map-geojson-district"],
         queryFn: async () => {
-            const res = await fetch("/map/nepal-districts.svg");
-            if (!res.ok) throw new Error("Failed to load map");
-            return res.text();
+            const res = await fetch("/map/geojson/district.json");
+            if (!res.ok) throw new Error("Failed to load district data");
+            const json = await res.json();
+            if (json.type !== "FeatureCollection") throw new Error("Invalid GeoJSON");
+            return json as GeoJSON;
         },
         staleTime: Infinity,
     });
 
-    // 2. Parse SVG Text into Data
-    useEffect(() => {
-        if (!svgText) return;
+    // 3. Logic: Generate Paths & Centroids
+    const mapItems = useMemo(() => {
+        if (!districtData) return [];
+        return districtData.features.map((feature, index) => {
+            const props = feature.properties;
+            const id = props?.DISTRICT || String(index);
+            const name = props?.DISTRICT || "Unknown";
 
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(svgText, "image/svg+xml");
-        const pathElements = doc.querySelectorAll("path");
-
-        const extractedPaths: DistrictPath[] = [];
-        pathElements.forEach((el) => {
-            if (el.id && el.getAttribute("d")) {
-                extractedPaths.push({
-                    id: el.id,
-                    d: el.getAttribute("d")!,
-                });
-            }
+            return {
+                id,
+                name,
+                d: geoJsonToPath(feature.geometry),
+                centroid: calculateGeoJsonCentroid(feature.geometry),
+                parentId: String(props?.STATE_C || 0)
+            };
         });
+    }, [districtData]);
 
-        setPaths(extractedPaths);
-    }, [svgText]);
+    // 4. Feature: Styling
+    const getStyle = (item: any) => {
+        const isSelected = selectedDistrict === item.id;
+        const isHovered = hoveredDistrict === item.id;
 
-    // 3. Calculate Centroids for Labels (After Render)
-    useLayoutEffect(() => {
-        if (paths.length === 0) return;
+        // Base
+        let fill = "var(--muted)";
+        let stroke = "var(--border)";
+        let strokeWidth = 0.5;
+        let fillOpacity = 1;
 
-        const newLabels: DistrictLabel[] = [];
+        // Interaction States
+        if (isSelected) {
+            fill = "var(--primary)";
+            stroke = "var(--primary-foreground)";
+            strokeWidth = 1.5;
+        } else if (isHovered) {
+            fill = "var(--primary)";
+            stroke = "var(--primary-foreground)";
+            fillOpacity = 0.8;
+        } else if (selectedDistrict && selectedDistrict !== item.id) {
+            fill = "var(--muted)";
+            fillOpacity = 0.3;
+        }
 
-        Object.entries(pathRefs.current).forEach(([id, element]) => {
-            if (element) {
-                try {
-                    const bbox = element.getBBox();
-                    newLabels.push({
-                        id,
-                        x: bbox.x + bbox.width / 2,
-                        y: bbox.y + bbox.height / 2
-                    });
-                } catch (e) {
-                    console.warn(`Could not calculate bbox for district ${id}`, e);
-                }
-            }
-        });
+        return { fill, stroke, strokeWidth, fillOpacity };
+    };
 
-        setLabels(newLabels);
-    }, [paths]);
+    const handleSelect = (id: string) => {
+        setSelectedDistrict(selectedDistrict === id ? null : id);
+    };
 
-
-    // 4. Stable Handlers for Performance
-    const handleSelect = useCallback((id: string) => {
-        // Use the store value directly instead of functional update if store doesn't support it
-        // Check if we can access the latest state. 
-        // Since selectedDistrict is a dependency, we need to include it. 
-        // BUT including it breaks memoization of the handler if selectedDistrict changes.
-        // TRICK: We can just dispatch the action. If Zustand store's setSelectedDistrict 
-        // doesn't support `prev => ...`, we need to read from the store `getState()` or rely on the prop.
-        // However, standard Zustand setters are usually just `set({ selectedDistrict: value })`.
-        // Let's rely on the fact that `selectedDistrict` is in the component scope.
-        // We will pass the *current selection logic* to the store setter.
-
-        // Actually, to make handleSelect STABLE (dependency-free), we can't depend on `selectedDistrict`.
-        // But the Child `MapPath` knows if it is selected via props `isSelected`.
-        // So `MapPath` can just call `onSelect(district.id)` and the Parent decides logic.
-        // Wait, if Parent has `handleSelect` that depends on `selectedDistrict`, it changes every time selection changes.
-        // Then `MapPath` re-renders every time selection changes.
-        // This is inevitable if we want to update `isSelected` prop.
-        // The optimization we want is: don't re-render ALL paths when ONE is selected.
-        // Memo ensures that only the path whose `isSelected` CHANGED will re-render. 
-        // Steps:
-        // 1. `paths.map` passes `isSelected={selected === id}`.
-        // 2. `handleSelect` changes.
-        // 3. `MapPath` gets new `onSelect` prop.
-        // 4. `MapPath` re-renders even if `isSelected` didn't change... UNLESS `onSelect` is stable.
-
-        // Solution: Use `useElectionStore.getState().selectedDistrict` inside the callback 
-        // so we don't need it as a dependency!
-
-        const current = useElectionStore.getState().selectedDistrict;
-        useElectionStore.getState().setSelectedDistrict(current === id ? null : id);
-
-    }, []); // Empty dependency array = STABLE!
-
-    const handleHover = useCallback((id: string | null) => {
-        useElectionStore.getState().setHoveredDistrict(id);
-    }, []);
+    // 5. Feature: KTM Valley Index
+    const ktmDistricts = ["Kathmandu", "Lalitpur", "Bhaktapur"];
 
     if (isLoading) {
-        return <div className="flex h-full min-h-[400px] items-center justify-center text-muted-foreground animate-pulse">Loading Map Data...</div>;
+        return (
+            <div className={cn("flex h-full min-h-[400px] items-center justify-center text-muted-foreground animate-pulse", className)}>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Loading Map Data...
+            </div>
+        );
     }
 
     if (isError) {
-        return <div className="flex h-full min-h-[400px] items-center justify-center text-destructive">Failed to load map.</div>;
+        return (
+            <div className={cn("flex h-full min-h-[400px] items-center justify-center text-destructive", className)}>
+                <AlertTriangle className="mr-2 h-4 w-4" />
+                Failed to load map
+            </div>
+        );
     }
 
     return (
-        <div className={cn("w-full h-full min-h-[300px] relative flex items-center justify-center overflow-hidden", className)}>
-            <svg
-                ref={svgRef}
-                viewBox="0 0 800 403" // Matches the original SVG viewBox
-                className="w-full h-full max-h-[80vh]"
-                preserveAspectRatio="xMidYMid meet"
-                style={{ filter: "drop-shadow(0px 4px 10px rgba(0,0,0,0.3))" }}
-            >
-                {/* District Paths */}
-                <g className="transition-all duration-500 ease-out">
-                    {paths.map((district) => (
-                        <MapPath
-                            key={district.id}
-                            district={district}
-                            isSelected={selectedDistrict === district.id}
-                            isHovered={hoveredDistrict === district.id}
-                            onSelect={handleSelect}
-                            onHover={handleHover}
-                            pathRef={(el) => { pathRefs.current[district.id] = el; }}
-                        />
-                    ))}
-                </g>
+        <div className={cn("relative w-full h-full min-h-[300px] bg-slate-50/50 dark:bg-slate-900/10 rounded-xl overflow-hidden", className)}>
 
-                {/* District Labels */}
-                <g className="pointer-events-none select-none" style={{ zIndex: 20 }}>
-                    {labels.map((label) => {
-                        const isSelected = selectedDistrict === label.id;
+            {/* Show Labels Toggle */}
+            <div className="absolute top-2 right-2 z-20">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className={cn("h-8 w-8 hover:bg-background/80", showLabels && "bg-background/50 text-foreground")}
+                    onClick={() => setShowLabels(!showLabels)}
+                    title="Toggle Labels"
+                >
+                    <Type className="h-4 w-4" />
+                </Button>
+            </div>
+
+            <svg
+                viewBox="0 0 1000 500"
+                className="w-full h-full max-h-[80vh]"
+                style={{ filter: "drop-shadow(0px 4px 12px rgba(0,0,0,0.05))" }}
+            >
+                <g>
+                    {mapItems.map((item) => {
+                        const style = getStyle(item);
                         return (
-                            <text
-                                key={label.id}
-                                x={label.x}
-                                y={label.y}
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                                style={{
-                                    fontSize: isSelected ? "7px" : "5px",
-                                    fontWeight: isSelected ? 700 : 500,
-                                    fill: isSelected ? "var(--primary-foreground)" : "var(--foreground)",
-                                    fillOpacity: isSelected ? 1 : 0.7,
-                                    textShadow: isSelected
-                                        ? "none"
-                                        : "0px 0px 3px var(--background)",
-                                    transition: "all 0.3s ease",
-                                }}
-                            >
-                                {label.id}
-                            </text>
+                            <path
+                                key={item.id}
+                                d={item.d}
+                                fill={style.fill}
+                                stroke={style.stroke}
+                                strokeWidth={style.strokeWidth}
+                                fillOpacity={style.fillOpacity}
+                                className="transition-all duration-300 cursor-pointer hover:opacity-90 active:scale-[0.99]"
+                                onMouseEnter={() => setHoveredDistrict(item.id)}
+                                onMouseLeave={() => setHoveredDistrict(null)}
+                                onClick={() => handleSelect(item.id)}
+                                vectorEffect="non-scaling-stroke"
+                            />
                         );
                     })}
                 </g>
+
+                {/* Labels Layer */}
+                {showLabels && (
+                    <g className="pointer-events-none select-none">
+                        {mapItems.map((item) => {
+                            if (!item.centroid) return null;
+                            const isSelected = selectedDistrict === item.id;
+
+                            // Abbreviations for crowded areas
+                            const abbreviations: Record<string, string> = {
+                                "Kathmandu": "KTM",
+                                "Bhaktapur": "BKT",
+                                "Lalitpur": "LAL",
+                            };
+                            const displayName = abbreviations[item.name] || item.name;
+
+                            return (
+                                <text
+                                    key={`label-${item.id}`}
+                                    x={item.centroid[0]}
+                                    y={item.centroid[1]}
+                                    textAnchor="middle"
+                                    dominantBaseline="middle"
+                                    style={{
+                                        fontSize: isSelected ? "12px" : "6px",
+                                        fontWeight: isSelected ? 800 : 500,
+                                        fill: isSelected ? "var(--primary-foreground)" : "var(--foreground)",
+                                        opacity: (!isSelected && !hoveredDistrict) ? 0.7 : 1,
+                                        textShadow: "0px 0px 2px rgba(255,255,255,0.7)",
+                                        transition: "all 0.3s ease"
+                                    }}
+                                >
+                                    {displayName}
+                                </text>
+                            );
+                        })}
+                    </g>
+                )}
             </svg>
 
-            {/* KTM Valley Index (Responsive) */}
-            <div className="absolute right-2 bottom-4 md:top-1/2 md:bottom-auto md:-translate-y-1/2 flex flex-row md:flex-col items-end gap-1 z-30 pointer-events-none">
-                <div className="hidden md:block text-[10px] font-bold tracking-widest text-muted-foreground/50 uppercase mb-2 mr-2">
+            {/* Feature: KTM Valley Index - Top Right with ~20% spacing */}
+            <div className="absolute right-4 top-[20%] flex flex-col items-end gap-1 z-20 pointer-events-none">
+                <div className="text-[10px] font-bold tracking-widest text-muted-foreground/50 uppercase mb-1 mr-1">
                     KTM Valley
                 </div>
-                {["Kathmandu", "Lalitpur", "Bhaktapur"].map((district) => {
-                    const isSelected = selectedDistrict === district;
+                {ktmDistricts.map((dName) => {
+                    const isSelected = selectedDistrict === dName;
+
                     return (
                         <button
-                            key={district}
-                            onClick={() => handleSelect(district)}
-                            onMouseEnter={() => handleHover(district)}
-                            onMouseLeave={() => handleHover(null)}
+                            key={dName}
+                            onClick={() => handleSelect(dName)}
+                            onMouseEnter={() => setHoveredDistrict(dName)}
+                            onMouseLeave={() => setHoveredDistrict(null)}
                             className={cn(
-                                "pointer-events-auto text-[8px] md:text-[10px] font-bold px-2 py-1 md:px-3 md:py-1 transition-all text-right uppercase tracking-wider bg-background/50 md:bg-transparent backdrop-blur md:backdrop-filter-none rounded border md:border-none border-border/50",
+                                "pointer-events-auto text-[10px] font-bold px-3 py-1 transition-all text-right uppercase tracking-wider rounded border border-border/50 bg-background/80 backdrop-blur-sm",
                                 isSelected
-                                    ? "text-primary scale-110 border-primary"
+                                    ? "text-primary border-primary scale-105 shadow-sm"
                                     : "text-muted-foreground hover:text-foreground hover:scale-105"
                             )}
                         >
-                            {district}
+                            {dName}
                         </button>
                     );
                 })}
@@ -209,71 +210,3 @@ export function ElectionMap({ className }: { className?: string }) {
         </div>
     );
 }
-
-// Optimization: Memoized Path Component
-// MUST NOT use inline arrow functions in parent or this memo breaks
-import React, { memo } from 'react';
-
-const MapPath = memo(({
-    district,
-    isSelected,
-    isHovered,
-    onSelect,
-    onHover,
-    pathRef
-}: {
-    district: DistrictPath;
-    isSelected: boolean;
-    isHovered: boolean;
-    onSelect: (id: string) => void;
-    onHover: (id: string | null) => void;
-    pathRef: (el: SVGPathElement | null) => void;
-}) => {
-    // Styling Logic
-    let fill = "var(--muted)";
-    let stroke = "var(--border)";
-    let strokeWidth = "1px";
-    let fillOpacity = 1;
-
-    if (isSelected) {
-        fill = "var(--primary)";
-        stroke = "var(--primary-foreground)";
-        strokeWidth = "2px";
-        fillOpacity = 1;
-    } else if (isHovered) {
-        fill = "var(--primary)";
-        stroke = "var(--primary-foreground)";
-        strokeWidth = "1.5px";
-        fillOpacity = 0.6;
-    }
-
-    return (
-        <path
-            id={district.id}
-            d={district.d}
-            ref={pathRef}
-            onClick={() => onSelect(district.id)}
-            onMouseEnter={() => onHover(district.id)}
-            onMouseLeave={() => onHover(null)}
-            style={{
-                fill,
-                stroke,
-                strokeWidth,
-                fillOpacity,
-                transition: "all 0.1s ease-out", // Very fast transition for responsiveness
-                cursor: "pointer",
-                vectorEffect: "non-scaling-stroke",
-                outline: "none"
-            }}
-            className="hover:z-10 relative"
-        />
-    );
-}, (prev, next) => {
-    // Custom equality check for performance
-    return (
-        prev.isSelected === next.isSelected &&
-        prev.isHovered === next.isHovered &&
-        prev.district.id === next.district.id
-        // onSelect/onHover/pathRef are assumed stable now
-    );
-});

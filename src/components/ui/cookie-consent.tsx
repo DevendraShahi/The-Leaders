@@ -53,7 +53,7 @@ export function CookieConsent() {
                             </h3>
                             <p className="text-sm text-muted-foreground leading-relaxed">
                                 We use cookies to enhance your browsing experience, analyze site traffic, and provide personalized content.
-                                By clicking "Accept", you consent to our use of cookies.
+                                By clicking &ldquo;Accept&rdquo;, you consent to our use of cookies.
                             </p>
                             <a
                                 href="/cookie-policy"

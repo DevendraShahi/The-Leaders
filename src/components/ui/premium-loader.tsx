@@ -152,9 +152,6 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                     return prev + 4; // Double speed (was +2)
                 });
             }, 20); // Faster tick (was 30ms)
-        } else {
-            // If consent is needed, pause at "Waiting for your consent"
-            setStatusText("Waiting for your consent");
         }
 
         return () => {
@@ -163,6 +160,8 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
             if (progressInterval) clearInterval(progressInterval);
         };
     }, [showConsent]);
+
+    const effectiveStatusText = showConsent ? "Waiting for your consent" : statusText;
 
     return (
         <div
@@ -218,7 +217,7 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                 {/* Status Section */}
                 <div className="relative z-10 flex flex-col items-center gap-6 w-full">
                     <p className="text-sm font-medium text-muted-foreground tracking-[0.2em] uppercase h-6">
-                        {statusText}
+                        {effectiveStatusText}
                     </p>
 
                     <div className="w-64 md:w-80 h-1 bg-border/50 rounded-full overflow-hidden">

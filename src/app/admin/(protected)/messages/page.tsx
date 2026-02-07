@@ -245,7 +245,7 @@ export default function MessagesPage() {
                                     <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed border-border rounded-lg bg-background/50">
                                         <Paperclip className="h-10 w-10 text-muted-foreground mb-2" />
                                         <p className="text-sm font-medium">Document Attachment</p>
-                                        <p className="text-xs text-muted-foreground mb-4">Click 'Open Original' to view</p>
+                                        <p className="text-xs text-muted-foreground mb-4">Click &lsquo;Open Original&rsquo; to view</p>
                                         <Button variant="outline" asChild>
                                             <a href={selectedMessage.attachmentUrl} target="_blank" rel="noopener noreferrer">
                                                 Download / View File

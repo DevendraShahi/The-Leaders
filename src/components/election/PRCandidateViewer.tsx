@@ -97,14 +97,14 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
             <div className="flex flex-col gap-4 md:flex-row md:items-end justify-between">
                 <div className="flex-1 space-y-2">
-                    <h2 className="text-2xl font-bebas text-primary">Browse Candidates</h2>
+                    <h2 className="text-2xl font-bebas text-primary uppercase tracking-wide">Browse Candidates</h2>
                 </div>
-                <div className="flex bg-muted p-1 rounded-lg">
+                <div className="flex bg-muted p-1 border border-border rounded-none">
                     <Button
                         variant={viewMode === "party" ? "default" : "ghost"}
                         size="sm"
                         onClick={() => setViewMode("party")}
-                        className="text-xs"
+                        className="text-xs rounded-none font-mono uppercase tracking-widest"
                     >
                         By Party
                     </Button>
@@ -112,7 +112,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                         variant={viewMode === "district" ? "default" : "ghost"}
                         size="sm"
                         onClick={() => setViewMode("district")}
-                        className="text-xs"
+                        className="text-xs rounded-none font-mono uppercase tracking-widest"
                     >
                         By District
                     </Button>
@@ -120,13 +120,13 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
             </div>
 
             {/* Control Bar */}
-            <div className="flex flex-col gap-4 p-4 bg-muted/30 rounded-lg border">
+            <div className="flex flex-col gap-4 p-4 bg-muted/30 border border-border rounded-none">
                 <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
                     <div className="relative w-full md:w-96">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                             placeholder="Search candidates by name..."
-                            className="pl-10 bg-background"
+                            className="pl-10 bg-background rounded-none font-manrope"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
@@ -159,8 +159,8 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                         </SelectContent>
                     </Select>
                     <Select value={selectedParty} onValueChange={setSelectedParty}>
-                        <SelectTrigger className="w-full md:w-[180px]">
-                            <SelectValue placeholder="Filter by Party" />
+                        <SelectTrigger className="w-full md:w-[180px] rounded-none font-mono text-xs uppercase tracking-widest">
+                            <SelectValue placeholder="All Parties" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="all">All Parties</SelectItem>
@@ -172,7 +172,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
                     {/* Gender Filter */}
                     <Select value={selectedGender} onValueChange={setSelectedGender}>
-                        <SelectTrigger className="w-full md:w-[150px]">
+                        <SelectTrigger className="w-full md:w-[150px] rounded-none font-mono text-xs uppercase tracking-widest">
                             <SelectValue placeholder="All Genders" />
                         </SelectTrigger>
                         <SelectContent>
@@ -185,7 +185,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
                     {/* Group Filter */}
                     <Select value={selectedGroup} onValueChange={setSelectedGroup}>
-                        <SelectTrigger className="w-full md:w-[150px]">
+                        <SelectTrigger className="w-full md:w-[150px] rounded-none font-mono text-xs uppercase tracking-widest">
                             <SelectValue placeholder="All Groups" />
                         </SelectTrigger>
                         <SelectContent>
@@ -207,6 +207,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                             setSelectedDistrict(null);
                         }}
                         title="Reset Filters"
+                        className="rounded-none"
                     >
                         <X className="h-4 w-4" />
                     </Button>
@@ -221,12 +222,12 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     </div>
                 ) : (
                     Object.entries(groupedResults).map(([partyName, candidates]) => (
-                        <Card key={partyName} className="overflow-hidden">
-                            <CardHeader className="bg-muted/10 pb-4">
-                                <CardTitle className="flex justify-between items-center text-xl font-bold font-bebas tracking-wide">
+                        <Card key={partyName} className="overflow-hidden border border-border rounded-none bg-card">
+                            <CardHeader className="bg-muted/10 pb-4 border-b border-border">
+                                <CardTitle className="flex justify-between items-center text-xl font-bebas tracking-wide uppercase">
                                     <div className="flex items-center gap-3">
                                         {getPartyLogo(partyName) && (
-                                            <div className="relative h-8 w-8 rounded-full overflow-hidden border bg-white">
+                                            <div className="relative h-8 w-8 overflow-hidden border border-border bg-white rounded-none">
                                                 <Image
                                                     src={getPartyLogo(partyName)!}
                                                     alt={partyName}
@@ -237,13 +238,15 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                                         )}
                                         {partyName}
                                     </div>
-                                    <Badge variant="outline">{candidates.length} Candidates</Badge>
+                                    <Badge variant="outline" className="rounded-none font-mono text-[10px] uppercase tracking-widest">
+                                        {candidates.length} Candidates
+                                    </Badge>
                                 </CardTitle>
                             </CardHeader>
                             <CardContent className="p-0">
                                 <div className="overflow-x-auto">
-                                    <table className="w-full text-sm text-left">
-                                        <thead className="text-xs text-muted-foreground uppercase bg-muted/20 border-b">
+                                    <table className="w-full text-sm text-left border-t border-border">
+                                        <thead className="text-xs text-muted-foreground uppercase bg-muted/20 border-b font-mono tracking-widest">
                                             <tr>
                                                 <th className="px-6 py-3">SN</th>
                                                 <th className="px-6 py-3">Name</th>
@@ -255,19 +258,33 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                                         </thead>
                                         <tbody>
                                             {candidates.map((candidate, index) => (
-                                                <tr key={`${candidate.voter_id}-${candidate.sn}-${index}`} className="border-b hover:bg-muted/5 transition-colors">
-                                                    <td className="px-6 py-4 font-medium">{candidate.sn}</td>
-                                                    <td className="px-6 py-4 font-bold text-primary">{candidate.name}</td>
-                                                    <td className="px-6 py-4">{candidate.group}</td>
-                                                    <td className="px-6 py-4">{candidate.gender}</td>
-                                                    <td className="px-6 py-4">{candidate.district}</td>
+                                                <tr key={`${candidate.voter_id}-${candidate.sn}-${index}`} className="border-b border-border hover:bg-muted/5 transition-colors">
+                                                    <td className="px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                                                        {candidate.sn}
+                                                    </td>
+                                                    <td className="px-6 py-4 font-manrope font-semibold text-sm text-primary">
+                                                        {candidate.name}
+                                                    </td>
+                                                    <td className="px-6 py-4 font-manrope text-sm text-foreground/80">
+                                                        {candidate.group}
+                                                    </td>
+                                                    <td className="px-6 py-4 font-manrope text-sm text-foreground/80">
+                                                        {candidate.gender}
+                                                    </td>
+                                                    <td className="px-6 py-4 font-manrope text-sm text-foreground/80">
+                                                        {candidate.district}
+                                                    </td>
                                                     <td className="px-6 py-4">
                                                         <div className="flex gap-1">
                                                             {candidate.backward_area && (
-                                                                <Badge variant="secondary" className="text-[10px]">Backward</Badge>
+                                                                <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
+                                                                    Backward
+                                                                </Badge>
                                                             )}
                                                             {candidate.disability && (
-                                                                <Badge variant="secondary" className="text-[10px]">Disability</Badge>
+                                                                <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
+                                                                    Disability
+                                                                </Badge>
                                                             )}
                                                         </div>
                                                     </td>

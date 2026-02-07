@@ -9,6 +9,24 @@ interface PartyDistributionChartProps {
     data: PartyProjection[];
 }
 
+const PartyDistributionTooltip = ({ active, payload }: any) => {
+    if (active && payload && payload.length) {
+        const data = payload[0].payload;
+        return (
+            <div className="rounded-lg border border-border bg-background p-3 shadow-lg">
+                <p className="font-bebas text-lg text-foreground">{data.name}</p>
+                <p className="text-sm text-muted-foreground">
+                    Seats: <span className="font-bold text-foreground">{data.value}</span>
+                </p>
+                <p className="text-sm text-muted-foreground">
+                    Vote Share: <span className="font-bold text-foreground">{data.percentage}%</span>
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
+
 export function PartyDistributionChart({ data }: PartyDistributionChartProps) {
     // Transform data for pie chart
     const chartData = data.map(party => ({
@@ -17,24 +35,6 @@ export function PartyDistributionChart({ data }: PartyDistributionChartProps) {
         color: party.color,
         percentage: party.voteSharePercentage
     }));
-
-    const CustomTooltip = ({ active, payload }: any) => {
-        if (active && payload && payload.length) {
-            const data = payload[0].payload;
-            return (
-                <div className="rounded-lg border border-border bg-background p-3 shadow-lg">
-                    <p className="font-bebas text-lg text-foreground">{data.name}</p>
-                    <p className="text-sm text-muted-foreground">
-                        Seats: <span className="font-bold text-foreground">{data.value}</span>
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                        Vote Share: <span className="font-bold text-foreground">{data.percentage}%</span>
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
 
     return (
         <motion.div
@@ -74,7 +74,7 @@ export function PartyDistributionChart({ data }: PartyDistributionChartProps) {
                                     />
                                 ))}
                             </Pie>
-                            <Tooltip content={<CustomTooltip />} />
+                            <Tooltip content={<PartyDistributionTooltip />} />
                             <Legend
                                 verticalAlign="bottom"
                                 height={36}

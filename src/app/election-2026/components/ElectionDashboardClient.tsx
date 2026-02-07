@@ -69,10 +69,12 @@ export default function ElectionDashboardClient({
                                 animate={{ scale: 1, opacity: 1 }}
                                 transition={{ delay: 0.2, duration: 0.5 }}
                             >
-                                <span className="inline-flex items-center gap-2 rounded-full border border-[#B71C1C]/30 bg-[#B71C1C]/10 px-4 py-1.5 text-sm font-mono uppercase tracking-wider text-[#B71C1C]">
-                                    <Calendar className="h-4 w-4" />
-                                    Election 2026
-                                </span>
+                                <div className="inline-block px-4 py-1 bg-[#B71C1C] text-white backdrop-blur-sm">
+                                    <span className="flex items-center gap-2 font-bebas text-sm tracking-widest uppercase">
+                                        <Calendar className="h-4 w-4" />
+                                        Election 2026
+                                    </span>
+                                </div>
                             </motion.div>
 
                             <h1 className="font-bebas text-5xl leading-[0.9] tracking-tight md:text-7xl lg:text-8xl">
@@ -120,7 +122,7 @@ export default function ElectionDashboardClient({
                                     <motion.div
                                         key={stat.label}
                                         variants={fadeInUp}
-                                        className="group relative overflow-hidden rounded-lg border border-border/50 bg-background/50 p-4 backdrop-blur transition-all hover:border-[#B71C1C]/30 hover:bg-[#B71C1C]/5"
+                                        className="group relative overflow-hidden rounded-none border border-border/50 bg-background/50 p-4 backdrop-blur transition-all hover:border-[#B71C1C]/30 hover:bg-[#B71C1C]/5"
                                     >
                                         <stat.icon className="mb-2 h-5 w-5 text-[#B71C1C] transition-transform group-hover:scale-110" />
                                         <div className="font-bebas text-2xl text-foreground">{stat.value}</div>
@@ -135,13 +137,13 @@ export default function ElectionDashboardClient({
                             variants={fadeInUp}
                         >
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <Button variant="outline" className="group w-full sm:w-auto">
+                                <Button variant="outline" className="group w-full sm:w-auto rounded-none">
                                     <Bell className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" />
                                     Subscribe to Alerts
                                 </Button>
                             </motion.div>
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                                <Button asChild className="w-full sm:w-auto">
+                                <Button asChild className="w-full sm:w-auto rounded-none">
                                     <Link href="/election-2026/pr-candidates">
                                         View Interactive Map
                                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -164,7 +166,7 @@ export default function ElectionDashboardClient({
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.2, duration: 0.8 }}
                         >
-                            <Card className="relative overflow-hidden border-border/50 bg-gradient-to-br from-background via-background to-[#B71C1C]/5 backdrop-blur">
+                            <Card className="relative overflow-hidden border-border/50 bg-gradient-to-br from-background via-background to-[#B71C1C]/5 backdrop-blur rounded-none">
                                 <div className="absolute inset-0 bg-[linear-gradient(rgba(183,28,28,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(183,28,28,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
 
                                 <CardHeader className="relative">
@@ -187,12 +189,12 @@ export default function ElectionDashboardClient({
                                 </CardHeader>
 
                                 <CardContent className="relative">
-                                    <div className="relative h-[500px] w-full overflow-hidden rounded-lg border border-border/30 bg-background/50">
+                                    <div className="relative h-[500px] w-full overflow-hidden rounded-none border border-border/30 bg-background/50">
                                         <ElectionMap className="h-full w-full" />
 
                                         {/* Legend */}
                                         <motion.div
-                                            className="absolute bottom-4 left-4 rounded-lg border border-border/50 bg-background/90 p-3 text-xs backdrop-blur"
+                                            className="absolute bottom-4 left-4 rounded-none border border-border/50 bg-background/90 p-3 text-xs backdrop-blur"
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: 0.5 }}
@@ -200,11 +202,11 @@ export default function ElectionDashboardClient({
                                             <div className="mb-2 font-bebas text-sm uppercase tracking-wider">Legend</div>
                                             <div className="space-y-1.5">
                                                 <div className="flex items-center gap-2">
-                                                    <div className="h-3 w-3 rounded-full bg-[#B71C1C]" />
+                                                    <div className="h-3 w-3 rounded-none bg-[#B71C1C]" />
                                                     <span className="text-muted-foreground">Projected Win</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <div className="h-3 w-3 rounded-full border-2 border-border bg-background" />
+                                                    <div className="h-3 w-3 rounded-none border-2 border-border bg-background" />
                                                     <span className="text-muted-foreground">Undecided</span>
                                                 </div>
                                             </div>
@@ -256,7 +258,7 @@ export default function ElectionDashboardClient({
                                     initial="rest"
                                     whileHover="hover"
                                 >
-                                    <Card className="group h-full overflow-hidden border-border/50 transition-all hover:border-[#B71C1C]/30 hover:shadow-lg">
+                                    <Card className="group h-full overflow-hidden border-border/50 transition-all hover:border-[#B71C1C]/30 hover:shadow-lg rounded-none">
                                         <CardHeader>
                                             <CardTitle className="font-bebas text-2xl uppercase tracking-wide">
                                                 {feature.title}
@@ -266,12 +268,12 @@ export default function ElectionDashboardClient({
                                             </CardDescription>
                                         </CardHeader>
                                         <CardContent>
-                                            <div className={`mb-4 flex h-32 items-center justify-center rounded-lg bg-gradient-to-br ${feature.gradient} border border-border/30`}>
+                                            <div className={`mb-4 flex h-32 items-center justify-center rounded-none bg-gradient-to-br ${feature.gradient} border border-border/30`}>
                                                 <span className="font-bebas text-4xl uppercase tracking-wider text-foreground/20">
                                                     {index === 0 ? "PR LIST" : index === 1 ? "PARTIES" : "Manifestos"}
                                                 </span>
                                             </div>
-                                            <Button variant="link" asChild className="group/btn p-0">
+                                            <Button variant="link" asChild className="group/btn p-0 rounded-none">
                                                 <Link href={feature.link} className="flex items-center gap-2">
                                                     {feature.linkText}
                                                     <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
@@ -292,7 +294,18 @@ export default function ElectionDashboardClient({
                         transition={{ delay: 0.4, duration: 0.8 }}
                     >
                         {/* Daily Brief */}
-                        <Card className="group overflow-hidden border-[#B71C1C]/20 bg-gradient-to-br from-[#B71C1C]/5 via-background to-background transition-all hover:border-[#B71C1C]/40 hover:shadow-lg">
+                        <Card className="group overflow-hidden border-[#B71C1C]/20 bg-gradient-to-br from-[#B71C1C]/5 via-background to-background transition-all hover:border-[#B71C1C]/40 hover:shadow-lg rounded-none">
+                            {latestBrief?.image && (
+                                <div className="relative h-32 w-full overflow-hidden border-b border-border/60">
+                                    <img
+                                        src={latestBrief.image}
+                                        alt={latestBrief.title}
+                                        className="h-full w-full object-cover object-center"
+                                        loading="lazy"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+                                </div>
+                            )}
                             <CardHeader>
                                 <CardTitle className="flex items-center gap-2 font-bebas text-2xl uppercase tracking-wide">
                                     <Calendar className="h-5 w-5 text-[#B71C1C]" />
@@ -315,7 +328,7 @@ export default function ElectionDashboardClient({
                                                 {latestBrief.summary}
                                             </p>
                                         </Link>
-                                        <Button className="w-full" asChild>
+                                        <Button className="w-full rounded-none" asChild>
                                             <Link href="/election-2026/daily-brief">Read Full Brief</Link>
                                         </Button>
                                     </>
@@ -326,7 +339,18 @@ export default function ElectionDashboardClient({
                         </Card>
 
                         {/* Latest Fact Check */}
-                        <Card className="group overflow-hidden border-l-4 border-l-[#B71C1C] transition-all hover:shadow-lg">
+                        <Card className="group overflow-hidden border-l-4 border-l-[#B71C1C] transition-all hover:shadow-lg rounded-none">
+                            {latestFactCheck?.image && (
+                                <div className="relative h-28 w-full overflow-hidden border-b border-border/60">
+                                    <img
+                                        src={latestFactCheck.image}
+                                        alt={latestFactCheck.claim}
+                                        className="h-full w-full object-cover object-center"
+                                        loading="lazy"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+                                </div>
+                            )}
                             <CardHeader className="pb-3">
                                 <CardTitle className="flex items-center gap-2 font-bebas text-2xl uppercase tracking-wide text-[#B71C1C]">
                                     <ShieldCheck className="h-5 w-5" />
@@ -337,15 +361,15 @@ export default function ElectionDashboardClient({
                                 {latestFactCheck ? (
                                     <>
                                         <h4 className="mb-3 font-bold leading-tight">
-                                            Claim: "{latestFactCheck.claim}"
+                                            Claim: &ldquo;{latestFactCheck.claim}&rdquo;
                                         </h4>
-                                        <div className="mb-3 inline-block rounded bg-[#B71C1C]/10 px-3 py-1 text-sm font-bold uppercase text-[#B71C1C]">
+                                        <div className="mb-3 inline-block rounded-none bg-[#B71C1C]/10 px-3 py-1 text-sm font-bold uppercase text-[#B71C1C]">
                                             Verdict: {latestFactCheck.verdict}
                                         </div>
                                         <p className="line-clamp-3 text-sm text-muted-foreground">
                                             {latestFactCheck.analysis}
                                         </p>
-                                        <Button variant="link" className="mt-3 p-0" asChild>
+                                        <Button variant="link" className="mt-3 p-0 rounded-none" asChild>
                                             <Link href="/election-2026/fact-checks" className="group/link flex items-center gap-1">
                                                 See All Verifications
                                                 <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />

@@ -6,9 +6,13 @@ import gsap from "gsap";
 export function CustomCursor() {
     const cursorOuterRef = useRef<HTMLDivElement>(null);
     const cursorInnerRef = useRef<HTMLDivElement>(null);
+    const cursorLabelRef = useRef<HTMLDivElement>(null);
+    const cursorTraceRef = useRef<HTMLDivElement>(null);
+    const lastPos = useRef({ x: 0, y: 0 });
 
     const [isHovering, setIsHovering] = useState(false);
     const [isClicking, setIsClicking] = useState(false);
+    const [hoverLabel, setHoverLabel] = useState("");
 
     useEffect(() => {
         // Only run logic on large screens
@@ -16,8 +20,10 @@ export function CustomCursor() {
 
         const cursorOuter = cursorOuterRef.current;
         const cursorInner = cursorInnerRef.current;
+        const cursorLabel = cursorLabelRef.current;
+        const cursorTrace = cursorTraceRef.current;
 
-        if (!cursorOuter || !cursorInner) return;
+        if (!cursorOuter || !cursorInner || !cursorLabel || !cursorTrace) return;
 
         // GSAP quickTo for ultra-smooth cursor movement
         // Separate quickTo for x and y for optimal performance
@@ -25,16 +31,39 @@ export function CustomCursor() {
         const yOuterTo = gsap.quickTo(cursorOuter, "y", { duration: 0.5, ease: "power3" });
         const xInnerTo = gsap.quickTo(cursorInner, "x", { duration: 0.15, ease: "power3" });
         const yInnerTo = gsap.quickTo(cursorInner, "y", { duration: 0.15, ease: "power3" });
+        const xLabelTo = gsap.quickTo(cursorLabel, "x", { duration: 0.2, ease: "power3" });
+        const yLabelTo = gsap.quickTo(cursorLabel, "y", { duration: 0.2, ease: "power3" });
+        const xTraceTo = gsap.quickTo(cursorTrace, "x", { duration: 0.35, ease: "power3" });
+        const yTraceTo = gsap.quickTo(cursorTrace, "y", { duration: 0.35, ease: "power3" });
+        const rotateTo = gsap.quickTo(cursorOuter, "rotation", { duration: 0.3, ease: "power2.out" });
 
         // Set initial visibility
-        gsap.set([cursorOuter, cursorInner], { xPercent: -50, yPercent: -50 });
+        gsap.set([cursorOuter, cursorInner, cursorLabel, cursorTrace], { xPercent: -50, yPercent: -50 });
 
         const handleMouseMove = (e: MouseEvent) => {
             // Update cursor positions using quickTo
+            const { x: lastX, y: lastY } = lastPos.current;
+            const dx = e.clientX - lastX;
+            const dy = e.clientY - lastY;
+            lastPos.current = { x: e.clientX, y: e.clientY };
+
+            const velocity = Math.min(1, Math.sqrt(dx * dx + dy * dy) / 24);
+
             xOuterTo(e.clientX);
             yOuterTo(e.clientY);
             xInnerTo(e.clientX);
             yInnerTo(e.clientY);
+            xLabelTo(e.clientX + 20);
+            yLabelTo(e.clientY + 20);
+            xTraceTo(e.clientX - 18);
+            yTraceTo(e.clientY + 18);
+            rotateTo(dx * 0.6);
+
+            gsap.to(cursorOuter, {
+                scale: 1 + velocity * 0.2,
+                duration: 0.2,
+                ease: "power2.out",
+            });
 
             // Check what element we're hovering over
             const target = e.target as HTMLElement;
@@ -47,7 +76,13 @@ export function CustomCursor() {
                 target.getAttribute("role") === "button" ||
                 target.classList.contains("cursor-pointer");
 
-            setIsHovering(!!(isLink || isButton));
+            const hovering = !!(isLink || isButton);
+            setIsHovering(hovering);
+
+            const label =
+                (target.closest("[data-cursor-label]") as HTMLElement | null)?.dataset?.cursorLabel ||
+                (isLink ? "Open" : isButton ? "Action" : "");
+            setHoverLabel(label);
         };
 
         const handleMouseDown = () => setIsClicking(true);
@@ -119,7 +154,7 @@ export function CustomCursor() {
         const cursorOuter = cursorOuterRef.current;
         if (!cursorOuter) return;
 
-        const scale = isHovering ? 1.5 : isClicking ? 0.8 : 1;
+        const scale = isHovering ? 1.25 : isClicking ? 0.92 : 1;
 
         gsap.to(cursorOuter, {
             scale,
@@ -136,7 +171,7 @@ export function CustomCursor() {
         const cursorInner = cursorInnerRef.current;
         if (!cursorInner) return;
 
-        const scale = isHovering ? 0 : isClicking ? 2 : 1;
+        const scale = isHovering ? 0.7 : isClicking ? 1.2 : 1;
 
         gsap.to(cursorInner, {
             scale,
@@ -150,30 +185,16 @@ export function CustomCursor() {
             {/* Outer cursor ring - Hidden on mobile/tablet */}
             <div
                 ref={cursorOuterRef}
-                className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999] mix-blend-difference"
+                className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999]"
                 style={{ willChange: "transform" }}
             >
-                <div className="relative w-10 h-10">
-                    {/* Main ring */}
-                    <div className="absolute inset-0 rounded-full border-2 border-white opacity-80" />
-
-                    {/* Gradient glow on hover */}
+                <div className="relative w-10 h-10 rotate-45">
+                    <div className="absolute inset-0 border border-foreground/60 bg-transparent" />
                     {isHovering && (
-                        <div
-                            className="absolute inset-0 rounded-full"
-                            style={{
-                                background: "radial-gradient(circle, rgba(183, 28, 28, 0.4) 0%, rgba(183, 28, 28, 0.1) 50%, transparent 100%)",
-                                filter: "blur(10px)",
-                            }}
-                        />
-                    )}
-
-                    {/* Pulsing ring for interactive elements */}
-                    {isHovering && (
-                        <div
-                            className="absolute inset-0 rounded-full border-2 border-[#B71C1C] animate-ping"
-                            style={{ animationDuration: "1.5s" }}
-                        />
+                        <>
+                            <div className="absolute inset-[-4px] border border-[#B71C1C]/60" />
+                            <div className="absolute inset-[6px] border border-[#B71C1C]/60" />
+                        </>
                     )}
                 </div>
             </div>
@@ -184,7 +205,29 @@ export function CustomCursor() {
                 className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999]"
                 style={{ willChange: "transform" }}
             >
-                <div className="w-2 h-2 rounded-full bg-[#B71C1C]" />
+                <div className="w-2 h-2 bg-[#B71C1C]" />
+            </div>
+
+            {/* Cursor label */}
+            <div
+                ref={cursorLabelRef}
+                className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9999]"
+                style={{ willChange: "transform" }}
+            >
+                <div className="px-2.5 py-1 border border-border bg-background/95 text-[10px] font-mono uppercase tracking-widest text-foreground transition-opacity duration-200"
+                    style={{ opacity: isHovering && hoverLabel ? 1 : 0 }}
+                >
+                    {hoverLabel || ""}
+                </div>
+            </div>
+
+            {/* Cursor trace */}
+            <div
+                ref={cursorTraceRef}
+                className="custom-cursor-element hidden lg:block fixed top-0 left-0 pointer-events-none z-[9998]"
+                style={{ willChange: "transform" }}
+            >
+                <div className="h-px w-10 bg-gradient-to-r from-[#B71C1C]/70 to-transparent" style={{ opacity: isHovering ? 0.9 : 0.4 }} />
             </div>
         </>
     );

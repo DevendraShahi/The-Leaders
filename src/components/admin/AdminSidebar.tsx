@@ -35,6 +35,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
     const navItems = [
         { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
         { label: 'Articles', href: '/admin/content?type=articles', icon: FileText },
+        { label: 'Election Articles', href: '/admin/content?type=election-articles', icon: FileText },
         { label: 'Leaders', href: '/admin/content?type=leaders', icon: Users },
         { label: 'History', href: '/admin/content?type=history', icon: History },
         { label: 'Media', href: '/admin/media', icon: ImageIcon },

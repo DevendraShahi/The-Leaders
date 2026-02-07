@@ -5,7 +5,7 @@ import { MapPin, User, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ContactFormData } from "@/app/contact/page";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface PersonalSlideProps {
     data: ContactFormData;
@@ -15,13 +15,9 @@ interface PersonalSlideProps {
 }
 
 export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlideProps) {
-    const [currentTime, setCurrentTime] = useState("");
-
-    useEffect(() => {
-        // Time formatting for UI display only
-        const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        setCurrentTime(timeString);
-    }, []);
+    const [currentTime] = useState(() =>
+        new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+    );
 
     const isValid = data.name.trim().length > 0;
 
@@ -37,11 +33,11 @@ export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlid
                 </span>
 
                 <h2 className="text-4xl md:text-5xl font-bebas text-foreground mt-4 mb-2">
-                    Let's Get Acquainted
+                    Let&apos;s Get Acquainted
                 </h2>
 
                 <p className="text-muted-foreground font-serif">
-                    Please share your name and where you're joining us from.
+                    Please share your name and where you&apos;re joining us from.
                 </p>
             </motion.div>
 

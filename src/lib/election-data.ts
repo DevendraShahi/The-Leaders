@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { slugify } from "@/lib/slug";
 
 export interface PartyDTO {
     id?: number | string;
@@ -65,15 +66,19 @@ export interface DailyBriefDTO {
     content: string;
     tags: string[];
     isPublished: boolean;
+    image?: string;
 }
 
 export interface FactCheckDTO {
+    id?: string;
+    slug?: string;
     claim: string;
     claimBy: string;
     verdict: "true" | "false" | "misleading" | "unverified";
     analysis: string;
     sources: string[];
     date: string;
+    image?: string;
 }
 
 export interface ElectionData {
@@ -84,9 +89,31 @@ export interface ElectionData {
     factChecks: FactCheckDTO[];
 }
 
+export interface ElectionArticleDTO {
+    editor?: string;
+    title_en: string;
+    excerpt_en: string;
+    content_en: string;
+    slug: string;
+    tags: string[];
+    status: "draft" | "published" | "archived";
+    createdAt?: string;
+    image?: string;
+}
+
 import { cache } from "react";
 
 // ... existing interfaces ...
+
+function normalizeSlug(value: string): string {
+    if (!value) return "";
+    const str = typeof value === "string" ? value : String(value);
+    return str
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "")
+        .slice(0, 80);
+}
 
 export const getElectionData = cache(async (): Promise<ElectionData> => {
     // Check if we are on the server
@@ -112,16 +139,160 @@ export const getElectionData = cache(async (): Promise<ElectionData> => {
 });
 
 export async function getDailyBriefs() {
-    const data = await getElectionData();
-    return data.dailyBriefs || [];
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { DailyBrief } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        const briefs = await DailyBrief.find({ isPublished: true })
+            .sort({ date: -1 })
+            .lean();
+
+        return briefs.map((brief: any) => ({
+            title: brief.title,
+            slug: brief.slug,
+            date: brief.date instanceof Date ? brief.date.toISOString() : String(brief.date),
+            summary: brief.summary || "",
+            content: brief.content || "",
+            tags: brief.tags || [],
+            isPublished: !!brief.isPublished,
+            image: brief.image || "",
+        })) as DailyBriefDTO[];
+    } catch (error) {
+        console.error("Failed to load daily briefs from database:", error);
+        const data = await getElectionData();
+        return data.dailyBriefs || [];
+    }
 }
 
 export async function getFactChecks() {
-    const data = await getElectionData();
-    return data.factChecks || [];
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { FactCheck } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        const checks = await FactCheck.find({})
+            .sort({ date: -1 })
+            .lean();
+
+        return checks.map((fc: any) => ({
+            id: fc._id?.toString?.() || fc._id,
+            slug: fc.slug || slugify(fc.claim, 60),
+            claim: fc.claim,
+            claimBy: fc.claimBy,
+            verdict: fc.verdict,
+            analysis: fc.analysis,
+            sources: fc.sources || [],
+            date: fc.date instanceof Date ? fc.date.toISOString() : String(fc.date),
+            image: fc.image || "",
+        })) as FactCheckDTO[];
+    } catch (error) {
+        console.error("Failed to load fact checks from database:", error);
+        const data = await getElectionData();
+        return data.factChecks || [];
+    }
 }
 
 export async function getParties() {
     const data = await getElectionData();
     return data.parties || [];
+}
+
+export async function getLatestHeadlines(limit: number = 8): Promise<string[]> {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { default: Settings } = await import("@/models/Settings");
+
+        await dbConnect();
+        const settings: any = await Settings.findOne().lean();
+        const headlines: string[] = settings?.tickerHeadlines || [];
+        return headlines.slice(0, limit);
+    } catch (error) {
+        console.error("Failed to load election headlines from database:", error);
+        return [];
+    }
+}
+
+export async function getElectionArticles(limit: number = 3): Promise<ElectionArticleDTO[]> {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { ElectionArticle } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        const articles = await ElectionArticle.find({ status: { $ne: "archived" } })
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .lean();
+
+        return articles.map((a: any) => ({
+            editor: a.editor,
+            title_en: a.title_en,
+            excerpt_en: a.excerpt_en,
+            content_en: a.content_en,
+            slug: a.slug,
+            tags: a.tags || [],
+            status: a.status,
+            createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : String(a.createdAt),
+            image: a.image || "",
+        })) as ElectionArticleDTO[];
+    } catch (error) {
+        console.error("Failed to load election articles from database:", error);
+        return [];
+    }
+}
+
+export async function getElectionArticleBySlug(slug: string): Promise<ElectionArticleDTO | null> {
+    const target = normalizeSlug(slug);
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { ElectionArticle } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        const candidates = await ElectionArticle.find({
+            $or: [
+                { slug },
+                { slug: target },
+                { slug: { $regex: target, $options: "i" } },
+            ],
+        }).lean();
+
+        if (candidates.length) {
+            const normalized = candidates.map((a: any) => ({
+                editor: a.editor,
+                title_en: a.title_en,
+                excerpt_en: a.excerpt_en,
+                content_en: a.content_en,
+                slug: a.slug,
+                tags: a.tags || [],
+                status: a.status,
+                createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : String(a.createdAt),
+                image: a.image || "",
+            })) as ElectionArticleDTO[];
+
+            // Prefer best normalized match
+            let match = normalized.find((a) => normalizeSlug(a.slug) === target);
+            if (match) return match;
+            match = normalized.find((a) => normalizeSlug(a.slug).endsWith(target));
+            if (match) return match;
+            match = normalized.find((a) => normalizeSlug(a.slug).includes(target));
+            if (match) return match;
+            match = normalized.find((a) => normalizeSlug(a.title_en) === target);
+            return match || normalized[0];
+        }
+    } catch (error) {
+        console.error("Failed to load election article by slug:", error);
+    }
+
+    // Fallback to list-based matching if DB query fails
+    const articles = await getElectionArticles(100);
+    if (!articles.length) return null;
+
+    let match = articles.find((a) => normalizeSlug(a.slug) === target);
+    if (match) return match;
+    match = articles.find((a) => normalizeSlug(a.slug).endsWith(target));
+    if (match) return match;
+    match = articles.find((a) => normalizeSlug(a.slug).includes(target));
+    if (match) return match;
+    match = articles.find((a) => normalizeSlug(a.title_en) === target);
+    return match || null;
 }

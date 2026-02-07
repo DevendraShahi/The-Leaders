@@ -3,10 +3,10 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { DataTable } from '@/components/admin/DataTable';
-import { articleColumns, leaderColumns, historyColumns } from './columns';
+import { articleColumns, leaderColumns, historyColumns, briefColumns, factCheckColumns, electionArticleColumns } from './columns';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { toast } from 'sonner';
-import { Plus, Loader2, RefreshCw } from 'lucide-react';
+import { Plus, Loader2, RefreshCw, Upload } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from "@/components/ui/button";
 
@@ -34,7 +34,10 @@ function ContentList() {
 
             if (res.ok) {
                 // Determine data key based on type
-                const key = type === 'history' ? 'history' : type;
+                let key = type;
+                if (type === 'fact-checks') key = 'factChecks';
+                if (type === 'election-articles') key = 'electionArticles';
+
                 setData(responseData.data[key] || []);
                 setTotalPages(responseData.data.pagination.pages);
             } else {
@@ -66,7 +69,10 @@ function ContentList() {
             const mapping: any = {
                 'article': 'articles',
                 'leader': 'leaders',
-                'history': 'history'
+                'history': 'history',
+                'brief': 'briefs',
+                'fact-check': 'fact-checks',
+                'election-article': 'election-articles'
             };
 
             const routeType = mapping[deleteType] || deleteType;
@@ -91,6 +97,9 @@ function ContentList() {
         switch (type) {
             case 'leaders': return leaderColumns(handleDelete);
             case 'history': return historyColumns(handleDelete);
+            case 'fact-checks': return factCheckColumns(handleDelete);
+            case 'briefs': return briefColumns(handleDelete);
+            case 'election-articles': return electionArticleColumns(handleDelete);
             case 'articles':
             default: return articleColumns(handleDelete);
         }
@@ -123,23 +132,39 @@ function ContentList() {
                         Refresh
                     </Button>
 
+                    {type !== 'briefs' && type !== 'fact-checks' && type !== 'election-articles' && (
+                        <Link
+                            href={`/admin/content/${type === 'leaders' ? 'leader' : type === 'history' ? 'history' : 'article'}/new`}
+                            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 transition-colors text-sm font-bold font-mono uppercase tracking-wider rounded-none h-10 shadow-sm"
+                        >
+                            <Plus className="h-4 w-4 mr-2" />
+                            New {type === 'history' ? 'Event' : type.slice(0, -1)}
+                        </Link>
+                    )}
+
                     <Link
-                        href={`/admin/content/${type === 'leaders' ? 'leader' : type === 'history' ? 'history' : 'article'}/new`}
-                        className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 transition-colors text-sm font-bold font-mono uppercase tracking-wider rounded-none h-10 shadow-sm"
+                        href="/admin/content/import"
+                        className="inline-flex items-center gap-2 border border-border bg-background hover:bg-muted text-foreground px-4 py-2.5 transition-colors text-xs font-bold font-mono uppercase tracking-wider rounded-none h-10"
                     >
-                        <Plus className="h-4 w-4" />
-                        New {type === 'history' ? 'Event' : type.slice(0, -1)}
+                        <Upload className="h-3.5 w-3.5" />
+                        Import Perplexity
                     </Link>
                 </div>
             </div>
 
             {/* Type Switcher Tabs - Minimalist Editorial Style */}
-            <div className="flex w-full sm:w-auto border-b border-border">
+            <div className="flex w-full sm:w-auto border-b border-border overflow-x-auto">
                 <button
                     onClick={() => handleTabChange('articles')}
                     className={`${tabBase} ${type === 'articles' ? activeTab : inactiveTab}`}
                 >
                     Articles
+                </button>
+                <button
+                    onClick={() => handleTabChange('election-articles')}
+                    className={`${tabBase} ${type === 'election-articles' ? activeTab : inactiveTab}`}
+                >
+                    Election Articles
                 </button>
                 <button
                     onClick={() => handleTabChange('leaders')}
@@ -152,6 +177,18 @@ function ContentList() {
                     className={`${tabBase} ${type === 'history' ? activeTab : inactiveTab}`}
                 >
                     History
+                </button>
+                <button
+                    onClick={() => handleTabChange('briefs')}
+                    className={`${tabBase} ${type === 'briefs' ? activeTab : inactiveTab}`}
+                >
+                    Briefs
+                </button>
+                <button
+                    onClick={() => handleTabChange('fact-checks')}
+                    className={`${tabBase} ${type === 'fact-checks' ? activeTab : inactiveTab}`}
+                >
+                    Fact Checks
                 </button>
             </div>
 
@@ -166,7 +203,17 @@ function ContentList() {
                     <DataTable
                         columns={getColumns()}
                         data={data}
-                        searchKey={type === 'leaders' ? 'name.en' : 'title.en'}
+                        searchKey={
+                            type === 'leaders'
+                                ? 'name.en'
+                                : type === 'briefs'
+                                    ? 'title'
+                                    : type === 'fact-checks'
+                                        ? 'claim'
+                                        : type === 'election-articles'
+                                            ? 'title_en'
+                                            : 'title.en'
+                        }
                     />
                 )}
             </div>

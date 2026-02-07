@@ -9,21 +9,21 @@ interface DemographicsChartProps {
     data: DemographicsData;
 }
 
-export function DemographicsChart({ data }: DemographicsChartProps) {
-    const CustomTooltip = ({ active, payload, label }: any) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="rounded-lg border border-border bg-background p-3 shadow-lg">
-                    <p className="font-bebas text-base text-foreground">{label}</p>
-                    <p className="text-sm text-[#B71C1C]">
-                        {payload[0].value.toLocaleString()} candidates
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
+const DemographicsTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="rounded-lg border border-border bg-background p-3 shadow-lg">
+                <p className="font-bebas text-base text-foreground">{label}</p>
+                <p className="text-sm text-[#B71C1C]">
+                    {payload[0].value.toLocaleString()} candidates
+                </p>
+            </div>
+        );
+    }
+    return null;
+};
 
+export function DemographicsChart({ data }: DemographicsChartProps) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -61,7 +61,7 @@ export function DemographicsChart({ data }: DemographicsChartProps) {
                                 className="text-xs text-muted-foreground"
                                 tick={{ fontSize: 11 }}
                             />
-                            <Tooltip content={<CustomTooltip />} />
+                            <Tooltip content={<DemographicsTooltip />} />
                             <Bar
                                 dataKey="count"
                                 fill="#B71C1C"

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ElectionMap } from "@/components/election/ElectionMap";
+import { ElectionMap } from "../../../components/election/ElectionMap";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImpressivePieChart } from "./charts/ImpressivePieChart";
 import { TurnoutTrendChart } from "./charts/TurnoutTrendChart";
@@ -19,9 +19,22 @@ import { Button } from "@/components/ui/button";
 interface AnalyticsDashboardProps {
     latestBrief?: any;
     latestFactCheck?: any;
+    electionArticles?: {
+        title_en: string;
+        excerpt_en: string;
+        content_en: string;
+        slug: string;
+        tags?: string[];
+        status: string;
+        createdAt?: string;
+    }[];
 }
 
-export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: AnalyticsDashboardProps) {
+export default function AnalyticsDashboard({
+    latestBrief,
+    latestFactCheck,
+    electionArticles = [],
+}: AnalyticsDashboardProps) {
     const analytics = getAnalyticsData();
     const { selectedDistrict } = useElectionStore();
     const [districtNewsOpen, setDistrictNewsOpen] = useState(false);
@@ -52,10 +65,12 @@ export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: Ana
                         transition={{ delay: 0.2, duration: 0.6 }}
                         className="text-center"
                     >
-                        <span className="inline-flex items-center gap-2 rounded-full border border-[#B71C1C]/30 bg-[#B71C1C]/10 px-4 py-1.5 text-xs font-mono uppercase tracking-wider text-[#B71C1C]">
-                            <TrendingUp className="h-3 w-3" />
-                            Live Analytics Dashboard
-                        </span>
+                        <div className="inline-block px-4 py-1 bg-[#B71C1C] text-white backdrop-blur-sm mb-6">
+                            <span className="flex items-center gap-2 font-bebas text-sm tracking-widest uppercase">
+                                <TrendingUp className="h-4 w-4" />
+                                Live Analytics Dashboard
+                            </span>
+                        </div>
 
                         <h1 className="mt-6 font-bebas text-6xl leading-[0.9] tracking-tight md:text-7xl lg:text-8xl">
                             <span className="block text-foreground">ELECTION 2026</span>
@@ -94,7 +109,7 @@ export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: Ana
                         </div>
 
                         {/* Backgroundless map container with Overlay */}
-                        <div className="relative h-[500px] w-full max-w-5xl overflow-hidden rounded-xl p-1 md:h-[600px] md:p-4">
+                        <div className="relative h-[400px] w-full overflow-hidden rounded-xl md:h-[600px]">
                             <ElectionMap className="h-full w-full" />
                         </div>
                         <p className="mt-4 text-center text-sm text-muted-foreground md:mt-6">
@@ -210,8 +225,8 @@ export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: Ana
 
                             <ImpressivePieChart
                                 data={analytics.electionResults2079}
-                                title="2079 Election Results"
-                                subtitle="Actual results from 2022 General Election"
+                                title="2022 Election Results"
+                                subtitle="Actual results from 2022 General Election (2079 BS)"
                             />
                         </div>
                     </motion.section>
@@ -305,6 +320,100 @@ export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: Ana
                     {/* Subtle Divider */}
                     <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
 
+                    {/* Section 8: Election Analyses */}
+                    {electionArticles.length > 0 && (
+                        <>
+                            <motion.section
+                                className="space-y-6"
+                                initial={{ opacity: 0 }}
+                                whileInView={{ opacity: 1 }}
+                                viewport={{ once: true, margin: "-100px" }}
+                            >
+                                <div className="text-center">
+                                    <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
+                                        Election Analyses
+                                    </h2>
+                                    <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
+                                        Deeper dives into the political dynamics, narratives, and numbers behind Nepal&apos;s 2026 election.
+                                    </p>
+                                </div>
+
+                                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                                    {electionArticles.map((article, index) => (
+                                        <motion.div
+                                            key={article.slug}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            whileInView={{ opacity: 1, y: 0 }}
+                                            viewport={{ once: true, margin: "-60px" }}
+                                            transition={{ duration: 0.4, delay: index * 0.05 }}
+                                        >
+                                            <Card className="h-full border-border/40 rounded-none bg-card flex flex-col group">
+                                                {article.image && (
+                                                    <div className="relative h-36 w-full overflow-hidden border-b border-border/60">
+                                                        <img
+                                                            src={article.image}
+                                                            alt={article.title_en}
+                                                            className="h-full w-full object-cover object-center"
+                                                            loading="lazy"
+                                                        />
+                                                        <div className="absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
+                                                    </div>
+                                                )}
+                                                <CardHeader className="pb-3 border-b border-dashed border-border/60">
+                                                    <CardTitle className="font-bebas text-xl tracking-wide text-foreground">
+                                                        <Link
+                                                            href={`/election-2026/analyses/${article.slug}`}
+                                                            className="hover:text-primary transition-colors"
+                                                        >
+                                                            {article.title_en}
+                                                        </Link>
+                                                    </CardTitle>
+                                                    {article.createdAt && (
+                                                        <p className="mt-1 text-[11px] text-muted-foreground font-mono uppercase tracking-[0.2em]">
+                                                            {new Date(article.createdAt).toLocaleDateString("en-US", {
+                                                                year: "numeric",
+                                                                month: "short",
+                                                                day: "numeric",
+                                                            })}
+                                                        </p>
+                                                    )}
+                                                </CardHeader>
+                                                <CardContent className="flex-1 flex flex-col pt-4">
+                                                    <p className="text-sm text-muted-foreground font-manrope leading-relaxed line-clamp-4 mb-4">
+                                                        {article.excerpt_en}
+                                                    </p>
+                                                    <div className="mt-auto pt-3 border-t border-dashed border-border flex items-center justify-between gap-2">
+                                                        <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.25em]">
+                                                            Deep dive &mdash; Election 2026
+                                                        </p>
+                                                        <Link
+                                                            href={`/election-2026/analyses/${article.slug}`}
+                                                            className="text-[10px] font-mono uppercase tracking-[0.25em] text-primary hover:text-primary/80"
+                                                        >
+                                                            Read analysis →
+                                                        </Link>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        </motion.div>
+                                    ))}
+                                </div>
+                                <div className="mt-8 flex justify-center">
+                                    <Button
+                                        variant="outline"
+                                        className="rounded-none border-border/60 font-mono text-[11px] uppercase tracking-[0.25em]"
+                                        asChild
+                                    >
+                                        <Link href="/election-2026/analyses">View all election analyses</Link>
+                                    </Button>
+                                </div>
+                            </motion.section>
+
+                            {/* Subtle Divider */}
+                            <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+                        </>
+                    )}
+
                     {/* Section 8: Additional Resources */}
                     <motion.section
                         className="space-y-6"
@@ -355,7 +464,7 @@ export default function AnalyticsDashboard({ latestBrief, latestFactCheck }: Ana
                                     </CardHeader>
                                     <CardContent>
                                         <h4 className="font-bold leading-tight">
-                                            "{latestFactCheck.claim}"
+                                            &ldquo;{latestFactCheck.claim}&rdquo;
                                         </h4>
                                         <div className="my-3 inline-block rounded bg-muted px-2 py-1 text-xs font-bold uppercase text-foreground">
                                             {latestFactCheck.verdict}

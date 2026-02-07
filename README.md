@@ -135,3 +135,4 @@ The application supports a user-preference based theme system.
 **Designed with ♥ in Nepal**
 
 *Truth. Transparency. Democracy.*
+

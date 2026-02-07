@@ -107,7 +107,7 @@ export async function parseRequestBody<T>(request: NextRequest): Promise<{
     try {
         const data = await request.json();
         return { success: true, data };
-    } catch (error) {
+    } catch {
         return {
             success: false,
             error: 'Invalid JSON in request body',

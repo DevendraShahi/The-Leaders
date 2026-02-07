@@ -25,7 +25,7 @@ export function WelcomeSlide({ onNext }: WelcomeSlideProps) {
             </h1>
 
             <p className="text-xl font-serif text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Thank you for taking the time to reach out. "The Leaders" is built on the foundation of shared history and open discourse. Your insights help us preserve the truth step by step.
+                Thank you for taking the time to reach out. &ldquo;The Leaders&rdquo; is built on the foundation of shared history and open discourse. Your insights help us preserve the truth step by step.
             </p>
 
             <div className="pt-8">

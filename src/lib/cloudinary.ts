@@ -32,7 +32,8 @@ export function getFolderPath(category: MediaCategory): string {
 export async function uploadImage(
     file: string | Buffer,
     category: MediaCategory = 'general',
-    filename?: string
+    filename?: string,
+    mimeType?: string
 ) {
     try {
         const folder = getFolderPath(category);
@@ -52,10 +53,12 @@ export async function uploadImage(
             uploadOptions.public_id = `${filename}-${timestamp}`;
         }
 
-        const result = await cloudinary.uploader.upload(
-            typeof file === 'string' ? file : `data:image/jpeg;base64,${file.toString('base64')}`,
-            uploadOptions
-        );
+        const payload =
+            typeof file === 'string'
+                ? file
+                : `data:${mimeType || 'image/jpeg'};base64,${file.toString('base64')}`;
+
+        const result = await cloudinary.uploader.upload(payload, uploadOptions);
 
         return {
             publicId: result.public_id,

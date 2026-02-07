@@ -1,5 +1,3 @@
-import { ISettings } from '@/models/Settings';
-
 export type MaintenanceZone = 'global' | 'public' | 'election';
 
 export interface MaintenanceCheckResult {

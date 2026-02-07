@@ -6,7 +6,6 @@ if (!MONGODB_URI) {
   throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 interface MongooseCache {
   conn: any;
   promise: Promise<any> | null;
@@ -16,7 +15,6 @@ declare global {
 
   var mongoose: MongooseCache;
 }
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 let cached = global.mongoose;
 
