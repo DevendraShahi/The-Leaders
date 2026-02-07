@@ -24,6 +24,7 @@ interface AnalyticsDashboardProps {
         excerpt_en: string;
         content_en: string;
         slug: string;
+        image?: string;
         tags?: string[];
         status: string;
         createdAt?: string;

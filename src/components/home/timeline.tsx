@@ -407,7 +407,15 @@ function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
     );
 }
 
-function VerticalConnectionNode({ index }: { index: number }) {
+function VerticalConnectionNode({
+    isFirst,
+    isLast,
+    index,
+}: {
+    isFirst?: boolean;
+    isLast?: boolean;
+    index: number;
+}) {
     return (
         <motion.svg
             width="24"
