@@ -57,6 +57,7 @@ import { Navbar } from "@/components/common/navbar";
 import { Footer } from "@/components/common/footer";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
+import { Analytics } from "@vercel/analytics/next";
 
 // ... existing imports
 
@@ -125,6 +126,7 @@ export default async function RootLayout({
                         </GlobalLoadingProvider>
                     </FontProvider>
                 </ThemeProvider>
+                <Analytics />
             </body>
         </html >
     );
