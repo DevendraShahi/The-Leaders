@@ -140,12 +140,14 @@ function parsePayload(raw: unknown): { ok: boolean; data: NormalizedData | null;
         articles: [],
     };
 
+    const metaObj = meta as Record<string, unknown>;
+
     // META
-    if (validateString(meta.generated_at_utc, "meta.generated_at_utc", errors)) {
-        normalized.meta.generated_at_utc = meta.generated_at_utc;
+    if (validateString(metaObj.generated_at_utc, "meta.generated_at_utc", errors)) {
+        normalized.meta.generated_at_utc = metaObj.generated_at_utc;
     }
-    if (validateString(meta.focus, "meta.focus", errors)) {
-        normalized.meta.focus = meta.focus;
+    if (validateString(metaObj.focus, "meta.focus", errors)) {
+        normalized.meta.focus = metaObj.focus;
     }
 
     // DAILY BRIEFS
@@ -155,25 +157,33 @@ function parsePayload(raw: unknown): { ok: boolean; data: NormalizedData | null;
             return;
         }
 
+        const title = item.title;
+        const slugHint = item.slug_hint;
+        const date = item.date;
+        const summary = item.summary;
+        const content = item.content;
+        const tags = item.tags;
+        const isPublished = item.isPublished;
+
         const valid =
-            validateString(item.title, `dailyBriefs[${idx}].title`, errors) &&
-            validateString(item.slug_hint, `dailyBriefs[${idx}].slug_hint`, errors) &&
-            validateString(item.date, `dailyBriefs[${idx}].date`, errors) &&
-            validateString(item.summary, `dailyBriefs[${idx}].summary`, errors) &&
-            validateString(item.content, `dailyBriefs[${idx}].content`, errors) &&
-            validateStringArray(item.tags, `dailyBriefs[${idx}].tags`, errors) &&
-            validateBoolean(item.isPublished, `dailyBriefs[${idx}].isPublished`, errors);
+            validateString(title, `dailyBriefs[${idx}].title`, errors) &&
+            validateString(slugHint, `dailyBriefs[${idx}].slug_hint`, errors) &&
+            validateString(date, `dailyBriefs[${idx}].date`, errors) &&
+            validateString(summary, `dailyBriefs[${idx}].summary`, errors) &&
+            validateString(content, `dailyBriefs[${idx}].content`, errors) &&
+            validateStringArray(tags, `dailyBriefs[${idx}].tags`, errors) &&
+            validateBoolean(isPublished, `dailyBriefs[${idx}].isPublished`, errors);
 
         if (!valid) return;
 
         normalized.dailyBriefs.push({
-            title: item.title,
-            slug: item.slug_hint,
-            published_at_utc: item.date,
-            summary: item.summary,
-            content: item.content,
-            tags: item.tags,
-            is_published: item.isPublished,
+            title,
+            slug: slugHint,
+            published_at_utc: date,
+            summary,
+            content,
+            tags,
+            is_published: isPublished,
         });
     });
 
@@ -184,11 +194,18 @@ function parsePayload(raw: unknown): { ok: boolean; data: NormalizedData | null;
             return;
         }
 
+        const claim = item.claim;
+        const claimBy = item.claimBy;
+        const analysis = item.analysis;
+        const sources = item.sources;
+        const date = item.date;
+        const verdict = item.verdict;
+
         const verdictValid =
-            validateString(item.verdict, `factChecks[${idx}].verdict`, errors) &&
-            verdictSet.has(item.verdict);
+            validateString(verdict, `factChecks[${idx}].verdict`, errors) &&
+            verdictSet.has(verdict);
         if (!verdictValid) {
-            if (typeof item.verdict === "string") {
+            if (typeof verdict === "string") {
                 addError(
                     errors,
                     `factChecks[${idx}].verdict`,
@@ -198,23 +215,23 @@ function parsePayload(raw: unknown): { ok: boolean; data: NormalizedData | null;
         }
 
         const valid =
-            validateString(item.claim, `factChecks[${idx}].claim`, errors) &&
-            validateString(item.claimBy, `factChecks[${idx}].claimBy`, errors) &&
-            validateString(item.analysis, `factChecks[${idx}].analysis`, errors) &&
-            validateStringArray(item.sources, `factChecks[${idx}].sources`, errors) &&
-            validateString(item.date, `factChecks[${idx}].date`, errors) &&
+            validateString(claim, `factChecks[${idx}].claim`, errors) &&
+            validateString(claimBy, `factChecks[${idx}].claimBy`, errors) &&
+            validateString(analysis, `factChecks[${idx}].analysis`, errors) &&
+            validateStringArray(sources, `factChecks[${idx}].sources`, errors) &&
+            validateString(date, `factChecks[${idx}].date`, errors) &&
             verdictValid;
 
         if (!valid) return;
 
         normalized.factChecks.push({
-            claim: item.claim,
-            slug: slugify(item.claim, 60),
-            claim_by: item.claimBy,
-            verdict: item.verdict as NormalizedData["factChecks"][number]["verdict"],
-            analysis: item.analysis,
-            sources: item.sources,
-            published_at_utc: item.date,
+            claim,
+            slug: slugify(claim, 60),
+            claim_by: claimBy,
+            verdict: verdict as NormalizedData["factChecks"][number]["verdict"],
+            analysis,
+            sources,
+            published_at_utc: date,
         });
     });
 
@@ -225,25 +242,33 @@ function parsePayload(raw: unknown): { ok: boolean; data: NormalizedData | null;
             return;
         }
 
+        const editor = item.editor;
+        const title = item.title_en;
+        const excerpt = item.excerpt_en;
+        const content = item.content_en;
+        const slugHint = item.slug_hint;
+        const tags = item.tags;
+        const status = item.status;
+
         const valid =
-            validateString(item.editor, `articles[${idx}].editor`, errors) &&
-            validateString(item.title_en, `articles[${idx}].title_en`, errors) &&
-            validateString(item.excerpt_en, `articles[${idx}].excerpt_en`, errors) &&
-            validateString(item.content_en, `articles[${idx}].content_en`, errors) &&
-            validateString(item.slug_hint, `articles[${idx}].slug_hint`, errors) &&
-            validateStringArray(item.tags, `articles[${idx}].tags`, errors) &&
-            validateString(item.status, `articles[${idx}].status`, errors);
+            validateString(editor, `articles[${idx}].editor`, errors) &&
+            validateString(title, `articles[${idx}].title_en`, errors) &&
+            validateString(excerpt, `articles[${idx}].excerpt_en`, errors) &&
+            validateString(content, `articles[${idx}].content_en`, errors) &&
+            validateString(slugHint, `articles[${idx}].slug_hint`, errors) &&
+            validateStringArray(tags, `articles[${idx}].tags`, errors) &&
+            validateString(status, `articles[${idx}].status`, errors);
 
         if (!valid) return;
 
         normalized.articles.push({
-            editor: item.editor,
-            title_en: item.title_en,
-            excerpt_en: item.excerpt_en,
-            content_en: item.content_en,
-            slug: item.slug_hint,
-            tags: item.tags,
-            status: item.status,
+            editor,
+            title_en: title,
+            excerpt_en: excerpt,
+            content_en: content,
+            slug: slugHint,
+            tags,
+            status,
         });
     });
 
