@@ -2,7 +2,7 @@ import { requireRole, logAdminAction } from '@/middleware/auth-middleware';
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Admin, { IAdmin } from '@/models/Admin';
-import { getDefaultPermissions } from '@/lib/rbac';
+import { getDefaultPermissions, ensurePermissionShape } from '@/lib/rbac';
 import { hashPassword } from '@/lib/auth';
 
 /**
@@ -25,7 +25,10 @@ export const GET = requireRole(['superadmin'])(async (request, { admin, params }
 
         return NextResponse.json({
             success: true,
-            data: targetAdmin,
+            data: {
+                ...targetAdmin,
+                permissions: ensurePermissionShape((targetAdmin as any).role, (targetAdmin as any).permissions),
+            },
         });
     } catch (error) {
         console.error('Error fetching admin:', error);
@@ -81,7 +84,7 @@ export const PUT = requireRole(['superadmin'])(async (request, { admin, params }
         }
 
         if (permissions) {
-            targetAdmin.permissions = permissions;
+            targetAdmin.permissions = ensurePermissionShape(targetAdmin.role, permissions);
         }
 
         if (typeof isActive === 'boolean') {
@@ -109,10 +112,14 @@ export const PUT = requireRole(['superadmin'])(async (request, { admin, params }
         );
 
         const { passwordHash: _, ...adminData } = targetAdmin.toObject();
+        const responseData = {
+            ...adminData,
+            permissions: ensurePermissionShape(adminData.role, adminData.permissions as any),
+        };
 
         return NextResponse.json({
             success: true,
-            data: adminData,
+            data: responseData,
             message: 'Admin updated successfully',
         });
     } catch (error) {

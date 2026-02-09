@@ -18,6 +18,15 @@ function normalizeSlug(value: string) {
     return slugify(value, 60);
 }
 
+function toLogText(value: unknown): string {
+    if (typeof value === 'string') return value;
+    if (value && typeof value === 'object') {
+        const localized = value as { en?: string; ne?: string };
+        return localized.en || localized.ne || '';
+    }
+    return '';
+}
+
 async function findFactCheckByIdOrSlug(id: string) {
     const decoded = safeDecode(id);
     const normalized = normalizeSlug(decoded);
@@ -39,7 +48,13 @@ async function findFactCheckByIdOrSlug(id: string) {
         if (byRegex) return byRegex;
 
         const tokenRegex = normalized.split("-").filter(Boolean).join(".*");
-        const byClaim = await FactCheck.findOne({ claim: { $regex: tokenRegex, $options: 'i' } });
+        const byClaim = await FactCheck.findOne({
+            $or: [
+                { claim: { $regex: tokenRegex, $options: 'i' } },
+                { 'claim.en': { $regex: tokenRegex, $options: 'i' } },
+                { 'claim.ne': { $regex: tokenRegex, $options: 'i' } },
+            ]
+        });
         if (byClaim) {
             if (!byClaim.slug) {
                 await FactCheck.updateOne({ _id: byClaim._id }, { $set: { slug: normalized } });
@@ -81,9 +96,11 @@ async function updateFactCheck(request: NextRequest, { params, user }: { params:
         const existing = await findFactCheckByIdOrSlug(id);
         if (!existing) return apiError('Not found', 404);
 
+        const updateData = { ...(bodyParse.data as Record<string, any>) };
+
         const factCheck = await FactCheck.findByIdAndUpdate(
             existing._id,
-            { $set: bodyParse.data },
+            { $set: updateData },
             { new: true, runValidators: true }
         );
 
@@ -94,7 +111,7 @@ async function updateFactCheck(request: NextRequest, { params, user }: { params:
             action: 'update',
             entityType: 'FactCheck',
             entityId: factCheck._id.toString(),
-            description: `Updated fact check: ${factCheck.claim.substring(0, 50)}...`,
+            description: `Updated fact check: ${toLogText(factCheck.claim).substring(0, 50)}...`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
@@ -121,7 +138,7 @@ async function deleteFactCheck(request: NextRequest, { params, user }: { params:
             action: 'delete',
             entityType: 'FactCheck',
             entityId: factCheck._id.toString(),
-            description: `Deleted fact check: ${factCheck.claim.substring(0, 50)}...`,
+            description: `Deleted fact check: ${toLogText(factCheck.claim).substring(0, 50)}...`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });

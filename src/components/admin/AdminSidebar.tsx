@@ -20,6 +20,7 @@ import {
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { AdminPageKey, hasAdminPageAccess } from '@/lib/admin-page-access';
 
 interface AdminSidebarProps {
     isCollapsed: boolean;
@@ -33,15 +34,17 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
     const { logout, user } = useAuth();
 
     const navItems = [
-        { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-        { label: 'Articles', href: '/admin/content?type=articles', icon: FileText },
-        { label: 'Election Articles', href: '/admin/content?type=election-articles', icon: FileText },
-        { label: 'Leaders', href: '/admin/content?type=leaders', icon: Users },
-        { label: 'History', href: '/admin/content?type=history', icon: History },
-        { label: 'Media', href: '/admin/media', icon: ImageIcon },
-        { label: 'Messages', href: '/admin/messages', icon: Mail },
-        { label: 'Settings', href: '/admin/settings', icon: Settings },
+        { label: 'Dashboard', href: '/admin', icon: LayoutDashboard, access: 'dashboard' as AdminPageKey },
+        { label: 'Articles', href: '/admin/content?type=articles', icon: FileText, access: 'content' as AdminPageKey },
+        { label: 'Election Articles', href: '/admin/content?type=election-articles', icon: FileText, access: 'content' as AdminPageKey },
+        { label: 'Leaders', href: '/admin/content?type=leaders', icon: Users, access: 'content' as AdminPageKey },
+        { label: 'History', href: '/admin/content?type=history', icon: History, access: 'content' as AdminPageKey },
+        { label: 'Media', href: '/admin/media', icon: ImageIcon, access: 'media' as AdminPageKey },
+        { label: 'Messages', href: '/admin/messages', icon: Mail, access: 'messages' as AdminPageKey },
+        { label: 'Settings', href: '/admin/settings', icon: Settings, access: 'settings' as AdminPageKey },
     ];
+    const canAccess = (key: AdminPageKey) => user?.role === 'superadmin' || hasAdminPageAccess(user?.permissions as any, key);
+    const filteredNavItems = navItems.filter((item) => canAccess(item.access));
 
     const sidebarVariants = {
         expanded: { width: '16rem' },
@@ -80,7 +83,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
                 {/* Navigation */}
                 <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
                     {/* SuperAdmin Only: Manage Admins */}
-                    {user?.role === 'superadmin' && (
+                    {user?.role === 'superadmin' && canAccess('users') && (
                         <Link
                             href="/admin/users"
                             className={cn(
@@ -99,7 +102,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
                         </Link>
                     )}
 
-                    {navItems.map((item) => {
+                    {filteredNavItems.map((item) => {
                         const isActive = pathname === item.href || (item.href !== '/admin' && pathname?.startsWith(item.href.split('?')[0]));
                         return (
                             <Link

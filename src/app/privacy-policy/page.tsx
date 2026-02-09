@@ -1,8 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 export default function PrivacyPolicyPage() {
+    const { language } = useLanguage();
+    const locale = LOCALES.privacy;
+
     return (
         <div className="min-h-screen bg-background text-foreground">
             {/* Hero Section */}
@@ -23,19 +28,19 @@ export default function PrivacyPolicyPage() {
                         <div className="relative mb-6">
                             <div className="border border-[#B71C1C]/30 px-6 py-2 backdrop-blur-sm bg-background/50">
                                 <span className="text-[#B71C1C] font-mono text-sm tracking-[0.3em] uppercase">
-                                    Legal
+                                    {tString(locale.hero.label, language)}
                                 </span>
                             </div>
                             {/* Decorative Line */}
                             <div className="absolute left-1/2 -translate-x-1/2 top-full w-px h-6 bg-[#B71C1C]/20" />
                         </div>
 
-                        <h1 className="mt-4 text-6xl md:text-8xl font-bebas text-foreground uppercase tracking-tighter leading-none text-center">
-                            Privacy Policy
+                        <h1 className="page-title mt-4 text-foreground text-center md:text-8xl">
+                            {tString(locale.hero.heading, language)}
                         </h1>
 
                         <p className="mt-6 font-mono text-sm text-muted-foreground tracking-widest uppercase">
-                            Last Updated: January 31, 2026
+                            {tString(locale.hero.updated, language)}
                         </p>
                     </motion.div>
                 </div>
@@ -51,67 +56,35 @@ export default function PrivacyPolicyPage() {
                         viewport={{ once: true }}
                         className="space-y-12 text-lg leading-relaxed text-foreground/80"
                     >
-                        {/* Introduction */}
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-foreground">1. Introduction</h2>
-                            <p>
-                                At "The Leaders", we respect your privacy and are committed to protecting the personal data we hold about you. This policy explains how we collect, use, and safeguard your information when you visit our website.
-                            </p>
-                        </div>
-
-                        {/* Data Collection */}
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-foreground">2. Information We Collect</h2>
-                            <p>
-                                We may collect the following types of information:
-                            </p>
-                            <ul className="list-disc pl-6 space-y-2 marker:text-[#B71C1C]">
-                                <li>
-                                    <strong>Usage Data:</strong> Information about your device, browser, and how you interact with our site (pages visited, time spent, etc.).
-                                </li>
-                                <li>
-                                    <strong>Communications:</strong> If you contact us via email, we keep a record of that correspondence.
-                                </li>
-                                <li>
-                                    <strong>Cookies:</strong> We use cookies to enhance your browsing experience (see our Cookie Policy).
-                                </li>
-                            </ul>
-                        </div>
-
-                        {/* Use of Information */}
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-foreground">3. How We Use Your Data</h2>
-                            <p>
-                                We use your data to:
-                            </p>
-                            <ul className="list-disc pl-6 space-y-2 marker:text-[#B71C1C]">
-                                <li>Provide and improve the Platform's functionality.</li>
-                                <li>Analyze usage trends to enhance user experience.</li>
-                                <li>Respond to your inquiries or support requests.</li>
-                                <li>Ensure the security of our services.</li>
-                            </ul>
-                        </div>
-
-                        {/* Data Sharing */}
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-foreground">4. Data Sharing</h2>
-                            <p>
-                                We do not sell your personal data. We may share data with trusted third-party service providers (e.g., analytics providers, hosting services) who assist us in operating our website, conducting our business, or serving our users, so long as those parties agree to keep this information confidential.
-                            </p>
-                        </div>
-
-                        {/* User Rights */}
-                        <div className="space-y-4">
-                            <h2 className="text-2xl font-bold text-foreground">5. Your Rights</h2>
-                            <p>
-                                Depending on your location, you may have rights regarding your personal data, including the right to access, correct, or delete the data we hold about you. To exercise these rights, please contact us.
-                            </p>
-                        </div>
+                        {locale.sections.map((section, idx) => (
+                            <div key={section.heading.en} className="space-y-4">
+                                <h2 className="section-title text-foreground text-3xl md:text-4xl normal-case tracking-normal">
+                                    {tString(section.heading, language)}
+                                </h2>
+                                <p>{tString(section.body, language)}</p>
+                                {(section as any).list && (
+                                    <ul className="list-disc pl-6 space-y-2 marker:text-[#B71C1C]">
+                                        {(section as any).list.map((item: any) => (
+                                            <li key={item.en}>{tString(item, language)}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                            </div>
+                        ))}
 
                         {/* Contact */}
                         <div className="pt-12 border-t border-border/20">
                             <p className="text-sm text-muted-foreground">
-                                For any privacy-related questions, please contact us at <a href="mailto:privacy@theleaders.np" className="text-foreground hover:text-[#B71C1C] transition-colors underline decoration-[#B71C1C]/30 underline-offset-4">privacy@theleaders.np</a>.
+                                {tString(locale.footer, language).replace(
+                                    "privacy@theleaders.np",
+                                    ""
+                                )}
+                                <a
+                                    href="mailto:privacy@theleaders.np"
+                                    className="text-foreground hover:text-[#B71C1C] transition-colors underline decoration-[#B71C1C]/30 underline-offset-4"
+                                >
+                                    privacy@theleaders.np
+                                </a>
                             </p>
                         </div>
                     </motion.div>

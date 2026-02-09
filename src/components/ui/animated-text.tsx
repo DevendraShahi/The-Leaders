@@ -1,18 +1,29 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 
 interface AnimatedTextProps {
     text: string;
     className?: string;
+    language?: "en" | "ne";
 }
 
-export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
+function splitGraphemes(value: string, locale: "en" | "ne") {
+    if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+        const segmenter = new Intl.Segmenter(locale === "ne" ? "ne" : "en", { granularity: "grapheme" });
+        return Array.from(segmenter.segment(value), (segment) => segment.segment);
+    }
+    return Array.from(value);
+}
+
+export function AnimatedLogoText({ text, className = "", language = "en" }: AnimatedTextProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const cursorRef = useRef({ x: 0, y: 0 });
     const blobRef = useRef<HTMLDivElement>(null);
     const [isMounted, setIsMounted] = useState(false);
+    const letters = useMemo(() => splitGraphemes(text, language), [text, language]);
+    const isNepali = language === "ne";
 
     useEffect(() => {
         const mountTimer = setTimeout(() => setIsMounted(true), 0);
@@ -22,6 +33,12 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
         const container = containerRef.current;
         const letters = container.querySelectorAll(".letter-wrapper");
         const blob = blobRef.current;
+        if (!blob) return;
+
+        const magneticRadius = isNepali ? 170 : 220;
+        const pullMax = isNepali ? 22 : 34;
+        const rotationMax = isNepali ? 10 : 16;
+        const scaleBoost = isNepali ? 0.1 : 0.14;
 
         // Set up 3D space
         gsap.set(container, {
@@ -30,8 +47,15 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
         });
 
         // Initialize Blob Animation
-        const xTo = gsap.quickTo(blob, "x", { duration: 0.6, ease: "power3.out" });
-        const yTo = gsap.quickTo(blob, "y", { duration: 0.6, ease: "power3.out" });
+        const xTo = gsap.quickTo(blob, "x", { duration: 0.55, ease: "power3.out" });
+        const yTo = gsap.quickTo(blob, "y", { duration: 0.55, ease: "power3.out" });
+
+        const shimmerTl = gsap.timeline({ repeat: -1, yoyo: true });
+        shimmerTl.to(container, {
+            filter: "drop-shadow(0 10px 18px rgba(183, 28, 28, 0.18))",
+            duration: 3.6,
+            ease: "sine.inOut",
+        });
 
         // Setup initial ambient animation on the WRAPPERS (outer)
         // This ensures ambient motion is independent of magnetic motion (inner)
@@ -43,34 +67,61 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
             });
 
             gsap.to(wrapper, {
-                y: "random(-4, 4)",
-                duration: 3 + (index % 3),
+                y: isNepali ? Math.sin(index) * 1.6 : Math.sin(index) * 2.6,
+                rotationZ: isNepali ? 0 : Math.sin(index * 1.3) * 0.7,
+                duration: 4.2 + (index % 4) * 0.25,
                 ease: "sine.inOut",
                 repeat: -1,
                 yoyo: true,
-                delay: index * 0.1,
+                delay: index * 0.04,
                 force3D: true,
             });
 
-            // Initial reveal animation using fromTo for guaranteed visibility
-            gsap.fromTo(wrapper,
-                {
-                    opacity: 0,
-                    scale: 0,
-                    rotationY: -180,
-                    z: -200,
-                },
-                {
-                    duration: 1.5,
-                    opacity: 1,
-                    scale: 1,
-                    rotationY: 0,
-                    z: 0,
-                    delay: index * 0.05,
-                    ease: "back.out(1.5)",
-                    force3D: true,
-                }
-            );
+            if (isNepali) {
+                gsap.fromTo(
+                    wrapper,
+                    {
+                        opacity: 0,
+                        y: 22,
+                        scale: 0.96,
+                        filter: "blur(6px)",
+                    },
+                    {
+                        duration: 1,
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        filter: "blur(0px)",
+                        delay: index * 0.028,
+                        ease: "power3.out",
+                        force3D: true,
+                    }
+                );
+            } else {
+                gsap.fromTo(
+                    wrapper,
+                    {
+                        opacity: 0,
+                        y: 20,
+                        scale: 0.9,
+                        rotationY: -40,
+                        z: -40,
+                        filter: "blur(8px)",
+                    },
+                    {
+                        duration: 1.08,
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        rotationY: 0,
+                        z: 0,
+                        filter: "blur(0px)",
+                        delay: index * 0.03,
+                        ease: "power3.out",
+                        force3D: true,
+                    }
+                );
+            }
         });
 
         const updateLetterPositions = () => {
@@ -88,7 +139,8 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                 gsap.to(blob, {
                     scale: 1,
                     opacity: 1,
-                    duration: 0.3
+                    duration: 0.28,
+                    ease: "power2.out",
                 });
                 // Update blob position relative to container
                 const relX = cursorRef.current.x - rect.left;
@@ -100,7 +152,8 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                 gsap.to(blob, {
                     scale: 0,
                     opacity: 0,
-                    duration: 0.3
+                    duration: 0.3,
+                    ease: "power2.out",
                 });
             }
 
@@ -115,21 +168,19 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                 const deltaX = cursorRef.current.x - centerX;
                 const deltaY = cursorRef.current.y - centerY;
                 const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-                const magneticRadius = 250;
-
                 if (distance < magneticRadius) {
                     const strength = (magneticRadius - distance) / magneticRadius;
                     const smoothStrength = strength * strength * strength;
 
-                    const pullStrength = smoothStrength * 60;
+                    const pullStrength = smoothStrength * pullMax;
 
                     const angle = Math.atan2(deltaY, deltaX);
                     const pullX = Math.cos(angle) * pullStrength;
                     const pullY = Math.sin(angle) * pullStrength;
 
-                    const rotateY = (deltaX / magneticRadius) * 45 * smoothStrength;
-                    const rotateX = -(deltaY / magneticRadius) * 45 * smoothStrength;
-                    const scale = 1 + (smoothStrength * 0.35);
+                    const rotateY = (deltaX / magneticRadius) * rotationMax * smoothStrength;
+                    const rotateX = -(deltaY / magneticRadius) * rotationMax * smoothStrength;
+                    const scale = 1 + (smoothStrength * scaleBoost);
 
                     gsap.to(inner, {
                         x: pullX,
@@ -137,9 +188,10 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                         rotationY: rotateY,
                         rotationX: rotateX,
                         scale: scale,
-                        color: `hsl(0, 100%, ${50 + smoothStrength * 50}%)`,
-                        textShadow: `0 0 ${20 + smoothStrength * 30}px rgba(183, 28, 28, ${0.4 + smoothStrength * 0.4})`,
-                        duration: 0.1,
+                        color: `hsl(0, 80%, ${isNepali ? 28 : 36}%)`,
+                        textShadow: `0 0 ${10 + smoothStrength * 16}px rgba(183, 28, 28, ${0.2 + smoothStrength * 0.25})`,
+                        duration: 0.18,
+                        ease: "power3.out",
                         overwrite: "auto",
                         force3D: true,
                     });
@@ -151,9 +203,9 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                         rotationX: 0,
                         scale: 1,
                         color: "var(--foreground)",
-                        textShadow: "0 0 10px rgba(183, 28, 28, 0.3)",
-                        duration: 0.6,
-                        ease: "elastic.out(1, 0.6)",
+                        textShadow: "0 0 6px rgba(183, 28, 28, 0.14)",
+                        duration: 0.45,
+                        ease: "power3.out",
                         overwrite: "auto",
                         force3D: true,
                     });
@@ -173,19 +225,25 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
             }
         };
 
-        window.addEventListener("mousemove", handleMouseMove);
+        const handleMouseLeave = () => {
+            cursorRef.current = { x: -9999, y: -9999 };
+            updateLetterPositions();
+        };
+
+        container.addEventListener("mousemove", handleMouseMove);
+        container.addEventListener("mouseleave", handleMouseLeave);
 
         // Cleanup
         return () => {
             clearTimeout(mountTimer);
-            window.removeEventListener("mousemove", handleMouseMove);
+            container.removeEventListener("mousemove", handleMouseMove);
+            container.removeEventListener("mouseleave", handleMouseLeave);
             gsap.killTweensOf(letters);
             gsap.killTweensOf(container);
             gsap.killTweensOf(blob);
+            shimmerTl.kill();
         };
-    }, []);
-
-    const letters = text.split("");
+    }, [isNepali]);
 
     return (
         <div
@@ -201,10 +259,10 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                 ref={blobRef}
                 className="absolute pointer-events-none mix-blend-screen z-0 opacity-0"
                 style={{
-                    width: "300px",
-                    height: "300px",
+                    width: isNepali ? "240px" : "300px",
+                    height: isNepali ? "240px" : "300px",
                     borderRadius: "50%",
-                    background: "radial-gradient(circle, rgba(183,28,28,0.4) 0%, rgba(183,28,28,0.1) 40%, transparent 70%)",
+                    background: "radial-gradient(circle, rgba(183,28,28,0.22) 0%, rgba(183,28,28,0.07) 44%, transparent 72%)",
                     transform: "translate(-50%, -50%) scale(0)",
                     left: 0,
                     top: 0
@@ -231,7 +289,8 @@ export function AnimatedLogoText({ text, className = "" }: AnimatedTextProps) {
                             WebkitFontSmoothing: "antialiased",
                             color: "var(--foreground)",
                             transition: "color 0.1s linear",
-                            textShadow: "0 0 10px rgba(183, 28, 28, 0.3)",
+                            textShadow: "0 0 8px rgba(183, 28, 28, 0.16)",
+                            lineHeight: isNepali ? 1.14 : 1,
                         }}
                     >
                         {letter === " " ? "\u00A0" : letter}

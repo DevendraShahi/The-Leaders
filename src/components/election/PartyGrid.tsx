@@ -20,6 +20,8 @@ import {
 import { Search, User, Flag, Filter, SortAsc, ChevronDown, ArrowUpRight, Trophy, Vote, History, Star, Gavel, Briefcase } from "lucide-react";
 import { PartyDTO } from "@/lib/election-data";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface PartyGridProps {
     parties: PartyDTO[];
@@ -42,6 +44,8 @@ function PartyGridContent({ parties }: PartyGridProps) {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
+    const { language } = useLanguage();
+    const locale = LOCALES.election2026.components.partyGrid;
 
     // 1. Initial State from URL
     // We use a single state object to ensure instant UI updates (Optimistic UI)
@@ -151,7 +155,6 @@ function PartyGridContent({ parties }: PartyGridProps) {
     // 6. Core Filtering Engine (Memoized on Local State)
     const processedParties = useMemo(() => {
         if (!parties?.length) return [];
-
         const q = filters.query.trim().toLowerCase();
 
         // 1. Deduplicate by Name (Robustness Fix)
@@ -220,7 +223,8 @@ function PartyGridContent({ parties }: PartyGridProps) {
 
             return 0;
         });
-    }, [parties, filters]); // Re-runs immediately when 'filters' state changes
+    }, [parties, filters]);
+
 
     const hasActiveFilters = filters.query !== "" || filters.hasSeats || filters.inParliament;
 
@@ -234,7 +238,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                     <div className="relative w-full md:max-w-xl group">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors pointer-events-none" />
                         <Input
-                            placeholder="Search by party, leader, or symbol..."
+                            placeholder={tString(locale.searchPlaceholder, language)}
                             className="pl-12 h-12 text-base border-border focus-visible:ring-1 focus-visible:ring-primary focus-visible:border-primary rounded-none shadow-sm bg-background/80 transition-all font-manrope placeholder:text-muted-foreground/70"
                             value={filters.query}
                             onChange={(e) => updateQuery(e.target.value)}
@@ -249,7 +253,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                 <DropdownMenuTrigger asChild>
                                     <Button variant="ghost" size="sm" className="h-full px-4 rounded-none gap-2 hover:bg-muted text-muted-foreground hover:text-foreground font-mono uppercase text-xs tracking-wider border-r border-transparent hover:border-border">
                                         <Filter className="h-3.5 w-3.5" />
-                                        <span>Filters</span>
+                                        <span>{tString(locale.filters, language)}</span>
                                         {(filters.hasSeats || filters.inParliament) &&
                                             <Badge variant="secondary" className="ml-1 h-5 px-1.5 min-w-[1.25rem] text-[10px] bg-primary/10 text-primary border-primary/20 rounded-none">
                                                 {[filters.hasSeats, filters.inParliament].filter(Boolean).length}
@@ -258,21 +262,21 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="w-56 rounded-none border-border">
-                                    <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">Representation</DropdownMenuLabel>
+                                    <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">{tString(locale.representation, language)}</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuCheckboxItem
                                         checked={filters.hasSeats}
                                         onCheckedChange={toggleSeats}
                                         className="font-manrope text-sm cursor-pointer rounded-none focus:bg-primary/5 focus:text-primary"
                                     >
-                                        Has HoR Seats
+                                        {tString(locale.hasSeats, language)}
                                     </DropdownMenuCheckboxItem>
                                     <DropdownMenuCheckboxItem
                                         checked={filters.inParliament}
                                         onCheckedChange={toggleParliament}
                                         className="font-manrope text-sm cursor-pointer rounded-none focus:bg-primary/5 focus:text-primary"
                                     >
-                                        In Parliament (HoR/NA)
+                                        {tString(locale.inParliament, language)}
                                     </DropdownMenuCheckboxItem>
                                 </DropdownMenuContent>
                             </DropdownMenu>
@@ -292,7 +296,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="w-56 rounded-none border-border key-sort">
-                                    <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">Sort Basis</DropdownMenuLabel>
+                                    <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">{tString(locale.sortBasis, language)}</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
                                     <DropdownMenuRadioGroup
                                         value={filters.sort}
@@ -306,7 +310,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                         ))}
                                     </DropdownMenuRadioGroup>
                                     <DropdownMenuSeparator />
-                                    <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">Direction</DropdownMenuLabel>
+                                    <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">{tString(locale.direction, language)}</DropdownMenuLabel>
                                     <DropdownMenuRadioGroup
                                         value={filters.sortDir}
                                         onValueChange={(v) => updateSortDir(v as "asc" | "desc")}
@@ -328,7 +332,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                 <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground font-mono pb-2">
                     <span className="flex items-center gap-1.5 bg-secondary/50 px-2 py-1 border border-border/50 rounded-none">
                         <Filter className="h-3 w-3" />
-                        Showing <span className="text-foreground font-bold">{processedParties.length}</span> of {parties.length}
+                        {tString(locale.showing, language)} <span className="text-foreground font-bold">{processedParties.length}</span> {tString(locale.of, language)} {parties.length}
                     </span>
                     {hasActiveFilters && (
                         <Button
@@ -337,7 +341,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                             onClick={handleReset}
                             className="h-7 px-2 text-xs hover:bg-destructive/10 hover:text-destructive rounded-none transition-colors"
                         >
-                            Reset All Filters
+                            {tString(locale.reset, language)}
                         </Button>
                     )}
                 </div>
@@ -403,7 +407,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                 </div>
 
                                 <div className="space-y-1">
-                                    <CardTitle className="font-bebas text-2xl leading-none text-foreground group-hover:text-primary transition-colors line-clamp-2">
+                                    <CardTitle className="font-sans text-xl leading-tight tracking-tight text-foreground group-hover:text-primary transition-colors line-clamp-2">
                                         {party.name}
                                     </CardTitle>
                                     {party.status && (
@@ -429,7 +433,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-2">
                                                 <Vote className="h-3.5 w-3.5 text-muted-foreground" />
-                                                <span className="text-xs text-muted-foreground font-mono uppercase">2022 Votes</span>
+                                                <span className="text-xs text-muted-foreground font-mono uppercase">{tString(locale.votes, language)}</span>
                                             </div>
                                             <span className="font-manrope font-bold text-sm tabular-nums">{formatVotes(votes)}</span>
                                         </div>
@@ -452,16 +456,16 @@ function PartyGridContent({ parties }: PartyGridProps) {
             {processedParties.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-24 border border-dashed border-border bg-muted/5">
                     <Search className="h-10 w-10 text-muted-foreground/30 mb-4" />
-                    <h3 className="font-bebas text-xl text-foreground mb-2">No Results Found</h3>
+                    <h3 className="font-bebas text-xl text-foreground mb-2">{tString(locale.noResults, language)}</h3>
                     <p className="text-muted-foreground font-manrope text-sm text-center max-w-sm mb-6">
-                        No parties match your current filters. Try adjusting your search query.
+                        {tString(locale.noResultsDesc, language)}
                     </p>
                     <Button
                         variant="outline"
                         onClick={handleReset}
                         className="font-mono text-xs uppercase rounded-none border-primary/30 hover:border-primary hover:text-primary"
                     >
-                        Reset All Filters
+                        {tString(locale.reset, language)}
                     </Button>
                 </div>
             )}
@@ -471,7 +475,7 @@ function PartyGridContent({ parties }: PartyGridProps) {
 
 export function PartyGrid(props: PartyGridProps) {
     return (
-        <Suspense fallback={<div className="h-96 flex items-center justify-center font-mono text-sm text-muted-foreground animate-pulse">Loading Archive...</div>}>
+        <Suspense fallback={<div className="h-96 flex items-center justify-center font-mono text-sm text-muted-foreground animate-pulse">{tString(LOCALES.election2026.components.partyGrid.loading, "en")}</div>}>
             <PartyGridContent {...props} />
         </Suspense>
     );

@@ -51,13 +51,17 @@ export async function POST(request: NextRequest) {
             await admin.save();
             console.log(`✅ Auto-migrated admin: ${admin.email} (${admin.role})`);
         }
+        const { ensurePermissionShape } = await import('@/lib/rbac');
+        const normalizedPermissions = ensurePermissionShape(admin.role, admin.permissions);
+        admin.permissions = normalizedPermissions;
+        await admin.save();
 
         // 6. Generate token
         const token = generateToken({
             userId: admin._id.toString(),
             email: admin.email,
             role: admin.role,
-            permissions: admin.permissions
+            permissions: normalizedPermissions
         });
 
         // 7. Update last login
@@ -83,7 +87,8 @@ export async function POST(request: NextRequest) {
                 email: admin.email,
                 name: admin.name,
                 role: admin.role,
-                avatar: admin.avatar
+                avatar: admin.avatar,
+                permissions: normalizedPermissions
             }
         });
 

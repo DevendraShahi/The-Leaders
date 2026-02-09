@@ -1,17 +1,10 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { Edit, Trash, Star, MoreHorizontal, Eye } from "lucide-react"
+import { Edit, Trash, Star } from "lucide-react"
 import Link from "next/link"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 
 const getRowId = (row: any): string => {
     const raw = row?.id ?? row?._id ?? row?.slug;
@@ -27,56 +20,83 @@ const getRowSlugOrId = (row: any): string => {
     return getRowId(row);
 };
 
-const ActionCell = ({ row, type, onDelete }: { row: any, type: string, onDelete: (id: string, type: string) => void }) => {
-    const viewOnlyTypes = new Set(["brief", "fact-check", "election-article"]);
-    const isViewOnly = viewOnlyTypes.has(type);
-    const actionLabel = isViewOnly ? "View" : "Edit";
-    const ActionIcon = isViewOnly ? Eye : Edit;
-    const rowId = isViewOnly ? getRowSlugOrId(row) : getRowId(row);
+const toCellText = (value: any): string => {
+    if (typeof value === "string") return value;
+    if (value && typeof value === "object") {
+        return value.en || value.ne || "";
+    }
+    return "";
+};
+
+const ActionCell = ({
+    row,
+    type,
+    onDelete
+}: {
+    row: any,
+    type: string,
+    onDelete: (id: string, type: string) => void
+}) => {
+    const slugEditTypes = new Set(["brief", "fact-check", "election-article"]);
+    const rowId = slugEditTypes.has(type) ? getRowSlugOrId(row) : getRowId(row);
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-8 w-8 p-0 rounded-none hover:bg-muted">
-                    <span className="sr-only">Open menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="rounded-none border-border">
-                <DropdownMenuLabel className="font-mono text-xs uppercase text-muted-foreground">Actions</DropdownMenuLabel>
-                <DropdownMenuItem asChild className="rounded-none cursor-pointer font-manrope">
-                    <Link href={`/admin/content/${type}/${rowId}`} className="flex items-center w-full">
-                        <ActionIcon className="mr-2 h-3.5 w-3.5" />
-                        {actionLabel}
-                    </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => onDelete(rowId, type)}
-                    className="text-destructive focus:text-destructive rounded-none cursor-pointer font-manrope"
-                >
-                    <Trash className="mr-2 h-3.5 w-3.5" />
-                    Delete
-                </DropdownMenuItem>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" className="h-8 rounded-none px-2 font-mono text-[10px] uppercase tracking-wide" asChild>
+                <Link href={`/admin/content/${type}/${rowId}`} className="flex items-center gap-1">
+                    <Edit className="h-3.5 w-3.5" />
+                    Edit
+                </Link>
+            </Button>
+            <Button
+                variant="destructive"
+                size="sm"
+                className="h-8 rounded-none px-2 font-mono text-[10px] uppercase tracking-wide"
+                onClick={() => onDelete(rowId, type)}
+            >
+                <Trash className="h-3.5 w-3.5" />
+                Delete
+            </Button>
+        </div>
     )
 }
 
-// Status Badge Component
-const StatusBadge = ({ status }: { status: string | boolean }) => {
-    const isPublished = status === true || status === 'published';
+const normalizeStatus = (status: string | boolean | null | undefined): string => {
+    if (typeof status === "boolean") return status ? "published" : "draft";
+    if (!status) return "draft";
+    return status;
+};
+
+const StatusSelectCell = ({
+    row,
+    type,
+    current,
+    onStatusChange,
+    isUpdating
+}: {
+    row: any;
+    type: string;
+    current: string | boolean | null | undefined;
+    onStatusChange: (row: any, type: string, nextStatus: string) => void;
+    isUpdating: (row: any, type: string) => boolean;
+}) => {
+    const value = normalizeStatus(current);
+    const saving = isUpdating(row, type);
     return (
-        <span className={`
-            inline-flex items-center justify-center px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider border
-            ${isPublished
-                ? 'bg-primary/5 text-primary border-primary/20'
-                : 'bg-muted text-muted-foreground border-border'}
-        `}>
-            {status || 'Draft'}
-        </span>
+        <select
+            value={value}
+            onChange={(event) => onStatusChange(row, type, event.target.value)}
+            disabled={saving}
+            className="h-8 rounded-none border border-border bg-background px-2 font-mono text-[10px] uppercase tracking-wide text-foreground"
+        >
+            {saving && <option value={value}>Saving...</option>}
+            <option value="draft">Draft</option>
+            <option value="published">Published</option>
+            <option value="archived">Archived</option>
+        </select>
     );
 };
 
-export const articleColumns = (onDelete: any): ColumnDef<any>[] => [
+export const articleColumns = (onDelete: any, onStatusChange: any, isStatusUpdating: any): ColumnDef<any>[] => [
     {
         id: "title.en",
         accessorKey: "title.en",
@@ -96,7 +116,15 @@ export const articleColumns = (onDelete: any): ColumnDef<any>[] => [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <StatusBadge status={row.original.status} />
+        cell: ({ row }) => (
+            <StatusSelectCell
+                row={row.original}
+                type="article"
+                current={row.original.status}
+                onStatusChange={onStatusChange}
+                isUpdating={isStatusUpdating}
+            />
+        )
     },
     {
         accessorKey: "isFeatured",
@@ -139,7 +167,7 @@ export const articleColumns = (onDelete: any): ColumnDef<any>[] => [
     },
 ]
 
-export const leaderColumns = (onDelete: any): ColumnDef<any>[] => [
+export const leaderColumns = (onDelete: any, onStatusChange: any, isStatusUpdating: any): ColumnDef<any>[] => [
     {
         accessorKey: "image",
         header: "",
@@ -182,7 +210,15 @@ export const leaderColumns = (onDelete: any): ColumnDef<any>[] => [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <StatusBadge status={row.original.status} />
+        cell: ({ row }) => (
+            <StatusSelectCell
+                row={row.original}
+                type="leader"
+                current={row.original.status}
+                onStatusChange={onStatusChange}
+                isUpdating={isStatusUpdating}
+            />
+        )
     },
     {
         id: "actions",
@@ -191,7 +227,7 @@ export const leaderColumns = (onDelete: any): ColumnDef<any>[] => [
     },
 ]
 
-export const historyColumns = (onDelete: any): ColumnDef<any>[] => [
+export const historyColumns = (onDelete: any, onStatusChange: any, isStatusUpdating: any): ColumnDef<any>[] => [
     {
         id: "title.en",
         accessorKey: "title.en",
@@ -224,7 +260,15 @@ export const historyColumns = (onDelete: any): ColumnDef<any>[] => [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <StatusBadge status={row.original.status} />
+        cell: ({ row }) => (
+            <StatusSelectCell
+                row={row.original}
+                type="history"
+                current={row.original.status}
+                onStatusChange={onStatusChange}
+                isUpdating={isStatusUpdating}
+            />
+        )
     },
     {
         id: "actions",
@@ -233,7 +277,7 @@ export const historyColumns = (onDelete: any): ColumnDef<any>[] => [
     },
 ]
 
-export const briefColumns = (onDelete: any): ColumnDef<any>[] => [
+export const briefColumns = (onDelete: any, onStatusChange: any, isStatusUpdating: any): ColumnDef<any>[] => [
     {
         accessorKey: "image",
         header: "Image",
@@ -264,11 +308,11 @@ export const briefColumns = (onDelete: any): ColumnDef<any>[] => [
         cell: ({ row }) => (
             <div className="py-1">
                 <div className="font-manrope font-bold text-foreground text-sm line-clamp-2">
-                    {row.original.title || 'Untitled Brief'}
+                    {toCellText(row.original.title) || 'Untitled Brief'}
                 </div>
                 {row.original.summary && (
                     <div className="font-manrope text-xs text-muted-foreground line-clamp-2 mt-0.5">
-                        {row.original.summary}
+                        {toCellText(row.original.summary)}
                     </div>
                 )}
             </div>
@@ -291,9 +335,17 @@ export const briefColumns = (onDelete: any): ColumnDef<any>[] => [
         }
     },
     {
-        accessorKey: "isPublished",
+        accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <StatusBadge status={row.original.isPublished} />
+        cell: ({ row }) => (
+            <StatusSelectCell
+                row={row.original}
+                type="brief"
+                current={row.original.status ?? row.original.isPublished}
+                onStatusChange={onStatusChange}
+                isUpdating={isStatusUpdating}
+            />
+        )
     },
     {
         id: "actions",
@@ -302,7 +354,7 @@ export const briefColumns = (onDelete: any): ColumnDef<any>[] => [
     },
 ]
 
-export const factCheckColumns = (onDelete: any): ColumnDef<any>[] => [
+export const factCheckColumns = (onDelete: any, onStatusChange: any, isStatusUpdating: any): ColumnDef<any>[] => [
     {
         accessorKey: "image",
         header: "Image",
@@ -333,10 +385,10 @@ export const factCheckColumns = (onDelete: any): ColumnDef<any>[] => [
         cell: ({ row }) => (
             <div className="py-1">
                 <div className="font-manrope font-bold text-foreground text-sm line-clamp-2">
-                    {row.original.claim}
+                    {toCellText(row.original.claim)}
                 </div>
                 <div className="font-mono text-[10px] text-muted-foreground mt-0.5">
-                    By: {row.original.claimBy}
+                    By: {toCellText(row.original.claimBy)}
                 </div>
             </div>
         )
@@ -360,13 +412,26 @@ export const factCheckColumns = (onDelete: any): ColumnDef<any>[] => [
         }
     },
     {
+        accessorKey: "status",
+        header: "Status",
+        cell: ({ row }) => (
+            <StatusSelectCell
+                row={row.original}
+                type="fact-check"
+                current={row.original.status}
+                onStatusChange={onStatusChange}
+                isUpdating={isStatusUpdating}
+            />
+        )
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => <ActionCell row={row.original} type="fact-check" onDelete={onDelete} />
     },
 ]
 
-export const electionArticleColumns = (onDelete: any): ColumnDef<any>[] => [
+export const electionArticleColumns = (onDelete: any, onStatusChange: any, isStatusUpdating: any): ColumnDef<any>[] => [
     {
         accessorKey: "image",
         header: "Image",
@@ -410,7 +475,15 @@ export const electionArticleColumns = (onDelete: any): ColumnDef<any>[] => [
     {
         accessorKey: "status",
         header: "Status",
-        cell: ({ row }) => <StatusBadge status={row.original.status} />
+        cell: ({ row }) => (
+            <StatusSelectCell
+                row={row.original}
+                type="election-article"
+                current={row.original.status}
+                onStatusChange={onStatusChange}
+                isUpdating={isStatusUpdating}
+            />
+        )
     },
     {
         accessorKey: "createdAt",

@@ -15,6 +15,15 @@ import { useElectionStore } from "@/lib/election-store";
 import { TrendingUp, Bell, ShieldCheck, Award } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
+
+// Helper for content resolution (if we had bilingual data, currently mostly static strings or en-only data)
+const resolveContent = (content: any, language: "en" | "ne") => {
+    if (!content) return "";
+    if (typeof content === "string") return content;
+    return tString(content, language);
+};
 
 interface AnalyticsDashboardProps {
     latestBrief?: any;
@@ -28,6 +37,9 @@ interface AnalyticsDashboardProps {
         tags?: string[];
         status: string;
         createdAt?: string;
+        // Optional Nepali fields if available in future
+        title_ne?: string;
+        excerpt_ne?: string;
     }[];
 }
 
@@ -40,6 +52,8 @@ export default function AnalyticsDashboard({
     const { selectedDistrict } = useElectionStore();
     const [districtNewsOpen, setDistrictNewsOpen] = useState(false);
     const districtNews = selectedDistrict ? getDistrictNews(selectedDistrict) : null;
+    const { language } = useLanguage();
+    const l = LOCALES.election2026;
 
     // Open district panel when district is selected
     useState(() => {
@@ -69,20 +83,19 @@ export default function AnalyticsDashboard({
                         <div className="inline-block px-4 py-1 bg-[#B71C1C] text-white backdrop-blur-sm mb-6">
                             <span className="flex items-center gap-2 font-bebas text-sm tracking-widest uppercase">
                                 <TrendingUp className="h-4 w-4" />
-                                Live Analytics Dashboard
+                                {tString(l.hero.label, language)}
                             </span>
                         </div>
 
                         <h1 className="mt-6 font-bebas text-6xl leading-[0.9] tracking-tight md:text-7xl lg:text-8xl">
-                            <span className="block text-foreground">ELECTION 2026</span>
+                            <span className="block text-foreground">{tString(l.hero.heading, language).split(" ").slice(0, 2).join(" ")}</span>
                             <span className="block bg-gradient-to-r from-[#B71C1C] to-[#D32F2F] bg-clip-text text-transparent">
-                                DATA & INSIGHTS
+                                {tString(l.hero.heading, language).split(" ").slice(2).join(" ")}
                             </span>
                         </h1>
 
                         <p className="mx-auto mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-                            Comprehensive analytics, real-time projections, and district-level insights.
-                            Explore interactive charts and click any district on the map for detailed updates.
+                            {tString(l.hero.description, language)}
                         </p>
                     </motion.div>
                 </div>
@@ -102,10 +115,10 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                Interactive District Map
+                                {tString(l.map.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                Click any district to view detailed news, demographics, and historical results
+                                {tString(l.map.description, language)}
                             </p>
                         </div>
 
@@ -116,7 +129,7 @@ export default function AnalyticsDashboard({
                         <p className="mt-4 text-center text-sm text-muted-foreground md:mt-6">
                             {selectedDistrict
                                 ? `Selected: ${selectedDistrict} - Click again to view details`
-                                : "Click any district to explore local election data"
+                                : tString(l.map.placeholder, language)
                             }
                         </p>
                     </motion.section>
@@ -134,10 +147,10 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                Most Competitive Races
+                                {tString(l.races.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                Districts with the closest projected margins
+                                {tString(l.races.subtitle, language)}
                             </p>
                         </div>
 
@@ -209,8 +222,8 @@ export default function AnalyticsDashboard({
                         <div className="space-y-24">
                             <ImpressivePieChart
                                 data={analytics.partyProjections}
-                                title="2026 Seat Projections"
-                                subtitle="Projected parliamentary seat distribution"
+                                title={tString(l.projections.title, language)}
+                                subtitle={tString(l.projections.subtitle, language)}
                             />
 
                             <div className="relative">
@@ -219,14 +232,14 @@ export default function AnalyticsDashboard({
                                 </div>
                                 <div className="relative flex justify-center">
                                     <span className="bg-background px-3 text-sm text-muted-foreground uppercase tracking-widest">
-                                        vs Previous Election
+                                        {tString(l.projections.comparison, language)}
                                     </span>
                                 </div>
                             </div>
 
                             <ImpressivePieChart
                                 data={analytics.electionResults2079}
-                                title="2022 Election Results"
+                                title="2022 Election Results" // Missing from locales? Using static for now or add to locales
                                 subtitle="Actual results from 2022 General Election (2079 BS)"
                             />
                         </div>
@@ -244,10 +257,10 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                Historical Turnout Analysis
+                                {tString(l.turnout.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                Voter participation trends from 1991 to 2026 projection
+                                {tString(l.turnout.subtitle, language)}
                             </p>
                         </div>
                         <div className="mx-auto max-w-5xl">
@@ -267,10 +280,10 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                Provincial Analysis
+                                {tString(l.provincial.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                Comprehensive breakdown by all seven provinces
+                                {tString(l.provincial.subtitle, language)}
                             </p>
                         </div>
                         <RegionalBreakdownChart data={analytics.regionalBreakdown} />
@@ -285,10 +298,10 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                Demographics Analysis
+                                {tString(l.demographics.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                Switch between voter and candidate demographics
+                                {tString(l.demographics.subtitle, language)}
                             </p>
                         </div>
                         <div className="mx-auto max-w-5xl">
@@ -308,10 +321,10 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                Trending Topics
+                                {tString(l.trending.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                Most discussed election issues
+                                {tString(l.trending.subtitle, language)}
                             </p>
                         </div>
 
@@ -332,10 +345,10 @@ export default function AnalyticsDashboard({
                             >
                                 <div className="text-center">
                                     <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                        Election Analyses
+                                        {tString(l.analyses.title, language)}
                                     </h2>
                                     <p className="mt-2 text-muted-foreground max-w-2xl mx-auto">
-                                        Deeper dives into the political dynamics, narratives, and numbers behind Nepal&apos;s 2026 election.
+                                        {tString(l.analyses.description, language)}
                                     </p>
                                 </div>
 
@@ -366,7 +379,7 @@ export default function AnalyticsDashboard({
                                                             href={`/election-2026/analyses/${article.slug}`}
                                                             className="hover:text-primary transition-colors"
                                                         >
-                                                            {article.title_en}
+                                                            {language === 'ne' && article.title_ne ? article.title_ne : article.title_en}
                                                         </Link>
                                                     </CardTitle>
                                                     {article.createdAt && (
@@ -381,7 +394,7 @@ export default function AnalyticsDashboard({
                                                 </CardHeader>
                                                 <CardContent className="flex-1 flex flex-col pt-4">
                                                     <p className="text-sm text-muted-foreground font-manrope leading-relaxed line-clamp-4 mb-4">
-                                                        {article.excerpt_en}
+                                                        {language === 'ne' && article.excerpt_ne ? article.excerpt_ne : article.excerpt_en}
                                                     </p>
                                                     <div className="mt-auto pt-3 border-t border-dashed border-border flex items-center justify-between gap-2">
                                                         <p className="text-[10px] text-muted-foreground font-mono uppercase tracking-[0.25em]">
@@ -391,7 +404,7 @@ export default function AnalyticsDashboard({
                                                             href={`/election-2026/analyses/${article.slug}`}
                                                             className="text-[10px] font-mono uppercase tracking-[0.25em] text-primary hover:text-primary/80"
                                                         >
-                                                            Read analysis →
+                                                            {tString(l.analyses.readAnalysis, language)} →
                                                         </Link>
                                                     </div>
                                                 </CardContent>
@@ -405,7 +418,7 @@ export default function AnalyticsDashboard({
                                         className="rounded-none border-border/60 font-mono text-[11px] uppercase tracking-[0.25em]"
                                         asChild
                                     >
-                                        <Link href="/election-2026/analyses">View all election analyses</Link>
+                                        <Link href="/election-2026/analyses">{tString(l.analyses.viewAll, language)}</Link>
                                     </Button>
                                 </div>
                             </motion.section>
@@ -424,7 +437,7 @@ export default function AnalyticsDashboard({
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-3xl uppercase tracking-wide text-muted-foreground md:text-4xl">
-                                Additional Resources
+                                {tString(l.resources.title, language)}
                             </h2>
                         </div>
 
@@ -435,20 +448,20 @@ export default function AnalyticsDashboard({
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2 font-bebas text-xl uppercase">
                                             <Bell className="h-4 w-4 text-muted-foreground" />
-                                            Daily Brief
+                                            {tString(l.resources.dailyBrief, language)}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         <Link href={`/election-2026/daily-brief/${latestBrief.slug}`} className="block group/link">
                                             <h4 className="font-bold leading-tight transition-colors group-hover/link:text-[#B71C1C]">
-                                                {latestBrief.title}
+                                                {resolveContent(latestBrief.title, language)}
                                             </h4>
                                             <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
-                                                {latestBrief.summary}
+                                                {resolveContent(latestBrief.summary, language)}
                                             </p>
                                         </Link>
                                         <Button variant="outline" size="sm" className="mt-4" asChild>
-                                            <Link href="/election-2026/daily-brief">View All Briefs</Link>
+                                            <Link href="/election-2026/daily-brief">{tString(l.resources.viewAllBriefs, language)}</Link>
                                         </Button>
                                     </CardContent>
                                 </Card>
@@ -460,21 +473,21 @@ export default function AnalyticsDashboard({
                                     <CardHeader>
                                         <CardTitle className="flex items-center gap-2 font-bebas text-xl uppercase">
                                             <ShieldCheck className="h-4 w-4 text-muted-foreground" />
-                                            Latest Fact Check
+                                            {tString(l.resources.factCheck, language)}
                                         </CardTitle>
                                     </CardHeader>
                                     <CardContent>
                                         <h4 className="font-bold leading-tight">
-                                            &ldquo;{latestFactCheck.claim}&rdquo;
+                                            &ldquo;{resolveContent(latestFactCheck.claim, language)}&rdquo;
                                         </h4>
                                         <div className="my-3 inline-block rounded bg-muted px-2 py-1 text-xs font-bold uppercase text-foreground">
-                                            {latestFactCheck.verdict}
+                                            {resolveContent(latestFactCheck.verdict, language)}
                                         </div>
                                         <p className="line-clamp-2 text-sm text-muted-foreground">
-                                            {latestFactCheck.analysis}
+                                            {resolveContent(latestFactCheck.analysis, language)}
                                         </p>
                                         <Button variant="outline" size="sm" className="mt-4" asChild>
-                                            <Link href="/election-2026/fact-checks">All Verifications</Link>
+                                            <Link href="/election-2026/fact-checks">{tString(l.resources.allVerifications, language)}</Link>
                                         </Button>
                                     </CardContent>
                                 </Card>

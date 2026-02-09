@@ -1,18 +1,23 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Calendar, Clock, Share2, ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface ElectionArticle {
     title_en: string;
+    title_ne?: string;
     slug: string;
     excerpt_en?: string;
+    excerpt_ne?: string;
     content_en: string;
+    content_ne?: string;
     editor?: string;
     createdAt?: string;
     author?: string;
@@ -23,11 +28,6 @@ interface ElectionArticle {
 
 interface AnalysisDetailClientProps {
     article: ElectionArticle;
-}
-
-// Helper to convert text to title case
-function toTitleCase(str: string): string {
-    return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
 // Helper to normalize weirdly capitalized text to readable sentence case
@@ -120,11 +120,19 @@ function parseInlineMarkdown(text: string) {
 }
 
 export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
+    const { language } = useLanguage();
+    const detailLocale = LOCALES.analysisDetail;
     const [readProgress, setReadProgress] = useState(0);
 
     const createdDate = article.createdAt ? new Date(article.createdAt) : new Date();
-    const estimatedReadTime = article.readTime || Math.ceil(article.content_en.split(/\s+/).length / 200);
-    const wordCount = article.content_en.split(/\s+/).length;
+
+    // Determine content based on language
+    const title = language === "ne" && article.title_ne ? article.title_ne : article.title_en;
+    const excerpt = language === "ne" && article.excerpt_ne ? article.excerpt_ne : article.excerpt_en;
+    const content = language === "ne" && article.content_ne ? article.content_ne : article.content_en;
+
+    const estimatedReadTime = article.readTime || Math.ceil(content.split(/\s+/).length / 200);
+    const wordCount = content.split(/\s+/).length;
 
     // Track reading progress
     useEffect(() => {
@@ -141,7 +149,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
     }, []);
 
     // Parse content blocks
-    const blocks = (article.content_en || "").split(/\n{2,}/).map((raw) => raw.trim()).filter(Boolean);
+    const blocks = (content || "").split(/\n{2,}/).map((raw) => raw.trim()).filter(Boolean);
 
     return (
         <div className="min-h-screen bg-background text-foreground">
@@ -159,7 +167,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                         className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors group"
                     >
                         <ChevronLeft className="h-4 w-4 group-hover:-translate-x-0.5 transition-transform" />
-                        <span>Back to Election Analyses</span>
+                        <span>{tString(detailLocale.backLink, language)}</span>
                     </Link>
                 </div>
             </div>
@@ -170,7 +178,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                     <div className="absolute inset-0">
                         <img
                             src={article.image}
-                            alt={article.title_en}
+                            alt={title}
                             className="h-full w-full object-cover object-center opacity-40"
                             loading="eager"
                         />
@@ -189,18 +197,18 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                             variant="outline"
                             className="rounded-none px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-primary border-primary/30 bg-primary/5"
                         >
-                            Deep Dive Analysis
+                            {tString(detailLocale.badge, language)}
                         </Badge>
 
                         {/* Title */}
                         <h1 className="font-bebas text-5xl sm:text-6xl md:text-7xl leading-[0.9] tracking-tight uppercase text-foreground max-w-3xl">
-                            {toTitleCase(article.title_en)}
+                            {title}
                         </h1>
 
                         {/* Subtitle/Excerpt */}
-                        {article.excerpt_en && (
+                        {excerpt && (
                             <p className="text-base md:text-lg leading-relaxed text-muted-foreground max-w-2xl font-sans">
-                                {article.excerpt_en}
+                                {excerpt}
                             </p>
                         )}
 
@@ -209,7 +217,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                             <div className="flex items-center gap-1.5">
                                 <Calendar className="h-4 w-4" />
                                 <time dateTime={createdDate.toISOString()}>
-                                    {createdDate.toLocaleDateString("en-US", {
+                                    {createdDate.toLocaleDateString(language === "ne" ? "ne-NP" : "en-US", {
                                         month: "long",
                                         day: "numeric",
                                         year: "numeric",
@@ -221,13 +229,13 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
 
                             <div className="flex items-center gap-1.5">
                                 <Clock className="h-4 w-4" />
-                                <span>{estimatedReadTime} min read</span>
+                                <span>{estimatedReadTime} {tString(detailLocale.stats.minRead, language)}</span>
                             </div>
 
                             {article.editor && (
                                 <>
                                     <span className="text-border">·</span>
-                                    <span>Editor: {article.editor}</span>
+                                    <span>{tString(detailLocale.stats.editor, language)}: {article.editor}</span>
                                 </>
                             )}
                         </div>
@@ -271,7 +279,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                                                 key={idx}
                                                 className="font-bebas text-3xl md:text-4xl tracking-wide text-foreground mt-12 mb-4 first:mt-0 uppercase"
                                             >
-                                                {toTitleCase(title)}
+                                                {title}
                                             </h2>
                                         );
                                     }
@@ -284,7 +292,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                                                 key={idx}
                                                 className="font-bebas text-2xl md:text-3xl tracking-wide text-foreground mt-10 mb-3 uppercase"
                                             >
-                                                {toTitleCase(title)}
+                                                {title}
                                             </h3>
                                         );
                                     }
@@ -344,8 +352,8 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                                 href="/election-2026/analyses"
                                 className="inline-flex items-center gap-2 px-4 py-2 rounded-none border border-border bg-muted/40 hover:bg-muted transition-colors text-xs font-mono uppercase tracking-widest"
                             >
-                                <span className="text-muted-foreground">Part of</span>
-                                <span className="text-foreground">The Leaders Election 2026 Analysis Series</span>
+                                <span className="text-muted-foreground">{tString(detailLocale.partOf, language)}</span>
+                                <span className="text-foreground">{tString(detailLocale.seriesTitle, language)}</span>
                                 <ChevronLeft className="h-4 w-4 rotate-180" />
                             </Link>
                         </div>
@@ -361,41 +369,40 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                         {/* Reader's Guide */}
                         <div className="rounded-none border border-border bg-card p-6">
                             <h3 className="font-bebas text-xl uppercase tracking-wider text-foreground mb-3">
-                                Reader&apos;s Guide
+                                {tString(detailLocale.readersGuide.title, language)}
                             </h3>
                             <p className="text-sm leading-relaxed text-muted-foreground font-sans">
-                                This analysis is written for informed readers who want to understand the structures,
-                                incentives, and risks behind daily election headlines—not just the surface news.
+                                {tString(detailLocale.readersGuide.text, language)}
                             </p>
                         </div>
 
                         {/* Mission */}
                         <div className="rounded-none border border-primary/20 bg-primary/5 p-4 text-center">
                             <p className="text-[10px] font-mono uppercase tracking-widest text-primary">
-                                Truth · Transparency · Democracy
+                                {tString(detailLocale.mission, language)}
                             </p>
                         </div>
 
                         {/* Article Stats */}
                         <div className="rounded-none border border-border bg-muted/30 p-6">
                             <h4 className="font-mono text-xs uppercase tracking-wider text-muted-foreground mb-4">
-                                Article Stats
+                                {tString(detailLocale.stats.title, language)}
                             </h4>
                             <div className="space-y-3 text-sm">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground font-sans">Reading Time</span>
+                                    <span className="text-muted-foreground font-sans">{tString(detailLocale.stats.readTime, language)}</span>
                                     <span className="font-medium text-foreground font-sans">{estimatedReadTime} min</span>
                                 </div>
                                 <Separator />
                                 <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground font-sans">Word Count</span>
+                                    <span className="text-muted-foreground font-sans">{tString(detailLocale.stats.wordCount, language)}</span>
                                     <span className="font-medium text-foreground font-sans">{wordCount}</span>
                                 </div>
                                 <Separator />
                                 <div className="flex justify-between items-center">
-                                    <span className="text-muted-foreground font-sans">Published</span>
+                                    <span className="text-muted-foreground font-sans">{tString(detailLocale.stats.published, language)}</span>
                                     <span className="font-medium text-foreground font-sans">
-                                        {createdDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                                        {createdDate.toLocaleDateString(language === "ne" ? "ne-NP" : "en-US", { month: "short", year: "numeric" })}
                                     </span>
                                 </div>
                             </div>
@@ -408,15 +415,15 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                             onClick={() => {
                                 if (navigator.share) {
                                     navigator.share({
-                                        title: article.title_en,
-                                        text: article.excerpt_en,
+                                        title,
+                                        text: excerpt || "",
                                         url: window.location.href,
                                     });
                                 }
                             }}
                         >
                             <Share2 className="h-4 w-4 mr-2" />
-                            Share Article
+                            {tString(detailLocale.share, language)}
                         </Button>
                     </motion.aside>
                 </div>

@@ -43,6 +43,7 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
         content: normalize(initialData.content),
         author: normalize(initialData.author),
         category: normalize(initialData.category),
+        status: initialData.status || "draft",
     } : {
         title: { en: "", ne: "" },
         excerpt: { en: "", ne: "" },

@@ -15,6 +15,9 @@ export function withAuth(
 ) {
     return async (request: NextRequest, { params }: { params?: any } = {}) => {
         try {
+            const resolvedParams = params && typeof params?.then === 'function'
+                ? await params
+                : params;
             // Extract token from cookie
             const token = request.cookies.get('auth-token')?.value;
 
@@ -46,7 +49,7 @@ export function withAuth(
             }
 
             // Pass admin to handler
-            return handler(request, { admin: admin as IAdmin, params });
+            return handler(request, { admin: admin as IAdmin, params: resolvedParams });
         } catch (error) {
             console.error('Auth middleware error:', error);
             return NextResponse.json(

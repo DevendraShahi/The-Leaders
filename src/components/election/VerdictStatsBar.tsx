@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { FactCheckDTO } from "@/lib/election-data";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface VerdictStatsBarProps {
     factChecks: FactCheckDTO[];
@@ -18,6 +20,8 @@ const VERDICT_COLORS: Record<string, string> = {
 };
 
 export function VerdictStatsBar({ factChecks, variant = "bar", className }: VerdictStatsBarProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.factChecksIndex;
     const total = factChecks.length;
 
     const counts = {
@@ -44,10 +48,10 @@ export function VerdictStatsBar({ factChecks, variant = "bar", className }: Verd
                 <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                     <div className="flex items-center gap-2">
                         <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                            Verdict Distribution
+                            {tString(locale.indexRow.indexLabel, language)}
                         </span>
                         <span className="font-mono text-[10px] uppercase tracking-widest text-foreground/80">
-                            {total} checks
+                            {tString(locale.indexRow.total, language).replace("{count}", String(total))}
                         </span>
                     </div>
 
@@ -80,7 +84,14 @@ export function VerdictStatsBar({ factChecks, variant = "bar", className }: Verd
                                         className={`w-2 h-2 ${VERDICT_COLORS[key]} inline-block`}
                                     />
                                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                                        {key} {value}
+                                        {(key === "true"
+                                            ? tString(locale.indexRow.true, language)
+                                            : key === "false"
+                                                ? tString(locale.indexRow.false, language)
+                                                : key === "misleading"
+                                                    ? tString(locale.indexRow.misleading, language)
+                                                    : tString(locale.indexRow.unverified, language)
+                                        ).replace("{count}", String(value))}
                                     </span>
                                 </div>
                             );

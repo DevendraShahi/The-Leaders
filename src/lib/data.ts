@@ -7,7 +7,7 @@ import { logger } from "@/lib/logger";
 export const getArticles = cache(async (limit: number = 3) => {
     try {
         await dbConnect();
-        const articles = await Article.find({})
+        const articles = await Article.find({ status: "published" })
             .sort({ publishedDate: -1 })
             .limit(limit)
             .lean();
@@ -26,7 +26,7 @@ export const getArticles = cache(async (limit: number = 3) => {
 export const getArticleBySlug = cache(async (slug: string) => {
     try {
         await dbConnect();
-        const article = await Article.findOne({ slug }).lean();
+        const article = await Article.findOne({ slug, status: "published" }).lean();
         if (!article) return null;
         return JSON.parse(JSON.stringify(article)) as IArticle;
     } catch (error) {
@@ -34,4 +34,3 @@ export const getArticleBySlug = cache(async (slug: string) => {
         return null;
     }
 });
-

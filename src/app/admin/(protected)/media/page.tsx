@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/components/admin/AuthProvider';
+import { ConfirmDialog } from '@/components/admin/ConfirmDialog';
 import { toast } from 'sonner';
 import {
     Loader2,
@@ -26,6 +27,9 @@ export default function MediaLibrary() {
     const [uploading, setUploading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('');
+    const [dateFrom, setDateFrom] = useState('');
+    const [dateTo, setDateTo] = useState('');
+    const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,6 +43,8 @@ export default function MediaLibrary() {
                 search: searchTerm,
             });
             if (categoryFilter) params.append('category', categoryFilter);
+            if (dateFrom) params.append('from', dateFrom);
+            if (dateTo) params.append('to', dateTo);
 
             const res = await fetch(`/api/admin/media?${params}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -59,7 +65,7 @@ export default function MediaLibrary() {
 
     useEffect(() => {
         fetchMedia();
-    }, [token, page, searchTerm, categoryFilter]);
+    }, [token, page, searchTerm, categoryFilter, dateFrom, dateTo]);
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -103,10 +109,8 @@ export default function MediaLibrary() {
         }
     };
 
-    const handleDelete = async () => {
+    const executeDelete = async () => {
         if (selectedIds.length === 0) return;
-        if (!confirm(`Delete ${selectedIds.length} images? This action cannot be undone.`)) return;
-
         const toastId = toast.loading('Deleting...');
         try {
             // Use bulk delete API
@@ -133,6 +137,11 @@ export default function MediaLibrary() {
             console.error(error);
             toast.error('Error deleting images');
         }
+    };
+
+    const handleDelete = async () => {
+        if (selectedIds.length === 0) return;
+        setConfirmDeleteOpen(true);
     };
 
     const toggleSelection = (id: string) => {
@@ -211,6 +220,43 @@ export default function MediaLibrary() {
                         <option value="general">General</option>
                     </select>
                 </div>
+
+                <div className="flex items-center gap-2 min-w-[160px] border border-input bg-background px-2">
+                    <input
+                        type="date"
+                        value={dateFrom}
+                        onChange={(e) => {
+                            setDateFrom(e.target.value);
+                            setPage(1);
+                        }}
+                        className="w-full bg-transparent border-none py-2 text-sm focus:ring-0 font-mono"
+                        aria-label="From date"
+                    />
+                </div>
+
+                <div className="flex items-center gap-2 min-w-[160px] border border-input bg-background px-2">
+                    <input
+                        type="date"
+                        value={dateTo}
+                        onChange={(e) => {
+                            setDateTo(e.target.value);
+                            setPage(1);
+                        }}
+                        className="w-full bg-transparent border-none py-2 text-sm focus:ring-0 font-mono"
+                        aria-label="To date"
+                    />
+                </div>
+
+                <button
+                    onClick={() => {
+                        setDateFrom('');
+                        setDateTo('');
+                        setPage(1);
+                    }}
+                    className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-background border border-input hover:bg-muted rounded-none transition-colors"
+                >
+                    Clear Dates
+                </button>
             </div>
 
             {/* Grid */}
@@ -301,6 +347,19 @@ export default function MediaLibrary() {
                     </button>
                 </div>
             )}
+
+            <ConfirmDialog
+                open={confirmDeleteOpen}
+                onOpenChange={setConfirmDeleteOpen}
+                title={`Delete ${selectedIds.length} image(s)?`}
+                description="This action cannot be undone."
+                confirmLabel="Delete"
+                variant="destructive"
+                onConfirm={async () => {
+                    await executeDelete();
+                    setConfirmDeleteOpen(false);
+                }}
+            />
         </div>
     );
 }

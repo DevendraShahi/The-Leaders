@@ -5,6 +5,22 @@ import ActivityLog from '@/models/ActivityLog';
 import { deleteMultipleImages } from '@/lib/cloudinary';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+function parseDateRange(searchParams: URLSearchParams) {
+    const from = searchParams.get('from');
+    const to = searchParams.get('to');
+
+    const range: any = {};
+    if (from) {
+        const start = new Date(`${from}T00:00:00.000Z`);
+        if (!Number.isNaN(start.getTime())) range.$gte = start;
+    }
+    if (to) {
+        const end = new Date(`${to}T23:59:59.999Z`);
+        if (!Number.isNaN(end.getTime())) range.$lte = end;
+    }
+    return Object.keys(range).length > 0 ? range : null;
+}
+
 // GET: List media
 async function getMedia(request: NextRequest) {
     try {
@@ -15,6 +31,7 @@ async function getMedia(request: NextRequest) {
         const limit = parseInt(searchParams.get('limit') || '20'); // Bigger limit for grid
         const category = searchParams.get('category');
         const search = searchParams.get('search');
+        const createdAtRange = parseDateRange(searchParams);
 
         const query: any = {};
 
@@ -27,6 +44,10 @@ async function getMedia(request: NextRequest) {
                 { originalFilename: { $regex: search, $options: 'i' } },
                 { tags: { $regex: search, $options: 'i' } }
             ];
+        }
+
+        if (createdAtRange) {
+            query.createdAt = createdAtRange;
         }
 
         const skip = (page - 1) * limit;

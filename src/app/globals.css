@@ -164,25 +164,15 @@
   --sidebar-ring: #B71C1C;
 }
 
-/* Font Overrides */
-.font-anton {
-  --font-bebas: var(--font-anton);
+/* Global language font mapping */
+body.lang-en {
+  --font-sans: var(--font-manrope);
+  --font-bebas: var(--font-bebas);
 }
 
-.font-cinzel {
-  --font-bebas: var(--font-cinzel);
-}
-
-.font-oswald {
-  --font-bebas: var(--font-oswald);
-}
-
-.font-six-caps {
-  --font-bebas: var(--font-six-caps);
-}
-
-.font-fjalla {
-  --font-bebas: var(--font-fjalla);
+body.lang-ne {
+  --font-sans: var(--font-hind);
+  --font-bebas: var(--font-hind);
 }
 
 @layer base {
@@ -194,17 +184,18 @@
     @apply bg-background text-foreground font-sans antialiased;
     overflow-x: hidden;
     width: 100%;
-    cursor: none;
-    /* Hide default cursor for custom cursor */
   }
 
-  /* Hide cursor on all elements to use custom cursor */
-  * {
-    cursor: none !important;
-  }
+
 
   html {
     overflow-x: hidden;
+  }
+
+  /* Custom cursor mode is enabled dynamically only on fine pointers */
+  body.has-custom-cursor,
+  body.has-custom-cursor * {
+    cursor: none !important;
   }
 
   /* Film Grain Effect */
@@ -227,7 +218,19 @@
   h4,
   h5,
   h6 {
-    @apply font-bebas uppercase tracking-wide;
+    @apply font-bebas font-black uppercase tracking-wide;
+  }
+
+  body.lang-ne h1,
+  body.lang-ne h2,
+  body.lang-ne h3,
+  body.lang-ne h4,
+  body.lang-ne h5,
+  body.lang-ne h6 {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 700;
+    line-height: 1.4;
   }
 
   /* Custom animation utilities for countdown */
@@ -264,6 +267,20 @@
     background: radial-gradient(circle, var(--tw-gradient-stops));
   }
 
+  .ticker-marquee {
+    animation: ticker-marquee 60s linear infinite;
+  }
+
+  @keyframes ticker-marquee {
+    0% {
+      transform: translateX(0);
+    }
+
+    100% {
+      transform: translateX(-33.3333%);
+    }
+  }
+
   /* Custom Scrollbar Utilities */
   .custom-scrollbar::-webkit-scrollbar {
     height: 8px;
@@ -283,5 +300,40 @@
 
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background-color: var(--primary);
+  }
+}
+
+@layer components {
+  .page-label {
+    @apply inline-flex items-center border border-primary/30 bg-primary/10 px-4 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-primary;
+  }
+
+  .page-title {
+    @apply font-bebas font-black text-foreground text-5xl leading-[1.05] tracking-tight md:text-7xl;
+  }
+
+  .page-subtitle {
+    @apply text-base leading-relaxed text-muted-foreground md:text-lg;
+  }
+
+  .section-title {
+    @apply font-bebas font-black text-foreground text-3xl leading-[1.1] tracking-tight md:text-5xl;
+  }
+
+  .section-subtitle {
+    @apply text-sm leading-relaxed text-muted-foreground md:text-base;
+  }
+
+  body.lang-ne .page-title,
+  body.lang-ne .section-title {
+    line-height: 1.4;
+    letter-spacing: 0;
+    font-weight: 700;
+  }
+
+  body.lang-ne .page-subtitle,
+  body.lang-ne .section-subtitle {
+    line-height: 1.8;
+    font-weight: 400;
   }
 }

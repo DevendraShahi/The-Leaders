@@ -14,12 +14,17 @@ import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { getPartyLogo } from "@/lib/party-symbols";
 import Image from "next/image";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface PRCandidateViewerProps {
     initialData: PRPartyList[]; // We pass initial data from server
 }
 
 export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.election2026.components.prViewer;
+
     // Optimization: Select only what we need to prevent re-renders when 'hoveredDistrict' changes
     const selectedDistrict = useElectionStore((state) => state.selectedDistrict);
     const setSelectedDistrict = useElectionStore((state) => state.setSelectedDistrict);
@@ -97,7 +102,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
             <div className="flex flex-col gap-4 md:flex-row md:items-end justify-between">
                 <div className="flex-1 space-y-2">
-                    <h2 className="text-2xl font-bebas text-primary uppercase tracking-wide">Browse Candidates</h2>
+                    <h2 className="text-2xl font-bebas text-primary uppercase tracking-wide">{tString(locale.browse, language)}</h2>
                 </div>
                 <div className="flex bg-muted p-1 border border-border rounded-none">
                     <Button
@@ -106,7 +111,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                         onClick={() => setViewMode("party")}
                         className="text-xs rounded-none font-mono uppercase tracking-widest"
                     >
-                        By Party
+                        {tString(locale.byParty, language)}
                     </Button>
                     <Button
                         variant={viewMode === "district" ? "default" : "ghost"}
@@ -114,7 +119,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                         onClick={() => setViewMode("district")}
                         className="text-xs rounded-none font-mono uppercase tracking-widest"
                     >
-                        By District
+                        {tString(locale.byDistrict, language)}
                     </Button>
                 </div>
             </div>
@@ -125,7 +130,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     <div className="relative w-full md:w-96">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Search candidates by name..."
+                            placeholder={tString(locale.searchPlaceholder, language)}
                             className="pl-10 bg-background rounded-none font-manrope"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -136,7 +141,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     {selectedDistrict && (
                         <Badge variant="secondary" className="px-3 py-1 flex items-center gap-2 text-sm">
                             <MapPin className="h-3 w-3" />
-                            District: {selectedDistrict}
+                            {tString(locale.table.district, language)}: {selectedDistrict}
                             <X
                                 className="h-3 w-3 cursor-pointer hover:text-destructive"
                                 onClick={() => setSelectedDistrict(null)}
@@ -149,10 +154,10 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     {/* District Dropdown */}
                     <Select value={selectedDistrict || "all"} onValueChange={(val) => setSelectedDistrict(val === "all" ? null : val)}>
                         <SelectTrigger className="w-full md:w-[150px]">
-                            <SelectValue placeholder="All Districts" />
+                            <SelectValue placeholder={tString(locale.allDistricts, language)} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Districts</SelectItem>
+                            <SelectItem value="all">{tString(locale.allDistricts, language)}</SelectItem>
                             {districts.map(d => (
                                 <SelectItem key={d} value={d}>{d}</SelectItem>
                             ))}
@@ -160,10 +165,10 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     </Select>
                     <Select value={selectedParty} onValueChange={setSelectedParty}>
                         <SelectTrigger className="w-full md:w-[180px] rounded-none font-mono text-xs uppercase tracking-widest">
-                            <SelectValue placeholder="All Parties" />
+                            <SelectValue placeholder={tString(locale.allParties, language)} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Parties</SelectItem>
+                            <SelectItem value="all">{tString(locale.allParties, language)}</SelectItem>
                             {parties.map((p, idx) => (
                                 <SelectItem key={`party-${idx}-${p}`} value={p}>{p}</SelectItem>
                             ))}
@@ -173,23 +178,23 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     {/* Gender Filter */}
                     <Select value={selectedGender} onValueChange={setSelectedGender}>
                         <SelectTrigger className="w-full md:w-[150px] rounded-none font-mono text-xs uppercase tracking-widest">
-                            <SelectValue placeholder="All Genders" />
+                            <SelectValue placeholder={tString(locale.allGenders, language)} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Genders</SelectItem>
-                            <SelectItem value="Male">Male</SelectItem>
-                            <SelectItem value="Female">Female</SelectItem>
-                            <SelectItem value="Other">Other</SelectItem>
+                            <SelectItem value="all">{tString(locale.allGenders, language)}</SelectItem>
+                            <SelectItem value="Male">{tString(locale.genders.Male, language)}</SelectItem>
+                            <SelectItem value="Female">{tString(locale.genders.Female, language)}</SelectItem>
+                            <SelectItem value="Other">{tString(locale.genders.Other, language)}</SelectItem>
                         </SelectContent>
                     </Select>
 
                     {/* Group Filter */}
                     <Select value={selectedGroup} onValueChange={setSelectedGroup}>
                         <SelectTrigger className="w-full md:w-[150px] rounded-none font-mono text-xs uppercase tracking-widest">
-                            <SelectValue placeholder="All Groups" />
+                            <SelectValue placeholder={tString(locale.allGroups, language)} />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="all">All Groups</SelectItem>
+                            <SelectItem value="all">{tString(locale.allGroups, language)}</SelectItem>
                             {groups.map(g => (
                                 <SelectItem key={g} value={g}>{g}</SelectItem>
                             ))}
@@ -206,7 +211,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                             setSearchTerm("");
                             setSelectedDistrict(null);
                         }}
-                        title="Reset Filters"
+                        title={tString(locale.reset, language)}
                         className="rounded-none"
                     >
                         <X className="h-4 w-4" />
@@ -218,13 +223,13 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
             <div className="space-y-8">
                 {Object.keys(groupedResults).length === 0 ? (
                     <div className="text-center py-20 text-muted-foreground">
-                        No candidates found matching criteria.
+                        {tString(locale.noCandidates, language)}
                     </div>
                 ) : (
                     Object.entries(groupedResults).map(([partyName, candidates]) => (
                         <Card key={partyName} className="overflow-hidden border border-border rounded-none bg-card">
                             <CardHeader className="bg-muted/10 pb-4 border-b border-border">
-                                <CardTitle className="flex justify-between items-center text-xl font-bebas tracking-wide uppercase">
+                                <CardTitle className="flex justify-between items-center text-lg md:text-xl font-sans leading-tight tracking-tight">
                                     <div className="flex items-center gap-3">
                                         {getPartyLogo(partyName) && (
                                             <div className="relative h-8 w-8 overflow-hidden border border-border bg-white rounded-none">
@@ -239,7 +244,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                                         {partyName}
                                     </div>
                                     <Badge variant="outline" className="rounded-none font-mono text-[10px] uppercase tracking-widest">
-                                        {candidates.length} Candidates
+                                        {candidates.length} {tString(locale.candidates, language)}
                                     </Badge>
                                 </CardTitle>
                             </CardHeader>
@@ -248,12 +253,12 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                                     <table className="w-full text-sm text-left border-t border-border">
                                         <thead className="text-xs text-muted-foreground uppercase bg-muted/20 border-b font-mono tracking-widest">
                                             <tr>
-                                                <th className="px-6 py-3">SN</th>
-                                                <th className="px-6 py-3">Name</th>
-                                                <th className="px-6 py-3">Group</th>
-                                                <th className="px-6 py-3">Gender</th>
-                                                <th className="px-6 py-3">District</th>
-                                                <th className="px-6 py-3">Status</th>
+                                                <th className="px-6 py-3">{tString(locale.table.sn, language)}</th>
+                                                <th className="px-6 py-3">{tString(locale.table.name, language)}</th>
+                                                <th className="px-6 py-3">{tString(locale.table.group, language)}</th>
+                                                <th className="px-6 py-3">{tString(locale.table.gender, language)}</th>
+                                                <th className="px-6 py-3">{tString(locale.table.district, language)}</th>
+                                                <th className="px-6 py-3">{tString(locale.table.status, language)}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -278,12 +283,12 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                                                         <div className="flex gap-1">
                                                             {candidate.backward_area && (
                                                                 <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
-                                                                    Backward
+                                                                    {tString(locale.badges.backward, language)}
                                                                 </Badge>
                                                             )}
                                                             {candidate.disability && (
                                                                 <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
-                                                                    Disability
+                                                                    {tString(locale.badges.disability, language)}
                                                                 </Badge>
                                                             )}
                                                         </div>

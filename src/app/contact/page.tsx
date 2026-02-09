@@ -80,9 +80,6 @@ export default function ContactPage() {
                 attachmentUrl,   // Send the Cloudinary URL
             };
 
-            console.log("Submitting contact with attachmentUrl:", attachmentUrl);
-            console.log("Full submission data:", submissionData);
-
             const res = await fetch("/api/contact", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

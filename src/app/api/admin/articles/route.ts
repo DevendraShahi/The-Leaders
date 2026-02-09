@@ -4,6 +4,22 @@ import Article from '@/models/Article';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+function parseDateRange(searchParams: URLSearchParams) {
+    const from = searchParams.get('from');
+    const to = searchParams.get('to');
+
+    const range: any = {};
+    if (from) {
+        const start = new Date(`${from}T00:00:00.000Z`);
+        if (!Number.isNaN(start.getTime())) range.$gte = start;
+    }
+    if (to) {
+        const end = new Date(`${to}T23:59:59.999Z`);
+        if (!Number.isNaN(end.getTime())) range.$lte = end;
+    }
+    return Object.keys(range).length > 0 ? range : null;
+}
+
 // GET: List articles with pagination and filtering
 async function getArticles(request: NextRequest) {
     try {
@@ -15,6 +31,7 @@ async function getArticles(request: NextRequest) {
         const search = searchParams.get('search') || '';
         const status = searchParams.get('status');
         const category = searchParams.get('category');
+        const createdAtRange = parseDateRange(searchParams);
 
         const query: any = {};
 
@@ -34,9 +51,13 @@ async function getArticles(request: NextRequest) {
             query['category.en'] = category;
         }
 
+        if (createdAtRange) {
+            query.createdAt = createdAtRange;
+        }
+
         const skip = (page - 1) * limit;
 
-        const [articles, total] = await Promise.all([
+        const [articlesRaw, total] = await Promise.all([
             Article.find(query)
                 .sort({ createdAt: -1 })
                 .skip(skip)
@@ -44,6 +65,14 @@ async function getArticles(request: NextRequest) {
                 .populate('lastModifiedBy', 'name email'),
             Article.countDocuments(query)
         ]);
+
+        const articles = articlesRaw.map((article: any) => {
+            const plain = article.toObject ? article.toObject() : article;
+            return {
+                ...plain,
+                status: plain.status || 'draft',
+            };
+        });
 
         return apiResponse({
             articles,
@@ -86,6 +115,10 @@ async function createArticle(request: NextRequest, { user }: { user: any }) {
         const existing = await Article.findOne({ slug: data.slug });
         if (existing) {
             return apiError('Slug already exists', 409);
+        }
+
+        if (!data.status) {
+            data.status = 'draft';
         }
 
         // Add metadata

@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import { Shield, ArrowRight, ArrowLeft, Gavel, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface RulesSlideProps {
     onNext: () => void;
@@ -10,31 +12,34 @@ interface RulesSlideProps {
 }
 
 export function RulesSlide({ onNext, onPrev }: RulesSlideProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.contact.rules;
+
     const rules = [
         {
             icon: Scale,
-            title: "Constructive Discourse",
-            text: "We welcome all viewpoints, but we ask that feedback remains constructive and grounded in facts."
+            title: tString(locale.items[0].title, language),
+            text: tString(locale.items[0].text, language)
         },
         {
             icon: Gavel,
-            title: "Zero Tolerance",
-            text: "Any form of threat, harassment, or malicious intent towards our team or community will be met with immediate legal action."
+            title: tString(locale.items[1].title, language),
+            text: tString(locale.items[1].text, language)
         },
         {
             icon: Shield,
-            title: "Privacy Protected",
-            text: "Your identity and data are secure with us. We do not sell or share your personal information."
+            title: tString(locale.items[2].title, language),
+            text: tString(locale.items[2].text, language)
         }
     ];
 
     return (
         <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl font-bebas text-foreground text-center mb-2 tracking-wide">
-                Guidelines for Engagement
+                {tString(locale.heading, language)}
             </h2>
             <p className="text-center text-muted-foreground font-serif mb-12">
-                To ensure a safe and productive environment, please review our core principles.
+                {tString(locale.subheading, language)}
             </p>
 
             <div className="space-y-6">
@@ -62,13 +67,13 @@ export function RulesSlide({ onNext, onPrev }: RulesSlideProps) {
                     variant="ghost"
                     onClick={onPrev}
                 >
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Back
+                    <ArrowLeft className="mr-2 w-4 h-4" /> {tString(locale.back, language)}
                 </Button>
                 <Button
                     onClick={onNext}
                     size="lg"
                 >
-                    I Understand & Agree
+                    {tString(locale.agree, language)}
                     <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
             </div>

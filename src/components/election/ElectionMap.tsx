@@ -7,11 +7,15 @@ import { cn } from "@/lib/utils";
 import { Map as MapIcon, Loader2, AlertTriangle, Type } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { geoJsonToPath, calculateGeoJsonCentroid, type GeoJSON } from "@/lib/map-utils";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 export function ElectionMap({ className }: { className?: string }) {
     // 1. Feature: Maintain Store Integration
     const { selectedDistrict, setSelectedDistrict } = useElectionStore();
     const { hoveredDistrict, setHoveredDistrict } = useElectionStore();
+    const { language } = useLanguage();
+    const locale = LOCALES.election2026.components.electionMap;
 
     // Local UI state
     const [showLabels, setShowLabels] = useState(true);
@@ -86,7 +90,7 @@ export function ElectionMap({ className }: { className?: string }) {
         return (
             <div className={cn("flex h-full min-h-[400px] items-center justify-center text-muted-foreground animate-pulse", className)}>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Loading Map Data...
+                {tString(locale.loading, language)}
             </div>
         );
     }
@@ -95,7 +99,7 @@ export function ElectionMap({ className }: { className?: string }) {
         return (
             <div className={cn("flex h-full min-h-[400px] items-center justify-center text-destructive", className)}>
                 <AlertTriangle className="mr-2 h-4 w-4" />
-                Failed to load map
+                {tString(locale.failed, language)}
             </div>
         );
     }
@@ -184,7 +188,7 @@ export function ElectionMap({ className }: { className?: string }) {
             {/* Feature: KTM Valley Index - Top Right with ~20% spacing */}
             <div className="absolute right-4 top-[20%] flex flex-col items-end gap-1 z-20 pointer-events-none">
                 <div className="text-[10px] font-bold tracking-widest text-muted-foreground/50 uppercase mb-1 mr-1">
-                    KTM Valley
+                    {tString(locale.ktmValley, language)}
                 </div>
                 {ktmDistricts.map((dName) => {
                     const isSelected = selectedDistrict === dName;
@@ -202,7 +206,7 @@ export function ElectionMap({ className }: { className?: string }) {
                                     : "text-muted-foreground hover:text-foreground hover:scale-105"
                             )}
                         >
-                            {dName}
+                            {tString(locale.districts[dName as keyof typeof locale.districts], language)}
                         </button>
                     );
                 })}

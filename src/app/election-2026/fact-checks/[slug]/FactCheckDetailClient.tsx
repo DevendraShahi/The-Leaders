@@ -1,7 +1,6 @@
 "use client";
 
-import { FactCheckDTO } from "@/lib/election-data";
-import { format } from "date-fns";
+import type { FactCheckDTO, LocalizedValue } from "@/lib/election-data";
 import {
     ArrowLeft,
     CheckCircle,
@@ -14,9 +13,12 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 // --- Verdict Config ---
-const getVerdictConfig = (v: string) => {
+const getVerdictConfig = (v: string, language: "en" | "ne") => {
+    const locale = LOCALES.factCheckDetail.verdict;
     switch (v) {
         case "true":
             return {
@@ -24,8 +26,8 @@ const getVerdictConfig = (v: string) => {
                 bg: "bg-green-500",
                 border: "border-green-600",
                 icon: CheckCircle,
-                label: "Verified True",
-                stampInfo: "VERIFIED"
+                label: tString(locale.true.label, language),
+                stampInfo: tString(locale.true.stamp, language),
             };
         case "false":
             return {
@@ -33,8 +35,8 @@ const getVerdictConfig = (v: string) => {
                 bg: "bg-red-600",
                 border: "border-red-600",
                 icon: XCircle,
-                label: "False",
-                stampInfo: "FALSE"
+                label: tString(locale.false.label, language),
+                stampInfo: tString(locale.false.stamp, language),
             };
         case "misleading":
             return {
@@ -42,8 +44,8 @@ const getVerdictConfig = (v: string) => {
                 bg: "bg-amber-500",
                 border: "border-amber-500",
                 icon: AlertTriangle,
-                label: "Misleading",
-                stampInfo: "MISLEADING"
+                label: tString(locale.misleading.label, language),
+                stampInfo: tString(locale.misleading.stamp, language),
             };
         default:
             return {
@@ -51,13 +53,18 @@ const getVerdictConfig = (v: string) => {
                 bg: "bg-gray-500",
                 border: "border-gray-500",
                 icon: ShieldCheck,
-                label: "Unverified",
-                stampInfo: "UNKNOWN"
+                label: tString(locale.unverified.label, language),
+                stampInfo: tString(locale.unverified.stamp, language),
             };
     }
 };
 
 // --- Helper Functions ---
+function resolveText(value: LocalizedValue, language: "en" | "ne"): string {
+    if (typeof value === "string") return value;
+    return language === "ne" ? value.ne || value.en || "" : value.en || value.ne || "";
+}
+
 function generateSlug(claim: string): string {
     return claim
         .toLowerCase()
@@ -68,7 +75,12 @@ function generateSlug(claim: string): string {
 
 // --- Client Component for Interactions ---
 export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }) {
-    const config = getVerdictConfig(factCheck.verdict);
+    const { language } = useLanguage();
+    const locale = LOCALES.factCheckDetail;
+    const claim = resolveText(factCheck.claim, language);
+    const claimBy = resolveText(factCheck.claimBy, language);
+    const analysis = resolveText(factCheck.analysis, language);
+    const config = getVerdictConfig(factCheck.verdict, language);
     const Icon = config.icon;
 
     return (
@@ -88,10 +100,10 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                     className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors group"
                 >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Back to Archives
+                    {tString(locale.backLink.label, language)}
                 </Link>
                 <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground/70">
-                    REF: {generateSlug(factCheck.claim).substring(0, 8).toUpperCase()}
+                    {tString(locale.header.refPrefix, language)} {generateSlug(claim).substring(0, 8).toUpperCase()}
                 </div>
             </div>
 
@@ -109,27 +121,31 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                         variant="outline"
                         className="mb-6 rounded-none px-3 py-1 text-[10px] font-mono uppercase tracking-widest border-border text-muted-foreground bg-background/40 dark:bg-background/20"
                     >
-                        Case Dossier
+                        {tString(locale.header.caseBadge, language)}
                     </Badge>
 
                     <h1 className="font-bebas text-5xl md:text-7xl leading-[0.9] mb-8 tracking-tight max-w-3xl mx-auto">
-                        "{factCheck.claim}"
+                        "{claim}"
                     </h1>
 
                     <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-muted-foreground">
                         <div className="flex flex-col items-center">
                             <span className="text-[10px] font-mono uppercase tracking-widest mb-1 opacity-70">
-                                Claim Source
+                                {tString(locale.header.claimSourceLabel, language)}
                             </span>
-                            <span className="font-sans font-bold text-foreground">{factCheck.claimBy}</span>
+                            <span className="font-sans font-bold text-foreground">{claimBy}</span>
                         </div>
                         <div className="w-px h-8 bg-border hidden md:block"></div>
                         <div className="flex flex-col items-center">
                             <span className="text-[10px] font-mono uppercase tracking-widest mb-1 opacity-70">
-                                Date Information
+                                {tString(locale.header.dateInfoLabel, language)}
                             </span>
                             <span className="font-sans font-bold text-foreground">
-                                {format(new Date(factCheck.date), "MMMM d, yyyy")}
+                                {new Date(factCheck.date).toLocaleDateString(language === "ne" ? "ne-NP" : "en-US", {
+                                    month: "long",
+                                    day: "numeric",
+                                    year: "numeric",
+                                })}
                             </span>
                         </div>
                     </div>
@@ -141,7 +157,7 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                         <div className="relative aspect-square overflow-hidden border border-border bg-muted/30 dark:bg-[#151515]">
                             <img
                                 src={factCheck.image}
-                                alt={factCheck.claim}
+                                alt={claim}
                                 className="h-full w-full object-cover object-center"
                                 loading="lazy"
                             />
@@ -178,35 +194,39 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
 
                             <div className="space-y-3">
                                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-                                    Claim Source
+                                    {tString(locale.sidebar.claimSourceLabel, language)}
                                 </div>
-                                <div className="font-sans font-semibold text-foreground">{factCheck.claimBy}</div>
+                                <div className="font-sans font-semibold text-foreground">{claimBy}</div>
                             </div>
 
                             <div className="space-y-3">
                                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-                                    Logged Date
+                                    {tString(locale.sidebar.loggedDateLabel, language)}
                                 </div>
                                 <div className="font-sans text-foreground">
-                                    {format(new Date(factCheck.date), "MMMM d, yyyy")}
+                                    {new Date(factCheck.date).toLocaleDateString(language === "ne" ? "ne-NP" : "en-US", {
+                                        month: "long",
+                                        day: "numeric",
+                                        year: "numeric",
+                                    })}
                                 </div>
                             </div>
 
                             <div className="space-y-3">
                                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-                                    Case ID
+                                    {tString(locale.sidebar.caseIdLabel, language)}
                                 </div>
                                 <div className="font-mono text-xs text-foreground">
-                                    {generateSlug(factCheck.claim).substring(0, 12).toUpperCase()}
+                                    {generateSlug(claim).substring(0, 12).toUpperCase()}
                                 </div>
                             </div>
 
                             <div className="pt-4 border-t border-border">
                                 <div className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-                                    Case Notes
+                                    {tString(locale.sidebar.caseNotesLabel, language)}
                                 </div>
                                 <p className="mt-2 text-xs font-sans text-muted-foreground leading-relaxed">
-                                    This dossier summarizes the strongest available evidence and weighs competing claims.
+                                    {tString(locale.sidebar.caseNotesBody, language)}
                                 </p>
                             </div>
                         </div>
@@ -215,10 +235,10 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                         <div className="p-8 md:p-10">
                             <section className="mb-10">
                                 <h3 className="font-bebas text-2xl uppercase tracking-wider mb-4 pb-2 border-b border-border/40">
-                                    Official Analysis
+                                    {tString(locale.analysis.heading, language)}
                                 </h3>
                                 <div className="font-sans text-lg leading-relaxed text-muted-foreground space-y-6">
-                                    {factCheck.analysis.split('\n').map((paragraph, index) => (
+                                    {analysis.split('\n').map((paragraph, index) => (
                                         <p key={index}>{paragraph}</p>
                                     ))}
                                 </div>
@@ -227,7 +247,7 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                             {factCheck.sources && factCheck.sources.length > 0 && (
                                 <section className="pt-6 border-t border-border/40">
                                     <h3 className="font-bebas text-xl text-muted-foreground uppercase tracking-wider mb-6 flex items-center gap-2">
-                                        <ExternalLink className="w-4 h-4" /> Evidence Index
+                                        <ExternalLink className="w-4 h-4" /> {tString(locale.sources.heading, language)}
                                     </h3>
                                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {factCheck.sources.map((source, index) => (
@@ -236,7 +256,7 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                                                 className="flex items-start gap-3 group p-3 bg-muted/40 dark:bg-[#141414] border border-border/60 hover:border-border transition-colors"
                                             >
                                                 <span className="font-mono text-[10px] text-muted-foreground mt-1 uppercase">
-                                                    Exhibit {index + 1}
+                                                    {tString(locale.sources.exhibitLabel, language).replace("{index}", String(index + 1))}
                                                 </span>
                                                 <span className="font-sans text-sm text-muted-foreground group-hover:text-foreground font-medium break-all">
                                                     {source}

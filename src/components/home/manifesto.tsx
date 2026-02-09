@@ -2,8 +2,13 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 export function Manifesto() {
+    const { language } = useLanguage();
+    const l = LOCALES.home.manifesto;
+
     const ref = useRef(null);
     const { scrollYProgress } = useScroll({
         target: ref,
@@ -35,12 +40,16 @@ export function Manifesto() {
                     transition={{ duration: 1 }}
                 >
                     <h2 className="text-4xl md:text-7xl lg:text-8xl font-bebas font-bold text-foreground uppercase leading-none tracking-tight mb-8">
-                        &ldquo;We do not inherit <br />
-                        <span className="text-primary mx-2">the earth</span> <br />
-                        from our ancestors&hellip;&rdquo;
+                        &ldquo;{tString(l.part1, language)} <br className="hidden md:block" />
+                        <span className="text-primary mx-2">{tString(l.highlight1, language)}</span> <br />
+                        {tString(l.part2, language)}&rdquo;
                     </h2>
                     <p className="text-xl md:text-3xl text-muted-foreground font-bebas tracking-widest uppercase">
-                        ...we borrow it from our <span className="text-foreground border-b-2 border-primary">children</span>.
+                        {tString(l.part3, language)}{" "}
+                        <span className="text-foreground border-b-2 border-primary">
+                            {tString(l.highlight2, language)}
+                        </span>
+                        {tString(l.part4, language)}
                     </p>
                 </motion.div>
             </div>

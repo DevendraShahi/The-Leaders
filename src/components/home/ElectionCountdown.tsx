@@ -1,378 +1,403 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
-import { Calendar, Users, MapPin, Vote } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/providers/language-provider";
 
-// Election headlines for the ticker (simplified, no emojis)
-// Election headlines for the ticker (Real Daily Briefs)
-const HEADLINES = [
-    "Digital integrity push: Election Commission partners with TikTok and enlists the Advertising Board to curb misinformation and defamatory ads, signalling tighter oversight.",
-    "Representation gaps exposed: Final PR lists show women are a majority among 3,135 list candidates, yet overall only about 11% of roughly 3,484 total candidates are women.",
-    "Rules, security and key races: Integrated Security Plan deploys over 300,000 personnel and stricter code-of-conduct rules on manifestos, money and appointments take effect.",
-    "Election 2026: High-profile contests pit ex–prime ministers against newcomers like Balen Shah.",
-    "March 5 Polls: 56 Political Parties Registered for 2026 General Election.",
-    "Voter turnout projected to reach record highs in localized regions.",
-];
-
-interface TimeLeft {
+type CountdownState = {
     days: number;
     hours: number;
     minutes: number;
     seconds: number;
-}
-
-interface Particle {
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-}
-
-// Helper to convert to Nepali digits
-const toNepaliDigits = (num: number) => {
-    const nepaliMap = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
-    return num.toString().split('').map(d => nepaliMap[parseInt(d)] || d).join('');
 };
 
-export default function ElectionCountdown() {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-    const [mounted, setMounted] = useState(false);
-    const [lang, setLang] = useState<"en" | "np">("en"); // Lifted state
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const { scrollYProgress } = useScroll();
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+const ELECTION_TARGET_NP = "2026-03-03T00:00:00+05:45";
 
-    // Language toggle interval
+export default function ElectionCountdown() {
+    const { language } = useLanguage();
+
+    const rootRef = useRef<HTMLElement | null>(null);
+    const webglRef = useRef<HTMLCanvasElement | null>(null);
+    const badgeRef = useRef<HTMLParagraphElement | null>(null);
+    const titleTopRef = useRef<HTMLHeadingElement | null>(null);
+    const titleBottomRef = useRef<HTMLHeadingElement | null>(null);
+    const descriptionRef = useRef<HTMLParagraphElement | null>(null);
+    const countdownRef = useRef<HTMLDivElement | null>(null);
+    const ctasRef = useRef<HTMLDivElement | null>(null);
+    const primaryCtaRef = useRef<HTMLButtonElement | null>(null);
+    const secondaryCtaRef = useRef<HTMLButtonElement | null>(null);
+    const [countdown, setCountdown] = useState<CountdownState>({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
+
+    const content =
+        language === "ne"
+            ? {
+                  badge: "द लिडर्स · नागरिक अभिलेख",
+                  titleTop: "द लिडर्स",
+                  titleBottom: "सत्ता, इतिहास र उत्तरदायित्व",
+                  description:
+                      "नेपालको राजनीतिक यात्रालाई सन्दर्भ, प्रमाण र ऐतिहासिक निरन्तरतासहित पढ्न, बुझ्न र तुलना गर्न तयार गरिएको स्वतन्त्र डिजिटल अभिलेख।",
+                  subline: "स्वतन्त्र अभिलेख · बहु-दृष्टिकोण · प्रमाणमा आधारित अध्ययन",
+                  countdownLabel: "निर्वाचन काउन्टडाउन",
+                  electionDate: "३ मार्च २०२६ · फागुन २१, २०८२",
+                  days: "दिन",
+                  hours: "घण्टा",
+                  minutes: "मिनेट",
+                  seconds: "सेकेन्ड",
+                  primary: "नेताहरू हेर्नुहोस्",
+                  secondary: "लेखहरू पढ्नुहोस्",
+              }
+            : {
+                  badge: "The Leaders · Civic Archive",
+                  titleTop: "THE LEADERS",
+                  titleBottom: "POWER, HISTORY, ACCOUNTABILITY",
+                  description:
+                      "An independent political archive built for serious readers who want context, evidence, and continuity in Nepal’s democratic story.",
+                  subline: "Independent archive · multi-perspective reading · evidence-led context",
+                  countdownLabel: "Election Countdown",
+                  electionDate: "March 3, 2026 · Falgun 21, 2082",
+                  days: "Days",
+                  hours: "Hours",
+                  minutes: "Minutes",
+                  seconds: "Seconds",
+                  primary: "Explore Leaders",
+                  secondary: "Read Articles",
+              };
+
     useEffect(() => {
-        const timer = setInterval(() => {
-            setLang(prev => prev === "en" ? "np" : "en");
-        }, 4000);
+        const target = new Date(ELECTION_TARGET_NP).getTime();
+
+        const updateCountdown = () => {
+            const now = Date.now();
+            const delta = Math.max(target - now, 0);
+
+            const days = Math.floor(delta / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((delta / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((delta / (1000 * 60)) % 60);
+            const seconds = Math.floor((delta / 1000) % 60);
+
+            setCountdown({ days, hours, minutes, seconds });
+        };
+
+        updateCountdown();
+        const timer = setInterval(updateCountdown, 1000);
         return () => clearInterval(timer);
     }, []);
 
-    // Particle animation on canvas
     useEffect(() => {
-        const canvas = canvasRef.current;
+        const canvas = webglRef.current;
         if (!canvas) return;
 
-        const ctx = canvas.getContext("2d");
-        if (!ctx) return;
+        const gl = canvas.getContext("webgl", { antialias: true, alpha: true });
+        if (!gl) return;
 
-        const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        const vertexShaderSource = `
+            attribute vec2 a_position;
+            void main() {
+                gl_Position = vec4(a_position, 0.0, 1.0);
+            }
+        `;
+
+        const fragmentShaderSource = `
+            precision mediump float;
+            uniform vec2 u_resolution;
+            uniform float u_time;
+            uniform float u_intensity;
+
+            float linePattern(vec2 uv, float spacing, float width) {
+                vec2 g = abs(fract(uv / spacing - 0.5) - 0.5) / fwidth(uv / spacing);
+                float line = min(g.x, g.y);
+                return 1.0 - smoothstep(0.0, width, line);
+            }
+
+            void main() {
+                vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+                vec2 p = uv * vec2(u_resolution.x / u_resolution.y, 1.0);
+
+                float wave = sin((p.x * 8.0) + (u_time * 0.25)) * 0.004;
+                vec2 shifted = vec2(p.x, p.y + wave);
+
+                float coarse = linePattern(shifted, 0.12, 1.3);
+                float fine = linePattern(shifted + vec2(0.02, 0.01), 0.06, 1.8);
+
+                float vignette = 1.0 - smoothstep(0.25, 1.1, distance(uv, vec2(0.5)));
+                float signal = (coarse * 0.22 + fine * 0.08) * (0.45 + vignette * 0.55) * u_intensity;
+
+                vec3 base = vec3(0.7176, 0.1098, 0.1098); // #B71C1C
+                vec3 color = base * signal;
+                gl_FragColor = vec4(color, signal * 0.45);
+            }
+        `;
+
+        const compileShader = (type: number, source: string) => {
+            const shader = gl.createShader(type);
+            if (!shader) return null;
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                gl.deleteShader(shader);
+                return null;
+            }
+            return shader;
         };
-        resizeCanvas();
-        window.addEventListener("resize", resizeCanvas);
 
-        // Create particle grid
-        const particles: Particle[] = [];
-        const particleCount = 80;
-        const connectionDistance = 150;
+        const vertexShader = compileShader(gl.VERTEX_SHADER, vertexShaderSource);
+        const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+        if (!vertexShader || !fragmentShader) return;
 
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
-            });
+        const program = gl.createProgram();
+        if (!program) return;
+        gl.attachShader(program, vertexShader);
+        gl.attachShader(program, fragmentShader);
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+        gl.useProgram(program);
+
+        const positionBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+        gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([
+                -1, -1,
+                1, -1,
+                -1, 1,
+                -1, 1,
+                1, -1,
+                1, 1,
+            ]),
+            gl.STATIC_DRAW
+        );
+
+        const positionLoc = gl.getAttribLocation(program, "a_position");
+        gl.enableVertexAttribArray(positionLoc);
+        gl.vertexAttribPointer(positionLoc, 2, gl.FLOAT, false, 0, 0);
+
+        const resolutionLoc = gl.getUniformLocation(program, "u_resolution");
+        const timeLoc = gl.getUniformLocation(program, "u_time");
+        const intensityLoc = gl.getUniformLocation(program, "u_intensity");
+
+        const getThemeIntensity = () =>
+            document.documentElement.classList.contains("dark") ? 1.0 : 0.62;
+        let intensity = getThemeIntensity();
+
+        const resize = () => {
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+            const width = Math.floor(canvas.clientWidth * dpr);
+            const height = Math.floor(canvas.clientHeight * dpr);
+            if (canvas.width !== width || canvas.height !== height) {
+                canvas.width = width;
+                canvas.height = height;
+            }
+            gl.viewport(0, 0, width, height);
+        };
+
+        resize();
+        window.addEventListener("resize", resize);
+
+        const observer = new MutationObserver(() => {
+            intensity = getThemeIntensity();
+        });
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class"],
+        });
+
+        let raf = 0;
+        let isVisible = !document.hidden;
+        let inViewport = true;
+        const start = performance.now();
+
+        const sectionObserver = new IntersectionObserver(
+            ([entry]) => {
+                inViewport = !!entry?.isIntersecting;
+            },
+            { threshold: 0.05 }
+        );
+
+        if (rootRef.current) {
+            sectionObserver.observe(rootRef.current);
         }
 
-        let animationFrame: number;
-        const animate = () => {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Update and draw particles
-            particles.forEach((particle, i) => {
-                particle.x += particle.vx;
-                particle.y += particle.vy;
-
-                // Bounce off edges
-                if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
-                if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
-
-                // Draw particle
-                ctx.fillStyle = "rgba(183, 28, 28, 0.6)"; // #B71C1C with opacity
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Draw connections
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[j].x - particle.x;
-                    const dy = particles[j].y - particle.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-
-                    if (distance < connectionDistance) {
-                        const alpha = (1 - distance / connectionDistance) * 0.5;
-                        ctx.strokeStyle = `rgba(183, 28, 28, ${alpha})`; // #B71C1C
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(particle.x, particle.y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            });
-
-            animationFrame = requestAnimationFrame(animate);
+        const onVisibility = () => {
+            isVisible = !document.hidden;
         };
-        animate();
+        document.addEventListener("visibilitychange", onVisibility);
+
+        const render = () => {
+            if (isVisible && inViewport) {
+                resize();
+                const elapsed = (performance.now() - start) / 1000;
+                gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
+                gl.uniform1f(timeLoc, elapsed);
+                gl.uniform1f(intensityLoc, intensity);
+                gl.clearColor(0, 0, 0, 0);
+                gl.clear(gl.COLOR_BUFFER_BIT);
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+            }
+            raf = requestAnimationFrame(render);
+        };
+        render();
 
         return () => {
-            cancelAnimationFrame(animationFrame);
-            window.removeEventListener("resize", resizeCanvas);
+            cancelAnimationFrame(raf);
+            document.removeEventListener("visibilitychange", onVisibility);
+            sectionObserver.disconnect();
+            window.removeEventListener("resize", resize);
+            observer.disconnect();
+            gl.deleteBuffer(positionBuffer);
+            gl.deleteProgram(program);
+            gl.deleteShader(vertexShader);
+            gl.deleteShader(fragmentShader);
         };
     }, []);
 
     useEffect(() => {
-        setMounted(true);
-        const electionDate = new Date("2026-03-05T07:00:00+05:45");
+        if (!rootRef.current) return;
 
-        const calculateTimeLeft = () => {
-            const now = new Date();
-            const difference = electionDate.getTime() - now.getTime();
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const ctx = gsap.context(() => {
+            if (reduced) {
+                gsap.set(
+                    [badgeRef.current, titleTopRef.current, titleBottomRef.current, descriptionRef.current, countdownRef.current, ctasRef.current],
+                    { autoAlpha: 1 }
+                );
+                return;
+            }
 
-            if (difference > 0) {
-                setTimeLeft({
-                    days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                    minutes: Math.floor((difference / 1000 / 60) % 60),
-                    seconds: Math.floor((difference / 1000) % 60),
+            const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+            tl.from(badgeRef.current, { y: 24, autoAlpha: 0, duration: 0.45 })
+                .from(titleTopRef.current, { y: 44, autoAlpha: 0, duration: 0.62 }, "-=0.22")
+                .from(titleBottomRef.current, { y: 38, autoAlpha: 0, duration: 0.56 }, "-=0.36")
+                .from(descriptionRef.current, { y: 22, autoAlpha: 0, duration: 0.48 }, "-=0.26")
+                .from(countdownRef.current, { y: 18, autoAlpha: 0, duration: 0.44 }, "-=0.2")
+                .from(ctasRef.current, { y: 18, autoAlpha: 0, duration: 0.42 }, "-=0.22");
+
+            const ctas = [primaryCtaRef.current, secondaryCtaRef.current].filter(
+                Boolean
+            ) as HTMLButtonElement[];
+
+            const ctaCleanups: Array<() => void> = [];
+            ctas.forEach((button) => {
+                const shift = gsap.quickTo(button, "x", { duration: 0.22, ease: "power2.out" });
+                const onEnter = () => shift(4);
+                const onLeave = () => shift(0);
+                button.addEventListener("mouseenter", onEnter);
+                button.addEventListener("mouseleave", onLeave);
+                ctaCleanups.push(() => {
+                    button.removeEventListener("mouseenter", onEnter);
+                    button.removeEventListener("mouseleave", onLeave);
                 });
-            }
-        };
+            });
 
-        calculateTimeLeft();
-        const timer = setInterval(calculateTimeLeft, 1000);
-        return () => clearInterval(timer);
+            return () => {
+                ctaCleanups.forEach((cleanup) => cleanup());
+            };
+        }, rootRef);
+
+        return () => ctx.revert();
     }, []);
 
-    const [headlines, setHeadlines] = useState<string[]>([]);
-
-    // Fetch headlines
-    useEffect(() => {
-        const fetchHeadlines = async () => {
-            try {
-                const res = await fetch('/api/settings');
-                const data = await res.json();
-                if (data.success && data.data?.tickerHeadlines?.length > 0) {
-                    setHeadlines(data.data.tickerHeadlines);
-                } else {
-                    // Fallback if no headlines in DB
-                    setHeadlines([
-                        "Election 2026: March 5th Polls Confirmed",
-                        "EC Nepal announces strict code of conduct for upcoming elections",
-                        "Voter registration closes with record 18M+ eligible voters",
-                        "Daily briefings available now in The Leaders dashboard"
-                    ]);
-                }
-            } catch (err) {
-                console.error("Failed to fetch ticker:", err);
-            }
-        };
-        fetchHeadlines();
-    }, []);
-
-    // ... (rest of effects)
-
-    if (!mounted) return null;
-
-    // Use fetched headlines or fallback/hardcoded if desired
-    const tickerContent = headlines.length > 0 ? headlines : HEADLINES;
+    const formatCount = (value: number) => {
+        const padded = String(value).padStart(2, "0");
+        return language === "ne" ? padded.replace(/\d/g, (digit) => "०१२३४५६७८९"[Number(digit)]) : padded;
+    };
 
     return (
-        <motion.section
-            style={{ opacity }}
-            className="relative min-h-screen mt-6 md:m-0 w-full overflow-hidden bg-black flex items-center justify-center"
-        >
-            {/* Particle Canvas Background */}
-            <canvas ref={canvasRef} className="absolute inset-0 opacity-60" />
+        <section ref={rootRef} className="relative mt-6 overflow-hidden border-t border-border bg-background md:mt-0">
+            <canvas ref={webglRef} className="pointer-events-none absolute inset-0 h-full w-full opacity-70" />
+            <div className="pointer-events-none absolute inset-y-0 left-[8%] w-px bg-border/55" />
+            <div className="pointer-events-none absolute inset-y-0 right-[8%] w-px bg-border/55" />
+            <div className="pointer-events-none absolute left-0 right-0 top-[30%] h-px bg-border/55" />
+            <div className="pointer-events-none absolute left-0 right-0 bottom-[20%] h-px bg-border/55" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-primary/35" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-border/70" />
 
-            {/* Minimal Grid Overlay */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(183,28,28,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(183,28,28,0.03)_1px,transparent_1px)] bg-[size:100px_100px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_60%,transparent_100%)]" />
+            <div className="container relative mx-auto px-4 py-24 md:py-28 lg:py-32">
+                <div className="mx-auto max-w-5xl">
+                    <main>
+                        <p ref={badgeRef} className="mb-6 inline-flex border border-primary/35 bg-card px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-primary">
+                            {content.badge}
+                        </p>
 
-            {/* Scrolling News Ticker */}
-            <div className="absolute top-0 left-0 right-0 bg-black/80 backdrop-blur-sm border-b border-[#B71C1C]/20 py-2 overflow-hidden z-10">
-                <motion.div
-                    className="flex gap-16 whitespace-nowrap"
-                    animate={{ x: [0, -2400] }}
-                    transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
-                >
-                    {[...tickerContent, ...tickerContent, ...tickerContent].map((headline, i) => (
-                        <span key={i} className="text-white/60 font-mono text-xs tracking-widest uppercase">
-                            {headline}
-                        </span>
-                    ))}
-                </motion.div>
-            </div>
-
-            {/* Main Content */}
-            <div className="container mx-auto px-4 py-24 relative z-10">
-                <div className="max-w-6xl mx-auto space-y-20">
-
-                    {/* Header with Bilingual Animation */}
-                    <AnimatedHeader lang={lang} />
-
-                    {/* Countdown Timer */}
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1.2, delay: 0.3, ease: "easeOut" }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8"
-                    >
-                        {[
-                            { value: timeLeft.days, label: lang === 'en' ? "Days" : "दिन" },
-                            { value: timeLeft.hours, label: lang === 'en' ? "Hours" : "घण्टा" },
-                            { value: timeLeft.minutes, label: lang === 'en' ? "Minutes" : "मिनेट" },
-                            { value: timeLeft.seconds, label: lang === 'en' ? "Seconds" : "सेकेन्ड" },
-                        ].map((item, index) => (
-                            <div key={index} className="relative group">
-                                {/* Minimal border frame */}
-                                <div className="absolute inset-0 border border-white/10 group-hover:border-[#B71C1C]/30 transition-colors duration-500" />
-                                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-[#B71C1C] opacity-0 group-hover:opacity-100 transition-opacity" />
-                                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-[#B71C1C] opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                                {/* Content */}
-                                <div className="relative p-8 md:p-10 flex flex-col items-center justify-center bg-black/40">
-                                    <AnimatePresence mode="wait">
-                                        <motion.div
-                                            key={`${item.value}-${lang}`}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: -10 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="text-6xl md:text-7xl font-mono font-bold text-white tabular-nums"
-                                        >
-                                            {lang === 'en'
-                                                ? String(item.value).padStart(2, "0")
-                                                : toNepaliDigits(item.value).padStart(2, "०")}
-                                        </motion.div>
-                                    </AnimatePresence>
-                                    <div className="mt-3 text-white/40 font-mono text-xs tracking-[0.2em] uppercase">
-                                        {item.label}
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </motion.div>
-
-                    {/* Stats - Minimal Line Design */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.6 }}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5"
-                    >
-                        {[
-                            { icon: Users, label: "Registered Voters", value: "18M+" },
-                            { icon: Vote, label: "Political Parties", value: "56" },
-                            { icon: MapPin, label: "Polling Stations", value: "10,000+" },
-                            { icon: Calendar, label: "Total Seats", value: "275" },
-                        ].map((stat) => (
-                            <div key={stat.label} className="bg-black p-6 hover:bg-[#B71C1C]/5 transition-colors group">
-                                <stat.icon className="w-6 h-6 text-[#B71C1C]/60 mb-4 group-hover:text-[#B71C1C] transition-colors" strokeWidth={1.5} />
-                                <div className="text-3xl md:text-4xl font-mono text-white mb-1 tabular-nums">
-                                    {stat.value}
-                                </div>
-                                <div className="text-white/40 text-xs font-mono tracking-wider uppercase">
-                                    {stat.label}
-                                </div>
-                            </div>
-                        ))}
-                    </motion.div>
-
-                    {/* CTA Buttons */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1, delay: 0.9 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8"
-                    >
-                        <Link href="/election-2026">
-                            <Button size="lg">
-                                Explore Election Data
-                            </Button>
-                        </Link>
-                        <Link href="/leaders">
-                            <Button size="lg" variant="outline">
-                                View Leaders
-                            </Button>
-                        </Link>
-                    </motion.div>
-
-                    {/* Scroll Indicator */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1.5, duration: 1 }}
-                        className="flex justify-center pt-12"
-                    >
-                        <motion.div
-                            animate={{ y: [0, 8, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                            className="flex flex-col items-center gap-2"
+                        <h1
+                            ref={titleTopRef}
+                            className={`text-foreground [font-family:var(--font-bebas)] ${
+                                language === "ne"
+                                    ? "text-6xl font-bold leading-[1.08] tracking-normal md:text-7xl lg:text-8xl"
+                                    : "text-6xl font-black leading-[0.88] tracking-tight md:text-7xl lg:text-8xl"
+                            }`}
                         >
-                            <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-white/30 to-transparent" />
-                            <div className="text-white/30 font-mono text-xs tracking-widest uppercase">Scroll</div>
-                        </motion.div>
-                    </motion.div>
+                            {content.titleTop}
+                        </h1>
+
+                        <h2
+                            ref={titleBottomRef}
+                            className={`mt-1 text-primary [font-family:var(--font-bebas)] ${
+                                language === "ne"
+                                    ? "text-4xl font-bold leading-[1.12] tracking-normal md:text-5xl lg:text-6xl"
+                                    : "text-4xl font-black leading-[0.94] tracking-tight md:text-5xl lg:text-6xl"
+                            }`}
+                        >
+                            {content.titleBottom}
+                        </h2>
+
+                        <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
+                            {content.subline}
+                        </p>
+
+                        <p ref={descriptionRef} className="mt-8 max-w-3xl text-base leading-8 text-muted-foreground md:text-lg md:leading-8">
+                            {content.description}
+                        </p>
+
+                        <div ref={countdownRef} className="mt-10 max-w-3xl border border-border bg-card/60 p-4">
+                            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+                                <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-primary">{content.countdownLabel}</p>
+                                <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{content.electionDate}</p>
+                            </div>
+                            <div className="grid grid-cols-4 gap-2 sm:gap-3">
+                                <div className="border border-border bg-background px-2 py-3 text-center">
+                                    <p className="font-mono text-2xl font-bold tabular-nums text-foreground sm:text-3xl">{formatCount(countdown.days)}</p>
+                                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{content.days}</p>
+                                </div>
+                                <div className="border border-border bg-background px-2 py-3 text-center">
+                                    <p className="font-mono text-2xl font-bold tabular-nums text-foreground sm:text-3xl">{formatCount(countdown.hours)}</p>
+                                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{content.hours}</p>
+                                </div>
+                                <div className="border border-border bg-background px-2 py-3 text-center">
+                                    <p className="font-mono text-2xl font-bold tabular-nums text-foreground sm:text-3xl">{formatCount(countdown.minutes)}</p>
+                                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{content.minutes}</p>
+                                </div>
+                                <div className="border border-border bg-background px-2 py-3 text-center">
+                                    <p className="font-mono text-2xl font-bold tabular-nums text-foreground sm:text-3xl">{formatCount(countdown.seconds)}</p>
+                                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">{content.seconds}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ref={ctasRef} className="mt-12 flex flex-wrap gap-3">
+                            <Link href="/leaders">
+                                <Button ref={primaryCtaRef} size="lg" className="rounded-none px-6 font-mono text-xs uppercase tracking-[0.16em]">
+                                    {content.primary}
+                                    <ArrowRight className="h-4 w-4" />
+                                </Button>
+                            </Link>
+
+                            <Link href="/articles">
+                                <Button ref={secondaryCtaRef} size="lg" variant="outline" className="rounded-none px-6 font-mono text-xs uppercase tracking-[0.16em]">
+                                    {content.secondary}
+                                </Button>
+                            </Link>
+                        </div>
+                    </main>
                 </div>
             </div>
-        </motion.section>
-    );
-}
-
-function AnimatedHeader({ lang }: { lang: "en" | "np" }) {
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="text-center space-y-6"
-        >
-            <div className="inline-block border border-[#B71C1C]/30 px-6 py-2">
-                <span className="text-[#B71C1C] font-mono text-sm tracking-[0.3em] uppercase">
-                    Nepal General Election
-                </span>
-            </div>
-
-            <div className="h-[180px] sm:h-[220px] flex items-center justify-center overflow-hidden">
-                <AnimatePresence mode="wait">
-                    {lang === "en" ? (
-                        <motion.h1
-                            key="en"
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -20, opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-7xl md:text-8xl lg:text-9xl font-bebas text-white uppercase tracking-tighter leading-[0.9]"
-                        >
-                            March 5
-                            <br />
-                            <span className="text-[#B71C1C]">2026</span>
-                        </motion.h1>
-                    ) : (
-                        <motion.h1
-                            key="np"
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            exit={{ y: -20, opacity: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="text-7xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-[0.9]"
-                        >
-                            फागुन २१
-                            <br />
-                            <span className="text-[#B71C1C]">२०८२</span>
-                        </motion.h1>
-                    )}
-                </AnimatePresence>
-            </div>
-        </motion.div>
+        </section>
     );
 }

@@ -3,6 +3,7 @@
 import type { DailyBriefDTO } from "@/lib/election-data";
 import { BriefCard } from "./BriefCard";
 import { BriefLeadCard } from "./BriefLeadCard";
+import { useLanguage } from "@/components/providers/language-provider";
 
 interface DailyBriefStackProps {
     briefs: DailyBriefDTO[];
@@ -13,6 +14,8 @@ interface GroupedBriefs {
 }
 
 export function DailyBriefStack({ briefs }: DailyBriefStackProps) {
+    const { language } = useLanguage();
+
     if (!briefs.length) return null;
 
     const grouped = briefs.reduce((acc: GroupedBriefs, brief) => {
@@ -32,6 +35,11 @@ export function DailyBriefStack({ briefs }: DailyBriefStackProps) {
                     month: "long",
                     day: "numeric",
                     year: "numeric",
+                });
+                const localizedLabel = date.toLocaleDateString(language === "ne" ? "ne-NP" : "en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
                 }).toUpperCase();
 
                 const [lead, ...rest] = grouped[dateKey];
@@ -41,7 +49,7 @@ export function DailyBriefStack({ briefs }: DailyBriefStackProps) {
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-12 h-px bg-primary" />
                             <h2 className="font-bebas text-4xl md:text-5xl uppercase tracking-tight text-foreground">
-                                {label}
+                                {language === "ne" ? localizedLabel : label.toUpperCase()}
                             </h2>
                         </div>
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Bebas_Neue, Anton, Cinzel, Oswald, Six_Caps, Fjalla_One } from "next/font/google";
+import { Manrope, Bebas_Neue, Hind } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -14,32 +14,10 @@ const bebas = Bebas_Neue({
     subsets: ["latin"],
 });
 
-const anton = Anton({
-    variable: "--font-anton",
-    weight: "400",
-    subsets: ["latin"],
-});
-
-const cinzel = Cinzel({
-    variable: "--font-cinzel",
-    subsets: ["latin"],
-});
-
-const oswald = Oswald({
-    variable: "--font-oswald",
-    subsets: ["latin"],
-});
-
-const sixCaps = Six_Caps({
-    variable: "--font-six-caps",
-    weight: "400",
-    subsets: ["latin"],
-});
-
-const fjalla = Fjalla_One({
-    variable: "--font-fjalla",
-    weight: "400",
-    subsets: ["latin"],
+const hind = Hind({
+    variable: "--font-hind",
+    subsets: ["devanagari", "latin"],
+    weight: ["300", "400", "500", "600", "700"],
 });
 
 const knight = localFont({
@@ -52,11 +30,10 @@ import { constructMetadata } from "@/lib/metadata";
 
 
 import { ThemeProvider } from "@/components/theme-provider";
-import { FontProvider } from "@/components/font-provider";
-import { Navbar } from "@/components/common/navbar";
-import { Footer } from "@/components/common/footer";
-import { CustomCursor } from "@/components/ui/custom-cursor";
 import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
+import { LanguageProvider } from "@/components/providers/language-provider";
+import CodePenCursor from "@/components/ui/code-pen-cursor";
+
 
 // ... existing imports
 
@@ -104,26 +81,25 @@ export default async function RootLayout({
     return (
         <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body
-                className={`${manrope.variable} ${bebas.variable} ${anton.variable} ${cinzel.variable} ${oswald.variable} ${sixCaps.variable} ${fjalla.variable} ${knight.variable} antialiased bg-background text-foreground`}
+                className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${knight.variable} antialiased bg-background text-foreground`}
             >
+                <CodePenCursor />
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"
                     enableSystem
                     disableTransitionOnChange
                 >
-                    <FontProvider>
+                    <LanguageProvider>
                         <GlobalLoadingProvider>
                             <MaintenanceGuard maintenanceSettings={maintenanceSettings}>
-                                <CustomCursor />
                                 <LayoutStructureWrapper socialLinks={socialLinks}>
                                     {children}
                                 </LayoutStructureWrapper>
-
                             </MaintenanceGuard>
                             <Toaster position="bottom-right" />
                         </GlobalLoadingProvider>
-                    </FontProvider>
+                    </LanguageProvider>
                 </ThemeProvider>
             </body>
         </html >

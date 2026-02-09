@@ -1,26 +1,26 @@
 "use client";
 
 import * as React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { FontToggle } from "@/components/font-toggle";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LanguageToggle } from "@/components/language-toggle";
 import { SubscribeDialog } from "./subscribe-dialog";
 
 const links = [
-    { href: "/", label: "Home" },
-    { href: "/leaders", label: "Leaders" },
-    { href: "/history", label: "History" },
-    { href: "/election-2026", label: "Election 2026" },
-    { href: "/articles", label: "Articles" },
-    { href: "/about", label: "About Us" },
+    { href: "/", labelEn: "Home", labelNe: "गृहपृष्ठ" },
+    { href: "/leaders", labelEn: "Leaders", labelNe: "नेताहरू" },
+    { href: "/history", labelEn: "History", labelNe: "इतिहास" },
+    { href: "/election-2026", labelEn: "Election 2026", labelNe: "निर्वाचन २०२६" },
+    { href: "/articles", labelEn: "Articles", labelNe: "लेखहरू" },
+    { href: "/about", labelEn: "About Us", labelNe: "हाम्रा बारेमा" },
 ];
 
 export function Navbar() {
@@ -28,6 +28,7 @@ export function Navbar() {
     const [isSearchOpen, setIsSearchOpen] = React.useState(false);
     const [isSheetOpen, setIsSheetOpen] = React.useState(false);
     const pathname = usePathname();
+    const { language } = useLanguage();
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -60,20 +61,23 @@ export function Navbar() {
                 {/* Desktop Navigation */}
                 <div className="hidden md:block">
                     <nav className="flex items-center gap-2">
-                        {links.map((link) => (
-                            <Link
-                                key={link.href}
-                                href={link.href}
-                                className={cn(
-                                    "relative px-5 py-2 text-sm font-medium uppercase transition-all duration-200 rounded",
-                                    pathname === link.href
-                                        ? "bg-primary text-primary-foreground"
-                                        : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                                )}
-                            >
-                                <span className="block">{link.label}</span>
-                            </Link>
-                        ))}
+                        {links.map((link) => {
+                            const label = language === "ne" ? (link.labelNe || link.labelEn) : link.labelEn;
+                            return (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={cn(
+                                        "relative px-5 py-2 text-sm font-medium uppercase transition-all duration-200 rounded",
+                                        pathname === link.href
+                                            ? "bg-primary text-primary-foreground"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                                    )}
+                                >
+                                    <span className="block">{label}</span>
+                                </Link>
+                            );
+                        })}
                     </nav>
                 </div>
 
@@ -107,10 +111,15 @@ export function Navbar() {
                         </AnimatePresence>
                     </div>
 
-                    <ThemeToggle />
-                    <div className="hidden sm:block">
-                        <FontToggle />
+                    {/* Language toggle */}
+                    <div className="hidden sm:flex items-center">
+                        <LanguageToggle />
                     </div>
+                    <div className="flex sm:hidden items-center">
+                        <LanguageToggle className="scale-90 origin-center" />
+                    </div>
+
+                    <ThemeToggle />
 
                     <div className="hidden md:block">
                         <SubscribeDialog>
@@ -135,21 +144,24 @@ export function Navbar() {
                                         THE <br /> LEADERS
                                     </div>
                                     <nav className="flex flex-col gap-2">
-                                        {links.map((link) => (
-                                            <Link
-                                                key={link.href}
-                                                href={link.href}
-                                                onClick={() => setIsSheetOpen(false)}
-                                                className={cn(
-                                                    "text-lg font-medium uppercase transition-all duration-200 py-3 px-4 rounded-md",
-                                                    pathname === link.href
-                                                        ? "bg-primary/10 text-primary font-bold translate-x-2"
-                                                        : "text-muted-foreground hover:text-foreground hover:bg-accent hover:translate-x-1"
-                                                )}
-                                            >
-                                                {link.label}
-                                            </Link>
-                                        ))}
+                                        {links.map((link) => {
+                                            const label = language === "ne" ? (link.labelNe || link.labelEn) : link.labelEn;
+                                            return (
+                                                <Link
+                                                    key={link.href}
+                                                    href={link.href}
+                                                    onClick={() => setIsSheetOpen(false)}
+                                                    className={cn(
+                                                        "text-lg font-medium uppercase transition-all duration-200 py-3 px-4 rounded-md",
+                                                        pathname === link.href
+                                                            ? "bg-primary/10 text-primary font-bold translate-x-2"
+                                                            : "text-muted-foreground hover:text-foreground hover:bg-accent hover:translate-x-1"
+                                                    )}
+                                                >
+                                                    {label}
+                                                </Link>
+                                            );
+                                        })}
                                     </nav>
 
                                     <div className="mt-auto mb-8 space-y-4">
@@ -158,9 +170,6 @@ export function Navbar() {
                                                 Subscribe
                                             </Button>
                                         </SubscribeDialog>
-                                        <div className="flex justify-center gap-4">
-                                            {/* Mobile specific toggles or social links could go here if needed */}
-                                        </div>
                                     </div>
                                 </div>
                             </SheetContent>

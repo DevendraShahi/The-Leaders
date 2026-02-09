@@ -47,6 +47,9 @@ export function withAuth(
     handler: (request: NextRequest, context: { user: JWTPayload; params: any }) => Promise<NextResponse>
 ) {
     return async (request: NextRequest, { params }: { params?: any } = {}) => {
+        const resolvedParams = params && typeof params?.then === 'function'
+            ? await params
+            : params;
         const authResult = await authenticateRequest(request);
 
         if (!authResult.authenticated || !authResult.user) {
@@ -56,7 +59,7 @@ export function withAuth(
             );
         }
 
-        return handler(request, { user: authResult.user, params });
+        return handler(request, { user: authResult.user, params: resolvedParams });
     };
 }
 

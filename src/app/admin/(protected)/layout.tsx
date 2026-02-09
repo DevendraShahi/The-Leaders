@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import AdminSidebar from '@/components/admin/AdminSidebar';
 import AdminNavbar from '@/components/admin/AdminNavbar';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { firstAllowedAdminPage, hasAdminPageAccess, resolveRequiredAdminPage } from '@/lib/admin-page-access';
 
 
 export default function ProtectedLayout({
@@ -13,9 +15,29 @@ export default function ProtectedLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { isLoading, isAuthenticated } = useAuth();
+    const { isLoading, isAuthenticated, user } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const pathname = usePathname();
+    const router = useRouter();
+    const requiredPage = useMemo(() => resolveRequiredAdminPage(pathname || ''), [pathname]);
+    const hasAccess = useMemo(() => {
+        if (user?.role === 'superadmin') return true;
+        if (!requiredPage) return true;
+        return hasAdminPageAccess(user?.permissions as any, requiredPage);
+    }, [requiredPage, user]);
+
+    useEffect(() => {
+        if (isLoading || !isAuthenticated || !user) return;
+        if (hasAccess) return;
+        const fallback = firstAllowedAdminPage(user.permissions as any);
+        if (fallback) {
+            router.replace(fallback);
+        } else {
+            router.replace('/admin/login');
+        }
+    }, [hasAccess, isAuthenticated, isLoading, router, user]);
+
     if (isLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background" suppressHydrationWarning>
@@ -26,6 +48,13 @@ export default function ProtectedLayout({
 
     if (!isAuthenticated) {
         return null; // AuthProvider will redirect
+    }
+    if (!hasAccess) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        );
     }
 
     return (

@@ -5,27 +5,114 @@ import { setCookieConsent } from "@/app/actions/cookie-consent";
 import gsap from "gsap";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { useLanguage, type LanguageCode } from "@/components/providers/language-provider";
 
-const STATUS_SEQUENCE = [
-    "Initializing Platform",
-    "Loading Resources",
-    "Preparing Experience",
-    "Almost Ready",
-];
+const LOADER_COPY: Record<LanguageCode, {
+    statusSequence: string[];
+    waitingForConsent: string;
+    finalizing: string;
+    footerTagline: string;
+    policy: {
+        title: string;
+        intro: string;
+        essentialLabel: string;
+        essentialText: string;
+        analyticsLabel: string;
+        analyticsText: string;
+        experienceLabel: string;
+        experienceText: string;
+        noSell: string;
+        close: string;
+    };
+    consent: {
+        title: string;
+        bodyPrefix: string;
+        policyLinkText: string;
+        bodySuffix: string;
+        decline: string;
+        accept: string;
+        preferredLanguage: string;
+        english: string;
+        nepali: string;
+    };
+}> = {
+    en: {
+        statusSequence: ["Initializing Platform", "Loading Resources", "Preparing Experience", "Almost Ready"],
+        waitingForConsent: "Waiting for your consent",
+        finalizing: "Finalizing",
+        footerTagline: "Political Insights • Democratic Legacy",
+        policy: {
+            title: "Cookie Policy",
+            intro: "At The Leaders, we prioritize your privacy.",
+            essentialLabel: "Essential Cookies:",
+            essentialText: "Required for the site to function securely.",
+            analyticsLabel: "Analytics:",
+            analyticsText: "Help us understand platform usage and improve content.",
+            experienceLabel: "Experience:",
+            experienceText: "Save your preferences for a personalized journey.",
+            noSell: "We do not sell your personal data. Your browsing integrity is our commitment.",
+            close: "Close",
+        },
+        consent: {
+            title: "Your Privacy Matters",
+            bodyPrefix: "We use cookies to enhance your experience. By continuing, you accept our",
+            policyLinkText: "cookie policy",
+            bodySuffix: ".",
+            decline: "Decline",
+            accept: "Accept",
+            preferredLanguage: "Preferred language",
+            english: "English",
+            nepali: "नेपाली",
+        },
+    },
+    ne: {
+        statusSequence: ["प्लेटफर्म सुरु हुँदैछ", "स्रोतहरू लोड हुँदैछन्", "अनुभव तयार हुँदैछ", "लगभग तयार"],
+        waitingForConsent: "तपाईंको सहमति पर्खिँदै",
+        finalizing: "अन्तिम तयारी हुँदैछ",
+        footerTagline: "राजनीतिक अन्तरदृष्टि • लोकतान्त्रिक विरासत",
+        policy: {
+            title: "कुकी नीति",
+            intro: "The Leaders मा हामी तपाईंको गोपनीयतालाई प्राथमिकता दिन्छौँ।",
+            essentialLabel: "आवश्यक कुकी:",
+            essentialText: "वेबसाइट सुरक्षित रूपमा चलाउन आवश्यक हुन्छ।",
+            analyticsLabel: "विश्लेषण:",
+            analyticsText: "प्रयोगको ढाँचा बुझेर सामग्री सुधार गर्न मद्दत गर्छ।",
+            experienceLabel: "अनुभव:",
+            experienceText: "तपाईंको प्राथमिकता सुरक्षित राखेर अनुभव व्यक्तिगत बनाउँछ।",
+            noSell: "हामी तपाईंको व्यक्तिगत डेटा बिक्री गर्दैनौँ। तपाईंको गोपनीयता हाम्रो प्रतिबद्धता हो।",
+            close: "बन्द गर्नुहोस्",
+        },
+        consent: {
+            title: "तपाईंको गोपनीयता महत्त्वपूर्ण छ",
+            bodyPrefix: "हामी तपाईंको अनुभव सुधार गर्न कुकी प्रयोग गर्छौँ। अगाडि बढेर तपाईं हाम्रो",
+            policyLinkText: "कुकी नीति",
+            bodySuffix: "स्वीकार गर्नुहुन्छ।",
+            decline: "अस्वीकार",
+            accept: "स्वीकार",
+            preferredLanguage: "रुचाइएको भाषा",
+            english: "English",
+            nepali: "नेपाली",
+        },
+    },
+};
 
 interface PremiumLoaderProps {
     onComplete?: () => void;
 }
 
 export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
+    const { language, setLanguage } = useLanguage();
     const containerRef = useRef<HTMLDivElement>(null);
     const logoRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
     const linesRef = useRef<HTMLDivElement>(null);
-    const [statusText, setStatusText] = useState(STATUS_SEQUENCE[0]);
+    const [statusIndex, setStatusIndex] = useState(0);
     const [progress, setProgress] = useState(0);
     const [showConsent, setShowConsent] = useState(false);
     const [showPolicy, setShowPolicy] = useState(false);
+    const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>("en");
+    const [isFinalizing, setIsFinalizing] = useState(false);
+    const copy = LOADER_COPY[selectedLanguage];
 
     useEffect(() => {
         // Check if user has already given consent
@@ -36,14 +123,19 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
         }
     }, []);
 
+    useEffect(() => {
+        setSelectedLanguage(language);
+    }, [language]);
+
     const handleConsent = (accepted: boolean) => {
+        setLanguage(selectedLanguage);
         localStorage.setItem("cookie-consent", accepted ? "accepted" : "declined");
         setCookieConsent(accepted ? "accepted" : "declined");
         setShowConsent(false);
         setShowPolicy(false);
 
         // Complete the loading animation
-        setStatusText("Finalizing");
+        setIsFinalizing(true);
 
         // Animate progress to 100%
         const interval = setInterval(() => {
@@ -130,8 +222,8 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
         if (!showConsent) {
             let currentIndex = 0;
             statusInterval = setInterval(() => {
-                currentIndex = (currentIndex + 1) % STATUS_SEQUENCE.length;
-                setStatusText(STATUS_SEQUENCE[currentIndex]);
+                currentIndex = (currentIndex + 1) % copy.statusSequence.length;
+                setStatusIndex(currentIndex);
             }, 250); // Speed up text cycle (was 400ms)
 
             // Progress bar animation
@@ -159,9 +251,13 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
             if (statusInterval) clearInterval(statusInterval);
             if (progressInterval) clearInterval(progressInterval);
         };
-    }, [showConsent]);
+    }, [showConsent, copy.statusSequence.length]);
 
-    const effectiveStatusText = showConsent ? "Waiting for your consent" : statusText;
+    const effectiveStatusText = showConsent
+        ? copy.waitingForConsent
+        : isFinalizing
+            ? copy.finalizing
+            : copy.statusSequence[statusIndex];
 
     return (
         <div
@@ -248,7 +344,7 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                         <span className="tracking-wide">© 2026 The Leaders</span>
                     </div>
                     <p className="text-[11px] tracking-[0.15em] uppercase opacity-60">
-                        Political Insights • Democratic Legacy
+                        {copy.footerTagline}
                     </p>
                 </div>
             </div>
@@ -262,25 +358,23 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                     <div className="bg-background/95 backdrop-blur-xl border border-border rounded-lg shadow-2xl max-w-lg w-full overflow-hidden">
                         <div className="p-6 space-y-4">
                             <h3 className="font-bebas text-2xl text-foreground tracking-wide border-b border-border pb-2">
-                                Cookie Policy
+                                {copy.policy.title}
                             </h3>
                             <div className="space-y-3 text-sm text-muted-foreground leading-relaxed">
-                                <p>
-                                    At <span className="text-foreground font-medium">The Leaders</span>, we prioritize your privacy.
-                                </p>
+                                <p>{copy.policy.intro}</p>
                                 <ul className="space-y-2 list-disc pl-4 marker:text-primary">
                                     <li>
-                                        <span className="text-foreground font-medium">Essential Cookies:</span> Required for the site to function securely.
+                                        <span className="text-foreground font-medium">{copy.policy.essentialLabel}</span> {copy.policy.essentialText}
                                     </li>
                                     <li>
-                                        <span className="text-foreground font-medium">Analytics:</span> Help us understand how you use our platform to improve content.
+                                        <span className="text-foreground font-medium">{copy.policy.analyticsLabel}</span> {copy.policy.analyticsText}
                                     </li>
                                     <li>
-                                        <span className="text-foreground font-medium">Experience:</span> Save your preferences for a personalized journey.
+                                        <span className="text-foreground font-medium">{copy.policy.experienceLabel}</span> {copy.policy.experienceText}
                                     </li>
                                 </ul>
                                 <p className="text-xs opacity-70 mt-4">
-                                    We do not sell your personal data. Your browsing integrity is our commitment.
+                                    {copy.policy.noSell}
                                 </p>
                             </div>
                             <div className="pt-4 flex justify-end">
@@ -289,7 +383,7 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                                     onClick={() => setShowPolicy(false)}
                                     className="min-w-[100px]"
                                 >
-                                    Close
+                                    {copy.policy.close}
                                 </Button>
                             </div>
                         </div>
@@ -303,39 +397,75 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                 <div className="relative z-10 w-full max-w-3xl px-4 pb-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
                     <div className="bg-background/95 backdrop-blur-lg border border-border rounded-lg shadow-2xl overflow-hidden">
                         <div className="p-6 md:p-8">
-                            <div className="flex flex-col md:flex-row md:items-center gap-6">
-                                {/* Text section */}
-                                <div className="flex-1 space-y-2">
-                                    <h3 className="font-bebas text-xl md:text-2xl text-foreground tracking-wide">
-                                        Your Privacy Matters
-                                    </h3>
-                                    <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                                        We use cookies to enhance your experience. By continuing, you accept our{" "}
-                                        <button
-                                            onClick={() => setShowPolicy(true)}
-                                            className="text-primary hover:underline font-medium focus:outline-none"
+                            <div className="space-y-4">
+                                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+                                    {/* Text section */}
+                                    <div className="flex-1 space-y-2 md:pr-4">
+                                        <h3 className="font-bebas text-xl md:text-2xl text-foreground tracking-wide">
+                                            {copy.consent.title}
+                                        </h3>
+                                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                                            {copy.consent.bodyPrefix}{" "}
+                                            <button
+                                                onClick={() => setShowPolicy(true)}
+                                                className="text-primary hover:underline font-medium focus:outline-none"
+                                            >
+                                                {copy.consent.policyLinkText}
+                                            </button>{" "}
+                                            {copy.consent.bodySuffix}
+                                        </p>
+                                    </div>
+
+                                    {/* Action buttons */}
+                                    <div className="flex flex-row md:flex-col gap-3 md:w-[140px]">
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => handleConsent(false)}
+                                            className="flex-1 min-w-[100px] h-10 text-sm"
                                         >
-                                            cookie policy
-                                        </button>
-                                        .
-                                    </p>
+                                            {copy.consent.decline}
+                                        </Button>
+                                        <Button
+                                            onClick={() => handleConsent(true)}
+                                            className="flex-1 min-w-[100px] h-10 text-sm bg-primary hover:bg-primary/90"
+                                        >
+                                            {copy.consent.accept}
+                                        </Button>
+                                    </div>
                                 </div>
 
-                                {/* Action buttons */}
-                                <div className="flex flex-row gap-3 md:flex-shrink-0">
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => handleConsent(false)}
-                                        className="flex-1 md:flex-none min-w-[100px] h-10 text-sm"
-                                    >
-                                        Decline
-                                    </Button>
-                                    <Button
-                                        onClick={() => handleConsent(true)}
-                                        className="flex-1 md:flex-none min-w-[100px] h-10 text-sm bg-primary hover:bg-primary/90"
-                                    >
-                                        Accept
-                                    </Button>
+                                <div className="border-t border-border/70 pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                                    <p className="text-[11px] md:text-xs uppercase tracking-wider text-muted-foreground">
+                                        {copy.consent.preferredLanguage}
+                                    </p>
+                                    <div className="inline-flex self-start border border-border rounded-none overflow-hidden">
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setSelectedLanguage("en");
+                                                setLanguage("en");
+                                            }}
+                                            className={`px-4 py-2 text-xs font-bold tracking-wider uppercase transition-colors ${selectedLanguage === "en"
+                                                ? "bg-primary text-primary-foreground"
+                                                : "bg-background text-muted-foreground hover:text-foreground"
+                                                }`}
+                                        >
+                                            {copy.consent.english}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setSelectedLanguage("ne");
+                                                setLanguage("ne");
+                                            }}
+                                            className={`px-4 py-2 text-xs font-bold tracking-wider uppercase transition-colors ${selectedLanguage === "ne"
+                                                ? "bg-primary text-primary-foreground"
+                                                : "bg-background text-muted-foreground hover:text-foreground"
+                                                }`}
+                                        >
+                                            {copy.consent.nepali}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

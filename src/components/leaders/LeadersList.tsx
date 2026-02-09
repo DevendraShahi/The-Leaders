@@ -7,12 +7,14 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Search, ArrowUpRight } from "lucide-react";
 import { ILeader } from "@/models/Leader";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 // Helper to get localized string (defaulting to 'en')
-const getLoc = (field: any) => {
+const resolveContent = (field: any, language: "en" | "ne") => {
     if (!field) return "";
     if (typeof field === 'string') return field;
-    return field.en || field.ne || "";
+    return tString(field, language);
 };
 
 interface LeadersListProps {
@@ -21,10 +23,12 @@ interface LeadersListProps {
 
 export default function LeadersList({ leaders }: LeadersListProps) {
     const [searchTerm, setSearchTerm] = useState("");
+    const { language } = useLanguage();
+    const locale = LOCALES.leadersIndex;
 
     const filteredLeaders = leaders.filter((leader) => {
-        const name = getLoc(leader.name).toLowerCase();
-        const role = getLoc(leader.position).toLowerCase(); // Mapped 'position' to 'role' conceptually
+        const name = resolveContent(leader.name, language).toLowerCase();
+        const role = resolveContent(leader.position, language).toLowerCase(); // Mapped 'position' to 'role' conceptually
         const term = searchTerm.toLowerCase();
         return name.includes(term) || role.includes(term);
     });
@@ -40,10 +44,12 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                     className="text-center"
                 >
                     <span className="inline-block py-1 px-4 bg-primary text-black font-bebas tracking-widest uppercase mb-6">
-                        <span className="block">Classified Files</span>
+                        <span className="block">
+                            {tString(locale.hero.badgeLabel, language)}
+                        </span>
                     </span>
-                    <h1 className="text-7xl md:text-9xl font-bebas font-bold text-foreground uppercase tracking-tighter mb-8 leading-[0.85] drop-shadow-2xl">
-                        The <span className="text-primary">Roster</span>
+                    <h1 className="page-title text-foreground mb-8 uppercase drop-shadow-2xl md:text-8xl">
+                        {tString(locale.hero.heading, language)}
                     </h1>
 
                     {/* Search Bar */}
@@ -53,7 +59,7 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                         </div>
                         <Input
                             type="text"
-                            placeholder="SEARCH THE SHADOWS..."
+                            placeholder={tString(locale.search.placeholder, language)}
                             className="h-16 pl-14 bg-muted/50 border-primary/20 text-foreground placeholder:text-muted-foreground font-bebas text-2xl tracking-widest focus-visible:ring-primary uppercase rounded-none transition-all focus:bg-muted"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
@@ -82,7 +88,7 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                                         <div className="absolute inset-0 bg-gradient-to-t from-black via-zinc-900/60 to-transparent z-10 opacity-90 transition-opacity duration-500" />
                                         <Image
                                             src={leader.image || '/placeholder-leader.jpg'}
-                                            alt={getLoc(leader.name)}
+                                            alt={resolveContent(leader.name, language)}
                                             fill
                                             className="object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
                                         />
@@ -93,20 +99,24 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                                         <div className="transform transition-transform duration-500 translate-y-2 group-hover:translate-y-0">
                                             <div className="flex justify-between items-end mb-2">
                                                 <span className="block text-primary font-bebas text-lg tracking-widest opacity-80 group-hover:opacity-100 transition-opacity">
-                                                    {getLoc(leader.position)}
+                                                    {resolveContent(leader.position, language)}
                                                 </span>
-                                                <span className="text-muted-foreground font-bebas text-sm border border-border px-2 py-0.5 rounded-none">{getLoc(leader.years)}</span>
+                                                {leader.years && (
+                                                    <span className="text-muted-foreground font-bebas text-sm border border-border px-2 py-0.5 rounded-none">
+                                                        {resolveContent(leader.years, language)}
+                                                    </span>
+                                                )}
                                             </div>
                                             <h3 className="text-5xl font-bebas text-white uppercase tracking-tighter leading-none mb-4 group-hover:text-primary transition-colors">
-                                                {getLoc(leader.name)}
+                                                {resolveContent(leader.name, language)}
                                             </h3>
 
                                             <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-300">
                                                 <p className="text-zinc-400 font-manrope text-sm leading-relaxed mb-4 line-clamp-2">
-                                                    {getLoc(leader.desc)}
+                                                    {resolveContent(leader.desc, language)}
                                                 </p>
                                                 <div className="flex items-center text-white font-bebas tracking-wider text-xl group-hover:translate-x-2 transition-transform">
-                                                    Open File <ArrowUpRight className="ml-2 w-5 h-5 text-primary" />
+                                                    {tString(locale.card.openFile, language)} <ArrowUpRight className="ml-2 w-5 h-5 text-primary" />
                                                 </div>
                                             </div>
                                         </div>
@@ -121,8 +131,12 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                     </div>
                 ) : (
                     <div className="text-center py-20">
-                        <h3 className="text-4xl font-bebas text-muted-foreground uppercase">No Records Found</h3>
-                        <p className="text-muted-foreground font-manrope">The archives are silent.</p>
+                        <h3 className="text-4xl font-bebas text-muted-foreground uppercase">
+                            {tString(locale.empty.title, language)}
+                        </h3>
+                        <p className="text-muted-foreground font-manrope">
+                            {tString(locale.empty.subtitle, language)}
+                        </p>
                     </div>
                 )}
             </section>

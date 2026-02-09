@@ -7,6 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowRight, Info, ShieldCheck, Calendar, Users, MapPin, TrendingUp, Bell } from "lucide-react";
 import { ElectionMap } from "@/components/election/ElectionMap";
 import { KathmanduValleyCallout } from "./KathmanduValleyCallout";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 // Animation variants
 const fadeInUp = {
@@ -23,15 +25,6 @@ const staggerContainer = {
     }
 };
 
-const cardHover = {
-    rest: { scale: 1, y: 0 },
-    hover: {
-        scale: 1.02,
-        y: -8,
-        transition: { type: "spring", stiffness: 300, damping: 20 }
-    }
-};
-
 interface ElectionDashboardClientProps {
     latestBrief?: any;
     latestFactCheck?: any;
@@ -43,6 +36,27 @@ export default function ElectionDashboardClient({
     latestFactCheck,
     briefsCount
 }: ElectionDashboardClientProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.election2026.dashboard;
+
+    // Helper for date formatting
+    const formatDate = (dateString: string) => {
+        return new Date(dateString).toLocaleDateString(language === 'ne' ? 'ne-NP' : 'en-US', {
+            month: 'short',
+            day: 'numeric'
+        });
+    };
+
+    // Helper to handle mixed content types
+    const resolveContent = (content: any) => {
+        if (!content) return "";
+        if (typeof content === 'string') return content;
+        if (typeof content === 'object' && ('en' in content || 'ne' in content)) {
+            return tString(content, language);
+        }
+        return "";
+    };
+
     return (
         <div className="min-h-screen bg-background">
             {/* Hero Section with Gradient */}
@@ -72,7 +86,7 @@ export default function ElectionDashboardClient({
                                 <div className="inline-block px-4 py-1 bg-[#B71C1C] text-white backdrop-blur-sm">
                                     <span className="flex items-center gap-2 font-bebas text-sm tracking-widest uppercase">
                                         <Calendar className="h-4 w-4" />
-                                        Election 2026
+                                        {tString(locale.hero.badge, language)}
                                     </span>
                                 </div>
                             </motion.div>
@@ -84,7 +98,7 @@ export default function ElectionDashboardClient({
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.3, duration: 0.6 }}
                                 >
-                                    GRAND CENTRAL
+                                    {tString(locale.hero.heading1, language)}
                                 </motion.span>
                                 <motion.span
                                     className="block bg-gradient-to-r from-[#B71C1C] to-[#D32F2F] bg-clip-text text-transparent"
@@ -92,7 +106,7 @@ export default function ElectionDashboardClient({
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.5, duration: 0.6 }}
                                 >
-                                    FOR DEMOCRACY
+                                    {tString(locale.hero.heading2, language)}
                                 </motion.span>
                             </h1>
 
@@ -102,8 +116,7 @@ export default function ElectionDashboardClient({
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.7, duration: 0.6 }}
                             >
-                                Your definitive source for live updates, verified data, and comprehensive electoral analysis.
-                                Track candidates, explore districts, and make informed decisions.
+                                {tString(locale.hero.subheading, language)}
                             </motion.p>
 
                             {/* Quick Stats */}
@@ -114,18 +127,18 @@ export default function ElectionDashboardClient({
                                 animate="animate"
                             >
                                 {[
-                                    { icon: MapPin, label: "Districts", value: "77" },
-                                    { icon: Users, label: "Candidates", value: "2,400+" },
-                                    { icon: TrendingUp, label: "Briefs", value: briefsCount.toString() },
-                                    { icon: ShieldCheck, label: "Fact Checks", value: "50+" }
+                                    { icon: MapPin, label: tString(locale.hero.stats.districts, language), value: "77" },
+                                    { icon: Users, label: tString(locale.hero.stats.candidates, language), value: "2,400+" },
+                                    { icon: TrendingUp, label: tString(locale.hero.stats.briefs, language), value: briefsCount.toString() },
+                                    { icon: ShieldCheck, label: tString(locale.hero.stats.factChecks, language), value: "50+" }
                                 ].map((stat, index) => (
                                     <motion.div
-                                        key={stat.label}
+                                        key={index}
                                         variants={fadeInUp}
                                         className="group relative overflow-hidden rounded-none border border-border/50 bg-background/50 p-4 backdrop-blur transition-all hover:border-[#B71C1C]/30 hover:bg-[#B71C1C]/5"
                                     >
                                         <stat.icon className="mb-2 h-5 w-5 text-[#B71C1C] transition-transform group-hover:scale-110" />
-                                        <div className="font-bebas text-2xl text-foreground">{stat.value}</div>
+                                        <div className="text-xl font-semibold text-foreground">{stat.value}</div>
                                         <div className="text-xs uppercase tracking-wider text-muted-foreground">{stat.label}</div>
                                     </motion.div>
                                 ))}
@@ -139,13 +152,13 @@ export default function ElectionDashboardClient({
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                 <Button variant="outline" className="group w-full sm:w-auto rounded-none">
                                     <Bell className="mr-2 h-4 w-4 transition-transform group-hover:rotate-12" />
-                                    Subscribe to Alerts
+                                    {tString(locale.hero.subscribe, language)}
                                 </Button>
                             </motion.div>
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                 <Button asChild className="w-full sm:w-auto rounded-none">
                                     <Link href="/election-2026/pr-candidates">
-                                        View Interactive Map
+                                        {tString(locale.hero.viewMap, language)}
                                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                                     </Link>
                                 </Button>
@@ -172,11 +185,11 @@ export default function ElectionDashboardClient({
                                 <CardHeader className="relative">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <CardTitle className="font-bebas text-3xl uppercase tracking-wider">
-                                                Live District Map
+                                            <CardTitle className="font-sans text-2xl leading-tight tracking-tight">
+                                                {tString(locale.mapCard.title, language)}
                                             </CardTitle>
                                             <CardDescription className="mt-1">
-                                                Click any district to explore candidates and data
+                                                {tString(locale.mapCard.subtitle, language)}
                                             </CardDescription>
                                         </div>
                                         <motion.div
@@ -199,15 +212,15 @@ export default function ElectionDashboardClient({
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: 0.5 }}
                                         >
-                                            <div className="mb-2 font-bebas text-sm uppercase tracking-wider">Legend</div>
+                                            <div className="mb-2 text-xs font-semibold uppercase tracking-wider">{tString(locale.mapCard.legend.legendTitle, language)}</div>
                                             <div className="space-y-1.5">
                                                 <div className="flex items-center gap-2">
                                                     <div className="h-3 w-3 rounded-none bg-[#B71C1C]" />
-                                                    <span className="text-muted-foreground">Projected Win</span>
+                                                    <span className="text-muted-foreground">{tString(locale.mapCard.legend.projected, language)}</span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
                                                     <div className="h-3 w-3 rounded-none border-2 border-border bg-background" />
-                                                    <span className="text-muted-foreground">Undecided</span>
+                                                    <span className="text-muted-foreground">{tString(locale.mapCard.legend.undecided, language)}</span>
                                                 </div>
                                             </div>
                                         </motion.div>
@@ -231,36 +244,39 @@ export default function ElectionDashboardClient({
                         >
                             {[
                                 {
-                                    title: "PR Candidates List",
-                                    description: "Search and filter Proportional Representation candidates",
+                                    title: tString(locale.features.prList.title, language),
+                                    description: tString(locale.features.prList.desc, language),
                                     link: "/election-2026/pr-candidates",
-                                    linkText: "View Full List",
+                                    linkText: tString(locale.features.prList.link, language),
+                                    bgText: tString(locale.features.prList.bgText, language),
                                     gradient: "from-[#B71C1C]/10 to-transparent"
                                 },
                                 {
-                                    title: "Political Parties",
-                                    description: "Explore registered parties and their symbols",
+                                    title: tString(locale.features.parties.title, language),
+                                    description: tString(locale.features.parties.desc, language),
                                     link: "/election-2026/parties",
-                                    linkText: "View Parties",
+                                    linkText: tString(locale.features.parties.link, language),
+                                    bgText: tString(locale.features.parties.bgText, language),
                                     gradient: "from-blue-500/10 to-transparent"
                                 },
                                 {
-                                    title: "Party Manifestos",
-                                    description: "Compare policies and promises across political parties",
+                                    title: tString(locale.features.manifestos.title, language),
+                                    description: tString(locale.features.manifestos.desc, language),
                                     link: "/election-2026/profiles",
-                                    linkText: "Compare Parties",
+                                    linkText: tString(locale.features.manifestos.link, language),
+                                    bgText: tString(locale.features.manifestos.bgText, language),
                                     gradient: "from-foreground/5 to-transparent"
                                 }
                             ].map((feature, index) => (
                                 <motion.div
-                                    key={feature.title}
+                                    key={index}
                                     variants={fadeInUp}
                                     initial="rest"
                                     whileHover="hover"
                                 >
                                     <Card className="group h-full overflow-hidden border-border/50 transition-all hover:border-[#B71C1C]/30 hover:shadow-lg rounded-none">
                                         <CardHeader>
-                                            <CardTitle className="font-bebas text-2xl uppercase tracking-wide">
+                                            <CardTitle className="font-sans text-xl leading-tight tracking-tight">
                                                 {feature.title}
                                             </CardTitle>
                                             <CardDescription className="text-base">
@@ -269,8 +285,8 @@ export default function ElectionDashboardClient({
                                         </CardHeader>
                                         <CardContent>
                                             <div className={`mb-4 flex h-32 items-center justify-center rounded-none bg-gradient-to-br ${feature.gradient} border border-border/30`}>
-                                                <span className="font-bebas text-4xl uppercase tracking-wider text-foreground/20">
-                                                    {index === 0 ? "PR LIST" : index === 1 ? "PARTIES" : "Manifestos"}
+                                                <span className="text-3xl font-semibold tracking-tight text-foreground/20">
+                                                    {feature.bgText}
                                                 </span>
                                             </div>
                                             <Button variant="link" asChild className="group/btn p-0 rounded-none">
@@ -299,7 +315,7 @@ export default function ElectionDashboardClient({
                                 <div className="relative h-32 w-full overflow-hidden border-b border-border/60">
                                     <img
                                         src={latestBrief.image}
-                                        alt={latestBrief.title}
+                                        alt={resolveContent(latestBrief.title)}
                                         className="h-full w-full object-cover object-center"
                                         loading="lazy"
                                     />
@@ -307,12 +323,12 @@ export default function ElectionDashboardClient({
                                 </div>
                             )}
                             <CardHeader>
-                                <CardTitle className="flex items-center gap-2 font-bebas text-2xl uppercase tracking-wide">
+                                <CardTitle className="flex items-center gap-2 font-sans text-xl leading-tight tracking-tight">
                                     <Calendar className="h-5 w-5 text-[#B71C1C]" />
-                                    Daily Briefing
+                                    {tString(locale.sidebar.briefTitle, language)}
                                     {latestBrief && (
                                         <span className="ml-auto text-xs font-normal text-muted-foreground">
-                                            {new Date(latestBrief.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                            {formatDate(latestBrief.date)}
                                         </span>
                                     )}
                                 </CardTitle>
@@ -321,19 +337,19 @@ export default function ElectionDashboardClient({
                                 {latestBrief ? (
                                     <>
                                         <Link href={`/election-2026/daily-brief/${latestBrief.slug}`} className="block group/link">
-                                            <h4 className="font-bold leading-tight text-foreground transition-colors group-hover/link:text-[#B71C1C]">
-                                                {latestBrief.title}
+                                            <h4 className="text-[1.05rem] font-semibold leading-snug text-foreground transition-colors group-hover/link:text-[#B71C1C]">
+                                                {resolveContent(latestBrief.title)}
                                             </h4>
                                             <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
-                                                {latestBrief.summary}
+                                                {resolveContent(latestBrief.summary)}
                                             </p>
                                         </Link>
                                         <Button className="w-full rounded-none" asChild>
-                                            <Link href="/election-2026/daily-brief">Read Full Brief</Link>
+                                            <Link href="/election-2026/daily-brief">{tString(locale.sidebar.readFull, language)}</Link>
                                         </Button>
                                     </>
                                 ) : (
-                                    <p className="text-sm text-muted-foreground">No briefs available today.</p>
+                                    <p className="text-sm text-muted-foreground">{tString(locale.sidebar.noBriefs, language)}</p>
                                 )}
                             </CardContent>
                         </Card>
@@ -344,7 +360,7 @@ export default function ElectionDashboardClient({
                                 <div className="relative h-28 w-full overflow-hidden border-b border-border/60">
                                     <img
                                         src={latestFactCheck.image}
-                                        alt={latestFactCheck.claim}
+                                        alt={resolveContent(latestFactCheck.claim)}
                                         className="h-full w-full object-cover object-center"
                                         loading="lazy"
                                     />
@@ -352,32 +368,32 @@ export default function ElectionDashboardClient({
                                 </div>
                             )}
                             <CardHeader className="pb-3">
-                                <CardTitle className="flex items-center gap-2 font-bebas text-2xl uppercase tracking-wide text-[#B71C1C]">
+                                <CardTitle className="flex items-center gap-2 font-sans text-xl leading-tight tracking-tight text-[#B71C1C]">
                                     <ShieldCheck className="h-5 w-5" />
-                                    Fact Check
+                                    {tString(locale.sidebar.factCheckTitle, language)}
                                 </CardTitle>
                             </CardHeader>
                             <CardContent>
                                 {latestFactCheck ? (
                                     <>
-                                        <h4 className="mb-3 font-bold leading-tight">
-                                            Claim: &ldquo;{latestFactCheck.claim}&rdquo;
+                                        <h4 className="mb-3 text-[1.02rem] font-semibold leading-snug">
+                                            {tString(locale.sidebar.claim, language)}: &ldquo;{resolveContent(latestFactCheck.claim)}&rdquo;
                                         </h4>
                                         <div className="mb-3 inline-block rounded-none bg-[#B71C1C]/10 px-3 py-1 text-sm font-bold uppercase text-[#B71C1C]">
-                                            Verdict: {latestFactCheck.verdict}
+                                            {tString(locale.sidebar.verdict, language)}: {resolveContent(latestFactCheck.verdict)}
                                         </div>
                                         <p className="line-clamp-3 text-sm text-muted-foreground">
-                                            {latestFactCheck.analysis}
+                                            {resolveContent(latestFactCheck.analysis)}
                                         </p>
                                         <Button variant="link" className="mt-3 p-0 rounded-none" asChild>
                                             <Link href="/election-2026/fact-checks" className="group/link flex items-center gap-1">
-                                                See All Verifications
+                                                {tString(locale.sidebar.seeAll, language)}
                                                 <ArrowRight className="h-4 w-4 transition-transform group-hover/link:translate-x-1" />
                                             </Link>
                                         </Button>
                                     </>
                                 ) : (
-                                    <p className="text-sm text-muted-foreground">No recent fact checks.</p>
+                                    <p className="text-sm text-muted-foreground">{tString(locale.sidebar.noFactChecks, language)}</p>
                                 )}
                             </CardContent>
                         </Card>

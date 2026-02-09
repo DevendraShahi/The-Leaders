@@ -5,56 +5,15 @@ import { Shield, MessageSquare, Award, Sparkles, Archive, Lightbulb } from "luci
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { AnimatedLogoText } from "@/components/ui/animated-text";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 // Metadata is set in layout.tsx for client components
 
-const VALUES = [
-    {
-        icon: Shield,
-        title: "Truth is Our North Star",
-        description: "We believe in the facts. We stick to the laws. We don't cut corners, and we don't sugarcoat. Absolute integrity is our foundation.",
-    },
-    {
-        icon: MessageSquare,
-        title: "Expression Without Imposition",
-        description: "We have thoughts—plenty of them. We express them boldly, but we never demand agreement. Every archive entry is an invitation to conversation.",
-    },
-    {
-        icon: Archive,
-        title: "The Archive of Interest",
-        description: "A curated repository for political discourse and historical significance. We host the 'right' information to foster informed democratic participation.",
-    },
-    {
-        icon: Lightbulb,
-        title: "Forged in Debate",
-        description: "The best ideas emerge from friction. We believe every data point is a starting point for dialogue, not a decree.",
-    },
-];
-
-const DIFFERENTIATORS = [
-    {
-        number: "01",
-        title: "Grand Central Station for Political Information",
-        description: "A central hub where the past is archived, the present is debated, and the future is informed. We're the definitive digital archive for those who value depth and history.",
-    },
-    {
-        number: "02",
-        title: "Clean & Uniform",
-        description: "We cut through digital noise with a minimalist, 'Newspaper' aesthetic that lets the content breathe. Clarity over clutter, always.",
-    },
-    {
-        number: "03",
-        title: "Meaningful Motion",
-        description: "Smooth animations and transitions that make exploring complex political landscapes feel as fluid as a conversation. Form follows function.",
-    },
-    {
-        number: "04",
-        title: "Confidential by Nature",
-        description: "We keep internal operations quiet to protect independence. By maintaining professional distance, we keep focus entirely on the data and dialogue.",
-    },
-];
-
 export default function AboutPage() {
+    const { language } = useLanguage();
+    const aboutLocale = LOCALES.about;
+
     const { scrollYProgress } = useScroll();
     const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
     const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95]);
@@ -80,7 +39,7 @@ export default function AboutPage() {
                         <div className="relative mb-6">
                             <div className="border border-[#B71C1C]/30 px-6 py-2 backdrop-blur-sm bg-background/50">
                                 <span className="text-[#B71C1C] font-mono text-sm tracking-[0.3em] uppercase">
-                                    About
+                                    {tString(aboutLocale.hero.label, language)}
                                 </span>
                             </div>
                             {/* Decorative Line connecting label to text */}
@@ -90,17 +49,21 @@ export default function AboutPage() {
                         {/* Main Visual */}
                         <div className="w-full flex justify-center py-4">
                             <AnimatedLogoText
-                                text="THE LEADERS"
-                                className="text-7xl md:text-8xl lg:text-9xl font-bebas text-foreground uppercase tracking-tighter leading-[0.9]"
+                                text={tString(aboutLocale.hero.logoText, language)}
+                                language={language}
+                                className={`text-7xl md:text-8xl lg:text-9xl [font-family:var(--font-bebas)] text-foreground drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)] ${language === "ne"
+                                    ? "font-bold tracking-normal leading-[1.08]"
+                                    : "font-black uppercase tracking-[-0.02em] leading-[0.86]"
+                                    }`}
                             />
                         </div>
 
-                        <p className="mt-8 text-3xl md:text-4xl font-bebas text-[#B71C1C] tracking-wide text-center">
-                            Truth, Unfiltered.
+                        <p className={`mt-8 text-3xl md:text-4xl [font-family:var(--font-bebas)] text-[#B71C1C] text-center ${language === "ne" ? "font-bold tracking-normal leading-[1.3]" : "font-black tracking-[0.02em]"}`}>
+                            {tString(aboutLocale.hero.tagline, language)}
                         </p>
 
-                        <p className="mt-8 text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto text-center">
-                            A digital vault for the curious, the skeptical, and the visionary. The definitive archive where the past is preserved, the present is debated, and the future is informed.
+                        <p className="page-subtitle mt-8 max-w-3xl mx-auto text-center">
+                            {tString(aboutLocale.hero.paragraph, language)}
                         </p>
                     </motion.div>
                 </div>
@@ -119,18 +82,20 @@ export default function AboutPage() {
                         >
                             <div className="flex items-center gap-4">
                                 <div className="w-16 h-[1px] bg-[#B71C1C]" />
-                                <h2 className="text-sm font-mono tracking-[0.3em] uppercase text-muted-foreground">Welcome</h2>
+                                <h2 className="text-sm font-mono tracking-[0.3em] uppercase text-muted-foreground">
+                                    {tString(aboutLocale.welcomeBlock.sectionLabel, language)}
+                                </h2>
                             </div>
 
                             <div className="space-y-6 text-foreground/80 text-lg leading-relaxed">
-                                <p className="text-2xl md:text-3xl font-bebas text-foreground leading-tight">
-                                    We aren&apos;t here to tell you what to think; we&apos;re here to provide the architectural blueprints for you to build your own perspective.
+                                <p className="section-title text-foreground text-3xl leading-tight md:text-4xl">
+                                    {tString(aboutLocale.welcomeBlock.p1, language)}
                                 </p>
                                 <p>
-                                    In an era of fleeting headlines and fragmented truths, <span className="text-[#B71C1C] font-bebas text-xl">The Leaders</span> stands as the <strong>Grand Central Station for political information</strong>—a central hub where depth meets history, and where well-reasoned debate is not just welcomed, but celebrated.
+                                    {tString(aboutLocale.welcomeBlock.p2, language)}
                                 </p>
                                 <p>
-                                    We serve as a digital vault for those who refuse to accept information at face value. For the curious. For the skeptical. For the visionary who knows that true understanding is built on a foundation of facts, context, and rigorous inquiry.
+                                    {tString(aboutLocale.welcomeBlock.p3, language)}
                                 </p>
                             </div>
                         </motion.div>
@@ -149,23 +114,54 @@ export default function AboutPage() {
                             viewport={{ once: true }}
                             className="text-center mb-16"
                         >
-                            <h2 className="text-5xl md:text-6xl font-bebas text-foreground uppercase mb-4">Our Philosophy</h2>
-                            <p className="text-muted-foreground font-mono text-sm tracking-wider">How we operate</p>
+                            <h2 className="section-title text-foreground mb-4 md:text-6xl">
+                                {tString(aboutLocale.philosophy.heading, language)}
+                            </h2>
+                            <p className="text-muted-foreground font-mono text-sm tracking-wider">
+                                {tString(aboutLocale.philosophy.subheading, language)}
+                            </p>
                         </motion.div>
 
                         <div className="grid md:grid-cols-2 gap-px bg-foreground/5">
-                            {VALUES.map((value, index) => (
+                            {aboutLocale.philosophy.values.map((value, index) => (
                                 <motion.div
-                                    key={value.title}
+                                    key={value.title.en}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
                                     viewport={{ once: true }}
                                     className="bg-background p-8 md:p-12 group hover:bg-[#B71C1C]/5 transition-colors duration-300"
                                 >
-                                    <value.icon className="w-12 h-12 text-[#B71C1C] mb-6 group-hover:scale-110 transition-transform" strokeWidth={1.5} />
-                                    <h3 className="text-2xl font-bebas text-foreground uppercase mb-3 tracking-wide">{value.title}</h3>
-                                    <p className="text-muted-foreground leading-relaxed">{value.description}</p>
+                                    {index === 0 && (
+                                        <Shield
+                                            className="w-12 h-12 text-[#B71C1C] mb-6 group-hover:scale-110 transition-transform"
+                                            strokeWidth={1.5}
+                                        />
+                                    )}
+                                    {index === 1 && (
+                                        <MessageSquare
+                                            className="w-12 h-12 text-[#B71C1C] mb-6 group-hover:scale-110 transition-transform"
+                                            strokeWidth={1.5}
+                                        />
+                                    )}
+                                    {index === 2 && (
+                                        <Archive
+                                            className="w-12 h-12 text-[#B71C1C] mb-6 group-hover:scale-110 transition-transform"
+                                            strokeWidth={1.5}
+                                        />
+                                    )}
+                                    {index === 3 && (
+                                        <Lightbulb
+                                            className="w-12 h-12 text-[#B71C1C] mb-6 group-hover:scale-110 transition-transform"
+                                            strokeWidth={1.5}
+                                        />
+                                    )}
+                                    <h3 className="text-2xl font-bebas text-foreground uppercase mb-3 tracking-wide">
+                                        {tString(value.title, language)}
+                                    </h3>
+                                    <p className="text-muted-foreground leading-relaxed">
+                                        {tString(value.description, language)}
+                                    </p>
                                 </motion.div>
                             ))}
                         </div>
@@ -184,16 +180,18 @@ export default function AboutPage() {
                             viewport={{ once: true }}
                             className="text-center mb-16"
                         >
-                            <h2 className="text-5xl md:text-6xl font-bebas text-foreground uppercase mb-4">Why We Stand Out</h2>
+                            <h2 className="section-title text-foreground mb-4 md:text-6xl">
+                                {tString(aboutLocale.differentiators.heading, language)}
+                            </h2>
                             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                                We&apos;ve mastered the art of being serious about information while staying playful and engaging in its delivery.
+                                {tString(aboutLocale.differentiators.subheading, language)}
                             </p>
                         </motion.div>
 
                         <div className="space-y-12">
-                            {DIFFERENTIATORS.map((item, index) => (
+                            {aboutLocale.differentiators.items.map((item, index) => (
                                 <motion.div
-                                    key={item.number}
+                                    key={item.title.en}
                                     initial={{ opacity: 0, x: -20 }}
                                     whileInView={{ opacity: 1, x: 0 }}
                                     transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -202,15 +200,15 @@ export default function AboutPage() {
                                 >
                                     <div className="flex-shrink-0">
                                         <span className="text-5xl md:text-6xl font-mono text-[#B71C1C]/30 group-hover:text-[#B71C1C] transition-colors">
-                                            {item.number}
+                                            {tString(item.number, language)}
                                         </span>
                                     </div>
                                     <div className="flex-1 pt-3">
                                         <h3 className="text-2xl md:text-3xl font-bebas text-foreground uppercase mb-3 tracking-wide">
-                                            {item.title}
+                                            {tString(item.title, language)}
                                         </h3>
                                         <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl">
-                                            {item.description}
+                                            {tString(item.description, language)}
                                         </p>
                                     </div>
                                 </motion.div>
@@ -232,21 +230,17 @@ export default function AboutPage() {
                             className="space-y-8 text-center"
                         >
                             <Award className="w-16 h-16 text-[#B71C1C] mx-auto" strokeWidth={1.5} />
-                            <h2 className="text-4xl md:text-5xl font-bebas text-foreground uppercase">Our Commitment</h2>
+                            <h2 className="section-title text-foreground md:text-5xl">
+                                {tString(aboutLocale.commitment.heading, language)}
+                            </h2>
                             <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-                                <p>
-                                    We remain dedicated to maintaining this platform as a <strong className="text-foreground">transparent, credible, and accessible</strong> resource for all citizens interested in Nepal&apos;s political journey.
-                                </p>
-                                <p>
-                                    While we keep certain operational details confidential to protect our independence, our content and methodologies are always open to scrutiny and feedback.
-                                </p>
-                                <p>
-                                    We exist to preserve history, document the present, and provide the tools for true civic engagement.
-                                </p>
+                                <p>{tString(aboutLocale.commitment.p1, language)}</p>
+                                <p>{tString(aboutLocale.commitment.p2, language)}</p>
+                                <p>{tString(aboutLocale.commitment.p3, language)}</p>
                                 <div className="pt-8 flex items-center justify-center gap-2">
                                     <Sparkles className="w-5 h-5 text-[#B71C1C]" />
                                     <p className="text-[#B71C1C] font-mono text-sm tracking-widest uppercase">
-                                        Truth. Transparency. Democracy.
+                                        {tString(aboutLocale.commitment.tagline, language)}
                                     </p>
                                     <Sparkles className="w-5 h-5 text-[#B71C1C]" />
                                 </div>
@@ -266,24 +260,28 @@ export default function AboutPage() {
                         viewport={{ once: true }}
                         className="max-w-4xl mx-auto text-center space-y-8"
                     >
-                        <h2 className="text-5xl md:text-6xl font-bebas text-foreground uppercase leading-tight">
-                            Lead the Conversation.
-                            <br />
-                            Join the Archive.
+                        <h2 className="section-title text-foreground leading-tight md:text-6xl">
+                            {tString(aboutLocale.cta.heading, language)
+                                .split("\n")
+                                .map((line, idx) => (
+                                    <span key={idx} className={idx > 0 ? "block" : undefined}>
+                                        {line}
+                                    </span>
+                                ))}
                         </h2>
                         <p className="text-muted-foreground text-lg">
-                            Dive into our comprehensive archive of leaders, election data, and political insights.
+                            {tString(aboutLocale.cta.body, language)}
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
                             <Link href="/leaders">
                                 <Button size="lg">
-                                    Discover Leaders
+                                    {tString(aboutLocale.cta.buttonLeaders, language)}
                                 </Button>
                             </Link>
                             <Link href="/election-2026">
                                 <Button size="lg" variant="outline">
-                                    Explore Election Data
+                                    {tString(aboutLocale.cta.buttonElection, language)}
                                 </Button>
                             </Link>
                         </div>

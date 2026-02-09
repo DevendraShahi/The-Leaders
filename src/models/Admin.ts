@@ -1,6 +1,14 @@
 import mongoose, { Schema, Model, models } from "mongoose";
 
 export interface IPermissions {
+    pageAccess: {
+        dashboard: boolean;
+        content: boolean;
+        media: boolean;
+        messages: boolean;
+        settings: boolean;
+        users: boolean;
+    };
     articles: {
         create: boolean;
         edit: boolean;
@@ -38,6 +46,14 @@ export interface IAdmin {
 }
 
 const PermissionsSchema = new Schema<IPermissions>({
+    pageAccess: {
+        dashboard: { type: Boolean, default: false },
+        content: { type: Boolean, default: false },
+        media: { type: Boolean, default: false },
+        messages: { type: Boolean, default: false },
+        settings: { type: Boolean, default: false },
+        users: { type: Boolean, default: false },
+    },
     articles: {
         create: { type: Boolean, default: false },
         edit: { type: Boolean, default: false },
@@ -83,7 +99,7 @@ const AdminSchema = new Schema<IAdmin>(
 );
 
 // Indexes for performance
-AdminSchema.index({ email: 1 });
+
 AdminSchema.index({ role: 1 });
 AdminSchema.index({ isActive: 1 });
 AdminSchema.index({ createdBy: 1 });

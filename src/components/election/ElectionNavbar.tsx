@@ -2,20 +2,23 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-
-const navItems = [
-    { name: "Grand Central", href: "/election-2026" },
-    { name: "Daily Brief", href: "/election-2026/daily-brief" },
-    { name: "Fact Checks", href: "/election-2026/fact-checks" },
-    { name: "Election Articles", href: "/election-2026/analyses" },
-    { name: "PR Candidates", href: "/election-2026/pr-candidates" },
-    { name: "Profiles", href: "/election-2026/profiles" },
-    { name: "Parties", href: "/election-2026/parties" },
-];
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 export function ElectionNavbar() {
     const pathname = usePathname();
+    const { language } = useLanguage();
+    const nav = LOCALES.election2026.nav;
+
+    const navItems = [
+        { name: tString(nav.grandCentral, language), href: "/election-2026" },
+        { name: tString(nav.dailyBrief, language), href: "/election-2026/daily-brief" },
+        { name: tString(nav.factChecks, language), href: "/election-2026/fact-checks" },
+        { name: tString(nav.analyses, language), href: "/election-2026/analyses" },
+        { name: tString(nav.prCandidates, language), href: "/election-2026/pr-candidates" },
+        { name: tString(nav.profiles, language), href: "/election-2026/profiles" },
+        { name: tString(nav.parties, language), href: "/election-2026/parties" },
+    ];
 
     useEffect(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -27,7 +30,7 @@ export function ElectionNavbar() {
                 <div className="flex items-center min-w-max">
                     <Link href="/election-2026" className="mr-4 md:mr-6 flex items-center space-x-2">
                         <span className="hidden font-bebas text-xl font-bold sm:inline-block">
-                            ELECTION 2026
+                            {tString(nav.brand, language)}
                         </span>
                     </Link>
                     <nav className="flex items-center gap-4 md:gap-6 text-sm font-medium">

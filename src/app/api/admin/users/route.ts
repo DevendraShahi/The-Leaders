@@ -2,24 +2,27 @@ import { withAuth, requireRole, logAdminAction } from '@/middleware/auth-middlew
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Admin, { IAdmin } from '@/models/Admin';
-import { getDefaultPermissions } from '@/lib/rbac';
+import { getDefaultPermissions, ensurePermissionShape } from '@/lib/rbac';
 import { hashPassword } from '@/lib/auth';
 
 /**
  * GET /api/admin/users
- * List all non-superadmin accounts (superadmin only)
+ * List admin accounts (authenticated admin)
  */
 export const GET = requireRole(['superadmin'])(async (request, { admin }) => {
     try {
         await dbConnect();
 
-        // Fetch all accounts including superadmins
-        const users = await Admin.find(
-            {}, // No filter - return all admins
+        const usersRaw = await Admin.find(
+            {}, // Authenticated admins can view account list
             { passwordHash: 0 } // Exclude password
         )
             .sort({ createdAt: -1 })
             .lean();
+        const users = usersRaw.map((item: any) => ({
+            ...item,
+            permissions: ensurePermissionShape(item.role, item.permissions),
+        }));
 
         await logAdminAction(admin, 'LIST_ADMINS', 'admin', undefined, undefined, request);
 
@@ -75,7 +78,10 @@ export const POST = requireRole(['superadmin'])(async (request, { admin }) => {
         }
 
         // Get default permissions or use custom
-        const permissions = customPermissions || getDefaultPermissions(role as IAdmin['role']);
+        const permissions = ensurePermissionShape(
+            role as IAdmin['role'],
+            customPermissions || getDefaultPermissions(role as IAdmin['role'])
+        );
 
         // Hash password
         const passwordHash = await hashPassword(password);

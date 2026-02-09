@@ -4,11 +4,12 @@ import type { Metadata } from "next";
 import { AnalysisDetailClient } from "./AnalysisDetailClient";
 
 interface AnalysisDetailPageProps {
-    params: { slug: string };
+    params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata({ params }: AnalysisDetailPageProps): Promise<Metadata> {
-    const article = await getElectionArticleBySlug(params.slug);
+    const { slug } = await params;
+    const article = await getElectionArticleBySlug(slug);
     if (!article) {
         return {
             title: "Election Analysis – Not Found | The Leaders",
@@ -24,7 +25,8 @@ export async function generateMetadata({ params }: AnalysisDetailPageProps): Pro
 export const revalidate = 600;
 
 export default async function AnalysisDetailPage({ params }: AnalysisDetailPageProps) {
-    const article = await getElectionArticleBySlug(params.slug);
+    const { slug } = await params;
+    const article = await getElectionArticleBySlug(slug);
     if (!article) {
         notFound();
     }

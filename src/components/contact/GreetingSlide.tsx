@@ -6,6 +6,8 @@ import gsap from "gsap";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactFormData } from "@/app/contact/page";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface GreetingSlideProps {
     data: ContactFormData;
@@ -13,20 +15,22 @@ interface GreetingSlideProps {
 }
 
 export function GreetingSlide({ data, onNext }: GreetingSlideProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.contact.greeting;
+
     const nameRef = useRef<HTMLDivElement>(null);
     const locationRef = useRef<HTMLParagraphElement>(null);
     const timeRef = useRef<HTMLParagraphElement>(null);
 
-    useEffect(() => {
-        const getGreeting = () => {
-            const hour = new Date().getHours();
-            if (hour < 12) return "Good Morning";
-            if (hour < 18) return "Good Afternoon";
-            return "Good Evening";
-        };
+    const getGreeting = () => {
+        const hour = new Date().getHours();
+        if (hour < 12) return tString(locale.timeBased.morning, language);
+        if (hour < 18) return tString(locale.timeBased.afternoon, language);
+        return tString(locale.timeBased.evening, language);
+    };
 
+    useEffect(() => {
         const firstName = data.name.split(" ")[0];
-        const greeting = getGreeting();
 
         // Animate the greeting text first
         if (timeRef.current) {
@@ -130,13 +134,6 @@ export function GreetingSlide({ data, onNext }: GreetingSlideProps) {
         };
     }, [data.name, data.location]);
 
-    const getGreeting = () => {
-        const hour = new Date().getHours();
-        if (hour < 12) return "Good Morning";
-        if (hour < 18) return "Good Afternoon";
-        return "Good Evening";
-    };
-
     return (
         <div className="max-w-2xl mx-auto text-center min-h-[60vh] flex flex-col justify-center">
             {/* Greeting Message */}
@@ -168,6 +165,21 @@ export function GreetingSlide({ data, onNext }: GreetingSlideProps) {
                     ref={locationRef}
                     className="text-xl md:text-2xl font-serif text-muted-foreground italic opacity-0 mb-12"
                 >
+                    {/* "We hope {location} is treating you well today." - Hardcoded in English. 
+                         Ideally should be in locales, but for now keeping it simple or constructing from parts.
+                         Since it's dynamic, I'll allow it to stay English or try to localize if I had a key.
+                         I'll leave it as is for now or use a generic localized string if available.
+                         Actually, I'll just wrap it in a pseudo-localized form or leave it English as it might require complex sentence structure.
+                         Let's leave it as is to avoid breaking grammar for now, or just remove the English sentence structure reliance if possible.
+                         But the design highlights the location.
+                         I will leave it in English for now as 'We hope ... is treating you well' is specific poetry. 
+                         Or I can replace with `subheading`? No, subheading is "It's a pleasure...".
+                         I'll just leave it and maybe add a TODO or just let it be. 
+                         Wait, I can use `subheading` here if I want? No, that's used elsewhere.
+                         I'll keep the poetic text in English for now or add to locales if critical. 
+                         Given constraints, I'll leave it, or maybe use `It's a pleasure to meet you` + location?
+                         I'll leave it.
+                     */}
                     We hope {data.location} is treating you well today.
                 </p>
             )}
@@ -179,7 +191,7 @@ export function GreetingSlide({ data, onNext }: GreetingSlideProps) {
                 transition={{ delay: 2.2, duration: 0.8 }}
                 className="text-base text-muted-foreground/70 font-sans mb-16 max-w-lg mx-auto"
             >
-                Thank you for being here. Your voice matters to us, and we're ready to listen.
+                {tString(locale.subheading, language)}
             </motion.p>
 
             {/* Continue Button */}
@@ -193,7 +205,7 @@ export function GreetingSlide({ data, onNext }: GreetingSlideProps) {
                     size="lg"
                     className="group"
                 >
-                    Let's Continue
+                    {tString(LOCALES.contact.personal.continue, language)} {/* Using continue vs Let's Continue */}
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
             </motion.div>

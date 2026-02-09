@@ -2,8 +2,10 @@
 
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle, XCircle, AlertTriangle, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface FactCheckFilterProps {
     activeFilter: string;
@@ -21,13 +23,6 @@ interface FactCheckFilterProps {
     useContainer?: boolean;
 }
 
-const FILTERS = [
-    { value: "all", label: "All Checks", icon: null },
-    { value: "true", label: "True", icon: CheckCircle, color: "text-green-600" },
-    { value: "false", label: "False", icon: XCircle, color: "text-primary" },
-    { value: "misleading", label: "Misleading", icon: AlertTriangle, color: "text-amber-500" },
-] as const;
-
 export function FactCheckFilter({
     activeFilter,
     onFilterChange,
@@ -37,6 +32,41 @@ export function FactCheckFilter({
     sticky = true,
     useContainer = true,
 }: FactCheckFilterProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.factChecksIndex;
+    const filters = [
+        {
+            value: "all",
+            label: language === "ne" ? "सबै जाँच" : "All Checks",
+            icon: null,
+            color: "",
+        },
+        {
+            value: "true",
+            label: tString(locale.indexRow.true, language).replace("{count}", "").trim(),
+            icon: CheckCircle,
+            color: "text-green-600",
+        },
+        {
+            value: "false",
+            label: tString(locale.indexRow.false, language).replace("{count}", "").trim(),
+            icon: XCircle,
+            color: "text-primary",
+        },
+        {
+            value: "misleading",
+            label: tString(locale.indexRow.misleading, language).replace("{count}", "").trim(),
+            icon: AlertTriangle,
+            color: "text-amber-500",
+        },
+        {
+            value: "unverified",
+            label: tString(locale.indexRow.unverified, language).replace("{count}", "").trim(),
+            icon: ShieldCheck,
+            color: "text-gray-500",
+        },
+    ] as const;
+
     return (
         <div
             className={cn(
@@ -52,7 +82,7 @@ export function FactCheckFilter({
                         variant === "bar" && useContainer && "justify-center"
                     )}
                 >
-                    {FILTERS.map((filter) => {
+                    {filters.map((filter) => {
                         const Icon = filter.icon;
                         const count = counts[filter.value as keyof typeof counts];
                         const isActive = activeFilter === filter.value;

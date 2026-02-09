@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ContactFormData } from "@/app/contact/page";
 import { useRef } from "react";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface MessageSlideProps {
     data: ContactFormData;
@@ -16,6 +18,10 @@ interface MessageSlideProps {
 }
 
 export function MessageSlide({ data, updateData, onNext, onPrev }: MessageSlideProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.contact.message;
+    const backLabel = tString(LOCALES.contact.rules.back, language);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,17 +36,17 @@ export function MessageSlide({ data, updateData, onNext, onPrev }: MessageSlideP
         <div className="max-w-2xl mx-auto">
             <div className="text-center mb-10">
                 <h2 className="text-3xl font-bebas text-foreground tracking-wide mb-2">
-                    What's on your mind?
+                    {tString(locale.heading, language)}
                 </h2>
                 <p className="text-muted-foreground font-serif">
-                    Share your thoughts, advice, or suggestions. We are listening.
+                    {tString(locale.subheading, language)}
                 </p>
             </div>
 
             <div className="space-y-6">
                 <div>
                     <Input
-                        placeholder="Subject / Topic"
+                        placeholder={tString(locale.subjectPlaceholder, language)}
                         value={data.subject}
                         onChange={(e) => updateData({ subject: e.target.value })}
                         className="h-14 bg-background/50 border-border/50 focus:border-primary text-lg"
@@ -49,7 +55,7 @@ export function MessageSlide({ data, updateData, onNext, onPrev }: MessageSlideP
 
                 <div>
                     <Textarea
-                        placeholder="Type your message here... please be detailed."
+                        placeholder={tString(locale.messagePlaceholder, language)}
                         value={data.message}
                         onChange={(e) => updateData({ message: e.target.value })}
                         className="min-h-[200px] bg-background/50 border-border/50 focus:border-primary text-lg resize-none p-6"
@@ -71,7 +77,7 @@ export function MessageSlide({ data, updateData, onNext, onPrev }: MessageSlideP
                         className="border-dashed border-border hover:border-primary hover:bg-primary/5 text-muted-foreground"
                     >
                         <Paperclip className="mr-2 w-4 h-4" />
-                        {data.file ? "Change File" : "Attach Media/Document"}
+                        {data.file ? tString(locale.changeFile, language) : tString(locale.attachFile, language)}
                     </Button>
 
                     {data.file && (
@@ -93,13 +99,13 @@ export function MessageSlide({ data, updateData, onNext, onPrev }: MessageSlideP
                     variant="ghost"
                     onClick={onPrev}
                 >
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Back
+                    <ArrowLeft className="mr-2 w-4 h-4" /> {backLabel}
                 </Button>
                 <Button
                     onClick={onNext}
                     disabled={!isValid}
                 >
-                    Next Step
+                    {tString(locale.nextStep, language)}
                     <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
             </div>

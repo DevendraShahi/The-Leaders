@@ -3,12 +3,17 @@
 import { motion } from "framer-motion";
 import { MessageSquareText, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface WelcomeSlideProps {
     onNext: () => void;
 }
 
 export function WelcomeSlide({ onNext }: WelcomeSlideProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.contact.welcome;
+
     return (
         <div className="text-center space-y-8">
             <motion.div
@@ -21,11 +26,11 @@ export function WelcomeSlide({ onNext }: WelcomeSlideProps) {
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bebas text-foreground uppercase tracking-wide leading-none">
-                We Value Your Voice
+                {tString(locale.heading, language)}
             </h1>
 
             <p className="text-xl font-serif text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Thank you for taking the time to reach out. &ldquo;The Leaders&rdquo; is built on the foundation of shared history and open discourse. Your insights help us preserve the truth step by step.
+                {tString(locale.body, language)}
             </p>
 
             <div className="pt-8">
@@ -34,7 +39,7 @@ export function WelcomeSlide({ onNext }: WelcomeSlideProps) {
                     size="lg"
                     className="group"
                 >
-                    Begin Journey
+                    {tString(locale.button, language)}
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
             </div>

@@ -9,11 +9,10 @@ import {
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
-    getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Search, Trash, ChevronLeft, ChevronRight } from "lucide-react"
+import { Search, Trash } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,13 +22,19 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
     searchKey?: string
     onDelete?: (rows: TData[]) => void
+    totalRows?: number
+    currentPage?: number
+    pageSize?: number
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
     searchKey,
-    onDelete
+    onDelete,
+    totalRows,
+    currentPage = 1,
+    pageSize = 10,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -39,10 +44,10 @@ export function DataTable<TData, TValue>({
     const table = useReactTable({
         data,
         columns,
+        enableRowSelection: true,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         getSortedRowModel: getSortedRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
@@ -57,6 +62,9 @@ export function DataTable<TData, TValue>({
 
     // Safe check for bulk actions
     const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const totalAvailableRows = typeof totalRows === "number" ? totalRows : data.length;
+    const pageStart = totalAvailableRows === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+    const pageEnd = Math.min(currentPage * pageSize, totalAvailableRows);
 
     return (
         <div className="w-full space-y-4">
@@ -98,9 +106,18 @@ export function DataTable<TData, TValue>({
                         <thead className="[&_tr]:border-b [&_tr]:border-border">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                                    <th className="h-10 w-10 px-3 text-left align-middle">
+                                        <input
+                                            type="checkbox"
+                                            checked={table.getIsAllPageRowsSelected()}
+                                            onChange={(event) => table.toggleAllPageRowsSelected(event.target.checked)}
+                                            aria-label="Select all rows"
+                                            className="h-4 w-4 rounded-none border-border accent-primary"
+                                        />
+                                    </th>
                                     {headerGroup.headers.map((header) => {
                                         return (
-                                            <th key={header.id} className="h-10 px-4 text-left align-middle font-bebas tracking-wide text-lg text-muted-foreground font-normal [&:has([role=checkbox])]:pr-0 uppercase">
+                                            <th key={header.id} className="h-10 px-4 text-left align-middle font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground font-semibold [&:has([role=checkbox])]:pr-0">
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
@@ -121,6 +138,15 @@ export function DataTable<TData, TValue>({
                                         data-state={row.getIsSelected() && "selected"}
                                         className="border-b border-border/50 transition-colors hover:bg-muted/30 data-[state=selected]:bg-muted"
                                     >
+                                        <td className="p-3 align-middle">
+                                            <input
+                                                type="checkbox"
+                                                checked={row.getIsSelected()}
+                                                onChange={(event) => row.toggleSelected(event.target.checked)}
+                                                aria-label="Select row"
+                                                className="h-4 w-4 rounded-none border-border accent-primary"
+                                            />
+                                        </td>
                                         {row.getVisibleCells().map((cell) => (
                                             <td key={cell.id} className="p-4 align-middle [&:has([role=checkbox])]:pr-0">
                                                 {(() => {
@@ -148,7 +174,7 @@ export function DataTable<TData, TValue>({
                             ) : (
                                 <tr>
                                     <td
-                                        colSpan={columns.length}
+                                        colSpan={columns.length + 1}
                                         className="h-32 text-center text-muted-foreground font-mono text-sm uppercase tracking-wide"
                                     >
                                         No results found.
@@ -163,30 +189,10 @@ export function DataTable<TData, TValue>({
             <div className="flex items-center justify-between px-4 py-2 border-t border-border bg-muted/20">
                 <div className="flex-1 text-xs font-mono text-muted-foreground uppercase tracking-wide">
                     {table.getFilteredSelectedRowModel().rows.length} of{" "}
-                    {table.getFilteredRowModel().rows.length} row(s) selected.
+                    {table.getFilteredRowModel().rows.length} visible row(s) selected.
                 </div>
-                <div className="flex items-center space-x-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="rounded-none h-8 w-8 p-0"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <div className="text-xs font-mono font-bold mx-2">
-                        PAGE {table.getState().pagination.pageIndex + 1}
-                    </div>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        className="rounded-none h-8 w-8 p-0"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        <ChevronRight className="h-4 w-4" />
-                    </Button>
+                <div className="text-xs font-mono text-muted-foreground uppercase tracking-wide">
+                    Showing {pageStart}-{pageEnd} of {totalAvailableRows}
                 </div>
             </div>
         </div>

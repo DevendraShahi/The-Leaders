@@ -59,26 +59,37 @@ export interface DistrictDTO {
 }
 
 export interface DailyBriefDTO {
-    title: string;
+    title: LocalizedValue;
     slug: string;
     date: string;
-    summary: string;
-    content: string;
+    summary: LocalizedValue;
+    content: LocalizedValue;
     tags: string[];
     isPublished: boolean;
+    status: "draft" | "published" | "archived";
     image?: string;
 }
 
 export interface FactCheckDTO {
     id?: string;
     slug?: string;
-    claim: string;
-    claimBy: string;
+    claim: LocalizedValue;
+    claimBy: LocalizedValue;
     verdict: "true" | "false" | "misleading" | "unverified";
-    analysis: string;
+    analysis: LocalizedValue;
     sources: string[];
     date: string;
+    status: "draft" | "published" | "archived";
     image?: string;
+}
+
+export type LocalizedValue = string | { en?: string; ne?: string };
+
+function resolveLocalizedString(value: unknown): string {
+    if (typeof value === "string") return value;
+    if (!value || typeof value !== "object") return "";
+    const localized = value as { en?: string; ne?: string };
+    return localized.en || localized.ne || "";
 }
 
 export interface ElectionData {
@@ -92,8 +103,11 @@ export interface ElectionData {
 export interface ElectionArticleDTO {
     editor?: string;
     title_en: string;
+    title_ne?: string;
     excerpt_en: string;
+    excerpt_ne?: string;
     content_en: string;
+    content_ne?: string;
     slug: string;
     tags: string[];
     status: "draft" | "published" | "archived";
@@ -144,18 +158,24 @@ export async function getDailyBriefs() {
         const { DailyBrief } = await import("@/models/ElectionContent");
 
         await dbConnect();
-        const briefs = await DailyBrief.find({ isPublished: true })
+        const briefs = await DailyBrief.find({
+            $or: [
+                { status: "published" },
+                { $and: [{ status: { $exists: false } }, { isPublished: true }] },
+            ],
+        })
             .sort({ date: -1 })
             .lean();
 
         return briefs.map((brief: any) => ({
-            title: brief.title,
+            title: (brief.title ?? "") as LocalizedValue,
             slug: brief.slug,
             date: brief.date instanceof Date ? brief.date.toISOString() : String(brief.date),
-            summary: brief.summary || "",
-            content: brief.content || "",
+            summary: (brief.summary ?? "") as LocalizedValue,
+            content: (brief.content ?? "") as LocalizedValue,
             tags: brief.tags || [],
             isPublished: !!brief.isPublished,
+            status: brief.status || (brief.isPublished ? "published" : "draft"),
             image: brief.image || "",
         })) as DailyBriefDTO[];
     } catch (error) {
@@ -171,19 +191,25 @@ export async function getFactChecks() {
         const { FactCheck } = await import("@/models/ElectionContent");
 
         await dbConnect();
-        const checks = await FactCheck.find({})
+        const checks = await FactCheck.find({
+            $or: [
+                { status: "published" },
+                { status: { $exists: false } }, // Backward compatibility for legacy records
+            ],
+        })
             .sort({ date: -1 })
             .lean();
 
         return checks.map((fc: any) => ({
             id: fc._id?.toString?.() || fc._id,
-            slug: fc.slug || slugify(fc.claim, 60),
-            claim: fc.claim,
-            claimBy: fc.claimBy,
+            slug: fc.slug || slugify(resolveLocalizedString(fc.claim), 60),
+            claim: (fc.claim ?? "") as LocalizedValue,
+            claimBy: (fc.claimBy ?? "") as LocalizedValue,
             verdict: fc.verdict,
-            analysis: fc.analysis,
+            analysis: (fc.analysis ?? "") as LocalizedValue,
             sources: fc.sources || [],
             date: fc.date instanceof Date ? fc.date.toISOString() : String(fc.date),
+            status: fc.status || "published",
             image: fc.image || "",
         })) as FactCheckDTO[];
     } catch (error) {
@@ -219,16 +245,19 @@ export async function getElectionArticles(limit: number = 3): Promise<ElectionAr
         const { ElectionArticle } = await import("@/models/ElectionContent");
 
         await dbConnect();
-        const articles = await ElectionArticle.find({ status: { $ne: "archived" } })
+        const articles = await ElectionArticle.find({ status: "published" })
             .sort({ createdAt: -1 })
             .limit(limit)
             .lean();
 
         return articles.map((a: any) => ({
-            editor: a.editor,
-            title_en: a.title_en,
-            excerpt_en: a.excerpt_en,
-            content_en: a.content_en,
+            editor: resolveLocalizedString(a.editor),
+            title_en: resolveLocalizedString(a.title_en),
+            title_ne: resolveLocalizedString(a.title_ne),
+            excerpt_en: resolveLocalizedString(a.excerpt_en),
+            excerpt_ne: resolveLocalizedString(a.excerpt_ne),
+            content_en: resolveLocalizedString(a.content_en),
+            content_ne: resolveLocalizedString(a.content_ne),
             slug: a.slug,
             tags: a.tags || [],
             status: a.status,
@@ -249,6 +278,7 @@ export async function getElectionArticleBySlug(slug: string): Promise<ElectionAr
 
         await dbConnect();
         const candidates = await ElectionArticle.find({
+            status: "published",
             $or: [
                 { slug },
                 { slug: target },
@@ -258,10 +288,13 @@ export async function getElectionArticleBySlug(slug: string): Promise<ElectionAr
 
         if (candidates.length) {
             const normalized = candidates.map((a: any) => ({
-                editor: a.editor,
-                title_en: a.title_en,
-                excerpt_en: a.excerpt_en,
-                content_en: a.content_en,
+                editor: resolveLocalizedString(a.editor),
+                title_en: resolveLocalizedString(a.title_en),
+                title_ne: resolveLocalizedString(a.title_ne),
+                excerpt_en: resolveLocalizedString(a.excerpt_en),
+                excerpt_ne: resolveLocalizedString(a.excerpt_ne),
+                content_en: resolveLocalizedString(a.content_en),
+                content_ne: resolveLocalizedString(a.content_ne),
                 slug: a.slug,
                 tags: a.tags || [],
                 status: a.status,

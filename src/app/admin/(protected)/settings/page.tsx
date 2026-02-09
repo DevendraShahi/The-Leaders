@@ -5,11 +5,11 @@ import { useAuth } from '@/components/admin/AuthProvider';
 import BilingualInput from '@/components/admin/BilingualInput';
 import ImageUploader from '@/components/admin/ImageUploader';
 import { toast } from 'sonner';
-import { Save, Loader2, Globe, Mail, Facebook, Twitter, Instagram, Linkedin, MessageSquare, ShieldAlert, ArrowRight } from 'lucide-react';
+import { Save, Loader2, Globe, Mail, Facebook, Twitter, Instagram, Linkedin, MessageSquare, ShieldAlert, ArrowRight, UserCog } from 'lucide-react';
 import Link from 'next/link';
 
 export default function SettingsPage() {
-    const { token } = useAuth();
+    const { token, user } = useAuth();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
@@ -199,6 +199,21 @@ export default function SettingsPage() {
                     </div>
                     <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
                 </Link>
+
+                {user?.role === 'superadmin' && (
+                    <Link href="/admin/settings/access-matrix" className="group bg-card border border-border hover:border-primary/50 transition-colors p-6 flex items-center justify-between shadow-sm cursor-pointer">
+                        <div className="flex items-center gap-4">
+                            <div className="p-3 bg-muted rounded-full group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+                                <UserCog className="w-6 h-6" />
+                            </div>
+                            <div>
+                                <h2 className="text-lg font-bebas tracking-wide uppercase text-foreground group-hover:text-primary transition-colors">Access Matrix</h2>
+                                <p className="text-sm text-muted-foreground">Set page-level access for each admin account.</p>
+                            </div>
+                        </div>
+                        <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                )}
 
                 {/* General Settings */}
                 <div className="bg-card p-6 border border-border rounded-none space-y-6 shadow-sm">

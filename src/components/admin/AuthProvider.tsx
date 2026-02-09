@@ -10,6 +10,10 @@ interface User {
     name: string;
     role: string;
     avatar?: string;
+    permissions?: {
+        pageAccess?: Record<string, boolean>;
+        [key: string]: any;
+    };
 }
 
 interface AuthContextType {

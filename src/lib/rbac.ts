@@ -7,6 +7,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
     switch (role) {
         case 'superadmin':
             return {
+                pageAccess: { dashboard: true, content: true, media: true, messages: true, settings: true, users: true },
                 articles: { create: true, edit: true, delete: true, publish: true },
                 settings: { view: true, modify: true },
                 users: { view: true, manage: true },
@@ -15,6 +16,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
 
         case 'cto':
             return {
+                pageAccess: { dashboard: true, content: false, media: true, messages: true, settings: true, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
                 settings: { view: true, modify: true },
                 users: { view: false, manage: false },
@@ -23,6 +25,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
 
         case 'editorial':
             return {
+                pageAccess: { dashboard: true, content: true, media: true, messages: true, settings: false, users: false },
                 articles: { create: true, edit: true, delete: true, publish: true },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
@@ -31,6 +34,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
 
         case 'cmo':
             return {
+                pageAccess: { dashboard: true, content: false, media: true, messages: true, settings: false, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
@@ -40,12 +44,44 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
         default:
             // Fallback - no permissions
             return {
+                pageAccess: { dashboard: false, content: false, media: false, messages: false, settings: false, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
                 analytics: { view: false, viewAll: false },
             };
     }
+}
+
+export function ensurePermissionShape(
+    role: IAdmin['role'],
+    permissions?: Partial<IPermissions> | null
+): IPermissions {
+    const defaults = getDefaultPermissions(role);
+    return {
+        ...defaults,
+        ...permissions,
+        pageAccess: {
+            ...defaults.pageAccess,
+            ...(permissions?.pageAccess || {}),
+        },
+        articles: {
+            ...defaults.articles,
+            ...(permissions?.articles || {}),
+        },
+        settings: {
+            ...defaults.settings,
+            ...(permissions?.settings || {}),
+        },
+        users: {
+            ...defaults.users,
+            ...(permissions?.users || {}),
+        },
+        analytics: {
+            ...defaults.analytics,
+            ...(permissions?.analytics || {}),
+        },
+    };
 }
 
 /**

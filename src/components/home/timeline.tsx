@@ -5,8 +5,32 @@ import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { timelineData, TimelineSeries, TimelineEpisode } from "@/data/timeline-data";
 import { ExternalLink, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
+
+// Helper to handle potential bilingual data in the future
+const resolveContent = (content: any, language: "en" | "ne") => {
+    if (!content) return "";
+    if (typeof content === "string") return content;
+    return tString(content, language);
+};
+
+const toNepaliDigits = (value: string) =>
+    value.replace(/\d/g, (digit) => "०१२३४५६७८९"[Number(digit)]);
+
+const localizeTimelineDate = (value: string, language: "en" | "ne") => {
+    if (language !== "ne") return value;
+
+    return toNepaliDigits(value)
+        .replace(/\bBCE\b/g, "ई.पू.")
+        .replace(/\bCE\b/g, "ई.")
+        .replace(/\bPresent\b/gi, "वर्तमान");
+};
 
 export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?: boolean }) {
+    const { language } = useLanguage();
+    const l = LOCALES.timelineIndex;
+
     const [activeSeriesId, setActiveSeriesId] = useState<string | null>(null);
 
     const displayedData = limit ? timelineData.slice(0, limit) : timelineData;
@@ -22,13 +46,29 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                     className="max-w-3xl mx-auto space-y-4"
                 >
                     <span className="text-primary font-bold tracking-widest uppercase text-sm">
-                        Historical Archives
+                        {tString(l.label, language)}
                     </span>
-                    <h2 className="text-5xl md:text-6xl font-bebas text-foreground uppercase tracking-wide leading-none">
-                        Nepal&apos;s <span className="text-primary">Political Journey</span>
+                    <h2 className="section-title md:text-6xl">
+                        {/* We use tString but for styling we might want to split words if needed. 
+                            For now, using the full string from locales.ts which matches 'Nepal's Political Journey'.
+                            If specific color styling is needed, we can split manually or update locales. 
+                            The original had 'Political Journey' in primary color. 
+                            I'll use a simple split for now if it's English/Nepali structure predictable, 
+                            or just modify locales to have parts if I want to be strict.
+                            However, straightforward tString is safer for now. 
+                        */}
+                        {language === 'ne' ? (
+                            <>
+                                नेपालको <span className="text-primary">राजनीतिक यात्रा</span>
+                            </>
+                        ) : (
+                            <>
+                                Nepal&apos;s <span className="text-primary">Political Journey</span>
+                            </>
+                        )}
                     </h2>
-                    <p className="text-muted-foreground font-manrope text-lg max-w-2xl mx-auto">
-                        Explore the defining eras that shaped the modern republic.
+                    <p className="section-subtitle mx-auto max-w-2xl md:text-lg">
+                        {tString(l.description, language)}
                     </p>
                 </motion.div>
             </div>
@@ -66,10 +106,10 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
 
                             <div className="relative flex flex-col items-center gap-2 z-10">
                                 <span className="font-bebas text-3xl uppercase tracking-widest text-foreground group-hover:text-primary transition-colors duration-300">
-                                    Access Full Archives
+                                    {tString(l.viewAll, language)}
                                 </span>
                                 <span className="text-xs font-manrope text-muted-foreground uppercase tracking-[0.2em] group-hover:tracking-[0.4em] transition-all duration-500">
-                                    Discover the complete history
+                                    {tString(l.discoverHistory, language)}
                                 </span>
                             </div>
 
@@ -99,6 +139,8 @@ function TimelineItem({
     index: number;
 }) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const { language } = useLanguage();
+    const l = LOCALES.timelineIndex;
 
     // Auto-scroll logic
     useEffect(() => {
@@ -163,7 +205,7 @@ function TimelineItem({
                                         ? "bg-primary text-primary-foreground border-primary"
                                         : "bg-transparent text-muted-foreground border-border group-hover:border-primary"
                                 )}>
-                                    {series.period}
+                                    {resolveContent(series.period, language)}
                                 </span>
                             </div>
 
@@ -174,7 +216,7 @@ function TimelineItem({
                                     isOpen ? "text-4xl" : "text-4xl md:text-5xl"
                                 )}
                             >
-                                {series.title}
+                                {resolveContent(series.title, language)}
                             </motion.h3>
 
                             <motion.p
@@ -184,7 +226,7 @@ function TimelineItem({
                                     isOpen ? "text-sm line-clamp-4" : "text-base max-w-2xl"
                                 )}
                             >
-                                {series.description}
+                                {resolveContent(series.description, language)}
                             </motion.p>
                         </div>
 
@@ -195,7 +237,7 @@ function TimelineItem({
                         )}>
                             {isOpen ? (
                                 <div className="flex items-center gap-2 text-primary w-full">
-                                    <span className="flex-1">Viewing Era</span>
+                                    <span className="flex-1">{tString(l.viewEra, language)}</span>
                                     {series.wikipediaTopic && (
                                         <a
                                             href={`https://en.wikipedia.org/wiki/${series.wikipediaTopic}`}
@@ -210,7 +252,7 @@ function TimelineItem({
                                 </div>
                             ) : (
                                 <span className="group-hover:translate-x-1 transition-transform flex items-center gap-2 text-muted-foreground group-hover:text-foreground">
-                                    Explore <ArrowRight className="w-4 h-4" />
+                                    {tString(l.explore, language)} <ArrowRight className="w-4 h-4" />
                                 </span>
                             )}
                         </div>
@@ -250,6 +292,7 @@ function TimelineItem({
                                         key={episode.id}
                                         episode={episode}
                                         index={idx}
+                                        language={language}
                                     />
                                 ))}
                             </div>
@@ -264,7 +307,7 @@ function TimelineItem({
     );
 }
 
-function EpisodeCard({ episode, index }: { episode: TimelineEpisode; index: number }) {
+function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; index: number; language: "en" | "ne" }) {
     return (
         <motion.div
             initial="idle"
@@ -298,7 +341,9 @@ function EpisodeCard({ episode, index }: { episode: TimelineEpisode; index: numb
 
                 {/* Year Header */}
                 <div className="bg-muted/50 px-6 py-4 border-b border-border flex justify-between items-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-500 relative z-10">
-                    <span className="font-bebas text-2xl tracking-widest">{episode.year}</span>
+                    <span className="font-bebas text-2xl tracking-widest">
+                        {localizeTimelineDate(resolveContent(episode.year, language), language)}
+                    </span>
                     <motion.div
                         variants={{
                             idle: { rotate: 0 },
@@ -311,10 +356,10 @@ function EpisodeCard({ episode, index }: { episode: TimelineEpisode; index: numb
                 {/* Content */}
                 <div className="p-6 flex-1 flex flex-col relative z-10">
                     <h4 className="font-bebas text-3xl uppercase leading-none mb-4 group-hover:text-primary transition-colors line-clamp-2 tracking-wide">
-                        {episode.title}
+                        {resolveContent(episode.title, language)}
                     </h4>
                     <p className="text-sm text-muted-foreground font-manrope leading-relaxed line-clamp-4">
-                        {episode.description}
+                        {resolveContent(episode.description, language)}
                     </p>
                 </div>
             </motion.div>

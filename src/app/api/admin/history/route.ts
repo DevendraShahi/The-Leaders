@@ -4,6 +4,22 @@ import History from '@/models/History';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+function parseDateRange(searchParams: URLSearchParams) {
+    const from = searchParams.get('from');
+    const to = searchParams.get('to');
+
+    const range: any = {};
+    if (from) {
+        const start = new Date(`${from}T00:00:00.000Z`);
+        if (!Number.isNaN(start.getTime())) range.$gte = start;
+    }
+    if (to) {
+        const end = new Date(`${to}T23:59:59.999Z`);
+        if (!Number.isNaN(end.getTime())) range.$lte = end;
+    }
+    return Object.keys(range).length > 0 ? range : null;
+}
+
 // GET: List history
 async function getHistory(request: NextRequest) {
     try {
@@ -14,6 +30,7 @@ async function getHistory(request: NextRequest) {
         const limit = parseInt(searchParams.get('limit') || '10');
         const search = searchParams.get('search') || '';
         const status = searchParams.get('status');
+        const dateRange = parseDateRange(searchParams);
 
         const query: any = {};
 
@@ -26,6 +43,10 @@ async function getHistory(request: NextRequest) {
 
         if (status) {
             query.status = status;
+        }
+
+        if (dateRange) {
+            query.date = dateRange;
         }
 
         const skip = (page - 1) * limit;

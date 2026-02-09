@@ -5,11 +5,15 @@ import { PremiumLoader } from "@/components/ui/premium-loader";
 import { TopProgressBar } from "@/components/ui/top-progress-bar";
 
 export function GlobalLoadingProvider({ children }: { children: React.ReactNode }) {
-    const [showInitialLoader, setShowInitialLoader] = useState(() => {
-        if (typeof window === "undefined") return true;
+    const [showInitialLoader, setShowInitialLoader] = useState(true);
+
+    useEffect(() => {
+        // Check session storage on mount to handle localized state correctly
         const hasVisited = sessionStorage.getItem("has-visited");
-        return !hasVisited;
-    });
+        if (hasVisited) {
+            setShowInitialLoader(false);
+        }
+    }, []);
 
     const handleLoaderComplete = () => {
         setShowInitialLoader(false);

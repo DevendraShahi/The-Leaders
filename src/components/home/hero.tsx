@@ -3,8 +3,12 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useLanguage } from "@/components/providers/language-provider";
 
 export function Hero() {
+    const { language } = useLanguage();
+    const isNepali = language === "ne";
+
     return (
         <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-background">
             {/* Background with overlay */}
@@ -24,7 +28,9 @@ export function Hero() {
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
                     <span className="inline-block py-1 px-4 rounded-none bg-primary text-black text-lg font-bebas tracking-widest uppercase mb-6">
-                        <span className="block">Archive of Power</span>
+                        <span className="block">
+                            {isNepali ? "शक्तिको अभिलेखागार" : "Archive of Power"}
+                        </span>
                     </span>
                 </motion.div>
 
@@ -34,8 +40,24 @@ export function Hero() {
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="text-5xl md:text-9xl font-bebas font-bold tracking-tighter text-white mb-6 uppercase leading-none drop-shadow-2xl"
                 >
-                    The <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary dark:to-black to-black/5 stroke-foreground text-stroke-1">Leaders</span> <br />
-                    <span className="text-primary tracking-normal">of Nepal</span>
+                    {isNepali ? (
+                        <>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary dark:to-black to-black/5 stroke-foreground text-stroke-1">
+                                The Leaders
+                            </span>
+                            <br />
+                            <span className="text-primary tracking-normal">नेपालको राजनीति</span>
+                        </>
+                    ) : (
+                        <>
+                            The{" "}
+                            <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary dark:to-black to-black/5 stroke-foreground text-stroke-1">
+                                Leaders
+                            </span>{" "}
+                            <br />
+                            <span className="text-primary tracking-normal">of Nepal</span>
+                        </>
+                    )}
                 </motion.h1>
 
                 <motion.p
@@ -44,7 +66,17 @@ export function Hero() {
                     transition={{ duration: 0.8, delay: 0.6 }}
                     className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground mb-12 font-sans font-light tracking-wide leading-relaxed"
                 >
-                    Discover the visionaries, revolutionaries, and statesmen who shaped the destiny of a nation. <span className="text-primary font-medium">Power. Legacy. Blood.</span>
+                    {isNepali ? (
+                        <>
+                            नेपाललाई आजको रुप दिन साहसिक निर्णय गर्ने नेताहरू, विद्रोहीहरू र योजनाकारहरूको यात्रा एकै ठाउँमा।
+                            <span className="text-primary font-medium"> शक्ति। विरासत। मूल्य।</span>
+                        </>
+                    ) : (
+                        <>
+                            Discover the visionaries, revolutionaries, and statesmen who shaped the destiny of a nation.{" "}
+                            <span className="text-primary font-medium">Power. Legacy. Blood.</span>
+                        </>
+                    )}
                 </motion.p>
 
                 <motion.div
@@ -54,10 +86,13 @@ export function Hero() {
                     className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
                     <Button size="lg" className="h-16 px-10 text-2xl font-bebas tracking-wider bg-primary text-black hover:bg-accent rounded-none w-full sm:w-auto transition-transform hover:scale-105">
-                        <span>Explore Biographies</span>
+                        <span>{isNepali ? "जीवन यात्रा पढ्नुहोस्" : "Explore Biographies"}</span>
                     </Button>
                     <Button variant="outline" size="lg" className="h-16 px-10 text-2xl font-bebas tracking-wider border-primary/50 text-primary hover:bg-primary/20 hover:text-white rounded-none w-full sm:w-auto group">
-                        <span className="flex items-center">View Timeline <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-2 transition-transform" /></span>
+                        <span className="flex items-center">
+                            {isNepali ? "समयरेखा हेर्नुहोस्" : "View Timeline"}
+                            <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                        </span>
                     </Button>
                 </motion.div>
             </div>

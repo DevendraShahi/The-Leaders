@@ -4,6 +4,22 @@ import { ElectionArticle } from '@/models/ElectionContent';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+function parseDateRange(searchParams: URLSearchParams) {
+    const from = searchParams.get('from');
+    const to = searchParams.get('to');
+
+    const range: any = {};
+    if (from) {
+        const start = new Date(`${from}T00:00:00.000Z`);
+        if (!Number.isNaN(start.getTime())) range.$gte = start;
+    }
+    if (to) {
+        const end = new Date(`${to}T23:59:59.999Z`);
+        if (!Number.isNaN(end.getTime())) range.$lte = end;
+    }
+    return Object.keys(range).length > 0 ? range : null;
+}
+
 // GET: List election articles with pagination and filtering
 async function getElectionArticles(request: NextRequest) {
     try {
@@ -13,6 +29,8 @@ async function getElectionArticles(request: NextRequest) {
         const page = parseInt(searchParams.get('page') || '1');
         const limit = parseInt(searchParams.get('limit') || '10');
         const search = searchParams.get('search') || '';
+        const status = searchParams.get('status');
+        const createdAtRange = parseDateRange(searchParams);
 
         const query: any = {};
         if (search) {
@@ -21,6 +39,12 @@ async function getElectionArticles(request: NextRequest) {
                 { excerpt_en: { $regex: search, $options: 'i' } },
                 { slug: { $regex: search, $options: 'i' } }
             ];
+        }
+        if (createdAtRange) {
+            query.createdAt = createdAtRange;
+        }
+        if (status) {
+            query.status = status;
         }
 
         const skip = (page - 1) * limit;

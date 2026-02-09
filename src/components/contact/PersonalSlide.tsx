@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ContactFormData } from "@/app/contact/page";
 import { useState } from "react";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface PersonalSlideProps {
     data: ContactFormData;
@@ -15,6 +17,11 @@ interface PersonalSlideProps {
 }
 
 export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlideProps) {
+    const { language } = useLanguage();
+    const locale = LOCALES.contact.personal;
+    // Reusing 'Back' from rules section as it's common navigation
+    const backLabel = tString(LOCALES.contact.rules.back, language);
+
     const [currentTime] = useState(() =>
         new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     );
@@ -29,15 +36,15 @@ export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlid
                 className="mb-12"
             >
                 <span className="font-mono text-xs text-primary uppercase tracking-[0.2em]">
-                    {currentTime} — Connection Phase
+                    {currentTime} — {tString(locale.connectionPhase, language)}
                 </span>
 
                 <h2 className="text-4xl md:text-5xl font-bebas text-foreground mt-4 mb-2">
-                    Let&apos;s Get Acquainted
+                    {tString(locale.heading, language)}
                 </h2>
 
                 <p className="text-muted-foreground font-serif">
-                    Please share your name and where you&apos;re joining us from.
+                    {tString(locale.subheading, language)}
                 </p>
             </motion.div>
 
@@ -45,7 +52,7 @@ export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlid
                 <div className="relative group">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     <Input
-                        placeholder="Your Name"
+                        placeholder={tString(locale.namePlaceholder, language)}
                         value={data.name}
                         onChange={(e) => updateData({ name: e.target.value })}
                         className="pl-12 h-14 bg-background/50 border-border/50 focus:border-primary text-lg"
@@ -55,7 +62,7 @@ export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlid
                 <div className="relative group">
                     <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     <Input
-                        placeholder="Your Location (e.g. Kathmandu)"
+                        placeholder={tString(locale.locationPlaceholder, language)}
                         value={data.location}
                         onChange={(e) => updateData({ location: e.target.value })}
                         className="pl-12 h-14 bg-background/50 border-border/50 focus:border-primary text-lg"
@@ -68,13 +75,13 @@ export function PersonalSlide({ data, updateData, onNext, onPrev }: PersonalSlid
                     variant="ghost"
                     onClick={onPrev}
                 >
-                    <ArrowLeft className="mr-2 w-4 h-4" /> Back
+                    <ArrowLeft className="mr-2 w-4 h-4" /> {backLabel}
                 </Button>
                 <Button
                     onClick={onNext}
                     disabled={!isValid}
                 >
-                    Continue
+                    {tString(locale.continue, language)}
                     <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
             </div>

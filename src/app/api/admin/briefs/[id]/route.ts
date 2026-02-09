@@ -5,6 +5,15 @@ import { DailyBrief } from '@/models/ElectionContent';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+function toLogText(value: unknown): string {
+    if (typeof value === 'string') return value;
+    if (value && typeof value === 'object') {
+        const localized = value as { en?: string; ne?: string };
+        return localized.en || localized.ne || '';
+    }
+    return '';
+}
+
 function safeDecode(value: string) {
     try {
         return decodeURIComponent(value);
@@ -78,9 +87,16 @@ async function updateBrief(request: NextRequest, { params, user }: { params: Pro
             return apiError('Brief not found', 404);
         }
 
+        const updateData = { ...(bodyParse.data as Record<string, any>) };
+        if (Object.prototype.hasOwnProperty.call(updateData, 'status')) {
+            updateData.isPublished = updateData.status === 'published';
+        } else if (Object.prototype.hasOwnProperty.call(updateData, 'isPublished')) {
+            updateData.status = updateData.isPublished ? 'published' : 'draft';
+        }
+
         const brief = await DailyBrief.findByIdAndUpdate(
             existing._id,
-            { $set: bodyParse.data },
+            { $set: updateData },
             { new: true, runValidators: true }
         );
 
@@ -91,7 +107,7 @@ async function updateBrief(request: NextRequest, { params, user }: { params: Pro
             action: 'update',
             entityType: 'DailyBrief',
             entityId: brief._id.toString(),
-            description: `Updated brief: ${brief.title}`,
+            description: `Updated brief: ${toLogText(brief.title)}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
@@ -122,7 +138,7 @@ async function deleteBrief(request: NextRequest, { params, user }: { params: Pro
             action: 'delete',
             entityType: 'DailyBrief',
             entityId: brief._id.toString(),
-            description: `Deleted brief: ${brief.title}`,
+            description: `Deleted brief: ${toLogText(brief.title)}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });

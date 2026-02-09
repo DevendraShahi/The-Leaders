@@ -2,10 +2,14 @@
 
 import { motion, useScroll } from "framer-motion";
 import { useRef } from "react";
-import Image from "next/image";
 import { Timeline } from "@/components/home/timeline";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 export default function HistoryPage() {
+    const { language } = useLanguage();
+    const historyLocale = LOCALES.history;
+
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -33,18 +37,32 @@ export default function HistoryPage() {
                         transition={{ duration: 0.8 }}
                         className="inline-block py-1 px-4 bg-primary text-black font-bebas tracking-widest uppercase mb-6"
                     >
-                        <span className="block">The Archives</span>
+                        <span className="block">
+                            {tString(historyLocale.hero.label, language)}
+                        </span>
                     </motion.span>
                     <motion.h1
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-7xl md:text-9xl font-bebas font-bold text-white uppercase tracking-tighter mb-4 drop-shadow-2xl"
+                        className="page-title text-white mb-4 drop-shadow-2xl md:text-8xl"
                     >
-                        Timeline of <span className="text-primary">Chaos</span>
+                        {tString(historyLocale.hero.heading, language)
+                            .split(" ")
+                            .map((word, idx, arr) =>
+                                idx === arr.length - 1 ? (
+                                    <span key={idx} className="text-primary">
+                                        {word}
+                                    </span>
+                                ) : (
+                                    <span key={idx}>
+                                        {word}{" "}
+                                    </span>
+                                )
+                            )}
                     </motion.h1>
-                    <p className="max-w-2xl mx-auto text-foreground/80 font-manrope text-lg font-light tracking-wide">
-                        From the blood of Kot to the birth of a Republic. The history of Nepal is written in fire.
+                    <p className="page-subtitle max-w-2xl mx-auto text-foreground/80">
+                        {tString(historyLocale.hero.subheading, language)}
                     </p>
                 </div>
             </section>

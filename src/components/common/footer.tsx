@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, Linkedin, Globe } from "lucide-react";
 import { SubscribeForm } from "./subscribe-form";
+import { useLanguage } from "@/components/providers/language-provider";
 
 export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
+    const { language } = useLanguage();
     // Map of icon names to components
     const IconMap: Record<string, any> = {
         facebook: Facebook,
@@ -26,27 +28,51 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                             </span>
                         </Link>
                         <p className="text-muted-foreground text-sm leading-relaxed">
-                            Honoring the legacy of those who shaped our nation. A premium archive of history, biography, and leadership.
+                            {language === "ne"
+                                ? "राष्ट्र निर्माणमा योगदान पुर्‍याउने नेतृत्वको विरासतलाई सम्मान गर्ने प्रिमियम डिजिटल अभिलेख।"
+                                : "Honoring the legacy of those who shaped our nation. A premium archive of history, biography, and leadership."}
                         </p>
                     </div>
 
                     {/* Quick Links */}
                     <div>
-                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">Explore</h4>
+                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">
+                            {language === "ne" ? "अन्वेषण" : "Explore"}
+                        </h4>
                         <ul className="space-y-3">
                             {[
-                                { name: "Leaders", href: "/leaders" },
-                                { name: "History", href: "/history" },
-                                { name: "Election 2026", href: "/election-2026" },
-                                { name: "Parties", href: "/election-2026/parties" },
-                                { name: "Timeline", href: "/history" }
+                                {
+                                    nameEn: "Leaders",
+                                    nameNe: "नेताहरू",
+                                    href: "/leaders",
+                                },
+                                {
+                                    nameEn: "History",
+                                    nameNe: "इतिहास",
+                                    href: "/history",
+                                },
+                                {
+                                    nameEn: "Election 2026",
+                                    nameNe: "निर्वाचन २०२६",
+                                    href: "/election-2026",
+                                },
+                                {
+                                    nameEn: "Parties",
+                                    nameNe: "पार्टीहरू",
+                                    href: "/election-2026/parties",
+                                },
+                                {
+                                    nameEn: "Timeline",
+                                    nameNe: "समयरेखा",
+                                    href: "/history",
+                                },
                             ].map((item) => (
-                                <li key={item.name}>
+                                <li key={item.nameEn}>
                                     <Link
                                         href={item.href}
                                         className="text-muted-foreground hover:text-primary transition-colors text-sm"
                                     >
-                                        {item.name}
+                                        {language === "ne" ? item.nameNe : item.nameEn}
                                     </Link>
                                 </li>
                             ))}
@@ -55,33 +81,53 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
 
                     {/* Legal */}
                     <div>
-                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">Legal</h4>
+                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">
+                            {language === "ne" ? "कानुनी" : "Legal"}
+                        </h4>
                         <ul className="space-y-3">
-                            {["Privacy Policy", "Terms of Service", "Cookie Policy", "Accessibility", "Contact Us"].map((item) => (
-                                <li key={item}>
-                                    <Link
-                                        href={
-                                            item === "Terms of Service" ? "/terms" :
-                                                item === "Contact Us" ? "/contact" :
-                                                    item === "Accessibility" ? "/accessibility" :
-                                                        item === "Privacy Policy" ? "/privacy-policy" :
-                                                            item === "Cookie Policy" ? "/cookie-policy" :
-                                                                "#"
-                                        }
-                                        className="text-muted-foreground hover:text-primary transition-colors text-sm"
-                                    >
-                                        {item}
-                                    </Link>
-                                </li>
-                            ))}
+                            {["Privacy Policy", "Terms of Service", "Cookie Policy", "Accessibility", "Contact Us"].map((item) => {
+                                const label =
+                                    language === "ne"
+                                        ? item === "Privacy Policy"
+                                            ? "गोपनीयता नीति"
+                                            : item === "Terms of Service"
+                                                ? "सेवाका सर्तहरू"
+                                                : item === "Cookie Policy"
+                                                    ? "कुकि नीति"
+                                                    : item === "Accessibility"
+                                                        ? "सुगमता"
+                                                        : "सम्पर्क"
+                                        : item;
+                                return (
+                                    <li key={item}>
+                                        <Link
+                                            href={
+                                                item === "Terms of Service" ? "/terms" :
+                                                    item === "Contact Us" ? "/contact" :
+                                                        item === "Accessibility" ? "/accessibility" :
+                                                            item === "Privacy Policy" ? "/privacy-policy" :
+                                                                item === "Cookie Policy" ? "/cookie-policy" :
+                                                                    "#"
+                                            }
+                                            className="text-muted-foreground hover:text-primary transition-colors text-sm"
+                                        >
+                                            {label}
+                                        </Link>
+                                    </li>
+                                );
+                            })}
                         </ul>
                     </div>
 
                     {/* Newsletter */}
                     <div>
-                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">Stay Connected</h4>
+                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">
+                            {language === "ne" ? "जोडिएका रहनुहोस्" : "Stay Connected"}
+                        </h4>
                         <p className="text-muted-foreground text-sm mb-4">
-                            Subscribe to get the latest biographies and historical insights.
+                            {language === "ne"
+                                ? "नवीनतम जीवनीहरू र ऐतिहासिक विश्लेषणहरू प्राप्त गर्न सदस्यता लिनुहोस्।"
+                                : "Subscribe to get the latest biographies and historical insights."}
                         </p>
                         <SubscribeForm />
                         <div className="flex gap-4 mt-6">
@@ -109,11 +155,13 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
 
                 <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-sm text-muted-foreground">
-                        &copy; {new Date().getFullYear()} The Leaders. All rights reserved.
+                        &copy; {new Date().getFullYear()} The Leaders.{" "}
+                        {language === "ne" ? "सबै अधिकार सुरक्षित।" : "All rights reserved."}
                     </p>
-                    <p className="text-sm text-muted-foreground flex items-center gap-1">
-                        Designed with <span className="text-primary">♥</span> in Nepal
-                    </p>
+                    {/* <p className="text-sm text-muted-foreground flex items-center gap-1">
+                        {language === "ne" ? "नेपालमा बनेको" : "Designed in Nepal"}{" "}
+                        <span className="text-primary">♥</span>
+                    </p> */}
                 </div>
             </div>
         </footer>

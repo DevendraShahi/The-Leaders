@@ -1,12 +1,14 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, Heart } from "lucide-react";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ContactFormData } from "@/app/contact/page";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
+import { useLanguage } from "@/components/providers/language-provider";
+import { LOCALES, tString } from "@/lib/locales";
 
 interface ClosingSlideProps {
     data: ContactFormData;
@@ -16,20 +18,10 @@ interface ClosingSlideProps {
 
 export function ClosingSlide({ data, updateData, onFeelingSelected }: ClosingSlideProps) {
     const router = useRouter();
+    const { language } = useLanguage();
+    const locale = LOCALES.contact.closing;
+
     const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
-    const [responseMessage, setResponseMessage] = useState<string | null>(null);
-
-    const feelings = [
-        "Relieved", "Heard", "Hopeful", "Neutral", "Concerned"
-    ];
-
-    const feelingResponses: Record<string, string> = {
-        "Relieved": "We are glad we could help unburden you.",
-        "Heard": "We hear you. And we are listening.",
-        "Hopeful": "Hope is the fuel of democracy.",
-        "Neutral": "Thank you for your candidness.",
-        "Concerned": "Your concerns are valid and have been noted."
-    };
 
     const handleSelectFeeling = (feeling: string) => {
         setSelectedFeeling(feeling);
@@ -39,12 +31,10 @@ export function ClosingSlide({ data, updateData, onFeelingSelected }: ClosingSli
             onFeelingSelected(feeling);
         }
 
-        setResponseMessage(feelingResponses[feeling]);
-
         // Redirect to About Us after delay
         setTimeout(() => {
             router.push("/about");
-        }, 2000);
+        }, 1500);
     };
 
     return (
@@ -60,16 +50,16 @@ export function ClosingSlide({ data, updateData, onFeelingSelected }: ClosingSli
 
             <div>
                 <h2 className="text-4xl md:text-5xl font-bebas text-foreground mb-4">
-                    Message Archived.
+                    {tString(locale.heading, language)}
                 </h2>
                 <p className="text-xl font-serif text-muted-foreground">
-                    Thank you, {data.name.split(" ")[0]}. Your voice has been securely recorded in our logs.
+                    {tString(locale.subheading, language)}
                 </p>
             </div>
 
-            <div className="py-8 border-t border-b border-border/30 h-[180px] flex flex-col justify-center items-center">
+            <div className="py-8 border-t border-b border-border/30 min-h-[180px] flex flex-col justify-center items-center">
                 <AnimatePresence mode="wait">
-                    {!responseMessage ? (
+                    {!selectedFeeling ? (
                         <motion.div
                             key="buttons"
                             initial={{ opacity: 0 }}
@@ -78,16 +68,16 @@ export function ClosingSlide({ data, updateData, onFeelingSelected }: ClosingSli
                             className="w-full"
                         >
                             <p className="text-sm font-mono text-muted-foreground uppercase tracking-widest mb-6">
-                                How did you feel sharing this today?
+                                {tString(locale.question, language)}
                             </p>
                             <div className="flex flex-wrap justify-center gap-3">
-                                {feelings.map((feeling) => (
+                                {locale.options.map((option) => (
                                     <button
-                                        key={feeling}
-                                        onClick={() => handleSelectFeeling(feeling)}
+                                        key={option.value}
+                                        onClick={() => handleSelectFeeling(option.value)}
                                         className={`px-6 py-2 rounded-full border transition-all duration-300 hover:scale-105 border-border text-muted-foreground hover:border-primary/50 hover:text-foreground`}
                                     >
-                                        {feeling}
+                                        {tString(option.label, language)}
                                     </button>
                                 ))}
                             </div>
@@ -99,11 +89,9 @@ export function ClosingSlide({ data, updateData, onFeelingSelected }: ClosingSli
                             animate={{ opacity: 1, y: 0 }}
                             className="space-y-4"
                         >
-                            <p className="text-2xl font-serif italic text-primary">
-                                "{responseMessage}"
-                            </p>
-                            <p className="text-xs text-muted-foreground animate-pulse">
-                                Redirecting to About Us...
+                            {/* We don't have per-option responses in locales, so simplified this part */}
+                            <p className="text-sm text-muted-foreground animate-pulse">
+                                Redirecting...
                             </p>
                         </motion.div>
                     )}
@@ -113,7 +101,7 @@ export function ClosingSlide({ data, updateData, onFeelingSelected }: ClosingSli
             <div className="pt-4">
                 <Link href="/">
                     <Button variant="ghost">
-                        Return to Homepage
+                        {tString(locale.returnHome, language)}
                     </Button>
                 </Link>
             </div>

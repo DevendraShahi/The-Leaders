@@ -2,17 +2,45 @@
 
 import { useState, useEffect } from "react";
 import { IAdmin, IPermissions } from "@/models/Admin";
+import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
+import { toast } from "sonner";
 import { Trash2, Edit, Plus, Power, PowerOff } from "lucide-react";
 
 interface AdminUser extends Omit<IAdmin, '_id'> {
     _id: string;
 }
 
+const PAGE_ACCESS_LABELS: Record<keyof IPermissions['pageAccess'], string> = {
+    dashboard: 'Dashboard',
+    content: 'Content',
+    media: 'Media',
+    messages: 'Messages',
+    settings: 'Settings',
+    users: 'Manage Admins',
+};
+
+function getDefaultPageAccess(role: IAdmin['role']): IPermissions['pageAccess'] {
+    if (role === 'cto') return { dashboard: true, content: false, media: true, messages: true, settings: true, users: false };
+    if (role === 'editorial') return { dashboard: true, content: true, media: true, messages: true, settings: false, users: false };
+    if (role === 'cmo') return { dashboard: true, content: false, media: true, messages: true, settings: false, users: false };
+    return { dashboard: true, content: true, media: true, messages: true, settings: true, users: true };
+}
+
+function normalizePageAccess(admin?: Partial<AdminUser> | null): IPermissions['pageAccess'] {
+    const fallbackRole = (admin?.role || 'editorial') as IAdmin['role'];
+    return {
+        ...getDefaultPageAccess(fallbackRole),
+        ...(admin?.permissions?.pageAccess || {}),
+    };
+}
+
 export default function AdminUsersPage() {
     const [admins, setAdmins] = useState<AdminUser[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [editingAdmin, setEditingAdmin] = useState<AdminUser | null>(null);
+    const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
 
     useEffect(() => {
         fetchAdmins();
@@ -20,25 +48,27 @@ export default function AdminUsersPage() {
 
     const fetchAdmins = async () => {
         try {
+            setError(null);
             const res = await fetch('/api/admin/users', {
                 credentials: 'include'
             });
             const data = await res.json();
             if (data.success) {
-                setAdmins(data.data);
+                setAdmins(Array.isArray(data.data) ? data.data : []);
             } else {
-                console.error('Failed to fetch admins:', data.error);
+                const message = data.error || 'Failed to fetch admins';
+                setError(message);
+                console.error('Failed to fetch admins:', message);
             }
         } catch (error) {
             console.error('Failed to fetch admins:', error);
+            setError('Failed to fetch admins');
         } finally {
             setLoading(false);
         }
     };
 
-    const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure you want to delete this admin?')) return;
-
+    const executeDelete = async (id: string) => {
         try {
             const res = await fetch(`/api/admin/users/${id}`, {
                 method: 'DELETE',
@@ -46,10 +76,18 @@ export default function AdminUsersPage() {
             });
             if (res.ok) {
                 fetchAdmins();
+            } else {
+                const data = await res.json();
+                setError(data?.error || 'Failed to delete admin');
             }
         } catch (error) {
             console.error('Failed to delete admin:', error);
+            setError('Failed to delete admin');
         }
+    };
+
+    const handleDelete = async (id: string) => {
+        setPendingDeleteId(id);
     };
 
     const handleToggleActive = async (admin: AdminUser) => {
@@ -62,9 +100,13 @@ export default function AdminUsersPage() {
             });
             if (res.ok) {
                 fetchAdmins();
+            } else {
+                const data = await res.json();
+                setError(data?.error || 'Failed to update admin status');
             }
         } catch (error) {
             console.error('Failed to update admin:', error);
+            setError('Failed to update admin status');
         }
     };
 
@@ -98,6 +140,11 @@ export default function AdminUsersPage() {
             </div>
 
             <div className="bg-card border border-border overflow-hidden">
+                {error && (
+                    <div className="px-6 py-4 border-b border-border text-sm text-destructive">
+                        {error}
+                    </div>
+                )}
                 <table className="w-full">
                     <thead className="bg-muted/50">
                         <tr>
@@ -184,6 +231,22 @@ export default function AdminUsersPage() {
                     onSuccess={fetchAdmins}
                 />
             )}
+
+            <ConfirmDialog
+                open={!!pendingDeleteId}
+                onOpenChange={(open) => {
+                    if (!open) setPendingDeleteId(null);
+                }}
+                title="Delete this admin?"
+                description="This action cannot be undone."
+                confirmLabel="Delete"
+                variant="destructive"
+                onConfirm={async () => {
+                    if (!pendingDeleteId) return;
+                    await executeDelete(pendingDeleteId);
+                    setPendingDeleteId(null);
+                }}
+            />
         </div>
     );
 }
@@ -196,6 +259,7 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
         password: '',
         name: '',
         role: 'editorial' as IAdmin['role'],
+        pageAccess: getDefaultPageAccess('editorial'),
     });
     const [submitting, setSubmitting] = useState(false);
 
@@ -204,10 +268,30 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
         setSubmitting(true);
 
         try {
+            const customPermissions = {
+                articles: formData.role === 'editorial'
+                    ? { create: true, edit: true, delete: true, publish: true }
+                    : { create: false, edit: false, delete: false, publish: false },
+                settings: formData.role === 'cto'
+                    ? { view: true, modify: true }
+                    : { view: false, modify: false },
+                users: { view: false, manage: false },
+                analytics: formData.role === 'cmo'
+                    ? { view: true, viewAll: true }
+                    : { view: true, viewAll: false },
+                pageAccess: formData.pageAccess,
+            };
             const res = await fetch('/api/admin/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    email: formData.email,
+                    username: formData.username,
+                    password: formData.password,
+                    name: formData.name,
+                    role: formData.role,
+                    customPermissions,
+                }),
                 credentials: 'include'
             });
 
@@ -216,11 +300,11 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
                 onClose();
             } else {
                 const data = await res.json();
-                alert(data.error || 'Failed to create admin');
+                toast.error(data.error || 'Failed to create admin');
             }
         } catch (error) {
             console.error('Error creating admin:', error);
-            alert('Failed to create admin');
+            toast.error('Failed to create admin');
         } finally {
             setSubmitting(false);
         }
@@ -274,13 +358,40 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
                         <label className="block text-sm font-medium mb-1">Role</label>
                         <select
                             value={formData.role}
-                            onChange={(e) => setFormData({ ...formData, role: e.target.value as IAdmin['role'] })}
+                            onChange={(e) => {
+                                const nextRole = e.target.value as IAdmin['role'];
+                                setFormData({ ...formData, role: nextRole, pageAccess: getDefaultPageAccess(nextRole) });
+                            }}
                             className="w-full px-4 py-2 bg-muted border border-border focus:border-primary outline-none"
                         >
                             <option value="editorial">Editorial</option>
                             <option value="cto">CTO</option>
                             <option value="cmo">CMO</option>
                         </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Page Access</label>
+                        <div className="grid grid-cols-2 gap-2">
+                            {Object.entries(PAGE_ACCESS_LABELS).map(([key, label]) => (
+                                <label key={key} className="flex items-center gap-2 text-sm">
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.pageAccess[key as keyof IPermissions['pageAccess']]}
+                                        onChange={(e) =>
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                pageAccess: {
+                                                    ...prev.pageAccess,
+                                                    [key]: e.target.checked,
+                                                },
+                                            }))
+                                        }
+                                        className="w-4 h-4"
+                                    />
+                                    {label}
+                                </label>
+                            ))}
+                        </div>
                     </div>
                     <div className="flex gap-3 pt-4">
                         <button
@@ -310,6 +421,7 @@ function EditAdminModal({ admin, onClose, onSuccess }: { admin: AdminUser; onClo
         name: admin.name || '',
         role: admin.role,
         isActive: admin.isActive,
+        pageAccess: normalizePageAccess(admin),
     });
     const [submitting, setSubmitting] = useState(false);
 
@@ -321,7 +433,15 @@ function EditAdminModal({ admin, onClose, onSuccess }: { admin: AdminUser; onClo
             const res = await fetch(`/api/admin/users/${admin._id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({
+                    name: formData.name,
+                    role: formData.role,
+                    isActive: formData.isActive,
+                    permissions: {
+                        ...admin.permissions,
+                        pageAccess: formData.pageAccess,
+                    },
+                }),
                 credentials: 'include'
             });
 
@@ -330,11 +450,11 @@ function EditAdminModal({ admin, onClose, onSuccess }: { admin: AdminUser; onClo
                 onClose();
             } else {
                 const data = await res.json();
-                alert(data.error || 'Failed to update admin');
+                toast.error(data.error || 'Failed to update admin');
             }
         } catch (error) {
             console.error('Error updating admin:', error);
-            alert('Failed to update admin');
+            toast.error('Failed to update admin');
         } finally {
             setSubmitting(false);
         }
@@ -358,13 +478,47 @@ function EditAdminModal({ admin, onClose, onSuccess }: { admin: AdminUser; onClo
                         <label className="block text-sm font-medium mb-1">Role</label>
                         <select
                             value={formData.role}
-                            onChange={(e) => setFormData({ ...formData, role: e.target.value as IAdmin['role'] })}
+                            onChange={(e) => {
+                                const nextRole = e.target.value as IAdmin['role'];
+                                setFormData({
+                                    ...formData,
+                                    role: nextRole,
+                                    pageAccess: {
+                                        ...getDefaultPageAccess(nextRole),
+                                        ...formData.pageAccess,
+                                    },
+                                });
+                            }}
                             className="w-full px-4 py-2 bg-muted border border-border focus:border-primary outline-none"
                         >
                             <option value="editorial">Editorial</option>
                             <option value="cto">CTO</option>
                             <option value="cmo">CMO</option>
                         </select>
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium mb-2">Page Access</label>
+                        <div className="grid grid-cols-2 gap-2">
+                            {Object.entries(PAGE_ACCESS_LABELS).map(([key, label]) => (
+                                <label key={key} className="flex items-center gap-2 text-sm">
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.pageAccess[key as keyof IPermissions['pageAccess']]}
+                                        onChange={(e) =>
+                                            setFormData((prev) => ({
+                                                ...prev,
+                                                pageAccess: {
+                                                    ...prev.pageAccess,
+                                                    [key]: e.target.checked,
+                                                },
+                                            }))
+                                        }
+                                        className="w-4 h-4"
+                                    />
+                                    {label}
+                                </label>
+                            ))}
+                        </div>
                     </div>
                     <div className="flex items-center gap-2">
                         <input
