@@ -48,6 +48,7 @@ const knight = localFont({
 });
 
 import { constructMetadata } from "@/lib/metadata";
+import { Analytics } from "@vercel/analytics/next";
 
 
 
@@ -125,6 +126,7 @@ export default async function RootLayout({
                         </GlobalLoadingProvider>
                     </FontProvider>
                 </ThemeProvider>
+                <Analytics />
             </body>
         </html >
     );
