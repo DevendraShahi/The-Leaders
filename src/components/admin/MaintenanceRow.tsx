@@ -25,7 +25,7 @@ export function MaintenanceRow({
     if (!state) return null;
 
     return (
-        <div className={`group transition-all duration-300 ${isMain ? 'p-6' : 'p-4 border-l-2 border-border ml-4 hover:bg-muted/30'}`}>
+        <div className={`group transition-all duration-300 ${isMain ? 'p-4 sm:p-6' : 'p-3 sm:p-4 border-l-2 border-border ml-2 sm:ml-4 hover:bg-muted/30'}`}>
             <div className="flex items-start gap-4">
                 <div className="pt-1">
                     <label className="relative inline-flex items-center cursor-pointer">
@@ -46,14 +46,14 @@ export function MaintenanceRow({
                     </label>
                 </div>
 
-                <div className="flex-1 space-y-3">
-                    <div className="flex items-center justify-between">
+                <div className="flex-1 space-y-3 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                         <span className={`font-bold uppercase tracking-wide transition-colors ${isMain ? 'text-lg text-foreground' : 'text-sm text-muted-foreground group-hover:text-foreground'
                             }`}>
                             {label}
                         </span>
                         {state.isActive && (
-                            <span className="flex items-center gap-1.5 text-[10px] text-destructive font-mono font-bold bg-destructive/10 px-2 py-1 rounded-sm border border-destructive/20 animate-in fade-in duration-300">
+                            <span className="inline-flex w-fit items-center gap-1.5 text-[10px] text-destructive font-mono font-bold bg-destructive/10 px-2 py-1 rounded-sm border border-destructive/20 animate-in fade-in duration-300">
                                 <span className="relative flex h-1.5 w-1.5">
                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-destructive opacity-75"></span>
                                     <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-destructive"></span>

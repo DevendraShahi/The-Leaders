@@ -47,18 +47,30 @@ export default function AboutPage() {
                         </div>
 
                         {/* Main Visual */}
-                        <div className="w-full flex justify-center py-4">
+                        <motion.div
+                            className="w-full flex justify-center py-4"
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.9, ease: "easeOut" }}
+                        >
                             <AnimatedLogoText
                                 text={tString(aboutLocale.hero.logoText, language)}
                                 language={language}
-                                className={`text-7xl md:text-8xl lg:text-9xl [font-family:var(--font-bebas)] text-foreground drop-shadow-[0_10px_30px_rgba(0,0,0,0.35)] ${language === "ne"
-                                    ? "font-bold tracking-normal leading-[1.08]"
-                                    : "font-black uppercase tracking-[-0.02em] leading-[0.86]"
+                                className={`text-5xl md:text-7xl lg:text-8xl [font-family:var(--font-bebas)] text-foreground drop-shadow-[0_12px_28px_rgba(0,0,0,0.24)] ${language === "ne"
+                                    ? "font-semibold tracking-normal leading-[1.18]"
+                                    : "font-black uppercase tracking-[-0.015em] leading-[0.9]"
                                     }`}
                             />
-                        </div>
+                        </motion.div>
 
-                        <p className={`mt-8 text-3xl md:text-4xl [font-family:var(--font-bebas)] text-[#B71C1C] text-center ${language === "ne" ? "font-bold tracking-normal leading-[1.3]" : "font-black tracking-[0.02em]"}`}>
+                        <motion.div
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
+                            className="h-[2px] w-28 origin-center bg-[#B71C1C]/70"
+                        />
+
+                        <p className={`mt-8 text-2xl md:text-3xl [font-family:var(--font-bebas)] text-[#B71C1C] text-center ${language === "ne" ? "font-semibold tracking-normal leading-[1.35]" : "font-black tracking-[0.02em]"}`}>
                             {tString(aboutLocale.hero.tagline, language)}
                         </p>
 

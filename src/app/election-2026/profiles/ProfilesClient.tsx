@@ -15,7 +15,7 @@ export function ProfilesClient({ parties }: ProfilesClientProps) {
     const locale = LOCALES.election2026.profiles;
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="election-typography min-h-screen bg-background">
             <div className="container mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div className="mb-10 border-b border-border/60 pb-8">
                     <div className="flex items-center gap-4 mb-4 opacity-60">

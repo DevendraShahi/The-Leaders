@@ -119,20 +119,18 @@ export default function AdminUsersPage() {
         return colors[role as keyof typeof colors] || 'bg-gray-100 text-gray-700';
     };
 
-    if (loading) {
-        return <div className="p-8">Loading...</div>;
-    }
+    if (loading) return <div className="p-4 sm:p-6">Loading...</div>;
 
     return (
-        <div className="p-8">
-            <div className="flex justify-between items-center mb-8">
+        <div className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                 <div>
-                    <h1 className="text-3xl font-bebas uppercase tracking-wide">Admin Management</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bebas uppercase tracking-wide">Admin Management</h1>
                     <p className="text-muted-foreground mt-1">Manage admin users and their permissions</p>
                 </div>
                 <button
                     onClick={() => setShowCreateModal(true)}
-                    className="flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 hover:bg-primary/90 transition-colors"
+                    className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 hover:bg-primary/90 transition-colors w-full sm:w-auto"
                 >
                     <Plus size={20} />
                     Create Admin
@@ -145,76 +143,139 @@ export default function AdminUsersPage() {
                         {error}
                     </div>
                 )}
-                <table className="w-full">
-                    <thead className="bg-muted/50">
-                        <tr>
-                            <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide">Name</th>
-                            <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide">Email</th>
-                            <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide">Role</th>
-                            <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide">Status</th>
-                            <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide">Created</th>
-                            <th className="text-right px-6 py-4 font-bebas uppercase tracking-wide">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {admins.map((admin) => (
-                            <tr key={admin._id} className="border-t border-border hover:bg-muted/20 transition-colors">
-                                <td className="px-6 py-4">
-                                    <div className="font-medium">{admin.name || admin.username}</div>
-                                    <div className="text-sm text-muted-foreground">@{admin.username}</div>
-                                </td>
-                                <td className="px-6 py-4 text-muted-foreground">{admin.email}</td>
-                                <td className="px-6 py-4">
-                                    <span className={`px-3 py-1 text-xs font-medium uppercase tracking-wide ${getRoleBadgeColor(admin.role)}`}>
+
+                {/* Mobile Cards */}
+                <div className="md:hidden divide-y divide-border">
+                    {admins.length === 0 ? (
+                        <div className="px-4 py-8 text-center text-sm text-muted-foreground">No admin users found.</div>
+                    ) : (
+                        admins.map((admin) => (
+                            <div key={admin._id} className="p-4 space-y-3">
+                                <div className="flex items-start justify-between gap-3">
+                                    <div className="min-w-0">
+                                        <div className="font-medium truncate">{admin.name || admin.username}</div>
+                                        <div className="text-xs text-muted-foreground truncate">@{admin.username}</div>
+                                        <div className="text-xs text-muted-foreground truncate mt-1">{admin.email}</div>
+                                    </div>
+                                    <span className={`px-2 py-1 text-[10px] font-medium uppercase tracking-wide ${getRoleBadgeColor(admin.role)}`}>
                                         {admin.role}
                                     </span>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <span className={`flex items-center gap-2 w-fit px-3 py-1 text-xs font-medium ${admin.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                        {admin.isActive ? <Power size={14} /> : <PowerOff size={14} />}
+                                </div>
+
+                                <div className="flex items-center justify-between gap-3 text-xs">
+                                    <span className={`inline-flex items-center gap-1.5 w-fit px-2.5 py-1 font-medium ${admin.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                        {admin.isActive ? <Power size={12} /> : <PowerOff size={12} />}
                                         {admin.isActive ? 'Active' : 'Inactive'}
                                     </span>
-                                </td>
-                                <td className="px-6 py-4 text-muted-foreground text-sm">
-                                    {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString() : 'N/A'}
-                                </td>
-                                <td className="px-6 py-4">
-                                    <div className="flex items-center justify-end gap-2">
-                                        {admin.role !== 'superadmin' ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleToggleActive(admin)}
-                                                    className="p-2 hover:bg-muted transition-colors"
-                                                    title={admin.isActive ? 'Deactivate' : 'Activate'}
-                                                >
-                                                    {admin.isActive ? <PowerOff size={18} /> : <Power size={18} />}
-                                                </button>
-                                                <button
-                                                    onClick={() => setEditingAdmin(admin)}
-                                                    className="p-2 hover:bg-muted transition-colors"
-                                                    title="Edit"
-                                                >
-                                                    <Edit size={18} />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleDelete(admin._id)}
-                                                    className="p-2 hover:bg-destructive/10 text-destructive transition-colors"
-                                                    title="Delete"
-                                                >
-                                                    <Trash2 size={18} />
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <span className="text-xs text-muted-foreground italic px-2">
-                                                Super Admin
-                                            </span>
-                                        )}
-                                    </div>
-                                </td>
+                                    <span className="text-muted-foreground">
+                                        {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString() : 'N/A'}
+                                    </span>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    {admin.role !== 'superadmin' ? (
+                                        <>
+                                            <button
+                                                onClick={() => handleToggleActive(admin)}
+                                                className="flex-1 px-3 py-2 border border-border text-xs uppercase tracking-wide hover:bg-muted transition-colors"
+                                            >
+                                                {admin.isActive ? 'Deactivate' : 'Activate'}
+                                            </button>
+                                            <button
+                                                onClick={() => setEditingAdmin(admin)}
+                                                className="flex-1 px-3 py-2 border border-border text-xs uppercase tracking-wide hover:bg-muted transition-colors"
+                                            >
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(admin._id)}
+                                                className="px-3 py-2 border border-destructive/40 text-destructive text-xs uppercase tracking-wide hover:bg-destructive/10 transition-colors"
+                                            >
+                                                Delete
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <span className="text-xs text-muted-foreground italic">Super Admin</span>
+                                    )}
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden md:block w-full overflow-x-auto overscroll-x-contain [touch-action:pan-x] [-webkit-overflow-scrolling:touch]">
+                    <table className="w-full min-w-[820px] md:min-w-full">
+                        <thead className="bg-muted/50">
+                            <tr>
+                                <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Name</th>
+                                <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Email</th>
+                                <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Role</th>
+                                <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Status</th>
+                                <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Created</th>
+                                <th className="text-right px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {admins.map((admin) => (
+                                <tr key={admin._id} className="border-t border-border hover:bg-muted/20 transition-colors">
+                                    <td className="px-6 py-4">
+                                        <div className="font-medium">{admin.name || admin.username}</div>
+                                        <div className="text-sm text-muted-foreground">@{admin.username}</div>
+                                    </td>
+                                    <td className="px-6 py-4 text-muted-foreground max-md:whitespace-nowrap">{admin.email}</td>
+                                    <td className="px-6 py-4">
+                                        <span className={`px-3 py-1 text-xs font-medium uppercase tracking-wide ${getRoleBadgeColor(admin.role)}`}>
+                                            {admin.role}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <span className={`flex items-center gap-2 w-fit px-3 py-1 text-xs font-medium ${admin.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                            {admin.isActive ? <Power size={14} /> : <PowerOff size={14} />}
+                                            {admin.isActive ? 'Active' : 'Inactive'}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 text-muted-foreground text-sm max-md:whitespace-nowrap">
+                                        {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString() : 'N/A'}
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center justify-end gap-2">
+                                            {admin.role !== 'superadmin' ? (
+                                                <>
+                                                    <button
+                                                        onClick={() => handleToggleActive(admin)}
+                                                        className="p-2 hover:bg-muted transition-colors"
+                                                        title={admin.isActive ? 'Deactivate' : 'Activate'}
+                                                    >
+                                                        {admin.isActive ? <PowerOff size={18} /> : <Power size={18} />}
+                                                    </button>
+                                                    <button
+                                                        onClick={() => setEditingAdmin(admin)}
+                                                        className="p-2 hover:bg-muted transition-colors"
+                                                        title="Edit"
+                                                    >
+                                                        <Edit size={18} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDelete(admin._id)}
+                                                        className="p-2 hover:bg-destructive/10 text-destructive transition-colors"
+                                                        title="Delete"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </>
+                                            ) : (
+                                                <span className="text-xs text-muted-foreground italic px-2 max-md:whitespace-nowrap">
+                                                    Super Admin
+                                                </span>
+                                            )}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {showCreateModal && (

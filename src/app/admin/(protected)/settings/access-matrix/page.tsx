@@ -132,7 +132,7 @@ export default function AccessMatrixPage() {
 
     if (!isSuperAdmin) {
         return (
-            <div className="max-w-3xl mx-auto p-8 border border-border bg-card">
+            <div className="max-w-3xl mx-auto p-4 sm:p-8 border border-border bg-card">
                 <h1 className="text-2xl font-bebas uppercase tracking-wide text-foreground">Access Matrix</h1>
                 <p className="text-sm text-muted-foreground mt-2">Only super admins can manage page-level access.</p>
             </div>
@@ -149,79 +149,140 @@ export default function AccessMatrixPage() {
 
     return (
         <div className="space-y-6 max-w-[1400px] mx-auto">
-            <div className="flex items-end justify-between border-b border-border pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 border-b border-border pb-4">
                 <div>
                     <Link href="/admin/settings" className="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-bold text-muted-foreground hover:text-primary mb-2">
                         <ArrowLeft className="h-3.5 w-3.5" />
                         Back to Settings
                     </Link>
-                    <h1 className="text-3xl font-bebas uppercase tracking-wide text-foreground">Access Matrix</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bebas uppercase tracking-wide text-foreground">Access Matrix</h1>
                     <p className="text-sm text-muted-foreground">Configure which admin pages each account can open.</p>
                 </div>
             </div>
 
             <div className="border border-border bg-card overflow-hidden">
-                <table className="w-full">
-                    <thead className="bg-muted/20 border-b border-border">
-                        <tr>
-                            <th className="text-left px-4 py-3 text-xs uppercase tracking-wider font-bold">Admin</th>
-                            <th className="text-left px-4 py-3 text-xs uppercase tracking-wider font-bold">Role</th>
-                            {PAGE_KEYS.map((key) => (
-                                <th key={key} className="text-center px-3 py-3 text-xs uppercase tracking-wider font-bold">
-                                    {PAGE_LABELS[key]}
-                                </th>
-                            ))}
-                            <th className="text-right px-4 py-3 text-xs uppercase tracking-wider font-bold">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {visibleAdmins.map((admin) => {
+                {/* Mobile Cards */}
+                <div className="md:hidden divide-y divide-border">
+                    {visibleAdmins.length === 0 ? (
+                        <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+                            No manageable admin accounts found.
+                        </div>
+                    ) : (
+                        visibleAdmins.map((admin) => {
                             const pageAccess = normalizePageAccess(admin.permissions);
                             const disabled = !admin.isActive;
                             return (
-                                <tr key={admin._id} className="border-t border-border/60">
-                                    <td className="px-4 py-3">
-                                        <p className="font-medium">{admin.name || admin.username}</p>
-                                        <p className="text-xs text-muted-foreground">{admin.email}</p>
-                                    </td>
-                                    <td className="px-4 py-3 text-sm uppercase">{admin.role}</td>
-                                    {PAGE_KEYS.map((key) => (
-                                        <td key={`${admin._id}-${key}`} className="px-3 py-3 text-center">
-                                            <input
-                                                type="checkbox"
-                                                checked={pageAccess[key]}
-                                                disabled={disabled || Boolean(savingById[admin._id])}
-                                                onChange={(e) => updateLocalToggle(admin._id, key, e.target.checked)}
-                                                className="h-4 w-4 accent-primary"
-                                            />
+                                <div key={admin._id} className="p-4 space-y-4">
+                                    <div className="flex items-start justify-between gap-3">
+                                        <div className="min-w-0">
+                                            <p className="font-medium truncate">{admin.name || admin.username}</p>
+                                            <p className="text-xs text-muted-foreground truncate">{admin.email}</p>
+                                        </div>
+                                        <span className="text-[10px] uppercase tracking-wide bg-muted px-2 py-1 border border-border">
+                                            {admin.role}
+                                        </span>
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {PAGE_KEYS.map((key) => (
+                                            <label
+                                                key={`${admin._id}-${key}`}
+                                                className="flex items-center justify-between gap-2 border border-border bg-background px-2 py-2 text-xs"
+                                            >
+                                                <span className="truncate">{PAGE_LABELS[key]}</span>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={pageAccess[key]}
+                                                    disabled={disabled || Boolean(savingById[admin._id])}
+                                                    onChange={(e) => updateLocalToggle(admin._id, key, e.target.checked)}
+                                                    className="h-4 w-4 accent-primary"
+                                                />
+                                            </label>
+                                        ))}
+                                    </div>
+
+                                    <button
+                                        onClick={() => saveAdminAccess(admin)}
+                                        disabled={disabled || Boolean(savingById[admin._id])}
+                                        className="w-full inline-flex items-center justify-center gap-2 px-3 py-2 border border-border hover:bg-muted transition-colors text-xs uppercase tracking-wider font-bold disabled:opacity-50"
+                                    >
+                                        {savingById[admin._id] ? (
+                                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                        ) : (
+                                            <Save className="h-3.5 w-3.5" />
+                                        )}
+                                        Save Access
+                                    </button>
+                                </div>
+                            );
+                        })
+                    )}
+                </div>
+
+                {/* Desktop Table */}
+                <div className="hidden md:block w-full overflow-x-auto overscroll-x-contain [touch-action:pan-x] [-webkit-overflow-scrolling:touch]">
+                    <table className="w-full min-w-[980px] md:min-w-full">
+                        <thead className="bg-muted/20 border-b border-border">
+                            <tr>
+                                <th className="text-left px-4 py-3 text-xs uppercase tracking-wider font-bold max-md:whitespace-nowrap">Admin</th>
+                                <th className="text-left px-4 py-3 text-xs uppercase tracking-wider font-bold max-md:whitespace-nowrap">Role</th>
+                                {PAGE_KEYS.map((key) => (
+                                    <th key={key} className="text-center px-3 py-3 text-xs uppercase tracking-wider font-bold max-md:whitespace-nowrap">
+                                        {PAGE_LABELS[key]}
+                                    </th>
+                                ))}
+                                <th className="text-right px-4 py-3 text-xs uppercase tracking-wider font-bold max-md:whitespace-nowrap">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {visibleAdmins.map((admin) => {
+                                const pageAccess = normalizePageAccess(admin.permissions);
+                                const disabled = !admin.isActive;
+                                return (
+                                    <tr key={admin._id} className="border-t border-border/60">
+                                        <td className="px-4 py-3">
+                                            <p className="font-medium">{admin.name || admin.username}</p>
+                                            <p className="text-xs text-muted-foreground">{admin.email}</p>
                                         </td>
-                                    ))}
-                                    <td className="px-4 py-3 text-right">
-                                        <button
-                                            onClick={() => saveAdminAccess(admin)}
-                                            disabled={disabled || Boolean(savingById[admin._id])}
-                                            className="inline-flex items-center gap-2 px-3 py-1.5 border border-border hover:bg-muted transition-colors text-xs uppercase tracking-wider font-bold disabled:opacity-50"
-                                        >
-                                            {savingById[admin._id] ? (
-                                                <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                                            ) : (
-                                                <Save className="h-3.5 w-3.5" />
-                                            )}
-                                            Save
-                                        </button>
+                                        <td className="px-4 py-3 text-sm uppercase max-md:whitespace-nowrap">{admin.role}</td>
+                                        {PAGE_KEYS.map((key) => (
+                                            <td key={`${admin._id}-${key}`} className="px-3 py-3 text-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={pageAccess[key]}
+                                                    disabled={disabled || Boolean(savingById[admin._id])}
+                                                    onChange={(e) => updateLocalToggle(admin._id, key, e.target.checked)}
+                                                    className="h-4 w-4 accent-primary"
+                                                />
+                                            </td>
+                                        ))}
+                                        <td className="px-4 py-3 text-right">
+                                            <button
+                                                onClick={() => saveAdminAccess(admin)}
+                                                disabled={disabled || Boolean(savingById[admin._id])}
+                                                className="inline-flex items-center gap-2 px-3 py-1.5 border border-border hover:bg-muted transition-colors text-xs uppercase tracking-wider font-bold disabled:opacity-50 max-md:whitespace-nowrap"
+                                            >
+                                                {savingById[admin._id] ? (
+                                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                                ) : (
+                                                    <Save className="h-3.5 w-3.5" />
+                                                )}
+                                                Save
+                                            </button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                            {visibleAdmins.length === 0 && (
+                                <tr>
+                                    <td colSpan={PAGE_KEYS.length + 3} className="px-4 py-8 text-center text-sm text-muted-foreground">
+                                        No manageable admin accounts found.
                                     </td>
                                 </tr>
-                            );
-                        })}
-                        {visibleAdmins.length === 0 && (
-                            <tr>
-                                <td colSpan={PAGE_KEYS.length + 3} className="px-4 py-8 text-center text-sm text-muted-foreground">
-                                    No manageable admin accounts found.
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div className="border border-border bg-muted/10 p-4 text-sm text-muted-foreground flex items-center gap-2">

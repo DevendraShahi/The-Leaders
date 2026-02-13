@@ -78,7 +78,7 @@ export function DailyBriefDetailClient({ brief }: DailyBriefDetailClientProps) {
     const blocks = normalizedContent.split(/\n{2,}/).map((block) => block.trim()).filter(Boolean);
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="election-typography min-h-screen bg-background">
             <div className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-20">
                 <div className="container mx-auto max-w-4xl px-4 py-4">
                     <Link
@@ -112,7 +112,7 @@ export function DailyBriefDetailClient({ brief }: DailyBriefDetailClientProps) {
                         </div>
                     </div>
 
-                    <h1 className="font-bebas text-5xl md:text-7xl text-foreground mb-6 uppercase tracking-tight leading-[0.95]">
+                    <h1 className="font-bebas text-4xl md:text-6xl lg:text-7xl text-foreground mb-6 uppercase tracking-tight leading-[0.98]">
                         {title}
                     </h1>
 

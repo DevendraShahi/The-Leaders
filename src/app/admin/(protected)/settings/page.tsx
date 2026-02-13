@@ -167,17 +167,17 @@ export default function SettingsPage() {
     if (loading) return <div className="flex items-center justify-center h-[60vh]"><Loader2 className="h-8 w-8 animate-spin text-primary" /></div>;
 
     return (
-        <div className="space-y-6 max-w-4xl mx-auto pb-20 font-manrope">
+        <div className="space-y-6 max-w-4xl mx-auto pb-20 font-manrope px-1 sm:px-0">
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-border pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-border pb-4">
                 <div>
-                    <h1 className="text-3xl font-bebas tracking-wide text-foreground uppercase">System Settings</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bebas tracking-wide text-foreground uppercase">System Settings</h1>
                     <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Configure platform</p>
                 </div>
                 <button
                     disabled={saving}
                     onClick={handleSubmit}
-                    className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:opacity-50 uppercase text-xs font-bold tracking-wider rounded-none shadow-sm"
+                    className="flex items-center justify-center gap-2 px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:opacity-50 uppercase text-xs font-bold tracking-wider rounded-none shadow-sm w-full sm:w-auto"
                 >
                     {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                     Save Changes

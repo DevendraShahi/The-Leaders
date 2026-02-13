@@ -63,7 +63,7 @@ export default function AnalyticsDashboard({
     });
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="election-typography min-h-screen bg-background">
             {/* Hero Section */}
             <motion.section
                 className="relative overflow-hidden border-b border-border/10 bg-gradient-to-br from-[#B71C1C]/10 via-background to-background"

@@ -14,7 +14,7 @@ export function PartiesClient({ parties }: PartiesClientProps) {
     const locale = LOCALES.election2026.parties;
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="election-typography min-h-screen bg-background">
             {/* Hero Section */}
             <div className="container mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
                 <div className="mb-8 border-b border-border/60 pb-8">

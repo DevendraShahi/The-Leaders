@@ -84,7 +84,7 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
     const Icon = config.icon;
 
     return (
-        <div className="min-h-screen bg-background dark:bg-[#0D0D0D] text-foreground relative overflow-hidden font-sans selection:bg-primary/10 selection:text-primary antialiased">
+        <div className="election-typography min-h-screen bg-background dark:bg-[#0D0D0D] text-foreground relative overflow-hidden font-sans selection:bg-primary/10 selection:text-primary antialiased">
             {/* Background Texture (Subtle Grain) */}
             <div
                 className="fixed inset-0 opacity-[0.04] pointer-events-none z-0 mix-blend-multiply"
@@ -124,7 +124,7 @@ export function FactCheckDetailClient({ factCheck }: { factCheck: FactCheckDTO }
                         {tString(locale.header.caseBadge, language)}
                     </Badge>
 
-                    <h1 className="font-bebas text-5xl md:text-7xl leading-[0.9] mb-8 tracking-tight max-w-3xl mx-auto">
+                    <h1 className="font-bebas text-4xl md:text-6xl lg:text-7xl leading-[0.95] mb-8 tracking-tight max-w-3xl mx-auto">
                         "{claim}"
                     </h1>
 

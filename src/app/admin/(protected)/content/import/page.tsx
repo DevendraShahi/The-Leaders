@@ -142,10 +142,10 @@ export default function PerplexityImportPage() {
     };
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-500 max-w-4xl">
+        <div className="space-y-8 animate-in fade-in duration-500 max-w-4xl w-full">
             <div className="border-b border-border pb-6">
                 <div className="flex items-center justify-between gap-3 flex-wrap">
-                    <h1 className="font-bebas text-4xl text-foreground tracking-wide">
+                    <h1 className="font-bebas text-3xl sm:text-4xl text-foreground tracking-wide">
                         Import Perplexity Brief
                     </h1>
                     <Dialog>
@@ -248,13 +248,13 @@ export default function PerplexityImportPage() {
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-wrap">
                     <Button
                         type="button"
                         variant="outline"
                         onClick={handleValidate}
                         disabled={isValidating || isSubmitting}
-                        className="rounded-none font-mono uppercase text-xs h-10"
+                        className="rounded-none font-mono uppercase text-xs h-10 w-full sm:w-auto"
                     >
                         {isValidating && (
                             <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
@@ -264,7 +264,7 @@ export default function PerplexityImportPage() {
                     <Button
                         type="submit"
                         disabled={isSubmitting || isValidating}
-                        className="rounded-none font-mono uppercase text-xs h-10"
+                        className="rounded-none font-mono uppercase text-xs h-10 w-full sm:w-auto"
                     >
                         {isSubmitting && (
                             <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />
@@ -277,7 +277,7 @@ export default function PerplexityImportPage() {
                             variant="destructive"
                             onClick={() => setConfirmRollbackOpen(true)}
                             disabled={isRollingBack}
-                            className="rounded-none font-mono uppercase text-xs h-10"
+                            className="rounded-none font-mono uppercase text-xs h-10 w-full sm:w-auto"
                         >
                             {isRollingBack && (
                                 <Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" />

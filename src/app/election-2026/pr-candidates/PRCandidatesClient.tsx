@@ -15,7 +15,7 @@ export function PRCandidatesClient({ prData }: PRCandidatesClientProps) {
     const locale = LOCALES.election2026.prCandidates;
 
     return (
-        <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+        <div className="election-typography container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
             <div>
                 <h1 className="font-bebas text-4xl md:text-6xl text-primary">
                     {tString(locale.heading, language)}

@@ -16,6 +16,7 @@ function safeDecode(value: string) {
 }
 
 function normalizeSlug(value: string) {
+    if (typeof value !== 'string') return '';
     return value
         .toLowerCase()
         .trim()
@@ -25,21 +26,26 @@ function normalizeSlug(value: string) {
 
 // Robust fallback search matching frontend logic
 async function fallbackSearch(target: string) {
-    // Fetch recent articles to support fuzzy matching like the frontend
-    const articles = await ElectionArticle.find({}).sort({ createdAt: -1 }).limit(100);
-    const normalizedTarget = normalizeSlug(target);
+    try {
+        // Fetch recent articles to support fuzzy matching like the frontend
+        const articles = await ElectionArticle.find({}).sort({ createdAt: -1 }).limit(100);
+        const normalizedTarget = normalizeSlug(target);
 
-    // 1) Ends-with match
-    let match = articles.find((a) => normalizeSlug(a.slug).endsWith(normalizedTarget));
-    if (match) return match;
+        // 1) Ends-with match
+        let match = articles.find((a) => a.slug && normalizeSlug(a.slug).endsWith(normalizedTarget));
+        if (match) return match;
 
-    // 2) Contains match
-    match = articles.find((a) => normalizeSlug(a.slug).includes(normalizedTarget));
-    if (match) return match;
+        // 2) Contains match
+        match = articles.find((a) => a.slug && normalizeSlug(a.slug).includes(normalizedTarget));
+        if (match) return match;
 
-    // 3) Match against title
-    match = articles.find((a) => normalizeSlug(a.title_en) === normalizedTarget);
-    return match || null;
+        // 3) Match against title
+        match = articles.find((a) => a.title_en && normalizeSlug(a.title_en) === normalizedTarget);
+        return match || null;
+    } catch (error) {
+        console.error('Error in fallbackSearch:', error);
+        return null; // Return null instead of crashing if something goes wrong
+    }
 }
 
 // Primary internal search function
@@ -89,6 +95,7 @@ async function getElectionArticle(request: NextRequest, { params }: { params: Pr
 
         return apiResponse({ electionArticle: article });
     } catch (error) {
+        console.error('Error fetching election article:', error);
         return apiError('Failed to fetch election article', 500);
     }
 }
@@ -100,7 +107,14 @@ async function updateElectionArticle(
 ) {
     try {
         await dbConnect();
+        // Debug logging
+        console.log('Update Request - User:', JSON.stringify(user, null, 2));
+
         const bodyParse = await parseRequestBody(request);
+
+        if (bodyParse.success) {
+            console.log('Update Request - Body:', JSON.stringify(bodyParse.data, null, 2));
+        }
 
         if (!bodyParse.success || !bodyParse.data) {
             return apiError(bodyParse.error || 'Invalid request', 400);
@@ -134,7 +148,8 @@ async function updateElectionArticle(
 
         return apiResponse({ electionArticle: article });
     } catch (error) {
-        return apiError('Failed to update election article', 500);
+        console.error('Error updating election article:', error);
+        return apiError('Failed to update election article', 500, error instanceof Error ? error.message : 'Unknown error');
     }
 }
 
@@ -168,6 +183,7 @@ async function deleteElectionArticle(
 
         return apiResponse({ success: true });
     } catch (error) {
+        console.error('Error deleting election article:', error);
         return apiError('Failed to delete election article', 500);
     }
 }

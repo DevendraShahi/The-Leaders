@@ -101,12 +101,12 @@ export function DataTable<TData, TValue>({
             </div>
 
             <div className="border-t border-b border-border bg-card overflow-hidden">
-                <div className="relative w-full overflow-auto">
-                    <table className="w-full caption-bottom text-sm">
+                <div className="relative w-full overflow-x-auto overflow-y-hidden overscroll-x-contain [touch-action:pan-x] [-webkit-overflow-scrolling:touch]">
+                    <table className="w-full min-w-[980px] lg:min-w-full caption-bottom text-sm">
                         <thead className="[&_tr]:border-b [&_tr]:border-border">
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <tr key={headerGroup.id} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                                    <th className="h-10 w-10 px-3 text-left align-middle">
+                                    <th className="h-10 w-10 px-3 text-left align-middle max-md:whitespace-nowrap">
                                         <input
                                             type="checkbox"
                                             checked={table.getIsAllPageRowsSelected()}
@@ -117,7 +117,7 @@ export function DataTable<TData, TValue>({
                                     </th>
                                     {headerGroup.headers.map((header) => {
                                         return (
-                                            <th key={header.id} className="h-10 px-4 text-left align-middle font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground font-semibold [&:has([role=checkbox])]:pr-0">
+                                            <th key={header.id} className="h-10 px-4 text-left align-middle font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground font-semibold max-md:whitespace-nowrap [&:has([role=checkbox])]:pr-0">
                                                 {header.isPlaceholder
                                                     ? null
                                                     : flexRender(
@@ -138,7 +138,7 @@ export function DataTable<TData, TValue>({
                                         data-state={row.getIsSelected() && "selected"}
                                         className="border-b border-border/50 transition-colors hover:bg-muted/30 data-[state=selected]:bg-muted"
                                     >
-                                        <td className="p-3 align-middle">
+                                        <td className="p-3 align-middle max-md:whitespace-nowrap">
                                             <input
                                                 type="checkbox"
                                                 checked={row.getIsSelected()}
@@ -148,7 +148,7 @@ export function DataTable<TData, TValue>({
                                             />
                                         </td>
                                         {row.getVisibleCells().map((cell) => (
-                                            <td key={cell.id} className="p-4 align-middle [&:has([role=checkbox])]:pr-0">
+                                            <td key={cell.id} className="p-4 align-middle max-md:whitespace-nowrap [&:has([role=checkbox])]:pr-0">
                                                 {(() => {
                                                     const rendered = flexRender(
                                                         cell.column.columnDef.cell,
@@ -183,6 +183,9 @@ export function DataTable<TData, TValue>({
                             )}
                         </tbody>
                     </table>
+                </div>
+                <div className="sm:hidden px-4 py-2 border-t border-border/60 text-[10px] font-mono uppercase tracking-wider text-muted-foreground bg-muted/20">
+                    Swipe horizontally to view all columns
                 </div>
             </div>
 

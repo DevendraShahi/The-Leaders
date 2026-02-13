@@ -352,7 +352,7 @@ export function ElectionSpecial({
     const secondary = activeContent.slice(1);
 
     return (
-        <section className="relative overflow-hidden border-y border-border bg-background pb-24 pt-20">
+        <section className="election-typography relative overflow-hidden border-y border-border bg-background pb-24 pt-20">
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(183,28,28,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(183,28,28,0.05)_1px,transparent_1px)] bg-[size:72px_72px]" />
             <div className="pointer-events-none absolute -left-24 top-10 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
             <div className="pointer-events-none absolute -right-16 bottom-14 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />

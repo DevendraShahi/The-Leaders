@@ -156,15 +156,15 @@ export default function MaintenanceSettingsPage() {
     );
 
     return (
-        <div className="space-y-8 max-w-[1600px] mx-auto pb-20 font-manrope animate-in fade-in duration-500">
+        <div className="space-y-6 sm:space-y-8 max-w-[1600px] mx-auto pb-20 font-manrope animate-in fade-in duration-500">
             {/* Header */}
-            <div className="flex items-end justify-between border-b border-border pb-6">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 border-b border-border pb-5 sm:pb-6">
                 <div>
                     <Link href="/admin/settings" className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-widest font-bold hover:text-primary transition-colors mb-3 group">
                         <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform" />
                         Back to General Settings
                     </Link>
-                    <h1 className="text-4xl font-bebas tracking-wide text-foreground uppercase">
+                    <h1 className="text-2xl sm:text-4xl font-bebas tracking-wide text-foreground uppercase">
                         Maintenance Mode
                     </h1>
                     <p className="text-muted-foreground font-manrope text-sm mt-1">
@@ -174,7 +174,7 @@ export default function MaintenanceSettingsPage() {
                 <button
                     disabled={saving}
                     onClick={handleSubmit}
-                    className="flex items-center gap-2 px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase text-sm font-bold tracking-wider rounded-none shadow-sm hover:shadow-md active:translate-y-[1px]"
+                    className="flex items-center justify-center gap-2 px-6 sm:px-8 py-3 bg-primary hover:bg-primary/90 text-primary-foreground transition-all disabled:opacity-50 disabled:cursor-not-allowed uppercase text-xs sm:text-sm font-bold tracking-wider rounded-none shadow-sm hover:shadow-md active:translate-y-[1px] w-full sm:w-auto"
                 >
                     {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
                     Save Configuration
@@ -184,10 +184,10 @@ export default function MaintenanceSettingsPage() {
             {/* Emergency Global Lock */}
             <div className="grid grid-cols-1 gap-8">
                 <div className="bg-destructive/5 border border-destructive/20 rounded-none overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
-                    <div className="p-6 border-b border-destructive/20 bg-destructive/10 flex items-center justify-between">
+                    <div className="p-4 sm:p-6 border-b border-destructive/20 bg-destructive/10">
                         <div>
-                            <h2 className="text-2xl font-bebas tracking-wide flex items-center gap-2 text-destructive uppercase">
-                                <ShieldAlert className="h-6 w-6" /> Emergency Global Lock
+                            <h2 className="text-xl sm:text-2xl font-bebas tracking-wide flex items-center gap-2 text-destructive uppercase">
+                                <ShieldAlert className="h-5 w-5 sm:h-6 sm:w-6" /> Emergency Global Lock
                             </h2>
                             <p className="text-sm text-muted-foreground mt-1 font-manrope max-w-2xl">
                                 Activating this will lock the <span className="font-bold underline text-destructive">ENTIRE</span> platform. Only admins will be able to access the site. Use this only for critical updates or security emergencies.
@@ -209,8 +209,8 @@ export default function MaintenanceSettingsPage() {
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                     {/* Public Zone */}
                     <div className="bg-card border border-border hover:border-primary/50 transition-colors shadow-sm rounded-none overflow-hidden flex flex-col h-full">
-                        <div className="p-6 border-b border-border bg-muted/30">
-                            <h2 className="text-xl font-bebas tracking-wide text-foreground uppercase">
+                        <div className="p-4 sm:p-6 border-b border-border bg-muted/30">
+                            <h2 className="text-lg sm:text-xl font-bebas tracking-wide text-foreground uppercase">
                                 Public Marketing Site
                             </h2>
                             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider font-bold">
@@ -227,11 +227,11 @@ export default function MaintenanceSettingsPage() {
                                 isMain
                             />
 
-                            <div className="p-4 bg-muted/5 flex-1">
+                            <div className="p-3 sm:p-4 bg-muted/5 flex-1">
                                 <p className="text-[10px] uppercase font-bold text-muted-foreground mb-4 pl-2 tracking-widest opacity-70">
                                     Individual Page Controls
                                 </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                                     {Object.keys(INITIAL_MAINTENANCE.groups.public.pages).map(pageKey => (
                                         <div key={pageKey} className="bg-background border border-border shadow-sm hover:border-primary/30 transition-colors">
                                             <MaintenanceRow
@@ -249,8 +249,8 @@ export default function MaintenanceSettingsPage() {
 
                     {/* Election Zone */}
                     <div className="bg-card border border-border hover:border-primary/50 transition-colors shadow-sm rounded-none overflow-hidden flex flex-col h-full">
-                        <div className="p-6 border-b border-border bg-muted/30">
-                            <h2 className="text-xl font-bebas tracking-wide text-foreground uppercase">
+                        <div className="p-4 sm:p-6 border-b border-border bg-muted/30">
+                            <h2 className="text-lg sm:text-xl font-bebas tracking-wide text-foreground uppercase">
                                 Election 2026 Hub
                             </h2>
                             <p className="text-xs text-muted-foreground mt-1 uppercase tracking-wider font-bold">
@@ -267,11 +267,11 @@ export default function MaintenanceSettingsPage() {
                                 isMain
                             />
 
-                            <div className="p-4 bg-muted/5 flex-1">
+                            <div className="p-3 sm:p-4 bg-muted/5 flex-1">
                                 <p className="text-[10px] uppercase font-bold text-muted-foreground mb-4 pl-2 tracking-widest opacity-70">
                                     Individual Page Controls
                                 </p>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3">
                                     {Object.keys(INITIAL_MAINTENANCE.groups.election.pages).map(pageKey => (
                                         <div key={pageKey} className="bg-background border border-border shadow-sm hover:border-primary/30 transition-colors">
                                             <MaintenanceRow

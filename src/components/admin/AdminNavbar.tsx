@@ -24,7 +24,7 @@ export default function AdminNavbar({ onMobileMenuClick }: AdminNavbarProps) {
 
     return (
         <header className="sticky top-0 z-30 w-full bg-background border-b border-border shadow-sm">
-            <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 h-auto sm:h-16 py-3 sm:py-0">
+            <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-6 h-auto sm:h-16 py-3 sm:py-0 gap-2">
                 <div className="flex items-center gap-4 w-full sm:w-auto">
                     <button
                         onClick={onMobileMenuClick}
@@ -47,6 +47,51 @@ export default function AdminNavbar({ onMobileMenuClick }: AdminNavbarProps) {
                 {/* Mobile Breadcrumbs Row */}
                 <div className="sm:hidden w-full mt-3 pt-3 border-t border-border flex">
                     <AdminBreadcrumbs />
+                </div>
+
+                {/* Mobile Action Row */}
+                <div className="sm:hidden w-full mt-2 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <ThemeToggle />
+                        <div className="flex flex-col">
+                            <span className="text-xs font-bold font-manrope leading-none">
+                                {user?.name || 'Administrator'}
+                            </span>
+                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                                Verified User
+                            </span>
+                        </div>
+                    </div>
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="rounded-none border-border h-9 w-9 bg-card hover:bg-muted"
+                            >
+                                <User className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-56 rounded-none border-border">
+                            <DropdownMenuLabel className="font-bebas tracking-wide text-lg">My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem asChild className="rounded-none cursor-pointer">
+                                <Link href="/admin/settings" className="flex items-center gap-2">
+                                    <Settings className="h-4 w-4" />
+                                    <span>Settings</span>
+                                </Link>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={logout}
+                                className="text-red-600 focus:text-red-600 focus:bg-red-50 dark:focus:bg-red-900/10 rounded-none cursor-pointer"
+                            >
+                                <LogOut className="h-4 w-4 mr-2" />
+                                <span>Log out</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
 
                 <div className="hidden sm:flex items-center gap-4">

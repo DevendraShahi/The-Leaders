@@ -152,7 +152,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
     const blocks = (content || "").split(/\n{2,}/).map((raw) => raw.trim()).filter(Boolean);
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="election-typography min-h-screen bg-background text-foreground">
             {/* Reading Progress Bar */}
             <div
                 className="fixed top-0 left-0 h-0.5 bg-primary z-50 transition-all duration-100"
@@ -201,7 +201,7 @@ export function AnalysisDetailClient({ article }: AnalysisDetailClientProps) {
                         </Badge>
 
                         {/* Title */}
-                        <h1 className="font-bebas text-5xl sm:text-6xl md:text-7xl leading-[0.9] tracking-tight uppercase text-foreground max-w-3xl">
+                        <h1 className="font-bebas text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] tracking-tight uppercase text-foreground max-w-3xl">
                             {title}
                         </h1>
 

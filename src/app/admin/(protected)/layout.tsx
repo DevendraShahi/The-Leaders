@@ -69,15 +69,15 @@ export default function ProtectedLayout({
 
             {/* Main Content */}
             <div className={cn(
-                "flex-1 flex flex-col min-h-screen transition-all duration-300 ease-in-out",
+                "flex-1 flex flex-col min-h-screen min-w-0 transition-all duration-300 ease-in-out",
                 isCollapsed ? "md:ml-[5rem]" : "md:ml-[16rem]"
             )}>
                 {/* Navbar */}
                 <AdminNavbar onMobileMenuClick={() => setMobileOpen(true)} />
 
                 {/* Page Content */}
-                <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-hidden">
-                    <div className="max-w-[1600px] mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-auto">
+                    <div className="max-w-[1600px] min-w-0 mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
                         {children}
                     </div>
                 </main>

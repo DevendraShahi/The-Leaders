@@ -252,6 +252,8 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
             style={{
                 perspective: "1000px",
                 transformStyle: "preserve-3d",
+                paddingTop: isNepali ? "0.08em" : "0",
+                paddingBottom: isNepali ? "0.1em" : "0",
             }}
         >
             {/* Smooth Blob Follower */}
@@ -290,7 +292,7 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
                             color: "var(--foreground)",
                             transition: "color 0.1s linear",
                             textShadow: "0 0 8px rgba(183, 28, 28, 0.16)",
-                            lineHeight: isNepali ? 1.14 : 1,
+                            lineHeight: isNepali ? 1.22 : 1,
                         }}
                     >
                         {letter === " " ? "\u00A0" : letter}

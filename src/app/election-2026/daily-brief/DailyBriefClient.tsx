@@ -18,7 +18,7 @@ export function DailyBriefClient({ briefs, layout, showLayoutLabel }: DailyBrief
     const locale = LOCALES.dailyBriefIndex;
 
     return (
-        <div className="min-h-screen bg-background relative overflow-hidden">
+        <div className="election-typography min-h-screen bg-background relative overflow-hidden">
             {/* Subtle Paper Grain */}
             <div
                 className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-multiply"

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-import { Mail, Trash2, Search, RefreshCcw, Paperclip, ArrowRight } from "lucide-react";
+import { Mail, Trash2, Search, RefreshCcw, Paperclip, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -39,6 +39,7 @@ export default function MessagesPage() {
     const [searchTerm, setSearchTerm] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [mobileView, setMobileView] = useState<"list" | "detail">("list");
 
     useEffect(() => {
         fetchMessages();
@@ -87,10 +88,16 @@ export default function MessagesPage() {
         msg.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    useEffect(() => {
+        if (selectedMessage && typeof window !== "undefined" && window.innerWidth < 768) {
+            setMobileView("detail");
+        }
+    }, [selectedMessage]);
+
     return (
-        <div className="h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-background">
+        <div className="h-[calc(100vh-4rem)] flex flex-col md:flex-row bg-background min-w-0">
             {/* Sidebar / List View */}
-            <div className="w-full md:w-1/3 min-w-[320px] border-r border-border flex flex-col h-full bg-muted/10">
+            <div className={`w-full md:w-1/3 md:min-w-[320px] border-r border-border flex flex-col h-full bg-muted/10 ${mobileView === "detail" ? "hidden md:flex" : "flex"}`}>
                 <div className="p-4 border-b border-border space-y-4">
                     <div className="flex items-center justify-between">
                         <h1 className="font-bebas text-2xl tracking-wide">Messages ({messages.length})</h1>
@@ -147,16 +154,24 @@ export default function MessagesPage() {
             </div>
 
             {/* Detail View */}
-            <div className="flex-1 h-full overflow-y-auto bg-background p-4 md:p-8">
+            <div className={`flex-1 h-full overflow-y-auto bg-background p-4 md:p-8 ${mobileView === "list" ? "hidden md:block" : "block"}`}>
                 {selectedMessage ? (
                     <div className="max-w-3xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-300">
                         {/* Header Actions */}
-                        <div className="flex justify-between items-start">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-start">
                             <div className="space-y-1">
+                                <button
+                                    type="button"
+                                    onClick={() => setMobileView("list")}
+                                    className="md:hidden inline-flex items-center gap-2 text-xs uppercase tracking-wider font-bold text-muted-foreground hover:text-primary mb-2"
+                                >
+                                    <ArrowLeft className="h-3.5 w-3.5" />
+                                    Back to Messages
+                                </button>
                                 <h2 className="text-3xl font-bebas tracking-wide text-foreground">
                                     {selectedMessage.subject}
                                 </h2>
-                                <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                                <div className="flex flex-wrap items-center gap-2 text-muted-foreground text-sm">
                                     <span>From: <span className="text-foreground font-medium">{selectedMessage.name}</span> &lt;{selectedMessage.email}&gt;</span>
                                     {selectedMessage.phone && <span>• {selectedMessage.phone}</span>}
                                 </div>
@@ -166,7 +181,7 @@ export default function MessagesPage() {
                                 </div>
                             </div>
 
-                            <div className="flex gap-2">
+                            <div className="flex gap-2 w-full sm:w-auto">
                                 <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
                                     <DialogTrigger asChild>
                                         <Button variant="outline" size="icon" className="text-destructive hover:bg-destructive/10 hover:text-destructive border-border/50">
@@ -193,7 +208,7 @@ export default function MessagesPage() {
                                     </DialogContent>
                                 </Dialog>
 
-                                <Button asChild className="gap-2">
+                                <Button asChild className="gap-2 flex-1 sm:flex-none">
                                     <a href={`mailto:${selectedMessage.email}?subject=Re: ${selectedMessage.subject}`}>
                                         <Mail className="h-4 w-4" />
                                         Reply via Email

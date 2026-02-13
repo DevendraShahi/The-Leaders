@@ -1,7 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
 
@@ -9,48 +8,50 @@ export function Manifesto() {
     const { language } = useLanguage();
     const l = LOCALES.home.manifesto;
 
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "end start"],
-    });
-
-    const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-
     return (
-        <section ref={ref} className="relative h-[80vh] flex items-center justify-center overflow-hidden">
-            {/* Parallax Background */}
-            <motion.div
-                style={{ y }}
-                className="absolute inset-0 z-0"
-            >
-                <div
-                    className="w-full h-[120%] bg-cover bg-center opacity-40 brightness-50"
-                    style={{
-                        backgroundImage: "url('https://images.unsplash.com/photo-1544555029-7df9f893f631?q=80&w=2666&auto=format&fit=crop')", // Burning paper / fire embers
-                    }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background" />
-            </motion.div>
-
-            <div className="container relative z-10 px-4 text-center">
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
+            <div className="container relative z-10 px-4 flex items-center justify-center">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 1 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    className="text-center max-w-4xl"
                 >
-                    <h2 className="text-4xl md:text-7xl lg:text-8xl font-bebas font-bold text-foreground uppercase leading-none tracking-tight mb-8">
-                        &ldquo;{tString(l.part1, language)} <br className="hidden md:block" />
-                        <span className="text-primary mx-2">{tString(l.highlight1, language)}</span> <br />
+                    <motion.h2
+                        className={`text-3xl md:text-5xl lg:text-6xl font-bebas text-foreground tracking-tight mb-8 drop-shadow-md ${language === "ne" ? "font-semibold leading-[1.2]" : "font-black uppercase leading-[0.94]"
+                            }`}
+                        animate={{ y: [0, -3, 0] }}
+                        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                        &ldquo;{tString(l.part1, language)}
+                        <br className="hidden md:block" />
+                        <span className="text-primary mx-2">{tString(l.highlight1, language)}</span>
+                        <br />
                         {tString(l.part2, language)}&rdquo;
-                    </h2>
-                    <p className="text-xl md:text-3xl text-muted-foreground font-bebas tracking-widest uppercase">
+                    </motion.h2>
+
+                    <motion.p
+                        className={`mx-auto max-w-3xl text-base md:text-xl text-muted-foreground drop-shadow-sm ${language === "ne" ? "font-sans font-medium leading-[1.55]" : "font-bebas uppercase tracking-[0.08em]"
+                            }`}
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        transition={{ delay: 0.2, duration: 0.6 }}
+                    >
                         {tString(l.part3, language)}{" "}
-                        <span className="text-foreground border-b-2 border-primary">
+                        <span className="text-foreground border-b-2 border-primary/80">
                             {tString(l.highlight2, language)}
                         </span>
                         {tString(l.part4, language)}
-                    </p>
+                    </motion.p>
+
+                    <div className="mx-auto mt-8 flex w-fit items-center gap-2 border border-primary/30 bg-card/40 backdrop-blur-sm px-4 py-1.5">
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
+                            {language === "en" ? "Civic Manifesto" : "नागरिक घोषणापत्र"}
+                        </span>
+                        <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                    </div>
                 </motion.div>
             </div>
         </section>

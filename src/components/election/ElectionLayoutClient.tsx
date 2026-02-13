@@ -10,7 +10,7 @@ export function ElectionLayoutClient({
 }) {
     return (
         <ElectionProviders>
-            <div className="flex min-h-screen flex-col bg-background">
+            <div className="election-typography flex min-h-screen flex-col bg-background">
                 <ElectionNavbar />
                 <main className="flex-1">
                     {children}

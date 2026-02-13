@@ -12,7 +12,7 @@ export function MapV2Client() {
     const nav = LOCALES.election2026.nav;
 
     return (
-        <div className="flex flex-col min-h-screen bg-background">
+        <div className="election-typography flex flex-col min-h-screen bg-background">
             <Navbar />
             <main className="flex-1 px-0 py-8">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">

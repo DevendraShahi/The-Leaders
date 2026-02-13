@@ -156,18 +156,18 @@ export default function MediaLibrary() {
     };
 
     return (
-        <div className="space-y-6 h-[calc(100vh-100px)] flex flex-col font-manrope">
+        <div className="space-y-6 h-[calc(100vh-100px)] flex flex-col font-manrope min-w-0">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border pb-4">
                 <div className="flex flex-col">
-                    <h1 className="text-3xl font-bebas tracking-wide text-foreground uppercase">Media Library</h1>
+                    <h1 className="text-2xl sm:text-3xl font-bebas tracking-wide text-foreground uppercase">Media Library</h1>
                     <p className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Manage your digital assets</p>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2 w-full sm:w-auto">
                     {selectedIds.length > 0 && (
                         <button
                             onClick={handleDelete}
-                            className="flex items-center gap-2 px-4 py-2 bg-destructive/10 text-destructive border border-destructive hover:bg-destructive hover:text-white transition-colors uppercase text-xs font-bold tracking-wider rounded-none"
+                            className="flex items-center justify-center gap-2 px-4 py-2 bg-destructive/10 text-destructive border border-destructive hover:bg-destructive hover:text-white transition-colors uppercase text-xs font-bold tracking-wider rounded-none w-full sm:w-auto"
                         >
                             <Trash2 className="h-4 w-4" />
                             Delete ({selectedIds.length})
@@ -177,7 +177,7 @@ export default function MediaLibrary() {
                     <button
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex items-center gap-2 px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:opacity-50 uppercase text-xs font-bold tracking-wider rounded-none"
+                        className="flex items-center justify-center gap-2 px-6 py-2 bg-primary hover:bg-primary/90 text-primary-foreground transition-colors disabled:opacity-50 uppercase text-xs font-bold tracking-wider rounded-none w-full sm:w-auto"
                     >
                         {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
                         Upload
@@ -206,7 +206,7 @@ export default function MediaLibrary() {
                     />
                 </div>
 
-                <div className="flex items-center gap-2 min-w-[200px] border border-input bg-background px-2">
+                <div className="flex items-center gap-2 w-full sm:min-w-[200px] sm:w-auto border border-input bg-background px-2">
                     <Filter className="h-4 w-4 text-muted-foreground" />
                     <select
                         value={categoryFilter}
@@ -221,7 +221,7 @@ export default function MediaLibrary() {
                     </select>
                 </div>
 
-                <div className="flex items-center gap-2 min-w-[160px] border border-input bg-background px-2">
+                <div className="flex items-center gap-2 w-full sm:min-w-[160px] sm:w-auto border border-input bg-background px-2">
                     <input
                         type="date"
                         value={dateFrom}
@@ -234,7 +234,7 @@ export default function MediaLibrary() {
                     />
                 </div>
 
-                <div className="flex items-center gap-2 min-w-[160px] border border-input bg-background px-2">
+                <div className="flex items-center gap-2 w-full sm:min-w-[160px] sm:w-auto border border-input bg-background px-2">
                     <input
                         type="date"
                         value={dateTo}
@@ -253,7 +253,7 @@ export default function MediaLibrary() {
                         setDateTo('');
                         setPage(1);
                     }}
-                    className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-background border border-input hover:bg-muted rounded-none transition-colors"
+                    className="px-4 py-2 text-xs font-bold uppercase tracking-wider bg-background border border-input hover:bg-muted rounded-none transition-colors w-full sm:w-auto"
                 >
                     Clear Dates
                 </button>
@@ -271,7 +271,7 @@ export default function MediaLibrary() {
                         <p className="font-bebas text-xl tracking-wide">No images found</p>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
                         {media.map((item) => (
                             <div
                                 key={item._id}
@@ -327,11 +327,11 @@ export default function MediaLibrary() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div className="flex justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                     <button
                         onClick={() => setPage(p => Math.max(1, p - 1))}
                         disabled={page === 1}
-                        className="px-6 py-2 text-xs font-bold uppercase tracking-wider bg-card border border-border hover:bg-muted disabled:opacity-50 rounded-none transition-colors"
+                        className="px-5 py-2 text-xs font-bold uppercase tracking-wider bg-card border border-border hover:bg-muted disabled:opacity-50 rounded-none transition-colors"
                     >
                         Previous
                     </button>
@@ -341,7 +341,7 @@ export default function MediaLibrary() {
                     <button
                         onClick={() => setPage(p => Math.min(totalPages, p + 1))}
                         disabled={page === totalPages}
-                        className="px-6 py-2 text-xs font-bold uppercase tracking-wider bg-card border border-border hover:bg-muted disabled:opacity-50 rounded-none transition-colors"
+                        className="px-5 py-2 text-xs font-bold uppercase tracking-wider bg-card border border-border hover:bg-muted disabled:opacity-50 rounded-none transition-colors"
                     >
                         Next
                     </button>

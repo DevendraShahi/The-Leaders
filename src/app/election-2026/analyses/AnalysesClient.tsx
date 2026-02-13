@@ -16,7 +16,7 @@ export function AnalysesClient({ articles }: AnalysesClientProps) {
     const analysesLocale = LOCALES.analysesIndex;
 
     return (
-        <div className="min-h-screen bg-background text-foreground">
+        <div className="election-typography min-h-screen bg-background text-foreground">
             <div className="border-b border-border/30 bg-gradient-to-b from-background to-background/60">
                 <div className="container mx-auto max-w-5xl px-4 py-8 md:py-12">
                     <div className="mb-6 flex items-center justify-between gap-4">

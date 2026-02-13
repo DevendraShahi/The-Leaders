@@ -29,6 +29,8 @@ export default function ElectionCountdown() {
     const ctasRef = useRef<HTMLDivElement | null>(null);
     const primaryCtaRef = useRef<HTMLButtonElement | null>(null);
     const secondaryCtaRef = useRef<HTMLButtonElement | null>(null);
+    const [isHeroHovered, setIsHeroHovered] = useState(false);
+    const [isWebglReady, setIsWebglReady] = useState(false);
     const [countdown, setCountdown] = useState<CountdownState>({
         days: 0,
         hours: 0,
@@ -39,37 +41,37 @@ export default function ElectionCountdown() {
     const content =
         language === "ne"
             ? {
-                  badge: "द लिडर्स · नागरिक अभिलेख",
-                  titleTop: "द लिडर्स",
-                  titleBottom: "सत्ता, इतिहास र उत्तरदायित्व",
-                  description:
-                      "नेपालको राजनीतिक यात्रालाई सन्दर्भ, प्रमाण र ऐतिहासिक निरन्तरतासहित पढ्न, बुझ्न र तुलना गर्न तयार गरिएको स्वतन्त्र डिजिटल अभिलेख।",
-                  subline: "स्वतन्त्र अभिलेख · बहु-दृष्टिकोण · प्रमाणमा आधारित अध्ययन",
-                  countdownLabel: "निर्वाचन काउन्टडाउन",
-                  electionDate: "३ मार्च २०२६ · फागुन २१, २०८२",
-                  days: "दिन",
-                  hours: "घण्टा",
-                  minutes: "मिनेट",
-                  seconds: "सेकेन्ड",
-                  primary: "नेताहरू हेर्नुहोस्",
-                  secondary: "लेखहरू पढ्नुहोस्",
-              }
+                badge: "द लिडर्स · नागरिक अभिलेख",
+                titleTop: "द लिडर्स",
+                titleBottom: "सत्ता, इतिहास र उत्तरदायित्व",
+                description:
+                    "नेपालको राजनीतिक यात्रालाई सन्दर्भ, प्रमाण र ऐतिहासिक निरन्तरतासहित पढ्न, बुझ्न र तुलना गर्न तयार गरिएको स्वतन्त्र डिजिटल अभिलेख।",
+                subline: "स्वतन्त्र अभिलेख · बहु-दृष्टिकोण · प्रमाणमा आधारित अध्ययन",
+                countdownLabel: "निर्वाचन काउन्टडाउन",
+                electionDate: "३ मार्च २०२६ · फागुन २१, २०८२",
+                days: "दिन",
+                hours: "घण्टा",
+                minutes: "मिनेट",
+                seconds: "सेकेन्ड",
+                primary: "नेताहरू हेर्नुहोस्",
+                secondary: "लेखहरू पढ्नुहोस्",
+            }
             : {
-                  badge: "The Leaders · Civic Archive",
-                  titleTop: "THE LEADERS",
-                  titleBottom: "POWER, HISTORY, ACCOUNTABILITY",
-                  description:
-                      "An independent political archive built for serious readers who want context, evidence, and continuity in Nepal’s democratic story.",
-                  subline: "Independent archive · multi-perspective reading · evidence-led context",
-                  countdownLabel: "Election Countdown",
-                  electionDate: "March 3, 2026 · Falgun 21, 2082",
-                  days: "Days",
-                  hours: "Hours",
-                  minutes: "Minutes",
-                  seconds: "Seconds",
-                  primary: "Explore Leaders",
-                  secondary: "Read Articles",
-              };
+                badge: "The Leaders · Civic Archive",
+                titleTop: "THE LEADERS",
+                titleBottom: "POWER, HISTORY, ACCOUNTABILITY",
+                description:
+                    "An independent political archive built for serious readers who want context, evidence, and continuity in Nepal’s democratic story.",
+                subline: "Independent archive · multi-perspective reading · evidence-led context",
+                countdownLabel: "Election Countdown",
+                electionDate: "March 3, 2026 · Falgun 21, 2082",
+                days: "Days",
+                hours: "Hours",
+                minutes: "Minutes",
+                seconds: "Seconds",
+                primary: "Explore Leaders",
+                secondary: "Read Articles",
+            };
 
     useEffect(() => {
         const target = new Date(ELECTION_TARGET_NP).getTime();
@@ -96,7 +98,10 @@ export default function ElectionCountdown() {
         if (!canvas) return;
 
         const gl = canvas.getContext("webgl", { antialias: true, alpha: true });
-        if (!gl) return;
+        if (!gl) {
+            setIsWebglReady(false);
+            return;
+        }
 
         const vertexShaderSource = `
             attribute vec2 a_position;
@@ -110,29 +115,100 @@ export default function ElectionCountdown() {
             uniform vec2 u_resolution;
             uniform float u_time;
             uniform float u_intensity;
+            uniform vec2 u_pointer;
+            uniform vec2 u_velocity;
+            uniform float u_energy;
+            uniform float u_hover;
+            uniform float u_dark;
 
-            float linePattern(vec2 uv, float spacing, float width) {
-                vec2 g = abs(fract(uv / spacing - 0.5) - 0.5) / fwidth(uv / spacing);
+            float hash(vec2 p) {
+                return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+            }
+
+            float noise(in vec2 p) {
+                vec2 i = floor(p);
+                vec2 f = fract(p);
+                vec2 u = f * f * (3.0 - 2.0 * f);
+                return mix(
+                    mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),
+                    mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+                    u.y
+                );
+            }
+
+            float fbm(vec2 p) {
+                float value = 0.0;
+                float amp = 0.5;
+                for (int i = 0; i < 5; i++) {
+                    value += amp * noise(p);
+                    p = p * 2.02 + vec2(12.17, 4.31);
+                    amp *= 0.52;
+                }
+                return value;
+            }
+
+            float mesh(vec2 p, float scale, float width) {
+                vec2 g = abs(fract(p * scale - 0.5) - 0.5) / fwidth(p * scale);
                 float line = min(g.x, g.y);
-                return 1.0 - smoothstep(0.0, width, line);
+                return 1.0 - smoothstep(width, width + 1.1, line);
+            }
+
+            vec3 basePalette(float dark, float t) {
+                vec3 darkA = vec3(0.028, 0.032, 0.042);
+                vec3 darkB = vec3(0.058, 0.062, 0.082);
+                vec3 lightA = vec3(0.962, 0.963, 0.968);
+                vec3 lightB = vec3(0.905, 0.912, 0.928);
+                vec3 a = mix(lightA, darkA, dark);
+                vec3 b = mix(lightB, darkB, dark);
+                return mix(a, b, t);
             }
 
             void main() {
                 vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-                vec2 p = uv * vec2(u_resolution.x / u_resolution.y, 1.0);
+                vec2 aspect = vec2(u_resolution.x / u_resolution.y, 1.0);
+                vec2 p = uv * aspect;
+                vec2 pointer = u_pointer * aspect;
+                vec2 velocity = u_velocity;
 
-                float wave = sin((p.x * 8.0) + (u_time * 0.25)) * 0.004;
-                vec2 shifted = vec2(p.x, p.y + wave);
+                vec2 delta = p - pointer;
+                float dist = max(length(delta), 0.0001);
+                float magnetic = exp(-dist * 4.6) * (0.22 + 0.95 * u_hover);
 
-                float coarse = linePattern(shifted, 0.12, 1.3);
-                float fine = linePattern(shifted + vec2(0.02, 0.01), 0.06, 1.8);
+                float n1 = fbm(p * 2.4 + vec2(u_time * 0.06, -u_time * 0.04));
+                float n2 = fbm(p * 5.7 - vec2(u_time * 0.04, u_time * 0.05));
+                vec2 flow = vec2(n1 - 0.5, n2 - 0.5) * 0.038 * u_intensity;
 
-                float vignette = 1.0 - smoothstep(0.25, 1.1, distance(uv, vec2(0.5)));
-                float signal = (coarse * 0.22 + fine * 0.08) * (0.45 + vignette * 0.55) * u_intensity;
+                vec2 pull = normalize(delta + vec2(0.00001)) * magnetic * 0.08;
+                vec2 vortex = vec2(-delta.y, delta.x) * (sin(dist * 22.0 - u_time * 3.2) * magnetic * 0.024);
 
-                vec3 base = vec3(0.7176, 0.1098, 0.1098); // #B71C1C
-                vec3 color = base * signal;
-                gl_FragColor = vec4(color, signal * 0.45);
+                vec2 displaced = p + flow + pull + vortex + velocity * magnetic * 0.05;
+
+                float noiseField = fbm(displaced * 3.6 + vec2(0.0, u_time * 0.03));
+                float coarse = mesh(displaced + vec2(noiseField * 0.08), 10.0, 0.82);
+                float fine = mesh(displaced - vec2(noiseField * 0.05), 21.0, 1.26);
+
+                float splitAmount = clamp(length(velocity) * 0.22 + u_energy * 0.18, 0.0, 0.055);
+                vec2 splitDir = normalize(velocity + vec2(0.001, 0.001));
+                float rField = mesh(displaced + splitDir * splitAmount, 15.0, 1.05);
+                float bField = mesh(displaced - splitDir * splitAmount, 15.0, 1.05);
+
+                float spotlight = smoothstep(0.55, 0.0, dist) * (0.22 + u_energy * 0.55) * u_hover;
+                float edgeGlow = smoothstep(0.20, 0.02, abs(dist - 0.12)) * (0.08 + u_energy * 0.2) * u_hover;
+                float vignette = 1.0 - smoothstep(0.18, 0.98, distance(uv, vec2(0.5)));
+
+                vec3 accent = vec3(0.7176, 0.1098, 0.1098);
+                vec3 base = basePalette(u_dark, uv.y * 0.8 + noiseField * 0.2);
+                vec3 meshTone = mix(vec3(0.06, 0.065, 0.08), vec3(0.85, 0.86, 0.89), u_dark);
+
+                vec3 field = meshTone * (coarse * 0.17 + fine * 0.11) * vignette;
+                field += vec3(rField * 0.22, fine * 0.08, bField * 0.22) * (0.35 + u_energy * 0.6);
+
+                vec3 glow = accent * (spotlight * 1.45 + edgeGlow * 1.75 + magnetic * 0.14);
+                float grain = (hash(gl_FragCoord.xy + u_time * 32.0) - 0.5) * 0.035;
+
+                vec3 color = base + field + glow + vec3(grain);
+                float alpha = clamp(0.22 + (coarse + fine) * 0.16 + spotlight * 0.55 + edgeGlow * 0.42, 0.0, 0.9);
+                gl_FragColor = vec4(color, alpha);
             }
         `;
 
@@ -150,14 +226,24 @@ export default function ElectionCountdown() {
 
         const vertexShader = compileShader(gl.VERTEX_SHADER, vertexShaderSource);
         const fragmentShader = compileShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
-        if (!vertexShader || !fragmentShader) return;
+        if (!vertexShader || !fragmentShader) {
+            setIsWebglReady(false);
+            return;
+        }
 
         const program = gl.createProgram();
-        if (!program) return;
+        if (!program) {
+            setIsWebglReady(false);
+            return;
+        }
         gl.attachShader(program, vertexShader);
         gl.attachShader(program, fragmentShader);
         gl.linkProgram(program);
-        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) return;
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            setIsWebglReady(false);
+            return;
+        }
+        setIsWebglReady(true);
         gl.useProgram(program);
 
         const positionBuffer = gl.createBuffer();
@@ -182,10 +268,30 @@ export default function ElectionCountdown() {
         const resolutionLoc = gl.getUniformLocation(program, "u_resolution");
         const timeLoc = gl.getUniformLocation(program, "u_time");
         const intensityLoc = gl.getUniformLocation(program, "u_intensity");
+        const pointerLoc = gl.getUniformLocation(program, "u_pointer");
+        const velocityLoc = gl.getUniformLocation(program, "u_velocity");
+        const energyLoc = gl.getUniformLocation(program, "u_energy");
+        const hoverLoc = gl.getUniformLocation(program, "u_hover");
+        const darkLoc = gl.getUniformLocation(program, "u_dark");
 
         const getThemeIntensity = () =>
-            document.documentElement.classList.contains("dark") ? 1.0 : 0.62;
+            document.documentElement.classList.contains("dark") ? 1.0 : 0.68;
         let intensity = getThemeIntensity();
+        let darkFlag = document.documentElement.classList.contains("dark") ? 1 : 0;
+        const pointerState = { x: 0.5, y: 0.5, vx: 0.0, vy: 0.0, energy: 0.0, hover: 0.0 };
+        let lastPointerX = 0.5;
+        let lastPointerY = 0.5;
+
+        const toPointerX = gsap.quickTo(pointerState, "x", { duration: 0.5, ease: "power3.out" });
+        const toPointerY = gsap.quickTo(pointerState, "y", { duration: 0.5, ease: "power3.out" });
+        const toVelocityX = gsap.quickTo(pointerState, "vx", { duration: 0.32, ease: "power3.out" });
+        const toVelocityY = gsap.quickTo(pointerState, "vy", { duration: 0.32, ease: "power3.out" });
+        const toEnergy = gsap.quickTo(pointerState, "energy", { duration: 0.45, ease: "power2.out" });
+        const toHover = gsap.quickTo(pointerState, "hover", { duration: 0.35, ease: "power2.out" });
+
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+        const allowInteractivePointer = !reducedMotion && hasFinePointer;
 
         const resize = () => {
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -203,6 +309,7 @@ export default function ElectionCountdown() {
 
         const observer = new MutationObserver(() => {
             intensity = getThemeIntensity();
+            darkFlag = document.documentElement.classList.contains("dark") ? 1 : 0;
         });
         observer.observe(document.documentElement, {
             attributes: true,
@@ -230,13 +337,67 @@ export default function ElectionCountdown() {
         };
         document.addEventListener("visibilitychange", onVisibility);
 
+        const onPointerMove = (event: PointerEvent) => {
+            if (!allowInteractivePointer || !rootRef.current) return;
+            const rect = rootRef.current.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = 1 - (event.clientY - rect.top) / rect.height;
+            const clampedX = Math.min(1, Math.max(0, x));
+            const clampedY = Math.min(1, Math.max(0, y));
+
+            const dx = clampedX - lastPointerX;
+            const dy = clampedY - lastPointerY;
+            const speed = Math.min(Math.sqrt(dx * dx + dy * dy) * 28.0, 1.0);
+
+            lastPointerX = clampedX;
+            lastPointerY = clampedY;
+
+            toPointerX(clampedX);
+            toPointerY(clampedY);
+            toVelocityX(dx * 9.0);
+            toVelocityY(dy * 9.0);
+            toEnergy(speed);
+
+            rootRef.current.style.setProperty("--hero-mx", `${clampedX * 100}%`);
+            rootRef.current.style.setProperty("--hero-my", `${(1 - clampedY) * 100}%`);
+            rootRef.current.style.setProperty("--hero-energy", String(speed));
+        };
+
+        const onPointerEnter = () => {
+            if (!allowInteractivePointer) return;
+            toHover(1);
+            setIsHeroHovered(true);
+        };
+
+        const onPointerLeave = () => {
+            toHover(0);
+            toEnergy(0);
+            toVelocityX(0);
+            toVelocityY(0);
+            setIsHeroHovered(false);
+        };
+
+        if (rootRef.current) {
+            rootRef.current.addEventListener("pointermove", onPointerMove, { passive: true });
+            rootRef.current.addEventListener("pointerenter", onPointerEnter, { passive: true });
+            rootRef.current.addEventListener("pointerleave", onPointerLeave, { passive: true });
+        }
+
         const render = () => {
             if (isVisible && inViewport) {
                 resize();
                 const elapsed = (performance.now() - start) / 1000;
+                pointerState.vx *= 0.94;
+                pointerState.vy *= 0.94;
+                pointerState.energy *= 0.965;
                 gl.uniform2f(resolutionLoc, canvas.width, canvas.height);
                 gl.uniform1f(timeLoc, elapsed);
                 gl.uniform1f(intensityLoc, intensity);
+                gl.uniform2f(pointerLoc, pointerState.x, pointerState.y);
+                gl.uniform2f(velocityLoc, pointerState.vx, pointerState.vy);
+                gl.uniform1f(energyLoc, pointerState.energy);
+                gl.uniform1f(hoverLoc, pointerState.hover);
+                gl.uniform1f(darkLoc, darkFlag);
                 gl.clearColor(0, 0, 0, 0);
                 gl.clear(gl.COLOR_BUFFER_BIT);
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
@@ -246,11 +407,17 @@ export default function ElectionCountdown() {
         render();
 
         return () => {
+            setIsWebglReady(false);
             cancelAnimationFrame(raf);
             document.removeEventListener("visibilitychange", onVisibility);
             sectionObserver.disconnect();
             window.removeEventListener("resize", resize);
             observer.disconnect();
+            if (rootRef.current) {
+                rootRef.current.removeEventListener("pointermove", onPointerMove);
+                rootRef.current.removeEventListener("pointerenter", onPointerEnter);
+                rootRef.current.removeEventListener("pointerleave", onPointerLeave);
+            }
             gl.deleteBuffer(positionBuffer);
             gl.deleteProgram(program);
             gl.deleteShader(vertexShader);
@@ -310,8 +477,16 @@ export default function ElectionCountdown() {
     };
 
     return (
-        <section ref={rootRef} className="relative mt-6 overflow-hidden border-t border-border bg-background md:mt-0">
-            <canvas ref={webglRef} className="pointer-events-none absolute inset-0 h-full w-full opacity-70" />
+        <section
+            ref={rootRef}
+            data-webgl={isWebglReady ? "ready" : "fallback"}
+            className="election-typography relative mt-6 overflow-hidden border-t border-border bg-background md:mt-0"
+        >
+            <canvas
+                ref={webglRef}
+                className={`pointer-events-none absolute inset-0 h-full w-full transition-opacity duration-300 ${isWebglReady ? "opacity-70" : "opacity-0"}`}
+            />
+
             <div className="pointer-events-none absolute inset-y-0 left-[8%] w-px bg-border/55" />
             <div className="pointer-events-none absolute inset-y-0 right-[8%] w-px bg-border/55" />
             <div className="pointer-events-none absolute left-0 right-0 top-[30%] h-px bg-border/55" />
@@ -328,22 +503,20 @@ export default function ElectionCountdown() {
 
                         <h1
                             ref={titleTopRef}
-                            className={`text-foreground [font-family:var(--font-bebas)] ${
-                                language === "ne"
-                                    ? "text-6xl font-bold leading-[1.08] tracking-normal md:text-7xl lg:text-8xl"
-                                    : "text-6xl font-black leading-[0.88] tracking-tight md:text-7xl lg:text-8xl"
-                            }`}
+                            className={`text-foreground [font-family:var(--font-bebas)] ${language === "ne"
+                                ? "text-4xl font-semibold leading-[1.12] tracking-normal md:text-6xl lg:text-7xl"
+                                : "text-4xl font-black leading-[0.92] tracking-tight md:text-6xl lg:text-7xl"
+                                }`}
                         >
                             {content.titleTop}
                         </h1>
 
                         <h2
                             ref={titleBottomRef}
-                            className={`mt-1 text-primary [font-family:var(--font-bebas)] ${
-                                language === "ne"
-                                    ? "text-4xl font-bold leading-[1.12] tracking-normal md:text-5xl lg:text-6xl"
-                                    : "text-4xl font-black leading-[0.94] tracking-tight md:text-5xl lg:text-6xl"
-                            }`}
+                            className={`mt-1 text-primary [font-family:var(--font-bebas)] ${language === "ne"
+                                ? "text-3xl font-semibold leading-[1.15] tracking-normal md:text-5xl lg:text-6xl"
+                                : "text-3xl font-black leading-[0.96] tracking-tight md:text-5xl lg:text-6xl"
+                                }`}
                         >
                             {content.titleBottom}
                         </h2>

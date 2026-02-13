@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.4.1] - 2026-02-13
+
+### Added
+- Admin content preview for all content types (articles, election articles, leaders, history, briefs, and fact checks) with in-page related section and back-to-list flow.
+- Admin content language switching improvements for headings, labels, tabs, dialogs, and table/action text.
+
+### Changed
+- Admin table UX on small screens: horizontal swipe scrolling, sticky selection column, and mobile guidance text in shared `DataTable`.
+- Admin layout and custom tables updated to preserve horizontal scrolling on mobile (`content`, `users`, and `access matrix` pages).
+
+### Removed
+- Manifesto section archive background layer on homepage.
+
 ## [1.3.0] - 2026-02-07
 
 ### Added

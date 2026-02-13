@@ -72,7 +72,7 @@ export function FactChecksPageClient({ factChecks }: FactChecksPageProps) {
         : "/election-2026/fact-checks";
 
     return (
-        <div className="min-h-screen bg-background relative overflow-hidden">
+        <div className="election-typography min-h-screen bg-background relative overflow-hidden">
             <div
                 className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-multiply"
                 style={{
