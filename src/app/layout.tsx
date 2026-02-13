@@ -42,6 +42,7 @@ import { getSettings } from "@/lib/maintenance-check";
 import MaintenanceGuard from "@/components/layout/MaintenanceGuard";
 import LayoutStructureWrapper from "@/components/layout/LayoutStructureWrapper";
 import { Toaster } from "@/components/ui/sonner";
+import ViewTracker from "@/components/analytics/ViewTracker";
 
 // ... existing imports
 
@@ -92,6 +93,7 @@ export default async function RootLayout({
                 >
                     <LanguageProvider>
                         <GlobalLoadingProvider>
+                            <ViewTracker />
                             <MaintenanceGuard maintenanceSettings={maintenanceSettings}>
                                 <LayoutStructureWrapper socialLinks={socialLinks}>
                                     {children}

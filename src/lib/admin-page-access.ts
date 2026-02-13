@@ -9,6 +9,7 @@ type AdminRouteConfig = {
 
 export const ADMIN_ROUTE_ACCESS: AdminRouteConfig[] = [
     { key: "dashboard", matches: (pathname) => pathname === "/admin" },
+    { key: "dashboard", matches: (pathname) => pathname.startsWith("/admin/analytics") },
     { key: "content", matches: (pathname) => pathname.startsWith("/admin/content") },
     { key: "media", matches: (pathname) => pathname.startsWith("/admin/media") },
     { key: "messages", matches: (pathname) => pathname.startsWith("/admin/messages") },

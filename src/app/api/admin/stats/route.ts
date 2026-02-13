@@ -8,11 +8,23 @@ import ActivityLog from '@/models/ActivityLog';
 import Subscriber from '@/models/Subscriber';
 import Contact from '@/models/Contact';
 import { DailyBrief, FactCheck, ElectionArticle } from '@/models/ElectionContent';
+import ViewEvent from '@/models/ViewEvent';
+import Admin from '@/models/Admin';
 import { withAuth, apiResponse, apiError } from '@/lib/middleware';
 
 async function getStats(request: NextRequest, { user }: { user: any }) {
     try {
         await dbConnect();
+        const admin = await Admin.findById(user.userId).select('role isActive permissions').lean();
+        if (!admin || !admin.isActive) {
+            return apiError('Unauthorized', 403);
+        }
+        const canViewAnalytics = admin.role === 'superadmin'
+            || Boolean((admin as any)?.permissions?.analytics?.view)
+            || Boolean((admin as any)?.permissions?.pageAccess?.dashboard);
+        if (!canViewAnalytics) {
+            return apiError('Analytics access denied', 403);
+        }
 
         // 1) Core totals
         const [
@@ -21,6 +33,9 @@ async function getStats(request: NextRequest, { user }: { user: any }) {
             leadersTotal,
             historyTotal,
             mediaTotal,
+            briefsTotal,
+            factChecksTotal,
+            electionArticlesTotal,
             logs
         ] = await Promise.all([
             Article.countDocuments(),
@@ -28,6 +43,9 @@ async function getStats(request: NextRequest, { user }: { user: any }) {
             Leader.countDocuments(),
             History.countDocuments(),
             Media.countDocuments(),
+            DailyBrief.countDocuments(),
+            FactCheck.countDocuments(),
+            ElectionArticle.countDocuments(),
             ActivityLog.find().sort({ createdAt: -1 }).limit(10).populate('adminId', 'name username email')
         ]);
 
@@ -87,6 +105,13 @@ async function getStats(request: NextRequest, { user }: { user: any }) {
 
         // 4) Most viewed content
         const popularArticles = await Article.find().sort({ views: -1 }).limit(5).select('title views slug');
+        const [popularLeaders, popularHistory, popularBriefs, popularFactChecks, popularElectionArticles] = await Promise.all([
+            Leader.find().sort({ views: -1 }).limit(5).select('name views slug'),
+            History.find().sort({ views: -1 }).limit(5).select('title views date'),
+            DailyBrief.find().sort({ views: -1 }).limit(5).select('title views slug date'),
+            FactCheck.find().sort({ views: -1 }).limit(5).select('claim views slug date'),
+            ElectionArticle.find().sort({ views: -1 }).limit(5).select('title_en title_ne views slug createdAt'),
+        ]);
 
         // 5) Activity breakdown in last 30 days
         const activityAgg = await ActivityLog.aggregate([
@@ -237,13 +262,119 @@ async function getStats(request: NextRequest, { user }: { user: any }) {
         const publishEfficiency = totalPublishable > 0 ? Number(((totalPublished / totalPublishable) * 100).toFixed(1)) : 0;
         const contactReplyRate = contactsTotal > 0 ? Number(((contactsReplied / contactsTotal) * 100).toFixed(1)) : 0;
 
+        // 10) Audience / website analytics
+        const audienceStartDate = new Date();
+        audienceStartDate.setDate(audienceStartDate.getDate() - 13);
+        const audienceStartKey = audienceStartDate.toISOString().slice(0, 10);
+
+        const [
+            totalViewsAgg,
+            uniqueVisitorsAll,
+            uniqueVisitors30d,
+            dailyAudienceAgg,
+            pageTypeAgg,
+            topPathAgg,
+            electionAudienceAgg,
+            regionAgg,
+            articleViewAgg,
+            leaderViewAgg,
+            historyViewAgg,
+            briefViewAgg,
+            factCheckViewAgg,
+            electionArticleViewAgg,
+        ] = await Promise.all([
+            ViewEvent.aggregate([{ $group: { _id: null, views: { $sum: '$hits' } } }]),
+            ViewEvent.distinct('visitorId'),
+            ViewEvent.distinct('visitorId', { dateKey: { $gte: thirtyDaysAgo.toISOString().slice(0, 10) } }),
+            ViewEvent.aggregate([
+                { $match: { dateKey: { $gte: audienceStartKey } } },
+                { $group: { _id: '$dateKey', views: { $sum: '$hits' }, visitors: { $addToSet: '$visitorId' } } },
+                { $project: { _id: 1, views: 1, uniqueVisitors: { $size: '$visitors' } } },
+                { $sort: { _id: 1 } },
+            ]),
+            ViewEvent.aggregate([
+                { $group: { _id: '$pageType', views: { $sum: '$hits' } } },
+                { $sort: { views: -1 } },
+                { $limit: 12 },
+            ]),
+            ViewEvent.aggregate([
+                { $group: { _id: '$path', views: { $sum: '$hits' }, uniqueVisitors: { $addToSet: '$visitorId' } } },
+                { $project: { _id: 1, views: 1, uniqueVisitors: { $size: '$uniqueVisitors' } } },
+                { $sort: { views: -1 } },
+                { $limit: 12 },
+            ]),
+            ViewEvent.aggregate([
+                { $match: { path: { $regex: '^/election-2026' } } },
+                { $group: { _id: '$pageType', views: { $sum: '$hits' }, visitors: { $addToSet: '$visitorId' } } },
+                { $project: { _id: 1, views: 1, uniqueVisitors: { $size: '$visitors' } } },
+                { $sort: { views: -1 } },
+            ]),
+            ViewEvent.aggregate([
+                {
+                    $project: {
+                        country: { $ifNull: ['$country', 'Unknown'] },
+                        region: { $ifNull: ['$region', 'Unknown'] },
+                        visitorId: 1,
+                        hits: 1,
+                    },
+                },
+                {
+                    $group: {
+                        _id: { country: '$country', region: '$region' },
+                        views: { $sum: '$hits' },
+                        visitors: { $addToSet: '$visitorId' },
+                    },
+                },
+                { $project: { _id: 1, views: 1, uniqueVisitors: { $size: '$visitors' } } },
+                { $sort: { views: -1 } },
+                { $limit: 20 },
+            ]),
+            Article.aggregate([{ $group: { _id: null, views: { $sum: { $ifNull: ['$views', 0] } } } }]),
+            Leader.aggregate([{ $group: { _id: null, views: { $sum: { $ifNull: ['$views', 0] } } } }]),
+            History.aggregate([{ $group: { _id: null, views: { $sum: { $ifNull: ['$views', 0] } } } }]),
+            DailyBrief.aggregate([{ $group: { _id: null, views: { $sum: { $ifNull: ['$views', 0] } } } }]),
+            FactCheck.aggregate([{ $group: { _id: null, views: { $sum: { $ifNull: ['$views', 0] } } } }]),
+            ElectionArticle.aggregate([{ $group: { _id: null, views: { $sum: { $ifNull: ['$views', 0] } } } }]),
+        ]);
+
+        const dailyAudienceMap = (dailyAudienceAgg as Array<{ _id: string; views: number; uniqueVisitors: number }>)
+            .reduce<Record<string, { views: number; uniqueVisitors: number }>>((acc, row) => {
+                acc[row._id] = { views: row.views, uniqueVisitors: row.uniqueVisitors };
+                return acc;
+            }, {});
+
+        const audienceTrend: Array<{ date: string; views: number; uniqueVisitors: number }> = [];
+        for (let i = 0; i < 14; i++) {
+            const d = new Date(audienceStartDate);
+            d.setDate(audienceStartDate.getDate() + i);
+            const key = d.toISOString().slice(0, 10);
+            const row = dailyAudienceMap[key];
+            audienceTrend.push({
+                date: key,
+                views: row?.views || 0,
+                uniqueVisitors: row?.uniqueVisitors || 0,
+            });
+        }
+
+        const contentViews = {
+            articles: (articleViewAgg as any[])[0]?.views || 0,
+            leaders: (leaderViewAgg as any[])[0]?.views || 0,
+            history: (historyViewAgg as any[])[0]?.views || 0,
+            dailyBriefs: (briefViewAgg as any[])[0]?.views || 0,
+            factChecks: (factCheckViewAgg as any[])[0]?.views || 0,
+            electionArticles: (electionArticleViewAgg as any[])[0]?.views || 0,
+        };
+
         return apiResponse({
             counts: {
                 articles: articlesTotal,
                 articlesPublished,
                 leaders: leadersTotal,
                 history: historyTotal,
-                media: mediaTotal
+                media: mediaTotal,
+                dailyBriefs: briefsTotal,
+                factChecks: factChecksTotal,
+                electionArticles: electionArticlesTotal,
             },
             kpis: {
                 subscribersTotal,
@@ -277,7 +408,42 @@ async function getStats(request: NextRequest, { user }: { user: any }) {
                 acquisitionTrend,
             },
             popularContent: {
-                articles: popularArticles
+                articles: popularArticles,
+                leaders: popularLeaders,
+                history: popularHistory,
+                dailyBriefs: popularBriefs,
+                factChecks: popularFactChecks,
+                electionArticles: popularElectionArticles,
+            },
+            audience: {
+                totalViews: (totalViewsAgg as any[])[0]?.views || 0,
+                uniqueVisitors: uniqueVisitorsAll.length,
+                uniqueVisitors30d: uniqueVisitors30d.length,
+                audienceTrend,
+                pageTypeBreakdown: (pageTypeAgg as any[]).map((row: any) => ({
+                    pageType: row._id || 'unknown',
+                    views: row.views || 0,
+                })),
+                topPaths: (topPathAgg as any[]).map((row: any) => ({
+                    path: row._id || '/',
+                    views: row.views || 0,
+                    uniqueVisitors: row.uniqueVisitors || 0,
+                })),
+                electionBreakdown: (electionAudienceAgg as any[]).map((row: any) => ({
+                    pageType: row._id || 'unknown',
+                    views: row.views || 0,
+                    uniqueVisitors: row.uniqueVisitors || 0,
+                })),
+                regionBreakdown: (regionAgg as any[]).map((row: any) => ({
+                    country: row?._id?.country || 'Unknown',
+                    region: row?._id?.region || 'Unknown',
+                    views: row.views || 0,
+                    uniqueVisitors: row.uniqueVisitors || 0,
+                })),
+            },
+            views: {
+                ...contentViews,
+                totalContentViews: Object.values(contentViews).reduce((sum, value) => sum + value, 0),
             },
             recentActivity: logs.map(log => ({
                 id: log._id,

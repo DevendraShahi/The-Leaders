@@ -17,6 +17,7 @@ export interface IHistory {
     status: 'draft' | 'published' | 'archived';
     isFeatured: boolean;
     order?: number;
+    views: number;
 
     lastModifiedBy?: mongoose.Types.ObjectId;
 }
@@ -41,6 +42,7 @@ const HistorySchema = new Schema<IHistory>(
         },
         isFeatured: { type: Boolean, default: false },
         order: { type: Number, default: 0 },
+        views: { type: Number, default: 0 },
 
         lastModifiedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
     },

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useAuth } from '@/components/admin/AuthProvider';
 import StatsCard from '@/components/admin/StatsCard';
 import {
@@ -90,6 +91,20 @@ export default function AdminDashboard() {
                 <p className="text-muted-foreground font-manrope text-sm mt-1">
                     System performance and content metrics.
                 </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                    <Link href="/admin/analytics" className="px-3 py-2 border border-border text-xs font-mono uppercase tracking-wider hover:bg-muted">
+                        Analytics Overview
+                    </Link>
+                    <Link href="/admin/analytics/content" className="px-3 py-2 border border-border text-xs font-mono uppercase tracking-wider hover:bg-muted">
+                        Content Analytics
+                    </Link>
+                    <Link href="/admin/analytics/election" className="px-3 py-2 border border-border text-xs font-mono uppercase tracking-wider hover:bg-muted">
+                        Election Analytics
+                    </Link>
+                    <Link href="/admin/analytics/audience" className="px-3 py-2 border border-border text-xs font-mono uppercase tracking-wider hover:bg-muted">
+                        Audience Analytics
+                    </Link>
+                </div>
             </div>
 
             {/* Stats Grid */}

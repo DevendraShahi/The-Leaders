@@ -13,6 +13,7 @@ export interface IDailyBrief extends Document {
     isPublished: boolean;
     status: "draft" | "published" | "archived";
     image?: string;
+    views: number;
 }
 
 export interface IFactCheck extends Document {
@@ -25,6 +26,7 @@ export interface IFactCheck extends Document {
     date: Date;
     status: "draft" | "published" | "archived";
     image?: string;
+    views: number;
 }
 
 export interface IElectionArticle extends Document {
@@ -39,6 +41,7 @@ export interface IElectionArticle extends Document {
     tags: string[];
     status: "draft" | "published" | "archived";
     image?: string;
+    views: number;
 }
 
 // --- Schemas ---
@@ -58,6 +61,7 @@ const DailyBriefSchema = new Schema<IDailyBrief>(
             default: "draft",
         },
         image: { type: String },
+        views: { type: Number, default: 0 },
     },
     { timestamps: true }
 );
@@ -81,6 +85,7 @@ const FactCheckSchema = new Schema<IFactCheck>(
             default: "draft",
         },
         image: { type: String },
+        views: { type: Number, default: 0 },
     },
     { timestamps: true }
 );
@@ -102,6 +107,7 @@ const ElectionArticleSchema = new Schema<IElectionArticle>(
             default: "draft",
         },
         image: { type: String },
+        views: { type: Number, default: 0 },
     },
     { timestamps: true }
 );
