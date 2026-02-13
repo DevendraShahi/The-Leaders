@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { AlertTriangle, CheckCircle, XCircle, ShieldCheck, ArrowRight } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
 
@@ -24,7 +25,7 @@ interface VerdictConfig {
     color: string;
     accent: string;
     border: string;
-    icon: React.ElementType;
+    icon: LucideIcon;
     label: string;
 }
 
