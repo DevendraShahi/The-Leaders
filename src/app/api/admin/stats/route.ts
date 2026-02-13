@@ -77,9 +77,17 @@ async function getStats(request: NextRequest, { user }: { user: any }) {
             electionArticlePublished,
             electionArticleDraft
         ] = await Promise.all([
-            Subscriber.countDocuments(),
-            Subscriber.countDocuments({ isActive: true }),
-            Subscriber.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
+            Subscriber.countDocuments({
+                $or: [{ isVerified: true }, { isVerified: { $exists: false } }],
+            }),
+            Subscriber.countDocuments({
+                isActive: true,
+                $or: [{ isVerified: true }, { isVerified: { $exists: false } }],
+            }),
+            Subscriber.countDocuments({
+                createdAt: { $gte: thirtyDaysAgo },
+                $or: [{ isVerified: true }, { isVerified: { $exists: false } }],
+            }),
             Contact.countDocuments(),
             Contact.countDocuments({ status: 'new' }),
             Contact.countDocuments({ status: 'replied' }),

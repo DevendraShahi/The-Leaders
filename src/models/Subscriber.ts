@@ -4,6 +4,12 @@ export interface ISubscriber extends Document {
     email: string;
     isActive: boolean;
     subscribedAt: Date;
+    isVerified: boolean;
+    verifiedAt?: Date;
+    verificationCodeHash?: string;
+    verificationExpiresAt?: Date;
+    verificationSentAt?: Date;
+    verificationAttempts: number;
 }
 
 const SubscriberSchema: Schema = new Schema(
@@ -20,6 +26,27 @@ const SubscriberSchema: Schema = new Schema(
             type: Boolean,
             default: true,
         },
+        isVerified: {
+            type: Boolean,
+            default: true,
+        },
+        verifiedAt: {
+            type: Date,
+        },
+        verificationCodeHash: {
+            type: String,
+            select: false,
+        },
+        verificationExpiresAt: {
+            type: Date,
+        },
+        verificationSentAt: {
+            type: Date,
+        },
+        verificationAttempts: {
+            type: Number,
+            default: 0,
+        },
         subscribedAt: {
             type: Date,
             default: Date.now,
@@ -27,6 +54,9 @@ const SubscriberSchema: Schema = new Schema(
     },
     { timestamps: true }
 );
+
+SubscriberSchema.index({ email: 1, isVerified: 1 });
+SubscriberSchema.index({ verificationExpiresAt: 1 });
 
 // Prevent model overwrite in development
 const Subscriber: Model<ISubscriber> = mongoose.models.Subscriber || mongoose.model<ISubscriber>("Subscriber", SubscriberSchema);

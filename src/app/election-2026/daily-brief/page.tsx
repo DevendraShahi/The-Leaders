@@ -1,5 +1,14 @@
 import { getDailyBriefs } from "@/lib/election-data";
 import { DailyBriefClient } from "./DailyBriefClient";
+import type { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = constructMetadata({
+    title: "Election Daily Briefs",
+    description: "Daily election briefings with concise updates, key developments, and verified insights.",
+    canonical: "/election-2026/daily-brief",
+    keywords: ["daily brief", "nepal election updates", "election news nepal"],
+});
 
 export const revalidate = 60; // Revalidate every minute
 

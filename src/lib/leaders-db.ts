@@ -8,7 +8,7 @@ export async function getLeaders() {
     await dbConnect();
 
     // Sort by order ascending
-    const leaders = await Leader.find({})
+    const leaders = await Leader.find({ status: "published" })
         .sort({ order: 1 })
         .lean();
 
@@ -18,7 +18,7 @@ export async function getLeaders() {
 export async function getLeaderBySlug(slug: string) {
     await dbConnect();
 
-    const leader = await Leader.findOne({ slug }).lean();
+    const leader = await Leader.findOne({ slug, status: "published" }).lean();
 
     if (!leader) return null;
 

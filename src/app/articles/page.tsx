@@ -1,11 +1,14 @@
 import { getArticles } from "@/lib/data";
 import { ArticlesShell } from "@/components/articles/ArticlesShell";
+import type { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
 
-
-export const metadata = {
+export const metadata: Metadata = constructMetadata({
     title: "Articles",
-    description: "Read the latest news and perspectives from The Leaders of Nepal.",
-};
+    description: "Read the latest political news, analysis, and perspectives from The Leaders of Nepal.",
+    canonical: "/articles",
+    keywords: ["Nepal politics articles", "Nepal political analysis", "The Leaders articles"],
+});
 
 export const revalidate = 3600;
 

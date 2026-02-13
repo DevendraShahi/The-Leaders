@@ -78,12 +78,43 @@ export default async function RootLayout({
     const settings = await getSettings();
     const maintenanceSettings = settings?.maintenance || null;
     const socialLinks = settings?.socialLinks || [];
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theleaders.com.np";
+    const sameAs = (socialLinks || [])
+        .map((item: any) => item?.url)
+        .filter((url: string) => typeof url === "string" && /^https?:\/\//.test(url));
+    const organizationJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        name: "The Leaders",
+        url: siteUrl,
+        logo: `${siteUrl}/logo.svg`,
+        sameAs,
+    };
+    const websiteJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: "The Leaders",
+        url: siteUrl,
+        inLanguage: ["en", "ne"],
+        publisher: {
+            "@type": "Organization",
+            name: "The Leaders",
+        },
+    };
 
     return (
         <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body
                 className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${knight.variable} antialiased bg-background text-foreground`}
             >
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+                />
                 <CodePenCursor />
                 <ThemeProvider
                     attribute="class"

@@ -262,7 +262,7 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
     return (
         <div
             ref={containerRef}
-            className="fixed inset-0 z-[10000] flex flex-col items-center justify-between bg-background/95 backdrop-blur-md py-8 md:py-12"
+            className="fixed inset-0 z-[10000] flex min-h-[100dvh] flex-col items-center justify-between overflow-x-hidden overflow-y-auto bg-background/95 py-8 md:py-12 backdrop-blur-md"
         >
             {/* Ambient animated lines */}
             <div ref={linesRef} className="absolute inset-0 overflow-hidden opacity-10">
@@ -417,17 +417,17 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                                     </div>
 
                                     {/* Action buttons */}
-                                    <div className="flex flex-row md:flex-col gap-3 md:w-[140px]">
+                                    <div className="flex flex-row flex-nowrap gap-3 w-full sm:w-auto">
                                         <Button
                                             variant="outline"
                                             onClick={() => handleConsent(false)}
-                                            className="flex-1 min-w-[100px] h-10 text-sm"
+                                            className="flex-1 min-w-[100px] h-10 text-sm whitespace-nowrap"
                                         >
                                             {copy.consent.decline}
                                         </Button>
                                         <Button
                                             onClick={() => handleConsent(true)}
-                                            className="flex-1 min-w-[100px] h-10 text-sm bg-primary hover:bg-primary/90"
+                                            className="flex-1 min-w-[100px] h-10 text-sm whitespace-nowrap bg-primary hover:bg-primary/90"
                                         >
                                             {copy.consent.accept}
                                         </Button>

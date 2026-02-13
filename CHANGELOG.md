@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.4.3] - 2026-02-13
+
+### Added
+- Production-oriented analytics stack: route view tracking API, audience/region breakdowns, and dedicated admin analytics pages (overview/content/election/audience) with collapsible sidebar groups.
+- Email verification flow for newsletter subscription with OTP send/verify/resend endpoints and two-step subscribe UI.
+- Structured data enhancements: global `Organization` + `WebSite` JSON-LD and detail-level JSON-LD for articles, leaders, election analyses, daily briefs, and fact checks.
+- SEO audit automation via `npm run seo:audit` to catch missing metadata and schema on routes.
+
+### Changed
+- Sitemap coverage expanded and corrected for election sections and published dynamic content entries.
+- Metadata quality upgraded with canonical URLs, richer descriptions, OG article/profile typing, and noindex handling for missing detail pages.
+- Public leader data queries now restrict to published profiles only.
+- Loader consent action buttons aligned in one row and loader overlay made scrollable on mobile.
+
+### Fixed
+- Subscribe verification sending now supports Gmail SMTP-first behavior and clearer error reporting paths.
+- Resolved misleading fallback behavior where SMTP failures surfaced unrelated Resend domain errors.
+
 ## [1.4.1] - 2026-02-13
 
 ### Added
