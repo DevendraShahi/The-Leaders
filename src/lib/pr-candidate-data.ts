@@ -60,6 +60,10 @@ function normalizeDistrict(value: unknown): string | null {
     return DISTRICT_ALIAS_TO_MAP_ID[normalized] || normalized;
 }
 
+function isPRCandidate(candidate: PRCandidate | null): candidate is PRCandidate {
+    return candidate !== null;
+}
+
 export async function getPRData(): Promise<PRPartyList[]> {
     const filePath = path.join(process.cwd(), 'public/election/PR-2026-EN.json');
     const fileContents = await fs.readFile(filePath, 'utf8');
@@ -80,8 +84,8 @@ export async function getPRData(): Promise<PRPartyList[]> {
                 fallbackPartyFromCandidate ||
                 `Unknown Party ${index + 1}`;
 
-            const candidates = rawCandidates
-                .map((candidate) => {
+            const candidates: PRCandidate[] = rawCandidates
+                .map((candidate): PRCandidate | null => {
                     const raw = (candidate ?? {}) as Record<string, unknown>;
 
                     // Commission-marked removed placeholders are incomplete and should not render.
@@ -110,9 +114,9 @@ export async function getPRData(): Promise<PRPartyList[]> {
                         party: normalizeText(raw.party) || partyName,
                         party_name: partyName,
                         status: status || undefined,
-                    } satisfies PRCandidate;
+                    };
                 })
-                .filter((candidate): candidate is PRCandidate => candidate !== null);
+                .filter(isPRCandidate);
 
             return {
                 party_name: partyName,
