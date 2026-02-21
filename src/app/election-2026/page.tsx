@@ -1,11 +1,14 @@
-import { getDailyBriefs, getFactChecks, getElectionArticles } from "@/lib/election-data";
 import dynamic from "next/dynamic";
+import { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
+import { getDailyBriefs, getFactChecks, getElectionArticles } from "@/lib/election-data";
+import { getPRData } from "@/lib/pr-candidate-data";
+import { getFPTPCandidateDataset } from "@/lib/fptp-candidate-data";
+import { buildCandidateDataSummary } from "@/lib/candidate-data-summary";
 
 const AnalyticsDashboard = dynamic(() => import("./components/AnalyticsDashboard"), {
     loading: () => <div className="min-h-screen flex items-center justify-center">Loading Election Data...</div>,
 });
-import { Metadata } from "next";
-import { constructMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = constructMetadata({
     title: "Nepal Election 2026",
@@ -22,17 +25,24 @@ export const metadata: Metadata = constructMetadata({
 export const revalidate = 3600;
 
 export default async function ElectionDashboard() {
-    const briefs = await getDailyBriefs();
-    const factChecks = await getFactChecks();
-    const electionArticles = await getElectionArticles(3);
+    const [briefs, factChecks, electionArticles, prData, fptpDataset] = await Promise.all([
+        getDailyBriefs(),
+        getFactChecks(),
+        getElectionArticles(3),
+        getPRData(),
+        getFPTPCandidateDataset(),
+    ]);
+
     const latestBrief = briefs[0];
     const latestFactCheck = factChecks[0];
+    const candidateSummary = buildCandidateDataSummary(prData, fptpDataset);
 
     return (
         <AnalyticsDashboard
             latestBrief={latestBrief}
             latestFactCheck={latestFactCheck}
             electionArticles={electionArticles}
+            candidateSummary={candidateSummary}
         />
     );
 }

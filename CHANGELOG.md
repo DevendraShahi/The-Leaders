@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.5.0] - 2026-02-21
+
+### Added
+- End-to-end FPTP 2082 candidate data pipeline with fetch script (`npm run data:candidates:fptp2082`), normalized dataset exports, and lookup metadata.
+- New FPTP candidate explorer with advanced filtering (party/province/district/gender/constituency), district-first ordering, party-rank-aware sorting, and candidate profile links.
+- Candidate detail slug page at `/election-2026/profiles/[slug]` with expanded personal/candidacy/education/experience sections.
+- Election timeline section with reusable timeline components and structured timeline datasets.
+- Shared ranking/data helpers (`candidate slug`, `candidate data summary`, `fptp candidate data`, `party rank index`) for consistent candidate rendering across pages.
+
+### Changed
+- Profiles experience upgraded to dual-mode browsing (FPTP + PR) with updated summary cards and dataset context.
+- PR candidate viewer redesigned to collapsible grouped cards (by party/district), with improved filtering and stable group controls.
+- PR and FPTP candidate viewers now use collapsible interaction patterns with expand/collapse controls as primary navigation.
+- Pagination removed from PR and FPTP candidate grids to prioritize direct grouped exploration.
+- Party ordering for PR now follows the same updated party ranking source used across candidate pages.
+
+### Fixed
+- Candidate profile page now shows correct Party Rank from computed official/fallback rank index instead of inconsistent source field values.
+- PR district filter handling now safely clears stale cross-page map-district selections that previously caused empty/incorrect result states.
+
 ## [1.4.3] - 2026-02-13
 
 ### Added

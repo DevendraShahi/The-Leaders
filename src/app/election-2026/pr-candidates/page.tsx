@@ -1,4 +1,6 @@
 import { getPRData } from "@/lib/pr-candidate-data";
+import { getParties } from "@/lib/election-data";
+import { buildPartyRankIndexForNames } from "@/lib/fptp-party-ranking";
 import { PRCandidatesClient } from "./PRCandidatesClient";
 import type { Metadata } from "next";
 import { constructMetadata } from "@/lib/metadata";
@@ -11,7 +13,20 @@ export const metadata: Metadata = constructMetadata({
 });
 
 export default async function PRCandidatesPage() {
-    const prData = await getPRData();
+    const [prData, parties] = await Promise.all([
+        getPRData(),
+        getParties(),
+    ]);
 
-    return <PRCandidatesClient prData={prData} />;
+    const prPartyRankIndex = buildPartyRankIndexForNames(
+        prData.map((party) => party.party_name),
+        parties
+    );
+
+    return (
+        <PRCandidatesClient
+            prData={prData}
+            prPartyRankIndex={prPartyRankIndex}
+        />
+    );
 }

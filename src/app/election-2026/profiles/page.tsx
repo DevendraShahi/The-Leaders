@@ -1,17 +1,46 @@
-import { getParties } from "@/lib/election-data";
-import { ProfilesClient } from "./ProfilesClient";
 import type { Metadata } from "next";
 import { constructMetadata } from "@/lib/metadata";
+import { getPRData } from "@/lib/pr-candidate-data";
+import { getFPTPCandidateDataset } from "@/lib/fptp-candidate-data";
+import { buildCandidateDataSummary } from "@/lib/candidate-data-summary";
+import { getParties } from "@/lib/election-data";
+import { buildFPTPPartyRankIndex, buildPartyRankIndexForNames } from "@/lib/fptp-party-ranking";
+import { ProfilesClient } from "./ProfilesClient";
 
 export const metadata: Metadata = constructMetadata({
-    title: "Election Profiles",
-    description: "Compare party profiles, key leadership data, and election positioning for Nepal Election 2026.",
+    title: "Election Candidates",
+    description:
+        "Explore PR and FPTP candidate datasets for Nepal Election 2026 with advanced filters, search, and district-level context.",
     canonical: "/election-2026/profiles",
-    keywords: ["election profiles Nepal", "party profiles Nepal", "election 2026 parties"],
+    keywords: [
+        "Nepal election candidates",
+        "FPTP candidates Nepal",
+        "PR candidates Nepal",
+        "election 2026 candidate explorer",
+    ],
 });
 
 export default async function ElectionProfiles() {
-    const parties = await getParties();
+    const [prData, fptpDataset, parties] = await Promise.all([
+        getPRData(),
+        getFPTPCandidateDataset(),
+        getParties(),
+    ]);
 
-    return <ProfilesClient parties={parties} />;
+    const summary = buildCandidateDataSummary(prData, fptpDataset);
+    const fptpPartyRankIndex = buildFPTPPartyRankIndex(fptpDataset, parties);
+    const prPartyRankIndex = buildPartyRankIndexForNames(
+        prData.map((party) => party.party_name),
+        parties
+    );
+
+    return (
+        <ProfilesClient
+            prData={prData}
+            fptpDataset={fptpDataset}
+            summary={summary}
+            fptpPartyRankIndex={fptpPartyRankIndex}
+            prPartyRankIndex={prPartyRankIndex}
+        />
+    );
 }

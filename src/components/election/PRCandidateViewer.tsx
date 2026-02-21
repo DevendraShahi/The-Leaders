@@ -1,27 +1,27 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { useElectionStore } from "@/lib/election-store";
 import { PRCandidate, PRPartyList } from "@/lib/pr-candidate-data";
 import { DistrictCandidateDialog } from "@/components/election/DistrictCandidateDialog"; // New Import
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, MapPin, Users, X, Filter } from "lucide-react";
-import { useState, useMemo } from "react";
-import { cn } from "@/lib/utils";
+import { Search, MapPin, X, ChevronDown } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
 import { getPartyLogo } from "@/lib/party-symbols";
 import Image from "next/image";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
+import type { PartyRankIndex } from "@/lib/fptp-party-ranking";
 
 interface PRCandidateViewerProps {
     initialData: PRPartyList[]; // We pass initial data from server
+    partyRankIndex: PartyRankIndex;
 }
 
-export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
+export function PRCandidateViewer({ initialData, partyRankIndex }: PRCandidateViewerProps) {
     const { language } = useLanguage();
     const locale = LOCALES.election2026.components.prViewer;
 
@@ -33,53 +33,7 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
     const [selectedGender, setSelectedGender] = useState<string>("all");
     const [selectedGroup, setSelectedGroup] = useState<string>("all");
     const [viewMode, setViewMode] = useState<"party" | "district">("party");
-
-    // Memoized filtering
-    const filteredCandidates = useMemo(() => {
-        const results: PRCandidate[] = [];
-
-        // First flatten
-        initialData.forEach(party => {
-            // Apply party filter early
-            if (selectedParty !== "all" && party.party_name !== selectedParty) return;
-
-            party.candidates.forEach(candidate => {
-                const enriched = { ...candidate, party_name: party.party_name };
-
-                // Apply Search (with null safety)
-                if (searchTerm && (!enriched.name || !enriched.name.toLowerCase().includes(searchTerm.toLowerCase()))) return;
-
-                // Apply District Filter (Global Store)
-                // Apply District Filter (Global Store) -- MATCHING WITH ENGLISH DATA NOW
-                if (selectedDistrict && enriched.district !== selectedDistrict) return;
-
-                // Apply Gender
-                if (selectedGender !== "all" && enriched.gender !== selectedGender) return;
-
-                // Apply Group
-                if (selectedGroup !== "all" && enriched.group !== selectedGroup) return;
-
-                results.push(enriched);
-            });
-        });
-
-        return results;
-    }, [initialData, selectedParty, searchTerm, selectedDistrict, selectedGender, selectedGroup]);
-
-    // Group filtered results by Party or District for display
-    const groupedResults = useMemo(() => {
-        const groups: Record<string, PRCandidate[]> = {};
-        filteredCandidates.forEach(c => {
-            const key = viewMode === "party" ? c.party_name! : c.district;
-            if (!groups[key]) groups[key] = [];
-            groups[key].push(c);
-        });
-        // Sort keys
-        return Object.keys(groups).sort().reduce((acc, key) => {
-            acc[key] = groups[key];
-            return acc;
-        }, {} as Record<string, PRCandidate[]>);
-    }, [filteredCandidates, viewMode]);
+    const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set());
 
     // Get unique lists for dropdowns
     const parties = useMemo(() => Array.from(new Set(initialData.map(p => p.party_name))).sort(), [initialData]);
@@ -95,6 +49,106 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
         initialData.forEach(p => p.candidates.forEach(c => d.add(c.district)));
         return Array.from(d).sort();
     }, [initialData]);
+
+    const districtSet = useMemo(() => new Set(districts), [districts]);
+    const effectiveSelectedDistrict = useMemo(() => {
+        if (!selectedDistrict) return null;
+        return districtSet.has(selectedDistrict) ? selectedDistrict : null;
+    }, [districtSet, selectedDistrict]);
+
+    // Prevent stale cross-view district values from collapsing PR results.
+    useEffect(() => {
+        if (selectedDistrict && !districtSet.has(selectedDistrict)) {
+            setSelectedDistrict(null);
+        }
+    }, [districtSet, selectedDistrict, setSelectedDistrict]);
+
+    // Memoized filtering
+    const filteredCandidates = useMemo(() => {
+        const results: PRCandidate[] = [];
+
+        initialData.forEach((party) => {
+            // Apply party filter early
+            if (selectedParty !== "all" && party.party_name !== selectedParty) return;
+
+            party.candidates.forEach((candidate) => {
+                const enriched = { ...candidate, party_name: party.party_name };
+
+                // Apply Search
+                if (searchTerm && !enriched.name.toLowerCase().includes(searchTerm.toLowerCase())) return;
+
+                // Apply district filter
+                if (effectiveSelectedDistrict && enriched.district !== effectiveSelectedDistrict) return;
+
+                // Apply gender
+                if (selectedGender !== "all" && enriched.gender !== selectedGender) return;
+
+                // Apply group
+                if (selectedGroup !== "all" && enriched.group !== selectedGroup) return;
+
+                results.push(enriched);
+            });
+        });
+
+        return results;
+    }, [initialData, selectedParty, searchTerm, effectiveSelectedDistrict, selectedGender, selectedGroup]);
+
+    // Group filtered results by Party or District for display
+    const groupedResults = useMemo(() => {
+        const groups: Record<string, PRCandidate[]> = {};
+        filteredCandidates.forEach((candidate) => {
+            const key = viewMode === "party" ? candidate.party_name! : candidate.district;
+            if (!groups[key]) groups[key] = [];
+            groups[key].push(candidate);
+        });
+
+        return Object.keys(groups)
+            .sort((a, b) => {
+                if (viewMode === "party") {
+                    const rankA = partyRankIndex[a]?.rank ?? Number.MAX_SAFE_INTEGER;
+                    const rankB = partyRankIndex[b]?.rank ?? Number.MAX_SAFE_INTEGER;
+                    if (rankA !== rankB) return rankA - rankB;
+                }
+
+                return a.localeCompare(b, "ne");
+            })
+            .reduce((acc, key) => {
+                acc[key] = groups[key];
+                return acc;
+            }, {} as Record<string, PRCandidate[]>);
+    }, [filteredCandidates, partyRankIndex, viewMode]);
+
+    const groupedEntries = useMemo(
+        () => Object.entries(groupedResults),
+        [groupedResults]
+    );
+
+    useEffect(() => {
+        setExpandedGroups((prev) => {
+            const validKeys = new Set(groupedEntries.map(([groupKey]) => groupKey));
+            return new Set(Array.from(prev).filter((groupKey) => validKeys.has(groupKey)));
+        });
+    }, [groupedEntries]);
+
+    const toggleGroup = (groupKey: string) => {
+        setExpandedGroups((prev) => {
+            const next = new Set(prev);
+            if (next.has(groupKey)) {
+                next.delete(groupKey);
+            } else {
+                next.add(groupKey);
+            }
+            return next;
+        });
+    };
+
+    const expandAllGroups = () => {
+        setExpandedGroups(new Set(groupedEntries.map(([groupKey]) => groupKey)));
+    };
+
+    const collapseAllGroups = () => {
+        setExpandedGroups(new Set());
+    };
 
     return (
         <div className="space-y-6">
@@ -138,10 +192,10 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
                     </div>
 
                     {/* Active Filters Display */}
-                    {selectedDistrict && (
+                    {effectiveSelectedDistrict && (
                         <Badge variant="secondary" className="px-3 py-1 flex items-center gap-2 text-sm">
                             <MapPin className="h-3 w-3" />
-                            {tString(locale.table.district, language)}: {selectedDistrict}
+                            {tString(locale.table.district, language)}: {effectiveSelectedDistrict}
                             <X
                                 className="h-3 w-3 cursor-pointer hover:text-destructive"
                                 onClick={() => setSelectedDistrict(null)}
@@ -152,7 +206,10 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
                 <div className="flex flex-wrap gap-2">
                     {/* District Dropdown */}
-                    <Select value={selectedDistrict || "all"} onValueChange={(val) => setSelectedDistrict(val === "all" ? null : val)}>
+                    <Select
+                        value={effectiveSelectedDistrict || "all"}
+                        onValueChange={(val) => setSelectedDistrict(val === "all" ? null : val)}
+                    >
                         <SelectTrigger className="w-full md:w-[150px]">
                             <SelectValue placeholder={tString(locale.allDistricts, language)} />
                         </SelectTrigger>
@@ -221,86 +278,159 @@ export function PRCandidateViewer({ initialData }: PRCandidateViewerProps) {
 
             {/* Results */}
             <div className="space-y-8">
-                {Object.keys(groupedResults).length === 0 ? (
+                {groupedEntries.length === 0 ? (
                     <div className="text-center py-20 text-muted-foreground">
                         {tString(locale.noCandidates, language)}
                     </div>
                 ) : (
-                    Object.entries(groupedResults).map(([partyName, candidates]) => (
-                        <Card key={partyName} className="overflow-hidden border border-border rounded-none bg-card">
-                            <CardHeader className="bg-muted/10 pb-4 border-b border-border">
-                                <CardTitle className="flex justify-between items-center text-lg md:text-xl font-sans leading-tight tracking-tight">
-                                    <div className="flex items-center gap-3">
-                                        {getPartyLogo(partyName) && (
-                                            <div className="relative h-8 w-8 overflow-hidden border border-border bg-white rounded-none">
-                                                <Image
-                                                    src={getPartyLogo(partyName)!}
-                                                    alt={partyName}
-                                                    fill
-                                                    className="object-contain p-0.5"
-                                                />
-                                            </div>
-                                        )}
-                                        {partyName}
-                                    </div>
-                                    <Badge variant="outline" className="rounded-none font-mono text-[10px] uppercase tracking-widest">
-                                        {candidates.length} {tString(locale.candidates, language)}
-                                    </Badge>
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="p-0">
-                                <div className="overflow-x-auto">
-                                    <table className="w-full text-sm text-left border-t border-border">
-                                        <thead className="text-xs text-muted-foreground uppercase bg-muted/20 border-b font-mono tracking-widest">
-                                            <tr>
-                                                <th className="px-6 py-3">{tString(locale.table.sn, language)}</th>
-                                                <th className="px-6 py-3">{tString(locale.table.name, language)}</th>
-                                                <th className="px-6 py-3">{tString(locale.table.group, language)}</th>
-                                                <th className="px-6 py-3">{tString(locale.table.gender, language)}</th>
-                                                <th className="px-6 py-3">{tString(locale.table.district, language)}</th>
-                                                <th className="px-6 py-3">{tString(locale.table.status, language)}</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {candidates.map((candidate, index) => (
-                                                <tr key={`${candidate.voter_id}-${candidate.sn}-${index}`} className="border-b border-border hover:bg-muted/5 transition-colors">
-                                                    <td className="px-6 py-4 font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                                                        {candidate.sn}
-                                                    </td>
-                                                    <td className="px-6 py-4 font-manrope font-semibold text-sm text-primary">
-                                                        {candidate.name}
-                                                    </td>
-                                                    <td className="px-6 py-4 font-manrope text-sm text-foreground/80">
-                                                        {candidate.group}
-                                                    </td>
-                                                    <td className="px-6 py-4 font-manrope text-sm text-foreground/80">
-                                                        {candidate.gender}
-                                                    </td>
-                                                    <td className="px-6 py-4 font-manrope text-sm text-foreground/80">
-                                                        {candidate.district}
-                                                    </td>
-                                                    <td className="px-6 py-4">
-                                                        <div className="flex gap-1">
-                                                            {candidate.backward_area && (
-                                                                <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
-                                                                    {tString(locale.badges.backward, language)}
-                                                                </Badge>
-                                                            )}
-                                                            {candidate.disability && (
-                                                                <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
-                                                                    {tString(locale.badges.disability, language)}
-                                                                </Badge>
-                                                            )}
+                    <>
+                        <div className="flex flex-wrap items-center justify-between gap-2">
+                            <Badge variant="secondary" className="rounded-none font-mono text-[10px] uppercase tracking-widest">
+                                {filteredCandidates.length.toLocaleString()} {tString(locale.candidates, language)}
+                            </Badge>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="rounded-none"
+                                    onClick={expandAllGroups}
+                                    disabled={groupedEntries.length === 0 || expandedGroups.size === groupedEntries.length}
+                                >
+                                    {tString(locale.expandAll, language)}
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="rounded-none"
+                                    onClick={collapseAllGroups}
+                                    disabled={expandedGroups.size === 0}
+                                >
+                                    {tString(locale.collapseAll, language)}
+                                </Button>
+                            </div>
+                        </div>
+
+                        {groupedEntries.map(([groupKey, candidates], groupIndex) => {
+                            const isExpanded = expandedGroups.has(groupKey);
+                            const groupSlug = groupKey
+                                .toLowerCase()
+                                .replace(/[^a-z0-9]+/g, "-")
+                                .replace(/^-+|-+$/g, "");
+                            const panelId = `pr-group-panel-${groupSlug || groupIndex}`;
+
+                            return (
+                                <Card key={groupKey} className="overflow-hidden border border-border rounded-none bg-card">
+                                    <CardHeader className="bg-muted/10 pb-4 border-b border-border">
+                                        <button
+                                            type="button"
+                                            className="w-full text-left"
+                                            aria-expanded={isExpanded}
+                                            aria-controls={panelId}
+                                            onClick={() => toggleGroup(groupKey)}
+                                        >
+                                            <CardTitle className="flex justify-between items-center gap-3 text-lg md:text-xl font-sans leading-tight tracking-tight">
+                                                <div className="flex items-center gap-3">
+                                                    {getPartyLogo(groupKey) && (
+                                                        <div className="relative h-8 w-8 overflow-hidden border border-border bg-white rounded-none">
+                                                            <Image
+                                                                src={getPartyLogo(groupKey)!}
+                                                                alt={groupKey}
+                                                                fill
+                                                                className="object-contain p-0.5"
+                                                            />
                                                         </div>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))
+                                                    )}
+                                                    {groupKey}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <Badge variant="outline" className="rounded-none font-mono text-[10px] uppercase tracking-widest">
+                                                        {candidates.length} {tString(locale.candidates, language)}
+                                                    </Badge>
+                                                    <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+                                                        {isExpanded ? tString(locale.hideGroup, language) : tString(locale.showGroup, language)}
+                                                        <ChevronDown className={`h-3.5 w-3.5 transition-transform ${isExpanded ? "rotate-180" : ""}`} />
+                                                    </span>
+                                                </div>
+                                            </CardTitle>
+                                        </button>
+                                    </CardHeader>
+                                    {isExpanded && (
+                                        <CardContent id={panelId} className="p-0">
+                                            <div className="grid grid-cols-1 gap-3 p-4 md:grid-cols-2 xl:grid-cols-3">
+                                        {candidates.map((candidate, index) => {
+                                            const initials = candidate.name
+                                                .split(" ")
+                                                .filter(Boolean)
+                                                .slice(0, 2)
+                                                .map((part) => part[0])
+                                                .join("")
+                                                .toUpperCase();
+
+                                            return (
+                                                <div
+                                                    key={`${candidate.voter_id}-${candidate.sn}-${index}`}
+                                                    className="rounded-none border border-border/70 bg-background/70 p-4 transition-colors hover:border-primary/40"
+                                                >
+                                                    <div className="flex items-start justify-between gap-3">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="flex h-10 w-10 items-center justify-center rounded-none border border-border/70 bg-primary/5 font-bebas text-sm tracking-wide text-primary">
+                                                                {initials || "PR"}
+                                                            </div>
+                                                            <div>
+                                                                <p className="line-clamp-2 text-sm font-semibold text-foreground">
+                                                                    {candidate.name}
+                                                                </p>
+                                                                <p className="text-xs text-muted-foreground">
+                                                                    {candidate.group}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <Badge variant="outline" className="rounded-none font-mono text-[10px] uppercase tracking-widest">
+                                                            {candidate.gender}
+                                                        </Badge>
+                                                    </div>
+
+                                                    <div className="mt-3 grid grid-cols-2 gap-2 border-t border-dashed border-border pt-3 text-xs">
+                                                        <div>
+                                                            <p className="font-mono uppercase tracking-widest text-muted-foreground">
+                                                                {tString(locale.table.district, language)}
+                                                            </p>
+                                                            <p className="mt-1 text-foreground">{candidate.district}</p>
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-mono uppercase tracking-widest text-muted-foreground">
+                                                                {tString(locale.table.group, language)}
+                                                            </p>
+                                                            <p className="mt-1 text-foreground">{candidate.group}</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="mt-3 flex flex-wrap gap-1 border-t border-border pt-3">
+                                                        {candidate.backward_area && (
+                                                            <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
+                                                                {tString(locale.badges.backward, language)}
+                                                            </Badge>
+                                                        )}
+                                                        {candidate.disability && (
+                                                            <Badge variant="secondary" className="text-[10px] rounded-none font-mono uppercase tracking-widest">
+                                                                {tString(locale.badges.disability, language)}
+                                                            </Badge>
+                                                        )}
+                                                        {!candidate.backward_area && !candidate.disability && (
+                                                            <span className="text-xs text-muted-foreground">-</span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                            </div>
+                                        </CardContent>
+                                    )}
+                                </Card>
+                            );
+                        })}
+
+                    </>
                 )}
             </div>
         </div>

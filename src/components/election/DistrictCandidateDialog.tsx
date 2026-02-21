@@ -65,13 +65,14 @@ const PartySymbol = ({ name }: { name: string }) => {
 };
 
 const GenderIcon = ({ gender }: { gender: string }) => {
-    const isMale = gender.toLowerCase() === "male";
-    const isFemale = gender.toLowerCase() === "female";
+    const safeGender = typeof gender === "string" && gender.trim() ? gender : "Other";
+    const isMale = safeGender.toLowerCase() === "male";
+    const isFemale = safeGender.toLowerCase() === "female";
 
     return (
         <div className={`flex items-center gap-2 ${isMale ? "text-blue-600" : isFemale ? "text-pink-600" : "text-gray-600"}`}>
             <User className="h-4 w-4" />
-            <span className="hidden sm:inline">{gender}</span>
+            <span className="hidden sm:inline">{safeGender}</span>
         </div>
     );
 };

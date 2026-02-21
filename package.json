@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "data:candidates:fptp2082": "node scripts/fetch-fptp-candidates-2082.mjs",
     "seo:audit": "node scripts/seo-audit.mjs",
     "analyze": "ANALYZE=true npm run build",
     "build:production": "NODE_ENV=production next build"

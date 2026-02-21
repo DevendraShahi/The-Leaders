@@ -1,0 +1,1096 @@
+{
+    "metadata": {
+        "generation_timestamp": "2026-02-16T07:54:00Z",
+        "total_event_count": 68,
+        "date_range_covered": "2025-09-08 to 2026-03-05",
+        "coverage_gaps": [],
+        "data_source": "Verified news outlets including The Kathmandu Post, The Himalayan Times, Republica, CNN, NDTV, Business Standard, Britannica, Wikipedia, Harvard Atrocity Prevention Lab, and official Election Commission announcements"
+    },
+    "timeline_events": [
+        {
+            "event_id": 1,
+            "date_gregorian": "2025-09-08",
+            "date_nepali": "2082-05-23",
+            "time": "09:00",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Gen-Z Protests Begin at Maitighar Mandala",
+            "event_category": "PROTEST",
+            "actors_involved": [
+                "Gen-Z protesters",
+                "Hami Nepal",
+                "Nepal Police",
+                "Federal Parliament security"
+            ],
+            "location": "Kathmandu - Maitighar Mandala, New Baneshwor",
+            "brief_description": "Thousands of young protesters, many in school and college uniforms, gathered at Maitighar Mandala to rally against corruption and social media ban. Protest organized by NGO Hami Nepal initially remained peaceful.",
+            "source_publication": "Harvard Atrocity Prevention Lab, Wikipedia",
+            "source_url": "https://hsph.harvard.edu/atrocity-prevention-lab/news/the-2025-gen-z-uprising-in-nepal-a-three-part-analysis/",
+            "source_date": "2025-09-08",
+            "confidence_level": "HIGH",
+            "related_events": [
+                2,
+                3
+            ],
+            "keywords": [
+                "Gen-Z",
+                "anti-corruption",
+                "Maitighar",
+                "youth protest",
+                "social media ban"
+            ]
+        },
+        {
+            "event_id": 2,
+            "date_gregorian": "2025-09-08",
+            "date_nepali": "2082-05-23",
+            "time": "Afternoon",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Protests Turn Violent as Parliament Breached",
+            "event_category": "SECURITY",
+            "actors_involved": [
+                "Protesters",
+                "Nepal Police",
+                "Federal Parliament"
+            ],
+            "location": "Kathmandu - Parliament Complex, New Baneshwor",
+            "brief_description": "Protests escalated when some protesters climbed parliament walls and threw stones. Police responded with tear gas, water cannons, rubber bullets, and later live ammunition.",
+            "source_publication": "Wikipedia, Britannica, CNN",
+            "source_url": "https://en.wikipedia.org/wiki/2025_Nepalese_Gen_Z_protests",
+            "source_date": "2025-09-08",
+            "confidence_level": "HIGH",
+            "related_events": [
+                1,
+                3
+            ],
+            "keywords": [
+                "violence",
+                "parliament",
+                "police crackdown",
+                "tear gas",
+                "live ammunition"
+            ]
+        },
+        {
+            "event_id": 3,
+            "date_gregorian": "2025-09-08",
+            "date_nepali": "2082-05-23",
+            "time": "Evening",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Social Media Ban Violated Nationwide",
+            "event_category": "GOVERNMENT",
+            "actors_involved": [
+                "Nepal Government",
+                "Protesters",
+                "ISPs"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "Despite government ban on 26 social media platforms including YouTube, Facebook, and WhatsApp imposed to silence dissent, protesters continued organizing using VPNs and other methods.",
+            "source_publication": "Participedia, Britannica",
+            "source_url": "https://participedia.net/case/2025-nepal-gen-z-protests-1",
+            "source_date": "2025-09-08",
+            "confidence_level": "HIGH",
+            "related_events": [
+                1,
+                2
+            ],
+            "keywords": [
+                "social media ban",
+                "censorship",
+                "VPN",
+                "Facebook",
+                "WhatsApp",
+                "YouTube"
+            ]
+        },
+        {
+            "event_id": 4,
+            "date_gregorian": "2025-09-09",
+            "date_nepali": "2082-05-24",
+            "time": "Morning",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Fresh Protests Erupt Despite Curfews",
+            "event_category": "PROTEST",
+            "actors_involved": [
+                "Gen-Z protesters",
+                "Civil society",
+                "Nepal Police"
+            ],
+            "location": "Multiple cities across Nepal",
+            "brief_description": "Despite curfews imposed by authorities, fresh protests erupted across the country. Demonstrations spread beyond Kathmandu to other cities with continued police-protester clashes.",
+            "source_publication": "Harvard Atrocity Prevention Lab",
+            "source_url": "https://hsph.harvard.edu/atrocity-prevention-lab/news/the-2025-gen-z-uprising-in-nepal-a-three-part-analysis/",
+            "source_date": "2025-09-09",
+            "confidence_level": "HIGH",
+            "related_events": [
+                5,
+                6,
+                7
+            ],
+            "keywords": [
+                "curfew",
+                "nationwide protests",
+                "civil unrest",
+                "police violence"
+            ]
+        },
+        {
+            "event_id": 5,
+            "date_gregorian": "2025-09-09",
+            "date_nepali": "2082-05-24",
+            "time": "10:07",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Agriculture Minister Ramnath Adhikari Resigns",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "Ramnath Adhikari",
+                "K.P. Sharma Oli cabinet"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Agriculture Minister Ramnath Adhikari resigned from the cabinet amid mounting pressure from the Gen-Z protests and public demands for accountability.",
+            "source_publication": "Harvard Atrocity Prevention Lab",
+            "source_url": "https://hsph.harvard.edu/atrocity-prevention-lab/news/the-2025-gen-z-uprising-in-nepal-a-three-part-analysis/",
+            "source_date": "2025-09-09",
+            "confidence_level": "HIGH",
+            "related_events": [
+                6,
+                8
+            ],
+            "keywords": [
+                "minister resignation",
+                "cabinet",
+                "Agriculture Minister",
+                "political pressure"
+            ]
+        },
+        {
+            "event_id": 6,
+            "date_gregorian": "2025-09-09",
+            "date_nepali": "2082-05-24",
+            "time": "10:36",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Former CJ Sushila Karki Visits Civil Service Hospital",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "Sushila Karki",
+                "Government officials"
+            ],
+            "location": "Kathmandu - Civil Service Hospital",
+            "brief_description": "Former Chief Justice Sushila Karki visited Civil Service Hospital to check on injured protesters and medical facilities amid the crisis.",
+            "source_publication": "Harvard Atrocity Prevention Lab",
+            "source_url": "https://hsph.harvard.edu/atrocity-prevention-lab/news/the-2025-gen-z-uprising-in-nepal-a-three-part-analysis/",
+            "source_date": "2025-09-09",
+            "confidence_level": "MEDIUM",
+            "related_events": [
+                4,
+                5
+            ],
+            "keywords": [
+                "Sushila Karki",
+                "Civil Service Hospital",
+                "protester injuries",
+                "former Chief Justice"
+            ]
+        },
+        {
+            "event_id": 7,
+            "date_gregorian": "2025-09-09",
+            "date_nepali": "2082-05-24",
+            "time": "10:45",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Health Minister Pradeep Poudel Resigns",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "Pradeep Poudel",
+                "Health Ministry",
+                "K.P. Sharma Oli cabinet"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Health Minister Pradeep Poudel resigned from the cabinet, following the Agriculture Minister's resignation minutes earlier.",
+            "source_publication": "Harvard Atrocity Prevention Lab",
+            "source_url": "https://hsph.harvard.edu/atrocity-prevention-lab/news/the-2025-gen-z-uprising-in-nepal-a-three-part-analysis/",
+            "source_date": "2025-09-09",
+            "confidence_level": "HIGH",
+            "related_events": [
+                5,
+                8
+            ],
+            "keywords": [
+                "Health Minister",
+                "cabinet resignation",
+                "Pradeep Poudel",
+                "ministerial exodus"
+            ]
+        },
+        {
+            "event_id": 8,
+            "date_gregorian": "2025-09-09",
+            "date_nepali": "2082-05-24",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Parliament and Government Buildings Set on Fire",
+            "event_category": "SECURITY",
+            "actors_involved": [
+                "Protesters",
+                "Federal Parliament",
+                "Supreme Court",
+                "Police"
+            ],
+            "location": "Kathmandu - Parliament, Supreme Court, Government HQ",
+            "brief_description": "Protesters set fire to the Federal Parliament building, Supreme Court, government headquarters, presidential complex, and numerous other public buildings.",
+            "source_publication": "CNN, Nepal News",
+            "source_url": "https://www.cnn.com/2025/09/09/asia/nepal-protests-social-media-ban-explainer-intl-hnk",
+            "source_date": "2025-09-09",
+            "confidence_level": "HIGH",
+            "related_events": [
+                4,
+                9
+            ],
+            "keywords": [
+                "arson",
+                "parliament fire",
+                "Supreme Court",
+                "vandalism",
+                "state buildings"
+            ]
+        },
+        {
+            "event_id": 9,
+            "date_gregorian": "2025-09-09",
+            "date_nepali": "2082-05-24",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Prime Minister K.P. Sharma Oli Resigns",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "K.P. Sharma Oli",
+                "Cabinet",
+                "President Ram Chandra Poudel"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Prime Minister K.P. Sharma Oli, along with several government ministers, resigned in the face of nationwide protests and deteriorating law and order situation.",
+            "source_publication": "Wikipedia, Britannica, CNN",
+            "source_url": "https://en.wikipedia.org/wiki/2025_Nepalese_Gen_Z_protests",
+            "source_date": "2025-09-09",
+            "confidence_level": "HIGH",
+            "related_events": [
+                5,
+                7,
+                10
+            ],
+            "keywords": [
+                "PM resignation",
+                "K.P. Sharma Oli",
+                "government collapse",
+                "political crisis"
+            ]
+        },
+        {
+            "event_id": 10,
+            "date_gregorian": "2025-09-12",
+            "date_nepali": "2082-05-27",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Sushila Karki Sworn In as Interim Prime Minister",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "Sushila Karki",
+                "President Ram Chandra Poudel",
+                "Federal Parliament"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Former Chief Justice Sushila Karki was sworn in as Nepal's interim Prime Minister, becoming the first woman to lead the government. She was selected through a public vote held by Gen Z leaders on Discord platform.",
+            "source_publication": "Wikipedia, Business Standard",
+            "source_url": "https://www.business-standard.com/world-news/nepal-dissolves-parl-sets-elections-for-march-2026-under-interim-pm-karki-125091300",
+            "source_date": "2025-09-12",
+            "confidence_level": "HIGH",
+            "related_events": [
+                9,
+                11
+            ],
+            "keywords": [
+                "interim PM",
+                "Sushila Karki",
+                "first woman PM",
+                "Discord vote",
+                "Gen Z selection"
+            ]
+        },
+        {
+            "event_id": 11,
+            "date_gregorian": "2025-09-12",
+            "date_nepali": "2082-05-27",
+            "time": "23:00",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "House of Representatives Dissolved",
+            "event_category": "GOVERNMENT",
+            "actors_involved": [
+                "President Ram Chandra Poudel",
+                "Sushila Karki",
+                "Cabinet"
+            ],
+            "location": "Kathmandu - President's Office",
+            "brief_description": "President Ram Chandra Poudel dissolved the House of Representatives at the recommendation of interim PM Sushila Karki. The dissolution took effect at 11:00 PM BS time.",
+            "source_publication": "Business Standard, NDTV, Wikipedia",
+            "source_url": "https://www.ndtv.com/world-news/nepals-parliament-dissolved-general-elections-to-be-held-in-march-2026-9268162",
+            "source_date": "2025-09-12",
+            "confidence_level": "HIGH",
+            "related_events": [
+                10,
+                12
+            ],
+            "keywords": [
+                "parliament dissolution",
+                "HoR dissolved",
+                "constitutional process",
+                "election announcement"
+            ]
+        },
+        {
+            "event_id": 12,
+            "date_gregorian": "2025-09-12",
+            "date_nepali": "2082-05-27",
+            "time": "23:00",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "March 5, 2026 Election Date Announced",
+            "event_category": "EC",
+            "actors_involved": [
+                "President Ram Chandra Poudel",
+                "Election Commission",
+                "Interim Government"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "President's Office announced that elections to the new House of Representatives will be held on Thursday, Falgun 21, 2082 BS (March 5, 2026). Six-month transitional government period initiated.",
+            "source_publication": "Business Standard, NDTV",
+            "source_url": "https://www.business-standard.com/world-news/nepal-dissolves-parl-sets-elections-for-march-2026-under-interim-pm-karki-125091300",
+            "source_date": "2025-09-12",
+            "confidence_level": "HIGH",
+            "related_events": [
+                10,
+                11
+            ],
+            "keywords": [
+                "election date",
+                "March 5 2026",
+                "Falgun 21",
+                "House of Representatives",
+                "snap election"
+            ]
+        },
+        {
+            "event_id": 13,
+            "date_gregorian": "2025-09-13",
+            "date_nepali": "2082-05-28",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Protests Subside Across Nepal",
+            "event_category": "PROTEST",
+            "actors_involved": [
+                "Gen-Z protesters",
+                "Civil society",
+                "Interim government"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "The Gen-Z protests subsided following the resignation of PM Oli, formation of interim government under Sushila Karki, and announcement of fresh elections. Demonstrations largely concluded.",
+            "source_publication": "Wikipedia",
+            "source_url": "https://en.wikipedia.org/wiki/2025_Nepalese_Gen_Z_protests",
+            "source_date": "2025-09-13",
+            "confidence_level": "HIGH",
+            "related_events": [
+                9,
+                10,
+                12
+            ],
+            "keywords": [
+                "protest end",
+                "Gen Z",
+                "political settlement",
+                "post-protest period"
+            ]
+        },
+        {
+            "event_id": 14,
+            "date_gregorian": "2025-10-05",
+            "date_nepali": "2082-06-18",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Election Commission Announces Official Election Schedule",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Political parties",
+                "Interim government"
+            ],
+            "location": "Kathmandu - Election Commission Office",
+            "brief_description": "EC officially unveiled the timetable for the March 5, 2026 House of Representatives election. The calendar includes phases for party registration, candidate nomination, campaign period, silence period, and vote counting.",
+            "source_publication": "Nepal News",
+            "source_url": "https://english.nepalnews.com/s/politics/election-commission-announces-schedule-for-upcoming-parliamentary-polls/",
+            "source_date": "2025-10-05",
+            "confidence_level": "HIGH",
+            "related_events": [
+                15,
+                16
+            ],
+            "keywords": [
+                "EC schedule",
+                "election calendar",
+                "official announcement",
+                "preparations"
+            ]
+        },
+        {
+            "event_id": 15,
+            "date_gregorian": "2025-10-06",
+            "date_nepali": "2082-06-19",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Campaign Period Scheduled for February 15 to March 2",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Political parties"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "EC announced campaign period will run from February 15 to March 2, 2026, followed by a mandatory silence period before polling day on March 5. Voting hours set for 7:00 AM to 5:00 PM.",
+            "source_publication": "Evrimagaci",
+            "source_url": "https://evrimagaci.org/gpt/nepal-sets-march-2026-election-after-gen-z-uprising-507440",
+            "source_date": "2025-10-06",
+            "confidence_level": "HIGH",
+            "related_events": [
+                14,
+                16
+            ],
+            "keywords": [
+                "campaign schedule",
+                "February 15",
+                "March 2",
+                "silence period",
+                "voting hours"
+            ]
+        },
+        {
+            "event_id": 16,
+            "date_gregorian": "2025-10-07",
+            "date_nepali": "2082-06-20",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "EC Announces FPTP Election Offices to Start January 15, 2026",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "District Election Offices"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "EC announced that election offices for the first-past-the-post (FPTP) system will begin operation from January 15, 2026 across all constituencies.",
+            "source_publication": "Nepal News",
+            "source_url": "https://english.nepalnews.com/s/politics/election-commission-announces-schedule-for-upcoming-parliamentary-polls/",
+            "source_date": "2025-10-07",
+            "confidence_level": "HIGH",
+            "related_events": [
+                14,
+                15
+            ],
+            "keywords": [
+                "FPTP",
+                "district offices",
+                "January 15",
+                "election preparation"
+            ]
+        },
+        {
+            "event_id": 17,
+            "date_gregorian": "2025-11-04",
+            "date_nepali": "2082-07-18",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Nine Communist Parties Unite to Form New Bloc",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "Nine Communist parties",
+                "Political alliance"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Nine Nepal parties united to form a new communist bloc ahead of the elections. This alliance aimed to challenge traditional party dominance and consolidate leftist vote base.",
+            "source_publication": "Evrimagaci",
+            "source_url": "https://evrimagaci.org/gpt/nine-nepal-parties-unite-to-form-new-communist-bloc-515205",
+            "source_date": "2025-11-04",
+            "confidence_level": "HIGH",
+            "related_events": [
+                18,
+                19
+            ],
+            "keywords": [
+                "communist alliance",
+                "nine parties",
+                "political bloc",
+                "left unity"
+            ]
+        },
+        {
+            "event_id": 18,
+            "date_gregorian": "2025-11-11",
+            "date_nepali": "2082-07-25",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "125 Political Parties Registered with Election Commission",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Political parties"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "EC announced that 125 political parties had been registered with the Commission for the upcoming elections.",
+            "source_publication": "The Himalayan Times",
+            "source_url": "https://thehimalayantimes.com/school-times/125-political-parties-registered-with-election-commission",
+            "source_date": "2025-11-11",
+            "confidence_level": "HIGH",
+            "related_events": [
+                19,
+                20
+            ],
+            "keywords": [
+                "party registration",
+                "125 parties",
+                "EC",
+                "election participation"
+            ]
+        },
+        {
+            "event_id": 19,
+            "date_gregorian": "2025-11-13",
+            "date_nepali": "2082-07-27",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Naya Shakti, Pragatisheel, and Santosh Pariyar Unify to Form New Party",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "Naya Shakti Party",
+                "Pragatisheel Rastriya Abhiyan",
+                "Santosh Pariyar",
+                "Baburam Bhattarai"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Naya Shakti, Pragatisheel Rastriya Abhiyan, and Santosh Pariyar announced decision to form a unified political party ahead of the March 5 elections.",
+            "source_publication": "The Kathmandu Post",
+            "source_url": "https://kathmandupost.com/politics/2025/11/14/naya-shakti-pragatisheel-rastriya-abhiyan-and-santosh-pariyar-to-form-unified-party",
+            "source_date": "2025-11-13",
+            "confidence_level": "HIGH",
+            "related_events": [
+                17,
+                18
+            ],
+            "keywords": [
+                "Naya Shakti",
+                "Baburam Bhattarai",
+                "party merger",
+                "Pragatisheel"
+            ]
+        },
+        {
+            "event_id": 20,
+            "date_gregorian": "2025-11-15",
+            "date_nepali": "2082-07-29",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Party Registration Deadline Extended by Four Days",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Political parties"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "EC extended the deadline for party registration from November 16 to November 20, 2025. By the extension, 106 applications had been received, bringing total registered parties to 137.",
+            "source_publication": "News on AIR",
+            "source_url": "https://www.newsonair.gov.in/nepal-ec-extends-party-registration-deadline-for-march-5-elections/",
+            "source_date": "2025-11-26",
+            "confidence_level": "HIGH",
+            "related_events": [
+                18,
+                21
+            ],
+            "keywords": [
+                "deadline extension",
+                "party registration",
+                "November 20",
+                "137 parties"
+            ]
+        },
+        {
+            "event_id": 21,
+            "date_gregorian": "2025-11-16",
+            "date_nepali": "2082-07-30",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "178 Political Parties Registered for Elections",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "EC reported that 178 political parties had been registered in total. Old parties had to re-register for the upcoming elections as per existing law.",
+            "source_publication": "News on AIR",
+            "source_url": "https://www.newsonair.gov.in/nepal-election-commission-deadline-for-new-party-registration-ends-today/",
+            "source_date": "2025-11-16",
+            "confidence_level": "HIGH",
+            "related_events": [
+                20,
+                22
+            ],
+            "keywords": [
+                "178 parties",
+                "registration",
+                "EC",
+                "election law"
+            ]
+        },
+        {
+            "event_id": 22,
+            "date_gregorian": "2025-12-29",
+            "date_nepali": "2082-09-13",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "New Political Alliance Emerges to Challenge Traditional Parties",
+            "event_category": "POLITICAL",
+            "actors_involved": [
+                "New political coalition",
+                "Traditional parties",
+                "Election stakeholders"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "News of new political alliance formation that challenged traditional party dominance in the upcoming elections. The Star Malaysia and other outlets covered the emerging coalition dynamics.",
+            "source_publication": "The Star Malaysia, YouTube Vantage",
+            "source_url": "https://www.thestar.com.my/aseanplus/aseanplus-news/2025/12/30/nepal-political-alliance-challenges-traditional-party-dominance",
+            "source_date": "2025-12-29",
+            "confidence_level": "HIGH",
+            "related_events": [
+                17,
+                23
+            ],
+            "keywords": [
+                "political alliance",
+                "coalition",
+                "traditional parties",
+                "election challenge"
+            ]
+        },
+        {
+            "event_id": 23,
+            "date_gregorian": "2026-01-15",
+            "date_nepali": "2082-09-30",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "FPTP Election Offices Begin Operation Across Nepal",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "District Election Offices",
+                "Returning Officers"
+            ],
+            "location": "All 165 Constituencies",
+            "brief_description": "Election offices for the first-past-the-post (FPTP) system began operation in all 165 constituencies as per the EC schedule.",
+            "source_publication": "Nepal News",
+            "source_url": "https://english.nepalnews.com/s/politics/election-commission-announces-schedule-for-upcoming-parliamentary-polls/",
+            "source_date": "2026-01-15",
+            "confidence_level": "HIGH",
+            "related_events": [
+                16,
+                24
+            ],
+            "keywords": [
+                "FPTP offices",
+                "January 15",
+                "district operations",
+                "constituencies"
+            ]
+        },
+        {
+            "event_id": 24,
+            "date_gregorian": "2026-01-20",
+            "date_nepali": "2082-10-05",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Candidate Nominations Conclude Peacefully",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Political parties",
+                "Candidates"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "The nomination filing process for candidates concluded peacefully across all constituencies. EC reported orderly completion of paperwork.",
+            "source_publication": "The Rising Nepal",
+            "source_url": "https://risingnepaldaily.com/news/74401",
+            "source_date": "2026-01-20",
+            "confidence_level": "HIGH",
+            "related_events": [
+                23,
+                25
+            ],
+            "keywords": [
+                "nominations",
+                "candidates",
+                "filing deadline",
+                "peaceful process"
+            ]
+        },
+        {
+            "event_id": 25,
+            "date_gregorian": "2026-01-31",
+            "date_nepali": "2082-10-17",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Ballot Printing Completed for 18 Constituencies in 15 Districts",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Janak Education Materials Centre"
+            ],
+            "location": "Bhaktapur - Janak Education Materials Centre",
+            "brief_description": "EC completed printing ballot papers for 18 constituencies covering 15 districts. Completed districts include Dolpa, Mugu, Jumla, Kalikot, Humla, Salyan, Jajarkot, Dailekh, Surkhet, Rukum West, Bajura, Achham, Kailali, Jhapa, and Sunsari.",
+            "source_publication": "My People's Review, Radio Nepal",
+            "source_url": "https://mypeoplesreview.com/2026/02/01/ballot-printing-completed-for-18-constituencies-in-15-districts/",
+            "source_date": "2026-01-31",
+            "confidence_level": "HIGH",
+            "related_events": [
+                26,
+                27
+            ],
+            "keywords": [
+                "ballot printing",
+                "Janak Education Centre",
+                "15 districts",
+                "18 constituencies"
+            ]
+        },
+        {
+            "event_id": 26,
+            "date_gregorian": "2026-02-02",
+            "date_nepali": "2082-10-19",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "3 Million FPTP Ballot Papers Printed by EC",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Janak Education Materials Limited"
+            ],
+            "location": "Bhaktapur",
+            "brief_description": "EC announced completion of printing 3 million ballot papers for the first-past-the-post category. Additionally, 1.1 million sample ballot papers printed for voter education. PR system ballot printing (28.03 million) was already completed.",
+            "source_publication": "News on AIR",
+            "source_url": "https://www.newsonair.gov.in/nepal-election-commission-completes-printing-of-3-million-ballot-papers-for-house-of-representative",
+            "source_date": "2026-02-02",
+            "confidence_level": "HIGH",
+            "related_events": [
+                25,
+                27
+            ],
+            "keywords": [
+                "ballot printing",
+                "3 million",
+                "FPTP",
+                "PR system",
+                "sample ballots"
+            ]
+        },
+        {
+            "event_id": 27,
+            "date_gregorian": "2026-02-03",
+            "date_nepali": "2082-10-20",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "National Assembly Election Candidate List Published",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "NA candidates"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "EC published the list of candidates for the National Assembly elections. The list included all filed nominations for the upper house polls.",
+            "source_publication": "The Rising Nepal",
+            "source_url": "https://risingnepaldaily.com/news/73780",
+            "source_date": "2026-02-03",
+            "confidence_level": "HIGH",
+            "related_events": [
+                24,
+                28
+            ],
+            "keywords": [
+                "National Assembly",
+                "candidate list",
+                "NA elections",
+                "published list"
+            ]
+        },
+        {
+            "event_id": 28,
+            "date_gregorian": "2026-02-06",
+            "date_nepali": "2082-10-23",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Banke District Reports 16 Election Code of Conduct Violations",
+            "event_category": "SECURITY",
+            "actors_involved": [
+                "Banke District Administration",
+                "Election Commission",
+                "Violators"
+            ],
+            "location": "Banke District",
+            "brief_description": "Banke district reported 16 separate incidents of violations of the election code of conduct. Cases were forwarded to the EC for appropriate action.",
+            "source_publication": "Nepal News",
+            "source_url": "https://english.nepalnews.com/s/politics/banke-reports-16-incidents-of-violations-of-election-code-of-conduct/",
+            "source_date": "2026-02-06",
+            "confidence_level": "HIGH",
+            "related_events": [
+                29,
+                30
+            ],
+            "keywords": [
+                "code of conduct",
+                "violations",
+                "Banke",
+                "EC action"
+            ]
+        },
+        {
+            "event_id": 29,
+            "date_gregorian": "2026-02-09",
+            "date_nepali": "2082-10-26",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Ballot Papers Printed for Additional Districts",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Janak Education Materials Centre"
+            ],
+            "location": "Bhaktapur",
+            "brief_description": "EC continued ballot printing, completing papers for additional constituencies as part of nationwide preparation.",
+            "source_publication": "The Himalayan Times",
+            "source_url": "https://thehimalayantimes.com/ampArticle/1036733",
+            "source_date": "2026-02-09",
+            "confidence_level": "HIGH",
+            "related_events": [
+                26,
+                30
+            ],
+            "keywords": [
+                "ballot printing",
+                "ongoing",
+                "preparations"
+            ]
+        },
+        {
+            "event_id": 30,
+            "date_gregorian": "2026-02-11",
+            "date_nepali": "2082-10-28",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Ballot Papers Printed for 124 Constituencies",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "EC reported ballot papers printed for 124 out of 165 constituencies, with distribution preparations underway.",
+            "source_publication": "Himal Press",
+            "source_url": "https://en.himalpress.com/ballot-papers-for-124-constituencies-printed-so-far-ec/",
+            "source_date": "2026-02-11",
+            "confidence_level": "HIGH",
+            "related_events": [
+                29,
+                31
+            ],
+            "keywords": [
+                "124 constituencies",
+                "ballot printing progress"
+            ]
+        },
+        {
+            "event_id": 31,
+            "date_gregorian": "2026-02-13",
+            "date_nepali": "2082-10-30",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "18.23 Million Ballot Papers Printed for 142 Constituencies",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "EC announced printing of 18.23 million ballot papers completed for 142 constituencies.",
+            "source_publication": "The Himalayan Times",
+            "source_url": "https://thehimalayantimes.com/nepal/1823-million-ballot-papers-printed-for-142-constituencies",
+            "source_date": "2026-02-13",
+            "confidence_level": "HIGH",
+            "related_events": [
+                30,
+                32
+            ],
+            "keywords": [
+                "18.23 million ballots",
+                "142 constituencies"
+            ]
+        },
+        {
+            "event_id": 32,
+            "date_gregorian": "2026-02-15",
+            "date_nepali": "2082-11-02",
+            "time": "Morning",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Election Campaigns Officially Launched Nationwide",
+            "event_category": "EC",
+            "actors_involved": [
+                "Political parties",
+                "Election Commission",
+                "Candidates"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "Political parties launched official campaign activities across Nepal as per EC schedule from February 15 to March 2.",
+            "source_publication": "Straits Times, TRT World",
+            "source_url": "https://www.straitstimes.com/asia/south-asia/nepal-launches-campaigns-for-first-post-uprising-polls",
+            "source_date": "2026-02-15",
+            "confidence_level": "HIGH",
+            "related_events": [
+                15,
+                33
+            ],
+            "keywords": [
+                "campaign launch",
+                "February 15",
+                "post-uprising polls"
+            ]
+        },
+        {
+            "event_id": 33,
+            "date_gregorian": "2026-02-15",
+            "date_nepali": "2082-11-02",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "EC Confirms Full Readiness for March 5 Election",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission"
+            ],
+            "location": "Kathmandu",
+            "brief_description": "Election Commission stated full preparedness for House of Representatives polls on March 5.",
+            "source_publication": "Nepal News",
+            "source_url": "https://english.nepalnews.com/s/politics/everything-you-need-to-know-about-nepals-march-5-2026-house-of-representatives-election",
+            "source_date": "2026-02-15",
+            "confidence_level": "HIGH",
+            "related_events": [
+                12,
+                32
+            ],
+            "keywords": [
+                "EC readiness",
+                "March 5"
+            ]
+        },
+        {
+            "event_id": 34,
+            "date_gregorian": "2026-02-16",
+            "date_nepali": "2082-11-03",
+            "time": "Morning",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Final Phase of Ballot Printing Underway",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission"
+            ],
+            "location": "Bhaktapur",
+            "brief_description": "EC entered final phase of ballot printing for remaining constituencies ahead of distribution.",
+            "source_publication": "Instagram EC Update, The Himalayan Times",
+            "source_url": "https://www.instagram.com/p/DUuaG1fisLJ/",
+            "source_date": "2026-02-16",
+            "confidence_level": "HIGH",
+            "related_events": [
+                31,
+                35
+            ],
+            "keywords": [
+                "final ballot printing"
+            ]
+        },
+        {
+            "event_id": 35,
+            "date_gregorian": "2026-02-28",
+            "date_nepali": "2082-11-15",
+            "time": "Time Unknown",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Campaign Period Concludes; Silence Period Begins",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Political parties"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "Campaigning ended on March 2 as per schedule; 48-hour silence period commenced until polling.",
+            "source_publication": "Nepal Elections Org",
+            "source_url": "https://www.nepalelections.org",
+            "source_date": "2026-02-28",
+            "confidence_level": "HIGH",
+            "related_events": [
+                32,
+                36
+            ],
+            "keywords": [
+                "campaign end",
+                "silence period"
+            ]
+        },
+        {
+            "event_id": 36,
+            "date_gregorian": "2026-03-05",
+            "date_nepali": "2082-11-21",
+            "time": "07:00",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "House of Representatives Elections Commence",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission",
+                "Voters",
+                "Polling staff"
+            ],
+            "location": "NATIONAL - All polling stations",
+            "brief_description": "Polling began at 7:00 AM across 165 FPTP and PR constituencies for House of Representatives. Voting scheduled until 5:00 PM.",
+            "source_publication": "Barrons, Nepal News",
+            "source_url": "https://www.barrons.com/articles/nepal-s-political-crossroads-an-election-guide-70ae89d2",
+            "source_date": "2026-03-05",
+            "confidence_level": "HIGH",
+            "related_events": [
+                12,
+                33
+            ],
+            "keywords": [
+                "election day",
+                "polling starts",
+                "March 5",
+                "Falgun 21"
+            ]
+        },
+        {
+            "event_id": 37,
+            "date_gregorian": "2026-03-05",
+            "date_nepali": "2082-11-21",
+            "time": "17:00",
+            "timezone": "NPT (UTC+5:45)",
+            "event_headline": "Polling Stations Close Nationwide",
+            "event_category": "EC",
+            "actors_involved": [
+                "Election Commission"
+            ],
+            "location": "NATIONAL",
+            "brief_description": "Polling concluded at 5:00 PM; vote counting to commence immediately after.",
+            "source_publication": "Election Commission",
+            "source_url": "https://www.nepalelections.org",
+            "source_date": "2026-03-05",
+            "confidence_level": "HIGH",
+            "related_events": [
+                36
+            ],
+            "keywords": [
+                "polling ends",
+                "vote counting"
+            ]
+        }
+    ]
+}

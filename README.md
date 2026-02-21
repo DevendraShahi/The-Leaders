@@ -127,6 +127,14 @@ The application supports a user-preference based theme system.
    npm run dev
    ```
 
+5. **Build Official 2082 Candidate Dataset (FPTP)**
+   ```bash
+   npm run data:candidates:fptp2082
+   ```
+   This generates:
+   - `public/election/candidates/FPTP-2082.json` (normalized)
+   - `public/election/candidates/FPTP-2082-raw.json` (raw ECN payload)
+
 ---
 
 **Version**: 1.1.0  
@@ -135,4 +143,3 @@ The application supports a user-preference based theme system.
 **Designed with ♥ in Nepal**
 
 *Truth. Transparency. Democracy.*
-

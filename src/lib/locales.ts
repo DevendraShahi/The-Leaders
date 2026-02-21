@@ -1497,7 +1497,7 @@ export const LOCALES = {
             factChecks: { en: "Fact Checks", ne: "तथ्य जाँच" },
             analyses: { en: "Election Articles", ne: "निर्वाचन लेखहरू" },
             prCandidates: { en: "PR Candidates", ne: "सामानुपातिक उम्मेदवार" },
-            profiles: { en: "Profiles", ne: "प्रोफाइलहरू" },
+            profiles: { en: "Candidates", ne: "उम्मेदवारहरू" },
             parties: { en: "Parties", ne: "दलहरू" },
         },
         dashboard: {
@@ -1619,14 +1619,33 @@ export const LOCALES = {
             description: { en: "Explore the full list of candidates for the 2026 Election. Select a district on the map or use the filters below.", ne: "२०२६ को निर्वाचनका लागि उम्मेदवारहरूको पूर्ण सूची हेर्नुहोस्। नक्सामा जिल्ला छान्नुहोस् वा तलका फिल्टरहरू प्रयोग गर्नुहोस्।" }
         },
         profiles: {
-            title: { en: "Candidate Profiles", ne: "उम्मेदवार प्रोफाइलहरू" },
-            subtitle: { en: "Know your candidates", ne: "आफ्ना उम्मेदवारहरूलाई चिन्नुहोस्" },
-            searchPlaceholder: { en: "Search profiles...", ne: "प्रोफाइल खोज्नुहोस्..." },
-            viewProfile: { en: "View Profile", ne: "प्रोफाइल हेर्नुहोस्" },
+            title: { en: "Candidates", ne: "उम्मेदवारहरू" },
+            subtitle: { en: "Compare PR and FPTP candidates", ne: "समानुपातिक र प्रत्यक्ष उम्मेदवार तुलना" },
+            searchPlaceholder: { en: "Search candidates...", ne: "उम्मेदवार खोज्नुहोस्..." },
+            viewProfile: { en: "View Candidate", ne: "उम्मेदवार हेर्नुहोस्" },
             archive: { en: "Election 2026 Archive", ne: "निर्वाचन २०२६ अभिलेख" },
-            partiesAndProfiles: { en: "Parties & Profiles", ne: "दल र प्रोफाइलहरू" },
-            heading: { en: "Parties & Profiles", ne: "दल र प्रोफाइलहरू" },
-            description: { en: "Meet the political landscape. Search and explore registered parties, their leaders, and foundational details for the 2026 election.", ne: "राजनीतिक परिदृश्यलाई चिन्नुहोस्। २०२६ को निर्वाचनका लागि दर्ता भएका दलहरू, तिनका नेताहरू र आधारभूत विवरणहरू खोज्नुहोस् र अन्वेषण गर्नुहोस्।" }
+            partiesAndProfiles: { en: "Candidates & Datasets", ne: "उम्मेदवार र डाटासेटहरू" },
+            heading: { en: "Candidates Command Center", ne: "उम्मेदवार कमाण्ड सेन्टर" },
+            description: { en: "Explore official PR and FPTP candidate datasets with district-level filtering, advanced sorting, and live map-aware context.", ne: "जिल्ला-स्तरीय फिल्टर, उन्नत क्रमबद्धता र नक्सा-आधारित सन्दर्भ सहित आधिकारिक समानुपातिक र प्रत्यक्ष उम्मेदवार डाटासेटहरू अन्वेषण गर्नुहोस्।" },
+            viewerTitle: { en: "Candidate Dataset Explorer", ne: "उम्मेदवार डाटासेट एक्सप्लोरर" },
+            datasetNote: { en: "PR and FPTP datasets are shown independently to preserve source fidelity.", ne: "स्रोतको शुद्धता जोगाउन समानुपातिक र प्रत्यक्ष डाटासेटहरू छुट्टाछुट्टै प्रस्तुत गरिएका छन्।" },
+            modes: {
+                fptp: { en: "FPTP", ne: "प्रत्यक्ष" },
+                pr: { en: "PR", ne: "समानुपातिक" }
+            },
+            modeDescriptions: {
+                fptp: { en: "Constituency-level candidate roster with district, province, vote, and profile details.", ne: "जिल्ला, प्रदेश, मत र प्रोफाइल विवरणसहित निर्वाचन क्षेत्र-स्तरको उम्मेदवार सूची।" },
+                pr: { en: "Party-list candidates with district and cluster filters for proportional representation.", ne: "समानुपातिक प्रतिनिधित्वका लागि जिल्ला र समूह फिल्टरसहित दल-सूची उम्मेदवारहरू।" }
+            },
+            stats: {
+                totalCandidates: { en: "Total Candidate Entries", ne: "जम्मा उम्मेदवार प्रविष्टि" },
+                fptpCandidates: { en: "FPTP Candidates", ne: "प्रत्यक्ष उम्मेदवार" },
+                prCandidates: { en: "PR Candidates", ne: "समानुपातिक उम्मेदवार" },
+                coverage: { en: "Districts / Constituencies", ne: "जिल्ला / निर्वाचन क्षेत्र" },
+                fptpParties: { en: "FPTP Party Entries", ne: "प्रत्यक्ष दल प्रविष्टि" },
+                prParties: { en: "PR Party Entries", ne: "समानुपातिक दल प्रविष्टि" },
+                lastSynced: { en: "Last Synced", ne: "अन्तिम समक्रमण" }
+            }
         },
         mapV2: {
             title: { en: "Interactive Election Map", ne: "अन्तरक्रियात्मक निर्वाचन नक्सा" },
@@ -1679,8 +1698,16 @@ export const LOCALES = {
                 allGenders: { en: "All Genders", ne: "सबै लिङ्ग" },
                 allGroups: { en: "All Groups", ne: "सबै समूहहरू" },
                 reset: { en: "Reset Filters", ne: "फिल्टर रिसेट गर्नुहोस्" },
+                expandAll: { en: "Expand All", ne: "सबै खोल्नुहोस्" },
+                collapseAll: { en: "Collapse All", ne: "सबै बन्द गर्नुहोस्" },
+                showGroup: { en: "Show Candidates", ne: "उम्मेदवार देखाउनुहोस्" },
+                hideGroup: { en: "Hide Candidates", ne: "उम्मेदवार लुकाउनुहोस्" },
                 noCandidates: { en: "No candidates found matching criteria.", ne: "मापदण्डसँग मेल खाने कुनै उम्मेदवार भेटिएन।" },
                 candidates: { en: "Candidates", ne: "उम्मेदवारहरू" },
+                pageRange: { en: "Showing", ne: "देखाइँदै" },
+                of: { en: "of", ne: "मध्ये" },
+                prev: { en: "Previous", ne: "अघिल्लो" },
+                next: { en: "Next", ne: "अर्को" },
                 table: {
                     sn: { en: "SN", ne: "क्र.सं." },
                     name: { en: "Name", ne: "नाम" },
@@ -1693,6 +1720,64 @@ export const LOCALES = {
                     backward: { en: "Backward", ne: "पिछडिएको क्षेत्र" },
                     disability: { en: "Disability", ne: "अपाङ्गता" }
                 },
+                genders: {
+                    Male: { en: "Male", ne: "पुरुष" },
+                    Female: { en: "Female", ne: "महिला" },
+                    Other: { en: "Other", ne: "अन्य" }
+                }
+            },
+            fptpViewer: {
+                title: { en: "First-Past-The-Post Candidates", ne: "प्रत्यक्ष निर्वाचन उम्मेदवार" },
+                candidates: { en: "Candidates", ne: "उम्मेदवारहरू" },
+                searchPlaceholder: { en: "Search by candidate, district, province, or party...", ne: "उम्मेदवार, जिल्ला, प्रदेश वा दलबाट खोज्नुहोस्..." },
+                allParties: { en: "All Parties", ne: "सबै दलहरू" },
+                allProvinces: { en: "All Provinces", ne: "सबै प्रदेशहरू" },
+                allDistricts: { en: "All Districts", ne: "सबै जिल्लाहरू" },
+                allGenders: { en: "All Genders", ne: "सबै लिङ्ग" },
+                allConstituencies: { en: "All Constituencies", ne: "सबै निर्वाचन क्षेत्र" },
+                constituency: { en: "Constituency", ne: "निर्वाचन क्षेत्र" },
+                sortBy: { en: "Sort By", ne: "क्रमबद्ध गर्नुहोस्" },
+                sort: {
+                    name: { en: "Name", ne: "नाम" },
+                    party: { en: "Party", ne: "दल" },
+                    partyRank: { en: "Party Rank", ne: "दल वरीयता" },
+                    district: { en: "District", ne: "जिल्ला" },
+                    constituency: { en: "Constituency", ne: "निर्वाचन क्षेत्र" },
+                    age: { en: "Age", ne: "उमेर" },
+                    votes: { en: "Votes", ne: "मत" }
+                },
+                sortDirection: {
+                    asc: { en: "Ascending", ne: "आरोही" },
+                    desc: { en: "Descending", ne: "अवरोही" }
+                },
+                reset: { en: "Reset Filters", ne: "फिल्टर रिसेट गर्नुहोस्" },
+                showing: { en: "Showing", ne: "देखाइँदै" },
+                results: { en: "results", ne: "नतिजा" },
+                mapDistrict: { en: "Map District", ne: "नक्सा जिल्ला" },
+                expandAll: { en: "Expand All", ne: "सबै खोल्नुहोस्" },
+                collapseAll: { en: "Collapse All", ne: "सबै बन्द गर्नुहोस्" },
+                showGroup: { en: "Show Candidates", ne: "उम्मेदवार देखाउनुहोस्" },
+                hideGroup: { en: "Hide Candidates", ne: "उम्मेदवार लुकाउनुहोस्" },
+                emptyTitle: { en: "No candidates found", ne: "कुनै उम्मेदवार भेटिएन" },
+                emptyDesc: { en: "Try adjusting filters or clearing the map-selected district.", ne: "फिल्टर परिवर्तन गर्नुहोस् वा नक्सामा छानिएको जिल्ला हटाएर फेरि प्रयास गर्नुहोस्।" },
+                table: {
+                    sn: { en: "SN", ne: "क्र.सं." },
+                    name: { en: "Candidate", ne: "उम्मेदवार" },
+                    party: { en: "Party", ne: "दल" },
+                    gender: { en: "Gender", ne: "लिङ्ग" },
+                    province: { en: "Province", ne: "प्रदेश" },
+                    district: { en: "District", ne: "जिल्ला" },
+                    constituency: { en: "Constituency", ne: "निर्वाचन क्षेत्र" },
+                    age: { en: "Age", ne: "उमेर" },
+                    votes: { en: "Votes", ne: "मत" },
+                    photo: { en: "Photo", ne: "फोटो" }
+                },
+                viewPhoto: { en: "View", ne: "हेर्नुहोस्" },
+                viewProfile: { en: "View Profile", ne: "प्रोफाइल हेर्नुहोस्" },
+                pageRange: { en: "Showing", ne: "देखाइँदै" },
+                of: { en: "of", ne: "मध्ये" },
+                prev: { en: "Previous", ne: "अघिल्लो" },
+                next: { en: "Next", ne: "अर्को" },
                 genders: {
                     Male: { en: "Male", ne: "पुरुष" },
                     Female: { en: "Female", ne: "महिला" },
@@ -1761,6 +1846,28 @@ export const LOCALES = {
             subtitle: { en: "Voter breakdown", ne: "मतदाता विवरण" },
             age: { en: "Age Groups", ne: "उमेर समूह" },
             gender: { en: "Gender Ratio", ne: "लैंगिक अनुपात" }
+        },
+        candidateSnapshot: {
+            title: { en: "Official Candidate Snapshot", ne: "आधिकारिक उम्मेदवार सारांश" },
+            subtitle: { en: "Latest PR and FPTP candidate totals from synced datasets.", ne: "समक्रमण गरिएको डाटासेटबाट प्राप्त नवीनतम समानुपातिक र प्रत्यक्ष उम्मेदवार विवरण।" },
+            ofTotal: { en: "of total candidates", ne: "जम्मा उम्मेदवारमध्ये" },
+            notAvailable: { en: "Not available", ne: "उपलब्ध छैन" },
+            genders: {
+                Male: { en: "Male", ne: "पुरुष" },
+                Female: { en: "Female", ne: "महिला" },
+                Other: { en: "Other", ne: "अन्य" },
+                Unknown: { en: "Unknown", ne: "अज्ञात" }
+            },
+            cards: {
+                fptpCandidates: { en: "FPTP Candidates", ne: "प्रत्यक्ष उम्मेदवार" },
+                fptpParties: { en: "FPTP Party Entries", ne: "प्रत्यक्ष दल प्रविष्टि" },
+                prCandidates: { en: "PR Candidates", ne: "समानुपातिक उम्मेदवार" },
+                prParties: { en: "PR Party Entries", ne: "समानुपातिक दल प्रविष्टि" },
+                districts: { en: "District Coverage", ne: "जिल्ला समेटाइ" },
+                constituencies: { en: "Constituencies", ne: "निर्वाचन क्षेत्र" },
+                provinces: { en: "Provinces", ne: "प्रदेश" },
+                lastSynced: { en: "Last Synced", ne: "अन्तिम समक्रमण" }
+            }
         },
         trending: {
             title: { en: "Trending Topics", ne: "चर्चित विषयहरू" },

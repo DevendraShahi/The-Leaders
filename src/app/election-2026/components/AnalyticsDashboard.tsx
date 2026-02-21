@@ -17,6 +17,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
+import type { CandidateDataSummary } from "@/lib/candidate-data-summary";
 
 // Helper for content resolution (if we had bilingual data, currently mostly static strings or en-only data)
 const resolveContent = (content: any, language: "en" | "ne") => {
@@ -28,6 +29,7 @@ const resolveContent = (content: any, language: "en" | "ne") => {
 interface AnalyticsDashboardProps {
     latestBrief?: any;
     latestFactCheck?: any;
+    candidateSummary?: CandidateDataSummary;
     electionArticles?: {
         title_en: string;
         excerpt_en: string;
@@ -46,6 +48,7 @@ interface AnalyticsDashboardProps {
 export default function AnalyticsDashboard({
     latestBrief,
     latestFactCheck,
+    candidateSummary,
     electionArticles = [],
 }: AnalyticsDashboardProps) {
     const analytics = getAnalyticsData();
@@ -54,6 +57,17 @@ export default function AnalyticsDashboard({
     const districtNews = selectedDistrict ? getDistrictNews(selectedDistrict) : null;
     const { language } = useLanguage();
     const l = LOCALES.election2026;
+    const candidateLocale = LOCALES.election2026.candidateSnapshot;
+    const demographicsData = candidateSummary
+        ? {
+            ...analytics.demographicsData,
+            genderDistribution: candidateSummary.genderBreakdown.map((entry) => ({
+                gender: entry.gender,
+                count: entry.count,
+                percentage: entry.percentage,
+            })),
+        }
+        : analytics.demographicsData;
 
     // Open district panel when district is selected
     useState(() => {
@@ -133,6 +147,111 @@ export default function AnalyticsDashboard({
                             }
                         </p>
                     </motion.section>
+
+                    {candidateSummary && (
+                        <motion.section
+                            className="space-y-6"
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <div className="text-center">
+                                <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
+                                    {tString(candidateLocale.title, language)}
+                                </h2>
+                                <p className="mx-auto mt-2 max-w-3xl text-muted-foreground">
+                                    {tString(candidateLocale.subtitle, language)}
+                                </p>
+                            </div>
+
+                            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+                                {[
+                                    {
+                                        label: tString(candidateLocale.cards.fptpCandidates, language),
+                                        value: candidateSummary.fptpCandidates.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.fptpParties, language),
+                                        value: candidateSummary.fptpParties.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.prCandidates, language),
+                                        value: candidateSummary.prCandidates.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.prParties, language),
+                                        value: candidateSummary.prParties.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.districts, language),
+                                        value: candidateSummary.fptpDistricts.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.constituencies, language),
+                                        value: candidateSummary.fptpConstituencies.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.provinces, language),
+                                        value: candidateSummary.provinces.toLocaleString(),
+                                    },
+                                    {
+                                        label: tString(candidateLocale.cards.lastSynced, language),
+                                        value: candidateSummary.lastSyncedAt
+                                            ? new Date(candidateSummary.lastSyncedAt).toLocaleString(language === "ne" ? "ne-NP" : "en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })
+                                            : tString(candidateLocale.notAvailable, language),
+                                    },
+                                ].map((item) => (
+                                    <Card key={item.label} className="rounded-none border border-border/60 bg-card/60">
+                                        <CardContent className="p-4">
+                                            <p className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">
+                                                {item.label}
+                                            </p>
+                                            <p className="mt-2 font-bebas text-4xl leading-none tracking-tight text-foreground md:text-5xl">
+                                                {item.value}
+                                            </p>
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+
+                            <div className="grid gap-3 md:grid-cols-2">
+                                {candidateSummary.genderBreakdown.map((entry) => {
+                                    const genderLabel = tString(candidateLocale.genders[entry.gender], language);
+
+                                    return (
+                                        <Card key={entry.gender} className="rounded-none border border-border/60 bg-muted/10">
+                                            <CardContent className="p-4">
+                                                <div className="mb-2 flex items-end justify-between gap-3">
+                                                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                                                        {genderLabel}
+                                                    </p>
+                                                    <p className="font-bebas text-3xl leading-none text-foreground">
+                                                        {entry.count.toLocaleString()}
+                                                    </p>
+                                                </div>
+                                                <div className="h-2 overflow-hidden rounded-full bg-muted">
+                                                    <div
+                                                        className="h-full bg-[#B71C1C]"
+                                                        style={{ width: `${Math.max(1, entry.percentage)}%` }}
+                                                    />
+                                                </div>
+                                                <p className="mt-2 text-xs text-muted-foreground">
+                                                    {entry.percentage}% {tString(candidateLocale.ofTotal, language)}
+                                                </p>
+                                            </CardContent>
+                                        </Card>
+                                    );
+                                })}
+                            </div>
+                        </motion.section>
+                    )}
 
                     {/* Subtle Divider */}
                     <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
@@ -305,7 +424,7 @@ export default function AnalyticsDashboard({
                             </p>
                         </div>
                         <div className="mx-auto max-w-5xl">
-                            <TabbedDemographics data={analytics.demographicsData} />
+                            <TabbedDemographics data={demographicsData} />
                         </div>
                     </motion.section>
 

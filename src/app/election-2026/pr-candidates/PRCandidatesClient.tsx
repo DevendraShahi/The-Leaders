@@ -5,12 +5,14 @@ import { LOCALES, tString } from "@/lib/locales";
 import { PRCandidateViewer } from "@/components/election/PRCandidateViewer";
 import { ElectionMap } from "@/components/election/ElectionMap";
 import { PRPartyList } from "@/lib/pr-candidate-data";
+import type { PartyRankIndex } from "@/lib/fptp-party-ranking";
 
 interface PRCandidatesClientProps {
     prData: PRPartyList[];
+    prPartyRankIndex: PartyRankIndex;
 }
 
-export function PRCandidatesClient({ prData }: PRCandidatesClientProps) {
+export function PRCandidatesClient({ prData, prPartyRankIndex }: PRCandidatesClientProps) {
     const { language } = useLanguage();
     const locale = LOCALES.election2026.prCandidates;
 
@@ -38,7 +40,10 @@ export function PRCandidatesClient({ prData }: PRCandidatesClientProps) {
                 </div>
             </div>
 
-            <PRCandidateViewer initialData={prData} />
+            <PRCandidateViewer
+                initialData={prData}
+                partyRankIndex={prPartyRankIndex}
+            />
         </div>
     );
 }
