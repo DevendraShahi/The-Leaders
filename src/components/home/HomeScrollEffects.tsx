@@ -65,7 +65,9 @@ export function HomeScrollEffects({ children }: HomeScrollEffectsProps) {
                     setGlowY(event.clientY - 90);
                     setGlowOpacity(0.55);
                 };
-                const onPointerLeave = () => setGlowOpacity(0);
+                const onPointerLeave = (): void => {
+                    setGlowOpacity(0);
+                };
 
                 window.addEventListener("mousemove", onPointerMove, { passive: true });
                 window.addEventListener("mouseleave", onPointerLeave);
