@@ -4,6 +4,7 @@ import { LeadersGrid } from "@/components/home/LeadersGrid";
 import { Timeline } from "@/components/home/timeline";
 import { Manifesto } from "@/components/home/manifesto";
 import { NewsSection } from "@/components/home/news-section";
+import { HomeScrollEffects } from "@/components/home/HomeScrollEffects";
 import { getArticles } from "@/lib/data";
 import { getDailyBriefs, getElectionArticles, getFactChecks } from "@/lib/election-data";
 
@@ -21,7 +22,7 @@ export default async function Home() {
   // Home is a server component; language switching happens client-side.
   // We keep this neutral and let child components handle localization.
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <HomeScrollEffects>
       <ElectionCountdown />
       <ElectionSpecial
         dailyBriefs={dailyBriefs.slice(0, 6)}
@@ -32,6 +33,6 @@ export default async function Home() {
       <NewsSection articles={articles} />
       <Manifesto />
       <Timeline limit={2} showViewAll={true} />
-    </div>
+    </HomeScrollEffects>
   );
 }

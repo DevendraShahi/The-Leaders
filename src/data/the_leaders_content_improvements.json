@@ -1,0 +1,397 @@
+{
+  "loading_screen": {
+    "section_description": "Splash/loading screen text shown while the platform initializes",
+    "changes": [
+      {
+        "original": "Initializing Platform",
+        "improved": "Loading The Leaders",
+        "reason": "More direct and brand-aligned; avoids technical jargon that feels impersonal"
+      },
+      {
+        "original": "Political Insights • Democratic Legacy",
+        "improved": "Nepal's Political Record • Documented for the Public",
+        "reason": "Specifies Nepal and the archival purpose; 'democratic legacy' is vague"
+      }
+    ]
+  },
+  "hero_section": {
+    "section_description": "Main hero banner at the top of the homepage",
+    "changes": [
+      {
+        "original": "The Leaders · Civic Archive",
+        "improved": "The Leaders · Nepal's Civic Archive",
+        "reason": "Adds geographic identity; visitors should immediately know this is Nepal-focused"
+      },
+      {
+        "original": "POWER, HISTORY, ACCOUNTABILITY",
+        "improved": "HISTORY, LEADERSHIP, ACCOUNTABILITY",
+        "reason": "'Power' carries authoritarian connotations inappropriate for a civic archive; 'Leadership' aligns with the site's name and mission"
+      },
+      {
+        "original": "Independent archive · multi-perspective reading · evidence-led context",
+        "improved": "Independent archive · multiple perspectives · evidence-based context",
+        "reason": "'Multi-perspective reading' is awkward phrasing; 'evidence-based' is more widely understood than 'evidence-led'"
+      },
+      {
+        "original": "An independent political archive built for serious readers who want context, evidence, and continuity in Nepal's democratic story.",
+        "improved": "An independent archive documenting Nepal's political history, leaders, and democratic evolution — built on verified facts, multiple perspectives, and editorial integrity.",
+        "reason": "The original is vague ('serious readers', 'continuity'). The improved version specifies what the archive covers and what standards it follows."
+      }
+    ]
+  },
+  "election_countdown": {
+    "section_description": "Election countdown timer section",
+    "changes": [
+      {
+        "original": "Election Countdown",
+        "improved": "Nepal General Election Countdown",
+        "reason": "Specifies which election for clarity"
+      }
+    ]
+  },
+  "buttons_cta": {
+    "section_description": "Primary call-to-action buttons",
+    "changes": [
+      {
+        "original": "Explore Leaders",
+        "improved": "Browse Leaders",
+        "reason": "'Browse' is clearer for a directory-style experience; 'Explore' is overused"
+      },
+      {
+        "original": "Read Articles",
+        "improved": "Read Analysis",
+        "reason": "'Analysis' conveys higher editorial value than generic 'Articles'"
+      }
+    ]
+  },
+  "election_coverage_section": {
+    "section_description": "Special election coverage banner and hub",
+    "changes": [
+      {
+        "original": "Special Coverage",
+        "improved": "Election Special",
+        "reason": "More concise and journalistically standard"
+      },
+      {
+        "original": "Follow every moment of Nepal's most pivotal general election. From candidate filings to live results, access definitive data and expert analysis.",
+        "improved": "Track Nepal's 2026 general election from start to finish — candidate filings, campaign developments, live results, and expert analysis in one place.",
+        "reason": "'Most pivotal' is subjective and editorializing; the improved version is factual and action-oriented"
+      },
+      {
+        "original": "Open Election Hub",
+        "improved": "Enter Election Hub",
+        "reason": "'Enter' implies stepping into a dedicated space, stronger than 'Open'"
+      }
+    ]
+  },
+  "daily_briefing_section": {
+    "section_description": "Daily Election Briefing Desk area",
+    "changes": [
+      {
+        "original": "Daily Election Briefing Desk",
+        "improved": "Daily Election Briefings",
+        "reason": "'Desk' is unnecessary and adds corporate jargon"
+      },
+      {
+        "original": "High-signal updates from EC directives, campaign moves, and local field shifts.",
+        "improved": "Concise updates on Election Commission directives, campaign strategies, and developments across districts.",
+        "reason": "'High-signal' is tech jargon unfamiliar to general readers; 'local field shifts' is unclear — 'developments across districts' is precise"
+      }
+    ]
+  },
+  "election_snapshot_metrics": {
+    "section_description": "Reference metrics panel for the election",
+    "changes": [
+      {
+        "original": "Reference Metrics",
+        "improved": "Key Election Data",
+        "reason": "More accessible; 'reference metrics' sounds like a developer label"
+      },
+      {
+        "original": "National voter roll",
+        "improved": "Total registered nationwide",
+        "reason": "Clearer description of what 18.9M represents"
+      },
+      {
+        "original": "Direct constituencies",
+        "improved": "First-past-the-post constituencies",
+        "reason": "Spells out FPTP for readers who may not know the abbreviation"
+      },
+      {
+        "original": "Closed-list allocation",
+        "improved": "Proportional representation seats",
+        "reason": "General readers may not understand 'closed-list allocation'"
+      },
+      {
+        "original": "Nationwide tracking",
+        "improved": "All 165 districts covered",
+        "reason": "Specific number adds credibility (if applicable; adjust number as needed)"
+      },
+      {
+        "original": "Integrity Layer",
+        "improved": "Fact-Checking",
+        "reason": "'Integrity Layer' is abstract tech language"
+      },
+      {
+        "original": "Fact-checking cycle",
+        "improved": "Around-the-clock verification",
+        "reason": "More human-readable description of 24/7 fact-checking"
+      },
+      {
+        "original": "Update Cadence",
+        "improved": "Update Frequency",
+        "reason": "'Cadence' is jargon; 'Frequency' is universally understood"
+      },
+      {
+        "original": "Editorial refresh",
+        "improved": "Fresh editorial updates every day",
+        "reason": "Makes the 'Daily' metric meaningful with a complete phrase"
+      }
+    ]
+  },
+  "dashboard_modules": {
+    "section_description": "Election dashboard module cards",
+    "changes": [
+      {
+        "original": "Central command view of election components and current coverage.",
+        "improved": "A unified view of all election data, coverage status, and live developments.",
+        "reason": "'Central command' has military overtones unsuitable for a civic platform; 'election components' is vague"
+      },
+      {
+        "original": "Operational updates with a clean chronology and issue tags.",
+        "improved": "A chronological archive of daily updates, organized by topic and date.",
+        "reason": "'Operational' and 'issue tags' are product jargon — the improved version is plain language"
+      },
+      {
+        "original": "Claims, verdicts, and source-backed evidence in one stream.",
+        "improved": "Verified and debunked claims with full source references in one feed.",
+        "reason": "'Verdicts' has legal overtones; 'verified and debunked' is standard fact-check language"
+      },
+      {
+        "original": "Navigate district stories and election micro-trends quickly.",
+        "improved": "Explore district-level results, candidate data, and regional voting patterns.",
+        "reason": "'Micro-trends' is vague; the improved version specifies what the map actually shows"
+      }
+    ]
+  },
+  "leaders_section_the_pacts": {
+    "section_description": "Featured historical leaders section titled 'The Pacts'",
+    "changes": [
+      {
+        "original": "The Pacts",
+        "improved": "The Pillars",
+        "reason": "'Pacts' means agreements/treaties and is semantically incorrect here; 'Pillars' conveys foundational figures"
+      },
+      {
+        "original": "Legends bound by history. Their actions echoed through time.",
+        "improved": "The foundational figures of Nepal's political journey. Their decisions shaped the nation for generations.",
+        "reason": "The original is poetic but vague; the improved version is specific and historically grounded"
+      },
+      {
+        "original": "Led the struggle against Rana oligarchy and royal autocracy, and articulated a vision of democratic socialism that still shapes Nepal's political imagination.",
+        "improved": "Spearheaded Nepal's fight against Rana oligarchy and royal autocracy, and championed democratic socialism — a vision that continues to influence the nation's political identity.",
+        "reason": "'Led the struggle' is generic; 'spearheaded' is more precise; 'political imagination' is vague — 'political identity' is concrete"
+      },
+      {
+        "original": "The Supreme Leader",
+        "improved": "The Iron Democrat",
+        "reason": "'Supreme Leader' carries authoritarian connotations (e.g., North Korea); Ganesh Man Singh is better honored as a committed democrat who refused power — 'Iron Democrat' captures his principled resolve"
+      },
+      {
+        "original": "From Rana prisons to leading Jana Andolan, he carried the democratic struggle on his shoulders and refused power when it was within his grasp.",
+        "improved": "Imprisoned under the Rana regime and later the driving force behind Jana Andolan I, he devoted his life to democracy and famously declined the prime ministership he had earned.",
+        "reason": "The improved version is more historically specific ('Jana Andolan I', 'declined the prime ministership') and avoids the clichéd metaphor 'carried on his shoulders'"
+      },
+      {
+        "original": "The Unifier",
+        "improved": "The Unifier of Nepal",
+        "reason": "Adding 'of Nepal' removes ambiguity for international readers"
+      },
+      {
+        "original": "From a small hill kingdom, he forged a sovereign state in the Himalaya and laid the foundations of modern Nepal's territorial and political identity.",
+        "improved": "Starting from the hill kingdom of Gorkha, he unified dozens of principalities into a single sovereign state and established the territorial foundation of modern Nepal.",
+        "reason": "Naming 'Gorkha' adds historical specificity; 'dozens of principalities' conveys the scale of unification"
+      }
+    ]
+  },
+  "editorial_feed": {
+    "section_description": "Editorial feed section with articles",
+    "changes": [
+      {
+        "original": "Editorial Feed",
+        "improved": "Latest from The Leaders",
+        "reason": "'Editorial Feed' sounds like an RSS label; 'Latest from The Leaders' is more inviting"
+      },
+      {
+        "original": "Context-rich reporting and political perspectives from The Leaders archive.",
+        "improved": "In-depth reporting, political analysis, and historical context from The Leaders editorial team.",
+        "reason": "'Context-rich' is awkward; the improved version clearly states the type of content"
+      }
+    ]
+  },
+  "article_excerpt_english": {
+    "section_description": "Featured article excerpt on the homepage about leadership in Nepal",
+    "changes": [
+      {
+        "original": "True leadership is defined not by authority or titles, but by a relationship of trust earned through direction, alignment, and commitment. Globally, people value leaders who exhibit self-control, integrity, and transparent communication, viewing a leader's ability to govern themselves as a prerequisite for governing others. In Nepal, these universal traits blend with the cultural concept of dharma, where leaders are expected to be righteous guardians of a diverse community. However, a significant gap exists between this ideal and the reality of political corruption, leading to a \"crisis of legitimacy.\" This friction peaked in the 2025 youth-led protests, where Gen Z demanded a shift toward digital transparency, personal \"cleanliness\" from corruption, and inclusion, proving that while authority can be assigned from above, true leadership must be granted from below.",
+        "improved": "Leadership is not measured by titles or authority, but by the trust a leader earns through integrity, direction, and accountability. Across the world, people expect leaders to govern themselves before governing others. In Nepal, this expectation runs even deeper — rooted in the cultural principle of dharma, which demands that leaders serve as righteous stewards of a diverse society. Yet a widening gap between this ideal and the reality of entrenched corruption has produced a crisis of legitimacy. That crisis reached a breaking point during the 2025 youth-led protests, when a generation raised on digital networks demanded transparency, zero tolerance for corruption, and genuine inclusion — demonstrating that authority imposed from above means nothing without trust earned from below.",
+        "reason": "The original is a dense, run-on paragraph. The improved version breaks ideas into clearer progressions, replaces vague phrases ('direction, alignment, and commitment') with concrete ones ('integrity, direction, and accountability'), and strengthens the closing statement."
+      }
+    ]
+  },
+  "quote_section": {
+    "section_description": "Inspirational quote block on the homepage",
+    "changes": [
+      {
+        "original": "Civic Manifesto",
+        "improved": "A Civic Responsibility",
+        "reason": "'Manifesto' implies a political declaration; 'A Civic Responsibility' is neutral and fits the archival tone better"
+      }
+    ]
+  },
+  "historical_archives_section": {
+    "section_description": "Historical archives timeline section",
+    "changes": [
+      {
+        "original": "Nepal's Political Journey",
+        "improved": "Nepal's Political Timeline",
+        "reason": "'Journey' is vague and overused; 'Timeline' is precise for a historical archive"
+      },
+      {
+        "original": "Explore the defining eras that shaped the modern republic.",
+        "improved": "Trace the key eras and turning points that shaped Nepal from ancient kingdoms to a federal republic.",
+        "reason": "The improved version is more specific about the range of history covered"
+      },
+      {
+        "original": "Ancient Kingdoms",
+        "improved": "Ancient Kingdoms & Principalities",
+        "reason": "Nepal's pre-unification landscape included both kingdoms and smaller principalities"
+      },
+      {
+        "original": "The rise of early dynasties and the political groundwork that preceded modern Nepal.",
+        "improved": "The Licchavi, Malla, and other early dynasties whose governance and culture laid the groundwork for a unified Nepali state.",
+        "reason": "Naming specific dynasties adds historical substance and educational value"
+      },
+      {
+        "original": "The consolidation of the Shah state and the expansion of unified rule.",
+        "improved": "The Shah kings consolidated a unified Nepal, expanding territorial control and establishing centralized governance across the Himalayan region.",
+        "reason": "The original is too compressed; the improved version gives readers actual historical context"
+      },
+      {
+        "original": "Access Full Archives",
+        "improved": "View Complete Timeline",
+        "reason": "More specific to what the user will see"
+      },
+      {
+        "original": "Discover the complete history",
+        "improved": "Explore Nepal's full political history from antiquity to the present",
+        "reason": "Specifies what 'complete history' actually means"
+      }
+    ]
+  },
+  "footer": {
+    "section_description": "Site footer content",
+    "changes": [
+      {
+        "original": "Honoring the legacy of those who shaped our nation. A premium archive of history, biography, and leadership.",
+        "improved": "Documenting the leaders and events that shaped Nepal. A public-interest archive of political history, biography, and democratic evolution.",
+        "reason": "'Honoring the legacy' sounds promotional rather than archival; 'premium' implies paid content — 'public-interest' matches the civic mission"
+      },
+      {
+        "original": "Subscribe to get the latest biographies and historical insights.",
+        "improved": "Subscribe for new profiles, election updates, and historical features.",
+        "reason": "More specific about what subscribers will receive"
+      }
+    ]
+  },
+  "nepali_article_content": {
+    "section_description": "Nepali-language article content featured on the homepage (election analysis piece)",
+    "changes": [
+      {
+        "original": "सडकबाट जन्मिएको म्यान्डेट",
+        "improved": "सडकबाट उपजेको जनादेश",
+        "reason": "'जन्मिएको' (born) is less precise than 'उपजेको' (emerged/arose) for a political mandate; 'जनादेश' is the proper Nepali term instead of the English loanword 'म्यान्डेट'"
+      },
+      {
+        "original": "फागुन २१ मा तय भएको यो मध्यावधि निर्वाचन सामान्य संवैधानिक चक्रबाट आएको होइन।",
+        "improved": "फागुन २१ गतेका लागि तोकिएको यो मध्यावधि निर्वाचन सामान्य संवैधानिक प्रक्रियाबाट आएको होइन।",
+        "reason": "'तय भएको' is informal; 'तोकिएको' (scheduled/fixed) is more precise; 'चक्र' (cycle) replaced with 'प्रक्रिया' (process) for clarity"
+      },
+      {
+        "original": "यो त राजनीतिक वर्गमाथि अप्रत्याशित रूपमा उदाएको एउटा नयाँ शक्तिद्वारा थोपरिएको परिणाम होः",
+        "improved": "यो राजनीतिक वर्गमाथि अप्रत्याशित रूपमा उदय भएको नयाँ शक्तिले बाध्य पारेको परिणाम हो —",
+        "reason": "'उदाएको' is colloquial; 'उदय भएको' is standard written Nepali; 'थोपरिएको' (imposed) replaced with 'बाध्य पारेको' (compelled) which is less aggressive and more accurate"
+      },
+      {
+        "original": "डिजिटल सञ्जालमा जोडिएको जेन जेड पुस्ता",
+        "improved": "डिजिटल सञ्जालमा सङ्गठित जेन जेड पुस्ता",
+        "reason": "'जोडिएको' (connected) is passive; 'सङ्गठित' (organized) better reflects the active mobilization of Gen Z"
+      },
+      {
+        "original": "जसले भ्रष्टाचार उच्चस्तरीय दण्डहीनता र अनलाइन अभिव्यक्ति स्वतन्त्रतामाथिको नियन्त्रणविरुद्ध गत भदौ–असोज (सेप्टेम्बर २०२५) मा देशभर सडक तताएको थियो।",
+        "improved": "जसले भ्रष्टाचार, उच्चस्तरीय दण्डहीनता, र अनलाइन अभिव्यक्ति स्वतन्त्रतामाथिको अङ्कुशविरुद्ध भदौ–असोज (सेप्टेम्बर २०२५) मा देशभर व्यापक विरोध प्रदर्शन गरेको थियो।",
+        "reason": "Added commas for readability; 'नियन्त्रण' replaced with stronger 'अङ्कुश' (curb/restraint); 'सडक तताएको' (heated the streets) is colloquial — 'व्यापक विरोध प्रदर्शन गरेको' (conducted widespread protests) is more formal"
+      },
+      {
+        "original": "त्यसपछिको सरकारी दमन ज्यान गुमाउने घटनाहरू र तत्कालीन प्रधानमन्त्रीको राजीनामाले वैधताको यस्तो सङ्कट खडा गर्‍यो",
+        "improved": "त्यसपछि भएको सरकारी दमन, ज्यान गुमाउने दुःखद घटनाहरू, र तत्कालीन प्रधानमन्त्रीको राजीनामाले वैधताको गम्भीर सङ्कट उत्पन्न गर्‍यो",
+        "reason": "Added 'दुःखद' (tragic) for appropriate gravity; 'यस्तो सङ्कट खडा गर्‍यो' replaced with 'गम्भीर सङ्कट उत्पन्न गर्‍यो' which is more precise"
+      },
+      {
+        "original": "पूर्व प्रधानन्यायाधीश सुशीला कार्कीलाई अन्तरिम प्रधानमन्त्री नियुक्त गर्दै प्रतिनिधि सभा विघटन गरेपछि नेपालको राजनीतिक घडी पुनः एकपटक रिसेट हुन पुग्यो।",
+        "improved": "पूर्व प्रधानन्यायाधीश सुशीला कार्कीलाई अन्तरिम प्रधानमन्त्री नियुक्त गर्दै प्रतिनिधि सभा विघटन गरिएपछि नेपालको राजनीतिक दिशा पुनः शून्यबाट सुरु भयो।",
+        "reason": "'राजनीतिक घडी... रिसेट' uses English loanword; 'राजनीतिक दिशा पुनः शून्यबाट सुरु भयो' (political direction started from zero again) is pure Nepali and equally vivid"
+      },
+      {
+        "original": "यो त व्यवस्था स्वयंले भित्रैबाट आफूलाई सुधार्न सक्छ कि सक्दैन भन्ने विषयको जनमत सङ्ग्रह नै हो।",
+        "improved": "यो व्यवस्थाले भित्रैबाट आत्मसुधार गर्न सक्छ कि सक्दैन भन्ने प्रश्नमा जनताको फैसला हो।",
+        "reason": "'आत्मसुधार' is more concise than 'आफूलाई सुधार्न'; 'जनमत सङ्ग्रह' (referendum) is technically incorrect here — 'जनताको फैसला' (people's verdict) is more accurate"
+      },
+      {
+        "original": "आचारसंहिता — नियम कडा, तर कार्यान्वयनमै भर",
+        "improved": "आचारसंहिता — नियम कडा छन्, तर भर कार्यान्वयनमा नै",
+        "reason": "Improved grammar flow; the original is choppy"
+      },
+      {
+        "original": "कागजमा हेर्दा यो निकै महत्त्वपूर्ण प्रगति हो।",
+        "improved": "लिखित रूपमा हेर्दा यो उल्लेखनीय प्रगति हो।",
+        "reason": "'कागजमा' (on paper) is colloquial; 'लिखित रूपमा' (in written form) is more formal; 'निकै' replaced with 'उल्लेखनीय' (noteworthy) for measured tone"
+      },
+      {
+        "original": "गुमेको अवसर",
+        "improved": "छुटेको अवसर",
+        "reason": "'छुटेको' (missed) is more standard than 'गुमेको' (lost) when referring to opportunities"
+      },
+      {
+        "original": "टर्निङ प्वाइन्ट",
+        "improved": "निर्णायक मोड",
+        "reason": "Replaces English loanword 'turning point' with pure Nepali 'निर्णायक मोड' (decisive turn)"
+      },
+      {
+        "original": "बेस क्याम्प",
+        "improved": "अस्थायी सुरक्षा शिविर",
+        "reason": "Replaces English loanword 'base camp' with descriptive Nepali equivalent"
+      },
+      {
+        "original": "सिमुलेसन",
+        "improved": "अभ्यास परीक्षण",
+        "reason": "Replaces English loanword 'simulation' with Nepali equivalent 'practice drill/test'"
+      },
+      {
+        "original": "द लिडर्सको निष्कर्ष",
+        "improved": "द लिडर्सको विश्लेषणात्मक टिप्पणी",
+        "reason": "'निष्कर्ष' (conclusion) implies finality; 'विश्लेषणात्मक टिप्पणी' (analytical commentary) is more appropriate for ongoing analysis"
+      }
+    ]
+  },
+  "meta_tags_seo": {
+    "section_description": "HTML meta tags and SEO descriptions (visible in search results)",
+    "changes": [
+      {
+        "original": "A comprehensive digital platform showcasing the life, achievements, and political legacy of Rt. Hon. Sher Bahadur Deuba.",
+        "improved": "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy — from the founding of the nation to the present day.",
+        "reason": "The current meta description references only Sher Bahadur Deuba, which misrepresents the site as a single-leader platform. The improved version reflects the actual multi-leader, multi-era scope of the archive."
+      }
+    ]
+  }
+}

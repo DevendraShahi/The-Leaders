@@ -1,0 +1,594 @@
+{
+  "loading_screen": {
+    "section": "Splash / Loading Screen",
+    "translations": [
+      {
+        "english": "Initializing Platform",
+        "nepali": "प्लेटफर्म सुरु हुँदैछ",
+        "type": "static"
+      },
+      {
+        "english": "Political Insights • Democratic Legacy",
+        "nepali": "राजनीतिक अभिलेख • लोकतान्त्रिक विरासत",
+        "type": "static"
+      }
+    ]
+  },
+  "navigation": {
+    "section": "Top Navigation Bar",
+    "translations": [
+      {
+        "english": "Home",
+        "nepali": "गृहपृष्ठ",
+        "type": "static"
+      },
+      {
+        "english": "Leaders",
+        "nepali": "नेताहरू",
+        "type": "static"
+      },
+      {
+        "english": "History",
+        "nepali": "इतिहास",
+        "type": "static"
+      },
+      {
+        "english": "Election 2026",
+        "nepali": "निर्वाचन २०८२",
+        "type": "static"
+      },
+      {
+        "english": "Articles",
+        "nepali": "लेखहरू",
+        "type": "static"
+      },
+      {
+        "english": "About Us",
+        "nepali": "हाम्रो बारेमा",
+        "type": "static"
+      },
+      {
+        "english": "Toggle theme",
+        "nepali": "थिम परिवर्तन",
+        "type": "static"
+      },
+      {
+        "english": "Subscribe",
+        "nepali": "सदस्यता लिनुहोस्",
+        "type": "static"
+      }
+    ]
+  },
+  "hero_section": {
+    "section": "Main Hero Banner",
+    "translations": [
+      {
+        "english": "The Leaders · Civic Archive",
+        "nepali": "द लिडर्स · नागरिक अभिलेखालय",
+        "type": "static"
+      },
+      {
+        "english": "POWER, HISTORY, ACCOUNTABILITY",
+        "nepali": "इतिहास, नेतृत्व, जवाफदेहिता",
+        "type": "static",
+        "note": "Improved version recommended: HISTORY, LEADERSHIP, ACCOUNTABILITY"
+      },
+      {
+        "english": "Independent archive · multi-perspective reading · evidence-led context",
+        "nepali": "स्वतन्त्र अभिलेख · बहुआयामिक दृष्टिकोण · प्रमाणमा आधारित सन्दर्भ",
+        "type": "static"
+      },
+      {
+        "english": "An independent political archive built for serious readers who want context, evidence, and continuity in Nepal's democratic story.",
+        "nepali": "नेपालको लोकतान्त्रिक यात्रामा सन्दर्भ, प्रमाण र निरन्तरता खोज्ने गम्भीर पाठकका लागि निर्मित एक स्वतन्त्र राजनीतिक अभिलेखालय।",
+        "type": "static"
+      }
+    ]
+  },
+  "election_countdown": {
+    "section": "Election Countdown Timer",
+    "translations": [
+      {
+        "english": "Election Countdown",
+        "nepali": "निर्वाचन उल्टी गणना",
+        "type": "static"
+      },
+      {
+        "english": "Days",
+        "nepali": "दिन",
+        "type": "static"
+      },
+      {
+        "english": "Hours",
+        "nepali": "घण्टा",
+        "type": "static"
+      },
+      {
+        "english": "Minutes",
+        "nepali": "मिनेट",
+        "type": "static"
+      },
+      {
+        "english": "Seconds",
+        "nepali": "सेकेन्ड",
+        "type": "static"
+      }
+    ]
+  },
+  "cta_buttons": {
+    "section": "Call-to-Action Buttons",
+    "translations": [
+      {
+        "english": "Explore Leaders",
+        "nepali": "नेताहरू हेर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Read Articles",
+        "nepali": "लेखहरू पढ्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Read Full Profile",
+        "nepali": "पूर्ण परिचय पढ्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Read Story",
+        "nepali": "पूरा लेख पढ्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "View All Leaders",
+        "nepali": "सबै नेताहरू हेर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Open Election Hub",
+        "nepali": "निर्वाचन केन्द्र खोल्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Open Detail",
+        "nepali": "विस्तृत हेर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Open Briefs",
+        "nepali": "संक्षेपहरू हेर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Open Module",
+        "nepali": "खण्ड खोल्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Explore",
+        "nepali": "अन्वेषण गर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Access Full Archives",
+        "nepali": "पूर्ण अभिलेख हेर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Discover the complete history",
+        "nepali": "सम्पूर्ण इतिहास पढ्नुहोस्",
+        "type": "static"
+      }
+    ]
+  },
+  "election_coverage": {
+    "section": "Election Special Coverage Section",
+    "translations": [
+      {
+        "english": "Special Coverage",
+        "nepali": "विशेष कभरेज",
+        "type": "static"
+      },
+      {
+        "english": "Road to Election 2026",
+        "nepali": "निर्वाचन २०८२ को बाटोमा",
+        "type": "static"
+      },
+      {
+        "english": "Follow every moment of Nepal's most pivotal general election. From candidate filings to live results, access definitive data and expert analysis.",
+        "nepali": "नेपालको यस महत्त्वपूर्ण आम निर्वाचनको हरेक पलको जानकारी लिनुहोस्। उम्मेदवारी दर्तादेखि प्रत्यक्ष नतिजासम्म — तथ्यांक र विज्ञ विश्लेषण एकै ठाउँमा।",
+        "type": "static"
+      },
+      {
+        "english": "Daily Briefs",
+        "nepali": "दैनिक संक्षेप",
+        "type": "static"
+      },
+      {
+        "english": "Fact Checks",
+        "nepali": "तथ्य जाँच",
+        "type": "static"
+      },
+      {
+        "english": "Analyses",
+        "nepali": "विश्लेषण",
+        "type": "static"
+      },
+      {
+        "english": "Map & Districts",
+        "nepali": "नक्सा र जिल्लाहरू",
+        "type": "static"
+      }
+    ]
+  },
+  "daily_briefing": {
+    "section": "Daily Election Briefing Area",
+    "translations": [
+      {
+        "english": "Daily Election Briefing Desk",
+        "nepali": "दैनिक निर्वाचन ब्रिफिङ",
+        "type": "static"
+      },
+      {
+        "english": "High-signal updates from EC directives, campaign moves, and local field shifts.",
+        "nepali": "निर्वाचन आयोगका निर्देशन, चुनावी अभियान र जिल्लागत गतिविधिका संक्षिप्त अपडेटहरू।",
+        "type": "static"
+      }
+    ]
+  },
+  "election_snapshot_metrics": {
+    "section": "Election Reference Metrics Panel",
+    "translations": [
+      {
+        "english": "Election Snapshot",
+        "nepali": "निर्वाचन एकझलक",
+        "type": "static"
+      },
+      {
+        "english": "Reference Metrics",
+        "nepali": "प्रमुख तथ्यांक",
+        "type": "static"
+      },
+      {
+        "english": "Registered Voters",
+        "nepali": "दर्ता भएका मतदाता",
+        "type": "static"
+      },
+      {
+        "english": "National voter roll",
+        "nepali": "राष्ट्रिय मतदाता नामावली",
+        "type": "static"
+      },
+      {
+        "english": "FPTP Seats",
+        "nepali": "प्रत्यक्ष सिट",
+        "type": "static"
+      },
+      {
+        "english": "Direct constituencies",
+        "nepali": "प्रत्यक्ष निर्वाचन क्षेत्र",
+        "type": "static"
+      },
+      {
+        "english": "PR Seats",
+        "nepali": "समानुपातिक सिट",
+        "type": "static"
+      },
+      {
+        "english": "Closed-list allocation",
+        "nepali": "बन्दसूची विभाजन",
+        "type": "static"
+      },
+      {
+        "english": "District Coverage",
+        "nepali": "जिल्ला कभरेज",
+        "type": "static"
+      },
+      {
+        "english": "Nationwide tracking",
+        "nepali": "देशव्यापी अनुगमन",
+        "type": "static"
+      },
+      {
+        "english": "Integrity Layer",
+        "nepali": "तथ्य जाँच",
+        "type": "static"
+      },
+      {
+        "english": "Fact-checking cycle",
+        "nepali": "निरन्तर तथ्य प्रमाणीकरण",
+        "type": "static"
+      },
+      {
+        "english": "Update Cadence",
+        "nepali": "अपडेट आवृत्ति",
+        "type": "static"
+      },
+      {
+        "english": "Daily",
+        "nepali": "दैनिक",
+        "type": "static"
+      },
+      {
+        "english": "Editorial refresh",
+        "nepali": "सम्पादकीय अद्यावधिक",
+        "type": "static"
+      }
+    ]
+  },
+  "dashboard_modules": {
+    "section": "Election Dashboard Module Cards",
+    "translations": [
+      {
+        "english": "Election Dashboard",
+        "nepali": "निर्वाचन ड्यासबोर्ड",
+        "type": "static"
+      },
+      {
+        "english": "Central command view of election components and current coverage.",
+        "nepali": "निर्वाचनसम्बन्धी सबै तथ्य, कभरेज र ताजा गतिविधिको एकीकृत दृश्य।",
+        "type": "static"
+      },
+      {
+        "english": "Daily Brief Archive",
+        "nepali": "दैनिक संक्षेप संग्रह",
+        "type": "static"
+      },
+      {
+        "english": "Operational updates with a clean chronology and issue tags.",
+        "nepali": "मिति र विषयअनुसार व्यवस्थित दैनिक अपडेटहरूको कालक्रमिक संग्रह।",
+        "type": "static"
+      },
+      {
+        "english": "Fact Check Vault",
+        "nepali": "तथ्य जाँच भण्डार",
+        "type": "static"
+      },
+      {
+        "english": "Claims, verdicts, and source-backed evidence in one stream.",
+        "nepali": "दावीहरू, निष्कर्ष र स्रोतसहितका प्रमाण — सबै एकै ठाउँमा।",
+        "type": "static"
+      },
+      {
+        "english": "Interactive Map",
+        "nepali": "अन्तरक्रियात्मक नक्सा",
+        "type": "static"
+      },
+      {
+        "english": "Navigate district stories and election micro-trends quickly.",
+        "nepali": "जिल्लागत विवरण र निर्वाचन प्रवृत्ति सजिलैसँग हेर्नुहोस्।",
+        "type": "static"
+      }
+    ]
+  },
+  "leaders_section": {
+    "section": "Featured Historical Leaders ('The Pacts')",
+    "translations": [
+      {
+        "english": "The Pacts",
+        "nepali": "राष्ट्रका स्तम्भहरू",
+        "type": "static"
+      },
+      {
+        "english": "Legends bound by history. Their actions echoed through time.",
+        "nepali": "इतिहासले जोडेका महानायकहरू। तिनका कर्मले पुस्तौँसम्म गुञ्जिरहेका छन्।",
+        "type": "static"
+      },
+      {
+        "english": "Led the struggle against Rana oligarchy and royal autocracy, and articulated a vision of democratic socialism that still shapes Nepal's political imagination.",
+        "nepali": "राणा वंशतन्त्र र राजकीय निरङ्कुशताविरुद्धको संघर्षको नेतृत्व गर्दै लोकतान्त्रिक समाजवादको त्यस्तो दृष्टिकोण प्रस्तुत गरे जसले आजसम्म नेपालको राजनीतिक सोचलाई आकार दिइरहेको छ।",
+        "type": "static"
+      },
+      {
+        "english": "The Supreme Leader",
+        "nepali": "लोकतन्त्रका लौहपुरुष",
+        "type": "static",
+        "note": "Translates the improved 'The Iron Democrat' — avoids authoritarian connotation of 'Supreme Leader'"
+      },
+      {
+        "english": "From Rana prisons to leading Jana Andolan, he carried the democratic struggle on his shoulders and refused power when it was within his grasp.",
+        "nepali": "राणाकालीन कारागारदेखि जनआन्दोलनको नेतृत्वसम्म — लोकतन्त्रको लडाइँलाई आफ्नो जीवनभर समर्पित गर्दै, हातमा आएको सत्तालाई पनि त्यागे।",
+        "type": "static"
+      },
+      {
+        "english": "The Unifier",
+        "nepali": "राष्ट्र एकीकरणकर्ता",
+        "type": "static"
+      },
+      {
+        "english": "From a small hill kingdom, he forged a sovereign state in the Himalaya and laid the foundations of modern Nepal's territorial and political identity.",
+        "nepali": "एउटा सानो पहाडी राज्यबाट हिमालको काखमा एक सार्वभौम राष्ट्र निर्माण गर्दै आधुनिक नेपालको भौगोलिक र राजनीतिक पहिचानको जग बसाले।",
+        "type": "static"
+      }
+    ]
+  },
+  "editorial_feed": {
+    "section": "Editorial Feed Section",
+    "translations": [
+      {
+        "english": "Editorial Feed",
+        "nepali": "सम्पादकीय फिड",
+        "type": "static"
+      },
+      {
+        "english": "News",
+        "nepali": "समाचार",
+        "type": "static"
+      },
+      {
+        "english": "Perspectives",
+        "nepali": "दृष्टिकोण",
+        "type": "static"
+      },
+      {
+        "english": "Context-rich reporting and political perspectives from The Leaders archive.",
+        "nepali": "द लिडर्सको अभिलेखबाट सन्दर्भयुक्त रिपोर्टिङ र राजनीतिक विश्लेषण।",
+        "type": "static"
+      },
+      {
+        "english": "Politics",
+        "nepali": "राजनीति",
+        "type": "static"
+      },
+      {
+        "english": "Editorial Team",
+        "nepali": "सम्पादकीय टोली",
+        "type": "static"
+      }
+    ]
+  },
+  "featured_article_excerpt": {
+    "section": "Featured Article Paragraph on Homepage",
+    "translations": [
+      {
+        "english": "True leadership is defined not by authority or titles, but by a relationship of trust earned through direction, alignment, and commitment. Globally, people value leaders who exhibit self-control, integrity, and transparent communication, viewing a leader's ability to govern themselves as a prerequisite for governing others. In Nepal, these universal traits blend with the cultural concept of dharma, where leaders are expected to be righteous guardians of a diverse community. However, a significant gap exists between this ideal and the reality of political corruption, leading to a \"crisis of legitimacy.\" This friction peaked in the 2025 youth-led protests, where Gen Z demanded a shift toward digital transparency, personal \"cleanliness\" from corruption, and inclusion, proving that while authority can be assigned from above, true leadership must be granted from below.",
+        "nepali": "साँचो नेतृत्वको परिभाषा पद वा अधिकारले होइन, दिशा, सत्यनिष्ठा र प्रतिबद्धताबाट कमाइएको विश्वासको सम्बन्धले हुन्छ। संसारभर मानिसहरूले आत्मसंयम, इमानदारिता र पारदर्शी सञ्चार देखाउने नेतालाई मूल्याङ्कन गर्छन् — अरूलाई सुशासन दिनुभन्दा पहिले आफूलाई अनुशासित गर्ने क्षमतालाई पूर्वशर्तका रूपमा लिन्छन्। नेपालमा यी विश्वव्यापी गुणहरू धर्मको सांस्कृतिक अवधारणासँग जोडिन्छन्, जहाँ नेताहरूलाई विविध समुदायका न्यायपूर्ण संरक्षकका रूपमा हेरिन्छ। तर यो आदर्श र राजनीतिक भ्रष्टाचारको वास्तविकताबीच ठूलो खाडल छ, जसले 'वैधताको सङ्कट' उत्पन्न गरेको छ। यो तनाव सन् २०२५ को युवा नेतृत्वको आन्दोलनमा चरम बिन्दुमा पुग्यो, जहाँ जेन जेड पुस्ताले डिजिटल पारदर्शिता, भ्रष्टाचारबाट मुक्ति र समावेशिताको माग गर्दै — माथिबाट थोपरिएको अधिकार होइन, तलबाट कमाइएको विश्वास नै साँचो नेतृत्व हो भनेर प्रमाणित गरे।",
+        "type": "static"
+      }
+    ]
+  },
+  "quote_section": {
+    "section": "Inspirational Quote Block",
+    "translations": [
+      {
+        "english": "We do not inherit the earth from our ancestors...",
+        "nepali": "हामी पृथ्वी पुर्खाहरूबाट विरासतमा पाएका होइनौँ...",
+        "type": "static"
+      },
+      {
+        "english": "...we borrow it from our children",
+        "nepali": "...हामीले यसलाई सन्ततिहरूबाट ऋण लिएका हौँ",
+        "type": "static"
+      },
+      {
+        "english": "Civic Manifesto",
+        "nepali": "नागरिक संकल्प",
+        "type": "static"
+      }
+    ]
+  },
+  "historical_archives": {
+    "section": "Historical Archives Timeline Section",
+    "translations": [
+      {
+        "english": "Historical Archives",
+        "nepali": "ऐतिहासिक अभिलेख",
+        "type": "static"
+      },
+      {
+        "english": "Nepal's Political Journey",
+        "nepali": "नेपालको राजनीतिक कालक्रम",
+        "type": "static"
+      },
+      {
+        "english": "Explore the defining eras that shaped the modern republic.",
+        "nepali": "आधुनिक गणतन्त्रलाई आकार दिने निर्णायक कालखण्डहरू अन्वेषण गर्नुहोस्।",
+        "type": "static"
+      },
+      {
+        "english": "Before 1769",
+        "nepali": "सन् १७६९ भन्दा पहिले",
+        "type": "static"
+      },
+      {
+        "english": "Ancient Kingdoms",
+        "nepali": "प्राचीन राज्यहरू",
+        "type": "static"
+      },
+      {
+        "english": "The rise of early dynasties and the political groundwork that preceded modern Nepal.",
+        "nepali": "प्रारम्भिक राजवंशहरूको उदय र आधुनिक नेपालको राजनीतिक जगको निर्माण।",
+        "type": "static"
+      },
+      {
+        "english": "1769-1846",
+        "nepali": "सन् १७६९–१८४६",
+        "type": "static"
+      },
+      {
+        "english": "Shah Dynasty",
+        "nepali": "शाह राजवंश",
+        "type": "static"
+      },
+      {
+        "english": "The consolidation of the Shah state and the expansion of unified rule.",
+        "nepali": "शाह राज्यको सुदृढीकरण र एकीकृत शासनको विस्तार।",
+        "type": "static"
+      }
+    ]
+  },
+  "footer": {
+    "section": "Site Footer",
+    "translations": [
+      {
+        "english": "Honoring the legacy of those who shaped our nation. A premium archive of history, biography, and leadership.",
+        "nepali": "राष्ट्र निर्माणमा योगदान गर्ने व्यक्तित्वहरूको विरासतको दस्तावेज। इतिहास, जीवनी र नेतृत्वको एक सार्वजनिक अभिलेखालय।",
+        "type": "static"
+      },
+      {
+        "english": "Parties",
+        "nepali": "राजनीतिक दल",
+        "type": "static"
+      },
+      {
+        "english": "Timeline",
+        "nepali": "कालक्रम",
+        "type": "static"
+      },
+      {
+        "english": "Legal",
+        "nepali": "कानुनी",
+        "type": "static"
+      },
+      {
+        "english": "Privacy Policy",
+        "nepali": "गोपनीयता नीति",
+        "type": "static"
+      },
+      {
+        "english": "Terms of Service",
+        "nepali": "सेवाका सर्तहरू",
+        "type": "static"
+      },
+      {
+        "english": "Cookie Policy",
+        "nepali": "कुकी नीति",
+        "type": "static"
+      },
+      {
+        "english": "Accessibility",
+        "nepali": "पहुँचयोग्यता",
+        "type": "static"
+      },
+      {
+        "english": "Contact Us",
+        "nepali": "सम्पर्क गर्नुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Stay Connected",
+        "nepali": "सम्पर्कमा रहनुहोस्",
+        "type": "static"
+      },
+      {
+        "english": "Subscribe to get the latest biographies and historical insights.",
+        "nepali": "नवीनतम जीवनी र ऐतिहासिक विश्लेषण प्राप्त गर्न सदस्यता लिनुहोस्।",
+        "type": "static"
+      },
+      {
+        "english": "All rights reserved.",
+        "nepali": "सर्वाधिकार सुरक्षित।",
+        "type": "static"
+      }
+    ]
+  },
+  "meta_seo": {
+    "section": "HTML Meta Tags (SEO — not visible on page but shown in search results)",
+    "translations": [
+      {
+        "english": "A comprehensive digital platform showcasing the life, achievements, and political legacy of Rt. Hon. Sher Bahadur Deuba.",
+        "nepali": "नेपालका राजनीतिक नेताहरू, लोकतान्त्रिक इतिहास र नागरिक विरासतको दस्तावेज गर्ने एक स्वतन्त्र डिजिटल अभिलेखालय।",
+        "type": "static"
+      }
+    ]
+  }
+}

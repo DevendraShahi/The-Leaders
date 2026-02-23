@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Bebas_Neue, Hind } from "next/font/google";
+import { Manrope, Bebas_Neue, Hind, Lora } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -18,6 +18,12 @@ const hind = Hind({
     variable: "--font-hind",
     subsets: ["devanagari", "latin"],
     weight: ["300", "400", "500", "600", "700"],
+});
+
+const lora = Lora({
+    variable: "--font-lora",
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700"],
 });
 
 const knight = localFont({
@@ -51,7 +57,7 @@ export async function generateMetadata() {
 
     return constructMetadata({
         title: settings?.siteName?.en || "The Leaders",
-        description: settings?.siteDescription?.en || "A comprehensive digital platform showcasing the life, achievements, and political legacy of Rt. Hon. Sher Bahadur Deuba.",
+        description: settings?.siteDescription?.en || "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy — from the founding of the nation to the present day.",
         canonical: "/",
         keywords: settings?.metaKeywords || [
             "political biography",
@@ -105,7 +111,7 @@ export default async function RootLayout({
     return (
         <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body
-                className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${knight.variable} antialiased bg-background text-foreground`}
+                className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${lora.variable} ${knight.variable} antialiased bg-background text-foreground`}
             >
                 <script
                     type="application/ld+json"
@@ -117,8 +123,8 @@ export default async function RootLayout({
                 />
                 <CodePenCursor />
                 <ThemeProvider
-                    attribute="class"
-                    defaultTheme="dark"
+                    attribute="data-theme"
+                    defaultTheme="light"
                     enableSystem
                     disableTransitionOnChange
                 >

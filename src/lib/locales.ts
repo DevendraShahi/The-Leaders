@@ -1233,19 +1233,19 @@ export const LOCALES = {
             },
             cta: {
                 explore: { en: "Explore Election Data", ne: "चुनावी डेटा हेर्नुहोस्" },
-                viewLeaders: { en: "View Leaders", ne: "नेताहरू हेर्नुहोस्" }
+                viewLeaders: { en: "Browse Leaders", ne: "नेताहरू हेर्नुहोस्" }
             },
             scrollText: { en: "Scroll", ne: "स्क्रोल गर्नुहोस्" }
         },
         special: {
-            label: { en: "Special Coverage", ne: "विशेष कभरेज" },
+            label: { en: "Election Special", ne: "विशेष कभरेज" },
             heading: {
                 en: "Road to Election 2026",
-                ne: "निर्वाचन २०२६ को बाटो"
+                ne: "निर्वाचन २०८२ को बाटोमा"
             },
             description: {
-                en: "Follow every moment of Nepal's most pivotal general election. From candidate filings to live results, access definitive data and expert analysis.",
-                ne: "नेपालको सबैभन्दा महत्त्वपूर्ण आमनिर्वाचनको प्रत्येक क्षण पछ्याउनुहोस्। उम्मेदवारी दर्तादेखि प्रत्यक्ष नतिजासम्म, आधिकारिक डेटा र विज्ञ विश्लेषणमा पहुँच राख्नुहोस्।"
+                en: "Track Nepal's 2026 general election from start to finish — candidate filings, campaign developments, live results, and expert analysis in one place.",
+                ne: "नेपालको यस महत्त्वपूर्ण आम निर्वाचनको हरेक पलको जानकारी लिनुहोस्। उम्मेदवारी दर्तादेखि प्रत्यक्ष नतिजासम्म — तथ्यांक र विज्ञ विश्लेषण एकै ठाउँमा।"
             },
             features: [
                 {
@@ -1261,7 +1261,7 @@ export const LOCALES = {
                     desc: { en: "Compare 2026 trends with 2022 and 2017 election results.", ne: "२०२६ का प्रवृत्तिहरूलाई २०२२ र २०१७ का निर्वाचन परिणामहरूसँग तुलना गर्नुहोस्।" }
                 }
             ],
-            cta: { en: "Visit Grand Central", ne: "ग्रान्ड सेन्ट्रल भिजिट गर्नुहोस्" },
+            cta: { en: "Enter Election Hub", ne: "निर्वाचन केन्द्र खोल्नुहोस्" },
             commandCenter: {
                 label: { en: "Live Access", ne: "प्रत्यक्ष पहुँच" },
                 title: { en: "Election Command Center", ne: "निर्वाचन कमान्ड सेन्टर" },
@@ -1270,21 +1270,21 @@ export const LOCALES = {
             }
         },
         leadersGrid: {
-            heading: { en: "The Pacts", ne: "प्रतिज्ञाहरू" },
+            heading: { en: "The Pillars", ne: "राष्ट्रका स्तम्भहरू" },
             subheading: {
-                en: "Legends bound by history. Their actions echoed through time.",
-                ne: "इतिहासले बाँधेका महापुरुषहरू। उनीहरूका कार्यहरू समयसँगै गुञ्जिरहेका छन्।"
+                en: "The foundational figures of Nepal's political journey. Their decisions shaped the nation for generations.",
+                ne: "इतिहासले जोडेका महानायकहरू। तिनका कर्मले पुस्तौँसम्म गुञ्जिरहेका छन्।"
             },
-            readProfile: { en: "Read Full Profile", ne: "पूरा प्रोफाइल पढ्नुहोस्" },
-            viewAll: { en: "View All Leaders", ne: "सबै नेताहरू हेर्नुहोस्" }
+            readProfile: { en: "Read Full Profile", ne: "पूर्ण परिचय पढ्नुहोस्" },
+            viewAll: { en: "Browse Leaders", ne: "सबै नेताहरू हेर्नुहोस्" }
         },
         newsSection: {
-            badge: { en: "Editorial Feed", ne: "सम्पादकीय फिड" },
-            headingMain: { en: "News", ne: "समाचार" },
+            badge: { en: "Editorial Archive", ne: "सम्पादकीय अभिलेख" },
+            headingMain: { en: "Analysis &", ne: "विश्लेषण र" },
             headingAccent: { en: "Perspectives", ne: "दृष्टिकोण" },
             subtitle: {
-                en: "Context-rich reporting and political perspectives from The Leaders archive.",
-                ne: "द लिडर्स अभिलेखबाट सन्दर्भसहितको रिपोर्टिङ र राजनीतिक दृष्टिकोण।"
+                en: "Long-form political analysis, historical deep-dives, and editorial essays from The Leaders archive.",
+                ne: "द लिडर्स अभिलेखका गहन राजनीतिक विश्लेषण, ऐतिहासिक अन्वेषण र सम्पादकीय निबन्धहरू।"
             }
         },
         manifesto: {
@@ -1298,15 +1298,15 @@ export const LOCALES = {
     },
     timelineIndex: {
         label: { en: "Historical Archives", ne: "ऐतिहासिक अभिलेख" },
-        heading: { en: "Nepal's Political Journey", ne: "नेपालको राजनीतिक यात्रा" },
+        heading: { en: "Nepal's Political Timeline", ne: "नेपालको राजनीतिक कालक्रम" },
         description: {
-            en: "Explore the defining eras that shaped the modern republic.",
-            ne: "आधुनिक गणतन्त्रलाई आकार दिने निर्णायक युगहरूको अन्वेषण गर्नुहोस्।"
+            en: "Trace the key eras and turning points that shaped Nepal from ancient kingdoms to a federal republic.",
+            ne: "आधुनिक गणतन्त्रलाई आकार दिने निर्णायक कालखण्डहरू अन्वेषण गर्नुहोस्।"
         },
         viewEra: { en: "Viewing Era", ne: "युग हेर्दै" },
         explore: { en: "Explore", ne: "अन्वेषण गर्नुहोस्" },
-        viewAll: { en: "Access Full Archives", ne: "पूर्ण अभिलेख हेर्नुहोस्" },
-        discoverHistory: { en: "Discover the complete history", ne: "पूरा इतिहास पत्ता लगाउनुहोस्" }
+        viewAll: { en: "View Complete Timeline", ne: "पूर्ण अभिलेख हेर्नुहोस्" },
+        discoverHistory: { en: "Explore Nepal's full political history from antiquity to the present", ne: "सम्पूर्ण इतिहास पढ्नुहोस्" }
     },
 
     terms: {

@@ -10,15 +10,15 @@ export function Hero() {
     const isNepali = language === "ne";
 
     return (
-        <section className="relative h-[90vh] flex items-center justify-center overflow-hidden bg-background">
-            {/* Background with overlay */}
+        <section className="relative flex min-h-[88vh] items-center justify-center overflow-hidden border-y border-border/80 bg-background">
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
                 style={{
-                    backgroundImage: "url('https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=2576&auto=format&fit=crop')", // Book/Library aesthetic or Nepali landscape
+                    backgroundImage:
+                        "url('https://images.unsplash.com/photo-1541963463532-d68292c34b19?q=80&w=2576&auto=format&fit=crop')",
                 }}
             >
-                <div className="absolute inset-0 bg-background/80 dark:bg-background/90" />
+                <div className="absolute inset-0 bg-background/74 dark:bg-background/78" />
             </div>
 
             <div className="container relative z-10 px-4 text-center">
@@ -27,10 +27,8 @@ export function Hero() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    <span className="inline-block py-1 px-4 rounded-none bg-primary text-black text-lg font-bebas tracking-widest uppercase mb-6">
-                        <span className="block">
-                            {isNepali ? "शक्तिको अभिलेखागार" : "Archive of Power"}
-                        </span>
+                    <span className="mb-6 inline-block border border-primary/40 bg-primary/10 px-4 py-1 font-mono text-[10px] uppercase tracking-[0.15em] text-primary">
+                        <span className="block">{isNepali ? "शक्तिको अभिलेखागार" : "Archive of Power"}</span>
                     </span>
                 </motion.div>
 
@@ -38,22 +36,23 @@ export function Hero() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="text-5xl md:text-9xl font-bebas font-bold tracking-tighter text-white mb-6 uppercase leading-none drop-shadow-2xl"
+                    className="mb-6 text-foreground drop-shadow-[0_8px_26px_rgba(183,28,28,0.14)]"
+                    style={{
+                        fontFamily: "var(--font-editorial), serif",
+                        fontSize: "clamp(2.25rem, 8vw, 6.8rem)",
+                        lineHeight: 1.02,
+                        letterSpacing: "-0.015em",
+                    }}
                 >
                     {isNepali ? (
                         <>
-                            <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary dark:to-black to-black/5 stroke-foreground text-stroke-1">
-                                The Leaders
-                            </span>
+                            <span className="text-primary">The Leaders</span>
                             <br />
                             <span className="text-primary tracking-normal">नेपालको राजनीति</span>
                         </>
                     ) : (
                         <>
-                            The{" "}
-                            <span className="text-transparent bg-clip-text bg-gradient-to-b from-primary dark:to-black to-black/5 stroke-foreground text-stroke-1">
-                                Leaders
-                            </span>{" "}
+                            The Leaders
                             <br />
                             <span className="text-primary tracking-normal">of Nepal</span>
                         </>
@@ -64,17 +63,17 @@ export function Hero() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.6 }}
-                    className="max-w-2xl mx-auto text-xl md:text-2xl text-muted-foreground mb-12 font-sans font-light tracking-wide leading-relaxed"
+                    className="mx-auto mb-12 max-w-2xl text-base leading-relaxed text-foreground/74 sm:text-lg"
                 >
                     {isNepali ? (
                         <>
-                            नेपाललाई आजको रुप दिन साहसिक निर्णय गर्ने नेताहरू, विद्रोहीहरू र योजनाकारहरूको यात्रा एकै ठाउँमा।
+                            नेपालको आजको रुप दिन साहसिक निर्णय गर्ने नेताहरू, विद्रोहीहरू र योजनाकारहरूको यात्रा एकै ठाउँमा।
                             <span className="text-primary font-medium"> शक्ति। विरासत। मूल्य।</span>
                         </>
                     ) : (
                         <>
-                            Discover the visionaries, revolutionaries, and statesmen who shaped the destiny of a nation.{" "}
-                            <span className="text-primary font-medium">Power. Legacy. Blood.</span>
+                            Discover the visionaries, revolutionaries, and statesmen who shaped the destiny of a nation.
+                            <span className="text-primary font-medium"> Power. Legacy. Vision.</span>
                         </>
                     )}
                 </motion.p>
@@ -83,22 +82,25 @@ export function Hero() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.8 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-6"
+                    className="flex flex-col items-center justify-center gap-6 sm:flex-row"
                 >
-                    <Button size="lg" className="h-16 px-10 text-2xl font-bebas tracking-wider bg-primary text-black hover:bg-accent rounded-none w-full sm:w-auto transition-transform hover:scale-105">
+                    <Button size="lg" className="h-14 w-full px-10 font-sans text-sm sm:w-auto">
                         <span>{isNepali ? "जीवन यात्रा पढ्नुहोस्" : "Explore Biographies"}</span>
                     </Button>
-                    <Button variant="outline" size="lg" className="h-16 px-10 text-2xl font-bebas tracking-wider border-primary/50 text-primary hover:bg-primary/20 hover:text-white rounded-none w-full sm:w-auto group">
+                    <Button
+                        variant="outline"
+                        size="lg"
+                        className="group h-14 w-full border-primary/50 bg-background/72 px-10 font-sans text-sm text-primary hover:bg-primary/12 hover:text-primary sm:w-auto"
+                    >
                         <span className="flex items-center">
                             {isNepali ? "समयरेखा हेर्नुहोस्" : "View Timeline"}
-                            <ArrowRight className="ml-2 w-6 h-6 group-hover:translate-x-2 transition-transform" />
+                            <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1.5" />
                         </span>
                     </Button>
                 </motion.div>
             </div>
 
-            {/* Decorative gradient at bottom */}
-            <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-background to-transparent pointer-events-none" />
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-24 bg-background/40" />
         </section>
     );
 }

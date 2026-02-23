@@ -37,10 +37,10 @@ const LOADER_COPY: Record<LanguageCode, {
     };
 }> = {
     en: {
-        statusSequence: ["Initializing Platform", "Loading Resources", "Preparing Experience", "Almost Ready"],
+        statusSequence: ["Loading The Leaders", "Loading Resources", "Preparing Experience", "Almost Ready"],
         waitingForConsent: "Waiting for your consent",
         finalizing: "Finalizing",
-        footerTagline: "Political Insights • Democratic Legacy",
+        footerTagline: "Nepal's Political Record • Documented for the Public",
         policy: {
             title: "Cookie Policy",
             intro: "At The Leaders, we prioritize your privacy.",
@@ -69,7 +69,7 @@ const LOADER_COPY: Record<LanguageCode, {
         statusSequence: ["प्लेटफर्म सुरु हुँदैछ", "स्रोतहरू लोड हुँदैछन्", "अनुभव तयार हुँदैछ", "लगभग तयार"],
         waitingForConsent: "तपाईंको सहमति पर्खिँदै",
         finalizing: "अन्तिम तयारी हुँदैछ",
-        footerTagline: "राजनीतिक अन्तरदृष्टि • लोकतान्त्रिक विरासत",
+        footerTagline: "राजनीतिक अभिलेख • लोकतान्त्रिक विरासत",
         policy: {
             title: "कुकी नीति",
             intro: "The Leaders मा हामी तपाईंको गोपनीयतालाई प्राथमिकता दिन्छौँ।",

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Calendar, Clock, Settings2, User } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -85,7 +86,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
     return (
         <article className="min-h-screen bg-background text-foreground">
             <header className="relative border-b border-border/50 pt-20">
-                <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/40 to-background" />
+                <div className="absolute inset-0 bg-background/50" />
                 <div className="absolute inset-0">
                     <img src={image} alt={title} className="h-full w-full object-cover opacity-20" />
                 </div>
@@ -100,10 +101,10 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                         {language === "en" ? "Articles" : "लेखहरू"}
                     </Button>
 
-                    <div className="mb-4 flex flex-wrap items-center gap-3">
-                        <Badge className="rounded-none border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.16em] text-primary">
+                    <div className="mb-4 flex flex-wrap items-center gap-2.5">
+                        <span className="relative z-10 border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-primary sm:border-primary/40 sm:text-xs">
                             {category}
-                        </Badge>
+                        </span>
                         {article.tags?.slice(0, 3).map((tag) => (
                             <Badge key={tag} variant="secondary" className="rounded-none border border-border bg-background/70 text-[10px] uppercase tracking-[0.12em]">
                                 {tag}
@@ -111,23 +112,27 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                         ))}
                     </div>
 
-                    <h1 className="max-w-5xl font-bebas text-4xl uppercase leading-[0.95] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
+                    <h1 className="max-w-5xl break-words font-bebas text-[2.2rem] uppercase leading-[0.95] tracking-tight text-foreground sm:text-6xl lg:text-7xl">
                         {title}
                     </h1>
 
-                    <div className="mt-6 flex flex-wrap items-center gap-5 border-t border-border/60 pt-5 text-xs uppercase tracking-[0.12em] text-muted-foreground">
-                        <span className="inline-flex items-center gap-2">
-                            <User className="h-3.5 w-3.5 text-primary" />
-                            {author}
-                        </span>
-                        <span className="inline-flex items-center gap-2">
-                            <Calendar className="h-3.5 w-3.5 text-primary" />
-                            {publishedDate}
-                        </span>
-                        <span className="inline-flex items-center gap-2">
-                            <Clock className="h-3.5 w-3.5 text-primary" />
-                            {language === "en" ? "Long Read" : "विस्तृत लेख"}
-                        </span>
+                    <div className="mt-5 border-t border-border/60 pt-5 sm:mt-6">
+                        <div className="flex flex-col gap-3 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground sm:flex-row sm:items-center sm:gap-6 sm:text-[11px]">
+                            <span className="inline-flex items-center gap-2">
+                                <User className="h-3.5 w-3.5 text-primary" />
+                                <span className="text-foreground/90 font-medium">{author}</span>
+                            </span>
+                            <div className="flex items-center gap-4 sm:gap-6">
+                                <span className="inline-flex items-center gap-2">
+                                    <Calendar className="h-3.5 w-3.5 text-primary" />
+                                    {publishedDate}
+                                </span>
+                                <span className="inline-flex items-center gap-2">
+                                    <Clock className="h-3.5 w-3.5 text-primary" />
+                                    {language === "en" ? "Long Read" : "विस्तृत लेख"}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -136,50 +141,60 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                 <div className="lg:col-span-8">
                     <div className="mb-5 border border-border bg-card/50 p-4">
                         <div className="flex flex-wrap items-center justify-between gap-3">
-                            <div className="flex flex-wrap items-center gap-2">
+                            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
                                 <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted-foreground">
                                     <Settings2 className="h-4 w-4 text-primary" />
                                     {language === "en" ? "Reader Settings" : "पढाइ सेटिङ"}
                                 </div>
                                 <div className="mx-1 hidden h-4 w-px bg-border sm:block" />
-                                <div className="inline-flex items-center gap-2">
-                                    <Button
+                                <div className="inline-flex items-center overflow-hidden rounded border border-border/80 bg-background/50 p-1">
+                                    <button
                                         type="button"
-                                        variant={contentLanguage === "en" ? "default" : "outline"}
-                                        size="sm"
-                                        className="rounded-none"
+                                        className={`relative px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-300 focus:outline-none ${contentLanguage === "en" ? "text-primary-foreground font-medium" : "text-muted-foreground hover:text-foreground"}`}
                                         onClick={() => {
                                             setContentLanguage("en");
                                             setHasLanguageOverride(true);
                                         }}
                                     >
-                                        English
-                                    </Button>
-                                    <Button
+                                        {contentLanguage === "en" && (
+                                            <motion.div
+                                                layoutId="lang-nav-bg"
+                                                className="absolute inset-0 z-0 bg-primary"
+                                                style={{ borderRadius: "2px" }}
+                                                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                            />
+                                        )}
+                                        <span className="relative z-10">ENG</span>
+                                    </button>
+                                    <button
                                         type="button"
-                                        variant={contentLanguage === "ne" ? "default" : "outline"}
-                                        size="sm"
-                                        className="rounded-none"
+                                        className={`relative px-4 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] transition-colors duration-300 focus:outline-none ${contentLanguage === "ne" ? "text-primary-foreground font-medium" : "text-muted-foreground hover:text-foreground"}`}
                                         onClick={() => {
                                             setContentLanguage("ne");
                                             setHasLanguageOverride(true);
                                         }}
                                     >
-                                        नेपाली
-                                    </Button>
+                                        {contentLanguage === "ne" && (
+                                            <motion.div
+                                                layoutId="lang-nav-bg"
+                                                className="absolute inset-0 z-0 bg-primary"
+                                                style={{ borderRadius: "2px" }}
+                                                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                            />
+                                        )}
+                                        <span className="relative z-10">नेपाली</span>
+                                    </button>
                                     {hasLanguageOverride && (
-                                        <Button
+                                        <button
                                             type="button"
-                                            variant="ghost"
-                                            size="sm"
-                                            className="rounded-none"
+                                            className="ml-2 inline-flex px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground focus:outline-none"
                                             onClick={() => {
                                                 setHasLanguageOverride(false);
                                                 setContentLanguage(language);
                                             }}
                                         >
-                                            {language === "en" ? "Use App Language" : "एप भाषा"}
-                                        </Button>
+                                            {language === "en" ? "App Lang" : "एप भाषा"}
+                                        </button>
                                     )}
                                 </div>
                             </div>
@@ -206,7 +221,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                     <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                                         {language === "en" ? "Font Size" : "अक्षर आकार"}
                                     </p>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
                                         <Button
                                             type="button"
                                             variant={fontSize === "sm" ? "default" : "outline"}
@@ -240,7 +255,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                     <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                                         {language === "en" ? "Line Spacing" : "लाइन दूरी"}
                                     </p>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden">
                                         <Button
                                             type="button"
                                             variant={lineHeight === "normal" ? "default" : "outline"}
@@ -271,7 +286,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                         </p>
 
                         <div
-                            className={`article-content prose prose-neutral max-w-none prose-headings:font-bebas prose-headings:uppercase prose-headings:tracking-wide prose-p:text-foreground/90 prose-strong:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline dark:prose-invert ${readerClasses}`}
+                            className={`article-content prose prose-neutral max-w-none prose-headings:break-words prose-headings:font-bebas prose-headings:uppercase prose-headings:tracking-wide prose-p:break-words prose-p:text-foreground/90 prose-strong:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline dark:prose-invert ${readerClasses}`}
                             dangerouslySetInnerHTML={{ __html: content }}
                         />
                     </div>
@@ -365,6 +380,22 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                     border-left: 3px solid #b71c1c;
                     padding: 0.75rem 0 0.75rem 1rem;
                     background: rgba(183, 28, 28, 0.05);
+                }
+                @media (max-width: 640px) {
+                    .article-content h2 {
+                        margin-top: 1.6rem;
+                        margin-bottom: 0.8rem;
+                        font-size: 1.55rem;
+                        line-height: 1.1;
+                    }
+                    .article-content h3 {
+                        margin-top: 1.2rem;
+                        margin-bottom: 0.6rem;
+                        font-size: 1.2rem;
+                    }
+                    .article-content p {
+                        margin-bottom: 1rem;
+                    }
                 }
             `}</style>
         </article>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { timelineData, TimelineSeries, TimelineEpisode } from "@/data/timeline-data";
 import { ExternalLink, ArrowRight } from "lucide-react";
@@ -36,9 +37,10 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
     const displayedData = limit ? timelineData.slice(0, limit) : timelineData;
 
     return (
-        <section className="py-24 bg-background">
+        <section id="home-section-6" className="relative scroll-mt-20 overflow-hidden border-y border-border/80 bg-background py-14 sm:scroll-mt-24 sm:py-20">
+            <div className="pointer-events-none absolute inset-0 bg-primary/5" />
             {/* Header Area */}
-            <div className="container mx-auto px-4 mb-16 text-center">
+            <div className="container relative z-10 mx-auto mb-12 px-4 text-center sm:mb-14">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -59,11 +61,11 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                         */}
                         {language === 'ne' ? (
                             <>
-                                नेपालको <span className="text-primary">राजनीतिक यात्रा</span>
+                                नेपालको <span className="text-primary">राजनीतिक कालक्रम</span>
                             </>
                         ) : (
                             <>
-                                Nepal&apos;s <span className="text-primary">Political Journey</span>
+                                Nepal&apos;s <span className="text-primary">Political Timeline</span>
                             </>
                         )}
                     </h2>
@@ -73,7 +75,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                 </motion.div>
             </div>
 
-            <div className="container mx-auto px-4 space-y-6 relative">
+            <div className="container relative z-10 mx-auto space-y-4 px-4 sm:space-y-6">
                 {/* Animated Vertical Spine */}
                 <AnimatedVerticalSpine itemCount={displayedData.length} />
 
@@ -96,26 +98,28 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="flex justify-center mt-12"
+                        className="mt-9 pl-[42px] sm:pl-[80px]"
                     >
-                        <a href="/history" className="group relative inline-flex items-center justify-center overflow-hidden bg-muted/20 px-12 py-6 cursor-pointer transition-all duration-500 hover:bg-primary/5">
-                            {/* Animated Border */}
-                            <div className="absolute inset-0 border border-primary/20 group-hover:border-primary/50 transition-colors duration-500" />
-                            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-primary opacity-50 group-hover:scale-150 transition-transform duration-500" />
-                            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-primary opacity-50 group-hover:scale-150 transition-transform duration-500" />
+                        <Link
+                            href="/history"
+                            className="group relative block w-full cursor-pointer overflow-hidden border border-primary/20 bg-muted/20 px-5 py-5 transition-all duration-500 hover:border-primary/45 hover:bg-primary/5 sm:max-w-[700px] sm:px-6 sm:py-6"
+                        >
+                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(183,28,28,0.12),transparent_55%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                            <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
+                                <div className="min-w-0">
+                                    <span className="font-bebas text-[clamp(1.5rem,5.3vw,2.35rem)] uppercase leading-[1] tracking-[0.055em] text-foreground transition-colors duration-300 group-hover:text-primary">
+                                        {tString(l.viewAll, language)}
+                                    </span>
+                                    <p className="mt-2.5 max-w-[36ch] text-left text-[0.68rem] font-manrope uppercase leading-[1.4] tracking-[0.11em] text-muted-foreground sm:text-[0.72rem] sm:tracking-[0.14em]">
+                                        {tString(l.discoverHistory, language)}
+                                    </p>
+                                </div>
 
-                            <div className="relative flex flex-col items-center gap-2 z-10">
-                                <span className="font-bebas text-3xl uppercase tracking-widest text-foreground group-hover:text-primary transition-colors duration-300">
-                                    {tString(l.viewAll, language)}
-                                </span>
-                                <span className="text-xs font-manrope text-muted-foreground uppercase tracking-[0.2em] group-hover:tracking-[0.4em] transition-all duration-500">
-                                    {tString(l.discoverHistory, language)}
+                                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-primary/35 bg-primary/10 text-primary transition-all duration-300 group-hover:translate-x-1 group-hover:bg-primary group-hover:text-primary-foreground sm:h-11 sm:w-11">
+                                    <ArrowRight className="h-4 w-4" />
                                 </span>
                             </div>
-
-                            {/* Hover Scan Effect */}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/10 to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                        </a>
+                        </Link>
                     </motion.div>
                 )}
             </div>
@@ -153,28 +157,29 @@ function TimelineItem({
         <motion.div
             layout
             className={cn(
-                "relative w-full overflow-hidden transition-all duration-500",
-                isOpen ? "bg-muted/10 py-12" : "hover:bg-muted/5"
+                "relative w-full overflow-visible transition-all duration-500 sm:overflow-hidden",
+                isOpen ? "bg-muted/10 py-6 sm:py-10" : "py-1 hover:bg-muted/5"
             )}
         >
             {/* Vertical Connection Node with horizontal connector */}
-            <div className="absolute left-8 top-1/2 -translate-y-1/2 -translate-x-1/2 z-10">
+            <div className="absolute left-6 top-1/2 z-10 -translate-y-1/2 -translate-x-1/2 sm:left-8">
                 <VerticalConnectionNode isFirst={isFirst} isLast={isLast} index={index} />
             </div>
             {/* Horizontal connector line from spine to card */}
             <motion.div
-                className="absolute left-8 top-1/2 w-12 h-[2px] z-5"
+                className="absolute left-6 top-[calc(50%-1px)] z-[5] h-[2px] w-6 pointer-events-none sm:left-8 sm:w-[48px]"
                 initial={{ scaleX: 0, opacity: 0 }}
                 whileInView={{ scaleX: 1, opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 style={{ originX: 0 }}
             >
-                <div className="w-full h-full bg-gradient-to-r from-primary/60 to-primary/20" />
+                <div className="h-full w-full bg-border" />
             </motion.div>
             <div className={cn(
-                "relative flex flex-col lg:flex-row items-start",
-                isOpen ? "gap-8 lg:gap-12 pl-4 lg:pl-8" : "justify-center items-center"
+                "relative flex flex-col lg:flex-row items-start w-full",
+                "py-2 pl-[42px] pr-0 sm:pl-[80px] sm:pr-4 lg:pr-8",
+                isOpen ? "gap-4 sm:gap-7 lg:gap-12" : "gap-3.5 sm:gap-6 lg:gap-8 justify-start"
             )}>
                 {/* 
                    ========================================================================
@@ -188,14 +193,14 @@ function TimelineItem({
                         "relative z-20 cursor-pointer group flex-shrink-0 transition-all duration-500",
                         isOpen
                             ? "w-full lg:w-[320px]"
-                            : "w-full max-w-4xl mx-auto"
+                            : "w-full max-w-4xl" // removed mx-auto to maintain perfect node alignment
                     )}
                 >
                     <div className={cn(
                         "relative overflow-hidden border bg-card text-card-foreground shadow-none transition-all duration-300",
                         isOpen
-                            ? "border-primary p-8 h-[450px] flex flex-col"
-                            : "hover:border-primary p-8 lg:p-10 flex flex-col md:flex-row gap-6 md:items-center text-center md:text-left"
+                            ? "flex flex-col border-primary p-4 sm:p-6 lg:h-[420px]"
+                            : "hover:border-primary flex flex-col gap-4 p-4 text-center md:flex-row md:items-center md:text-left sm:gap-5 sm:p-7 lg:p-9"
                     )}>
                         <div className="flex-1 space-y-4">
                             <div className={cn("flex items-center gap-3", !isOpen && "justify-center md:justify-start")}>
@@ -213,7 +218,7 @@ function TimelineItem({
                                 layout="position"
                                 className={cn(
                                     "font-bebas uppercase leading-none transition-colors group-hover:text-primary tracking-wide",
-                                    isOpen ? "text-4xl" : "text-4xl md:text-5xl"
+                                    isOpen ? "text-[1.8rem] sm:text-3xl" : "text-[1.8rem] sm:text-[2.2rem] md:text-4xl"
                                 )}
                             >
                                 {resolveContent(series.title, language)}
@@ -223,7 +228,7 @@ function TimelineItem({
                                 layout="position"
                                 className={cn(
                                     "text-muted-foreground font-manrope leading-relaxed",
-                                    isOpen ? "text-sm line-clamp-4" : "text-base max-w-2xl"
+                                    isOpen ? "text-[0.82rem] line-clamp-4 sm:text-sm" : "max-w-2xl text-[0.84rem] sm:text-[0.95rem]"
                                 )}
                             >
                                 {resolveContent(series.description, language)}
@@ -273,17 +278,17 @@ function TimelineItem({
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 20 }}
                             transition={{ duration: 0.4, delay: 0.1 }}
-                            className="flex-grow w-full overflow-hidden relative h-[450px] flex items-center" // items-center for centered layout
+                            className="relative flex w-full flex-grow items-center overflow-hidden min-h-[250px] sm:min-h-[300px] lg:h-[420px]"
                         >
                             {/* Horizontal Spine Line Removed as per request */}
 
                             {/* Scroll Container */}
                             <div
                                 ref={scrollContainerRef}
-                                className="w-full h-full overflow-x-auto overflow-y-hidden flex items-center pl-0 pr-12 space-x-12 snap-x snap-mandatory custom-scrollbar pt-0" // Removed pt-12, added items-center
+                                className="flex h-full w-full snap-x snap-mandatory items-center space-x-4 overflow-x-auto overflow-y-hidden pl-0 pr-4 pt-0 sm:space-x-8 sm:pr-10 custom-scrollbar"
                             >
                                 {/* Start Node - Upgraded to match design */}
-                                <div className="flex-shrink-0 relative z-10 pl-6 mt-0">
+                                <div className="relative z-10 hidden h-5 w-5 flex-shrink-0 items-center justify-center sm:flex sm:h-6 sm:w-6">
                                     <StartNode />
                                 </div>
 
@@ -297,8 +302,8 @@ function TimelineItem({
                                 ))}
                             </div>
 
-                            {/* Right Fade Mask */}
-                            <div className="absolute right-0 top-0 h-full w-32 bg-gradient-to-l from-background to-transparent pointer-events-none z-20" />
+                            {/* Right edge mask removed */}
+                            <div className="absolute right-0 top-0 h-full w-4 bg-background/85 pointer-events-none z-20" />
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -313,14 +318,14 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
             initial="idle"
             whileHover="active"
             viewport={{ once: true }}
-            className="relative flex-none w-[300px] group snap-center"
+            className="group relative w-[72vw] max-w-[260px] flex-none snap-center sm:w-[280px]"
         >
             {/* 
                 Animated Connection System 
                 Re-Centered: top-[calc(50%-24px)] for precise vertical alignment with spine.
                 Z-30 to sit ABOVE the card border.
             */}
-            <div className="absolute top-[calc(50%-24px)] -left-[48px] w-[80px] h-[48px] overflow-visible z-30">
+            <div className="pointer-events-none absolute top-[calc(50%-24px)] -left-[48px] z-30 hidden h-[48px] w-[48px] overflow-visible sm:block">
                 <ConnectionSystem />
             </div>
 
@@ -328,7 +333,7 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-card text-card-foreground border border-border shadow-none overflow-hidden hover:border-primary/50 transition-all duration-500 h-[300px] flex flex-col relative z-20"
+                className="relative z-20 flex h-[238px] flex-col overflow-hidden border border-border bg-card text-card-foreground shadow-none transition-all duration-500 hover:border-primary/50 sm:h-[270px]"
             >
                 {/* Hover Glow Effect */}
                 <motion.div
@@ -340,8 +345,8 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
                 />
 
                 {/* Year Header */}
-                <div className="bg-muted/50 px-6 py-4 border-b border-border flex justify-between items-center group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-500 relative z-10">
-                    <span className="font-bebas text-2xl tracking-widest">
+                <div className="relative z-10 flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3 transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground sm:px-5">
+                    <span className="font-bebas text-xl tracking-[0.08em] sm:text-2xl sm:tracking-widest">
                         {localizeTimelineDate(resolveContent(episode.year, language), language)}
                     </span>
                     <motion.div
@@ -354,11 +359,11 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
                 </div>
 
                 {/* Content */}
-                <div className="p-6 flex-1 flex flex-col relative z-10">
-                    <h4 className="font-bebas text-3xl uppercase leading-none mb-4 group-hover:text-primary transition-colors line-clamp-2 tracking-wide">
+                <div className="relative z-10 flex flex-1 flex-col p-4 sm:p-5">
+                    <h4 className="mb-3 line-clamp-2 font-bebas text-[1.55rem] uppercase leading-none tracking-[0.025em] transition-colors group-hover:text-primary sm:text-[1.85rem]">
                         {resolveContent(episode.title, language)}
                     </h4>
-                    <p className="text-sm text-muted-foreground font-manrope leading-relaxed line-clamp-4">
+                    <p className="line-clamp-4 text-[0.78rem] font-manrope leading-relaxed text-muted-foreground sm:text-[0.86rem]">
                         {resolveContent(episode.description, language)}
                     </p>
                 </div>
@@ -382,7 +387,7 @@ function StartNode() {
 
 function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
     return (
-        <div className="absolute left-8 top-0 bottom-0 w-[2px] z-0 overflow-visible" style={{ transform: "translateX(-50%)" }}>
+        <div className="absolute bottom-0 left-6 top-0 z-0 w-[2px] overflow-visible sm:left-8" style={{ transform: "translateX(-50%)" }}>
             <svg
                 className="absolute inset-0 w-full h-full"
                 style={{ overflow: "visible" }}
@@ -567,26 +572,17 @@ function VerticalConnectionNode({
 function ConnectionSystem() {
     return (
         <svg
-            width="100"
-            height="48"
-            viewBox="0 0 100 48"
+            width="100%"
+            height="100%"
+            viewBox="0 0 48 48"
             className="overflow-visible"
         >
-            <defs>
-                <linearGradient id="beam-gradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="transparent" />
-                    <stop offset="50%" stopColor="var(--primary)" />
-                    <stop offset="100%" stopColor="var(--primary)" />
-                </linearGradient>
-            </defs>
-
             {/* 
                 Persistent Base Line 
-                Connects Node (x=40) to Card (x=90).
-                Always visible (Opac 0.4) to fix "Not Connected" feeling.
+                Connects precisely from x=0 to x=48
             */}
             <line
-                x1="0" y1="24" x2="90" y2="24"
+                x1="0" y1="24" x2="48" y2="24"
                 stroke="var(--foreground)"
                 strokeOpacity="0.4"
                 strokeWidth="1"
@@ -594,8 +590,8 @@ function ConnectionSystem() {
 
             {/* Active Drawing Beam - Extends fully into the card */}
             <motion.path
-                d="M 0 24 L 90 24"
-                stroke="url(#beam-gradient)"
+                d="M 0 24 L 48 24"
+                stroke="var(--primary)"
                 strokeWidth="2"
                 fill="none"
                 variants={{
@@ -607,9 +603,9 @@ function ConnectionSystem() {
 
             {/* 
                The Node (Target Reticle)
-               Centered at 40, 24
+               Centered perfectly at 24, 24
             */}
-            <g transform="translate(40, 24)">
+            <g transform="translate(24, 24)">
                 {/* Inner Core (Solid) - Interactive trigger */}
                 <motion.circle
                     r="4"
