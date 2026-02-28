@@ -217,8 +217,8 @@ export function Manifesto() {
 
                         <h2
                             className={`text-foreground ${isNepali
-                                    ? "text-3xl font-semibold leading-[1.2] tracking-normal sm:text-[2.4rem] lg:text-[2.7rem]"
-                                    : "font-editorial text-[2.02rem] leading-[1.04] tracking-[-0.018em] sm:text-[2.45rem] lg:text-[2.9rem]"
+                                ? "text-3xl font-semibold leading-[1.2] tracking-normal sm:text-[2.4rem] lg:text-[2.7rem]"
+                                : "font-editorial text-[2.02rem] leading-[1.04] tracking-[-0.018em] sm:text-[2.45rem] lg:text-[2.9rem]"
                                 }`}
                         >
                             &ldquo;{tString(l.part1, language)}{" "}
@@ -228,8 +228,8 @@ export function Manifesto() {
 
                         <p
                             className={`mt-5 max-w-2xl text-foreground/78 ${isNepali
-                                    ? "text-[1rem] font-medium leading-[1.86] sm:text-[1.05rem]"
-                                    : "text-[1rem] leading-[1.75] sm:text-[1.04rem]"
+                                ? "text-[1rem] font-medium leading-[1.86] sm:text-[1.05rem]"
+                                : "text-[1rem] leading-[1.75] sm:text-[1.04rem]"
                                 }`}
                         >
                             {tString(l.part3, language)}{" "}
@@ -248,14 +248,14 @@ export function Manifesto() {
                                             type="button"
                                             onClick={() => handleSelectPillar(pillar.id)}
                                             className={`group relative inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2.5 transition-colors ${isActive
-                                                    ? "bg-primary/12 text-primary shadow-[inset_0_0_0_1px_rgba(183,28,28,0.36),0_10px_30px_rgba(183,28,28,0.2)]"
-                                                    : "bg-background/60 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.2)] hover:bg-background/80 hover:text-foreground"
+                                                ? "text-primary shadow-[inset_0_0_0_1px_rgba(183,28,28,0.36),0_10px_30px_rgba(183,28,28,0.2)]"
+                                                : "bg-background/60 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.2)] hover:bg-background/80 hover:text-foreground"
                                                 }`}
                                         >
                                             {isActive ? (
                                                 <motion.span
                                                     layoutId="manifesto-pillars-active"
-                                                    className="pointer-events-none absolute inset-0 bg-primary/10"
+                                                    className="pointer-events-none absolute inset-0 rounded-full bg-primary/12"
                                                     transition={{ type: "spring", stiffness: 320, damping: 30 }}
                                                 />
                                             ) : null}
@@ -283,8 +283,8 @@ export function Manifesto() {
                                 </p>
                                 <h3
                                     className={`mt-2 text-foreground ${isNepali
-                                            ? "text-[1.3rem] font-semibold leading-[1.34] sm:text-[1.42rem]"
-                                            : "font-editorial text-[1.6rem] leading-[1.1] tracking-tight sm:text-[1.78rem]"
+                                        ? "text-[1.3rem] font-semibold leading-[1.34] sm:text-[1.42rem]"
+                                        : "font-editorial text-[1.6rem] leading-[1.1] tracking-tight sm:text-[1.78rem]"
                                         }`}
                                 >
                                     {active.title[language]}
@@ -298,11 +298,11 @@ export function Manifesto() {
                                 {language === "en" ? "— The Leaders, 2026" : "— द लिडर्स, २०२६"}
                             </p>
                             <Link
-                                href="/about"
-                                onClick={() => trackHomeEvent("home_manifesto_cta_click", { target: "about" })}
+                                href="/election-2026/manifesto"
+                                onClick={() => trackHomeEvent("home_manifesto_cta_click", { target: "manifesto-archive" })}
                                 className="group inline-flex min-h-11 items-center gap-2 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.2)] transition-colors hover:text-primary"
                             >
-                                {language === "en" ? "Read Our Mission" : "हाम्रो अभियान पढ्नुहोस्"}
+                                {language === "en" ? "Open Manifesto Library" : "घोषणापत्र पुस्तकालय खोल्नुहोस्"}
                                 <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
                             </Link>
                         </div>
@@ -372,8 +372,8 @@ export function Manifesto() {
                                                 type="button"
                                                 onClick={() => handleSelectPillar(pillar.id)}
                                                 className={`absolute inline-flex min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full px-3 py-2 transition-colors ${isActive
-                                                        ? "bg-primary/16 text-primary shadow-[inset_0_0_0_1px_rgba(183,28,28,0.42),0_10px_26px_rgba(183,28,28,0.2)]"
-                                                        : "bg-background/75 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.22)] hover:bg-background/90 hover:text-foreground"
+                                                    ? "bg-primary/16 text-primary shadow-[inset_0_0_0_1px_rgba(183,28,28,0.42),0_10px_26px_rgba(183,28,28,0.2)]"
+                                                    : "bg-background/75 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.22)] hover:bg-background/90 hover:text-foreground"
                                                     }`}
                                                 style={{ left: anchor.x, top: anchor.y }}
                                                 aria-label={pillar.label[language]}

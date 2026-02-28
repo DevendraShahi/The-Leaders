@@ -262,7 +262,7 @@ export default function ElectionDashboardClient({
                                 {
                                     title: tString(locale.features.manifestos.title, language),
                                     description: tString(locale.features.manifestos.desc, language),
-                                    link: "/election-2026/profiles",
+                                    link: "/election-2026/manifesto",
                                     linkText: tString(locale.features.manifestos.link, language),
                                     bgText: tString(locale.features.manifestos.bgText, language),
                                     gradient: "from-foreground/5 to-transparent"

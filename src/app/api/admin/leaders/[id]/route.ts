@@ -1,20 +1,68 @@
 import { NextRequest, NextResponse } from 'next/server';
+import mongoose from 'mongoose';
 import dbConnect from '@/lib/db';
 import Leader from '@/models/Leader';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 
+function safeDecode(value: string) {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+}
+
+function normalizeSlug(value: string) {
+    return value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
+async function findLeaderByIdOrSlug(id: string) {
+    const decoded = safeDecode(id);
+    const normalized = normalizeSlug(decoded);
+
+    if (mongoose.Types.ObjectId.isValid(decoded)) {
+        const byId = await Leader.findById(decoded);
+        if (byId) return byId;
+    }
+
+    if (decoded) {
+        const bySlug = await Leader.findOne({ slug: decoded });
+        if (bySlug) return bySlug;
+
+        // Support older datasets that used an `id` string field (e.g. "bp-koirala")
+        const byLegacyId = await Leader.findOne({ id: decoded } as any);
+        if (byLegacyId) return byLegacyId;
+    }
+
+    if (normalized) {
+        const byNormalizedSlug = await Leader.findOne({ slug: normalized });
+        if (byNormalizedSlug) return byNormalizedSlug;
+
+        const byNormalizedLegacyId = await Leader.findOne({ id: normalized } as any);
+        if (byNormalizedLegacyId) return byNormalizedLegacyId;
+    }
+
+    return null;
+}
+
 // GET: Fetch single leader
-async function getLeader(request: NextRequest, { params }: { params: any }) {
+async function getLeader(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         await dbConnect();
         const { id } = await params;
 
-        const leader = await Leader.findById(id).populate('lastModifiedBy', 'name email');
+        const leader = await findLeaderByIdOrSlug(id);
 
         if (!leader) {
             return apiError('Leader not found', 404);
         }
+
+        await leader.populate('lastModifiedBy', 'name email');
 
         return apiResponse({ leader });
 
@@ -24,7 +72,7 @@ async function getLeader(request: NextRequest, { params }: { params: any }) {
 }
 
 // PUT: Update leader
-async function updateLeader(request: NextRequest, { user, params }: { user: any, params: any }) {
+async function updateLeader(request: NextRequest, { user, params }: { user: any, params: Promise<{ id: string }> }) {
     try {
         await dbConnect();
         const { id } = await params;
@@ -39,8 +87,13 @@ async function updateLeader(request: NextRequest, { user, params }: { user: any,
         // Add metadata
         data.lastModifiedBy = user.userId;
 
+        const existing = await findLeaderByIdOrSlug(id);
+        if (!existing) {
+            return apiError('Leader not found', 404);
+        }
+
         const leader = await Leader.findByIdAndUpdate(
-            id,
+            existing._id,
             { ...data },
             { new: true, runValidators: true }
         );
@@ -76,12 +129,17 @@ async function updateLeader(request: NextRequest, { user, params }: { user: any,
 }
 
 // DELETE: Delete leader
-async function deleteLeader(request: NextRequest, { user, params }: { user: any, params: any }) {
+async function deleteLeader(request: NextRequest, { user, params }: { user: any, params: Promise<{ id: string }> }) {
     try {
         await dbConnect();
         const { id } = await params;
 
-        const leader = await Leader.findByIdAndDelete(id);
+        const existing = await findLeaderByIdOrSlug(id);
+        if (!existing) {
+            return apiError('Leader not found', 404);
+        }
+
+        const leader = await Leader.findByIdAndDelete(existing._id);
 
         if (!leader) {
             return apiError('Leader not found', 404);
@@ -92,7 +150,7 @@ async function deleteLeader(request: NextRequest, { user, params }: { user: any,
             adminId: user.userId,
             action: 'delete',
             entityType: 'Leader',
-            entityId: id,
+            entityId: leader._id.toString(),
             description: `Deleted leader: ${typeof leader.name === 'string' ? leader.name : leader.name.en}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'

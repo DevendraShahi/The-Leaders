@@ -215,6 +215,29 @@ export const LOCALES = {
                 ne: "कोतको रगतदेखि गणतन्त्रको उदयसम्म। नेपालको इतिहास आगोले लेखिएको छ।",
             },
         },
+        premium: {
+            archiveLabel: {
+                en: "Historical Command Archive",
+                ne: "ऐतिहासिक कमाण्ड अभिलेख",
+            },
+            contextHeading: {
+                en: "A navigable chronology of power, conflict, and reform.",
+                ne: "शक्ति, संघर्ष र सुधारको नेभिगेबल कालक्रम।",
+            },
+            contextBody: {
+                en: "Track Nepal's political transitions through structured eras and event-level narrative cards.",
+                ne: "संरचित युगहरू र घटना-स्तर कथात्मक कार्डहरूबाट नेपालको राजनीतिक संक्रमण ट्र्याक गर्नुहोस्।",
+            },
+            stats: {
+                eras: { en: "Eras", ne: "युगहरू" },
+                events: { en: "Events", ne: "घटनाहरू" },
+                coverage: { en: "Coverage", ne: "कभरेज" },
+            },
+            actions: {
+                startTimeline: { en: "Start Timeline", ne: "समयरेखा सुरु गर्नुहोस्" },
+                viewLeaders: { en: "View Leaders", ne: "नेताहरू हेर्नुहोस्" },
+            },
+        },
     },
     articles: {
         metadata: {
@@ -590,18 +613,136 @@ export const LOCALES = {
                 ne: "नेताहरु",
             },
             description: {
-                en: "Profiles of influential political leaders in Nepal.",
-                ne: "नेपालका प्रभावशाली राजनीतिक नेताहरूको प्रोफाइल।",
+                en: "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy.",
+                ne: "नेपालका राजनीतिक नेताहरू, लोकतान्त्रिक इतिहास र नागरिक विरासतको दस्तावेज गर्ने स्वतन्त्र डिजिटल अभिलेखालय।",
             },
         },
         hero: {
             badgeLabel: {
-                en: "Classified Files",
-                ne: "वर्गीकृत फाइलहरू",
+                en: "Featured Historical Leaders",
+                ne: "ऐतिहासिक नेतृत्व अभिलेख",
             },
             heading: {
-                en: "The Roster",
-                ne: "नामावली",
+                en: "The Pillars",
+                ne: "राष्ट्रका स्तम्भहरू",
+            },
+            subheading: {
+                en: "Nepal's Foundational Political Figures",
+                ne: "नेपालका आधारभूत राजनीतिक व्यक्तित्वहरू",
+            },
+            description: {
+                en: "The foundational figures of Nepal's political journey. Their decisions shaped the nation for generations.",
+                ne: "इतिहासले जोडेका महानायकहरू। तिनका कर्मले पुस्तौँसम्म नेपालको दिशालाई प्रभाव पारे।",
+            },
+        },
+        lead: {
+            label: {
+                en: "Featured Leader",
+                ne: "विशेष नेता प्रोफाइल",
+            },
+            viewProfile: {
+                en: "Read Full Profile",
+                ne: "पूर्ण परिचय पढ्नुहोस्",
+            },
+        },
+        philosophy: {
+            label: {
+                en: "Leadership Principles",
+                ne: "नेतृत्वका आधारहरू",
+            },
+            heading: {
+                en: "Leadership is not measured by titles or authority.",
+                ne: "साँचो नेतृत्व पद वा अधिकारले होइन, कमाइएका विश्वासले मापन हुन्छ।",
+            },
+            description: {
+                en: "It is measured by the trust a leader earns through integrity, direction, and accountability. In Nepal, public trust remains the true foundation of democratic leadership.",
+                ne: "नेतृत्व सत्यनिष्ठा, दिशा र जवाफदेहिताबाट कमाइने विश्वासमा आधारित हुन्छ। नेपालमा लोकतान्त्रिक नेतृत्वको वास्तविक आधार जनविश्वास नै हो।",
+            },
+            beliefOne: {
+                en: "Integrity over authority.",
+                ne: "अधिकारभन्दा इमानदारी।",
+            },
+            beliefTwo: {
+                en: "Accountability over slogans.",
+                ne: "नाराभन्दा जवाफदेहिता।",
+            },
+            beliefThree: {
+                en: "Trust earned from below, never imposed from above.",
+                ne: "माथिबाट थोपरिएको होइन, तलबाट कमाइएको विश्वास नै नेतृत्व हो।",
+            },
+            transition: {
+                en: "From principles to profiles",
+                ne: "सिद्धान्तबाट प्रोफाइलसम्म",
+            },
+            scrollHint: {
+                en: "Scroll to move through each leader profile, one at a time.",
+                ne: "तल स्क्रोल गरेर प्रत्येक नेता प्रोफाइललाई क्रमशः हेर्नुहोस्।",
+            },
+        },
+        controls: {
+            searchLabel: {
+                en: "Search Archive",
+                ne: "अभिलेख खोज्नुहोस्",
+            },
+            searchPlaceholder: {
+                en: "Search by name, role, party, or period...",
+                ne: "नाम, भूमिका, दल वा समयावधिबाट खोज्नुहोस्...",
+            },
+            statusLabel: {
+                en: "Filter",
+                ne: "फिल्टर",
+            },
+            sortLabel: {
+                en: "Sort",
+                ne: "क्रमबद्ध",
+            },
+            clearFilters: {
+                en: "Reset",
+                ne: "रिसेट",
+            },
+            resultsLabel: {
+                en: "{count} of {total} profiles",
+                ne: "{total} मध्ये {count} प्रोफाइल",
+            },
+            statusOptions: {
+                all: {
+                    en: "All",
+                    ne: "सबै",
+                },
+                active: {
+                    en: "Active",
+                    ne: "सक्रिय",
+                },
+                legacy: {
+                    en: "Legacy",
+                    ne: "ऐतिहासिक",
+                },
+                featured: {
+                    en: "Featured",
+                    ne: "विशेष",
+                },
+            },
+            sortOptions: {
+                featured: {
+                    en: "Featured First",
+                    ne: "विशेष पहिले",
+                },
+                nameAsc: {
+                    en: "Name (A-Z)",
+                    ne: "नाम (क-ज्ञ)",
+                },
+                nameDesc: {
+                    en: "Name (Z-A)",
+                    ne: "नाम (ज्ञ-क)",
+                },
+                timelineAsc: {
+                    en: "Earliest Era",
+                    ne: "पुरानो युग",
+                },
+                timelineDesc: {
+                    en: "Latest Era",
+                    ne: "नयाँ युग",
+                },
             },
         },
         search: {
@@ -615,9 +756,37 @@ export const LOCALES = {
                 en: "Years",
                 ne: "वर्ष",
             },
+            sequenceLabel: {
+                en: "Profile {index}",
+                ne: "प्रोफाइल {index}",
+            },
+            partyLabel: {
+                en: "Affiliation",
+                ne: "सम्बद्धता",
+            },
+            statusLabel: {
+                en: "Status",
+                ne: "स्थिति",
+            },
+            featuredTag: {
+                en: "Featured",
+                ne: "विशेष",
+            },
+            activeTag: {
+                en: "Active",
+                ne: "सक्रिय",
+            },
+            legacyTag: {
+                en: "Legacy",
+                ne: "ऐतिहासिक",
+            },
+            noPortrait: {
+                en: "Portrait unavailable",
+                ne: "तस्विर उपलब्ध छैन",
+            },
             openFile: {
-                en: "Open File",
-                ne: "फाइल खोल्नुहोस्",
+                en: "Read Full Profile",
+                ne: "पूर्ण परिचय पढ्नुहोस्",
             },
         },
         empty: {
@@ -628,6 +797,58 @@ export const LOCALES = {
             subtitle: {
                 en: "The archives are silent.",
                 ne: "अभिलेखहरू मौन छन्।",
+            },
+        },
+    },
+    leadersDetail: {
+        backToRoster: {
+            en: "View All Leaders",
+            ne: "सबै नेताहरू हेर्नुहोस्",
+        },
+        storyHeading: {
+            en: "Profile Narrative",
+            ne: "प्रोफाइल कथा",
+        },
+        keyStatsHeading: {
+            en: "Key Leadership Data",
+            ne: "प्रमुख नेतृत्व तथ्यांक",
+        },
+        timelineHeading: {
+            en: "Political Timeline",
+            ne: "राजनीतिक कालक्रम",
+        },
+        statusLabel: {
+            en: "Leadership Status",
+            ne: "नेतृत्व स्थिति",
+        },
+        eraLabel: {
+            en: "Era",
+            ne: "युग",
+        },
+        affiliationLabel: {
+            en: "Affiliation",
+            ne: "सम्बद्धता",
+        },
+        noStats: {
+            en: "No reference metrics available for this profile.",
+            ne: "यो प्रोफाइलका लागि सन्दर्भ सूचक उपलब्ध छैन।",
+        },
+        noTimeline: {
+            en: "No timeline events available for this profile yet.",
+            ne: "यो प्रोफाइलका लागि समयरेखा घटनाहरू हाल उपलब्ध छैनन्।",
+        },
+        badges: {
+            active: {
+                en: "Active",
+                ne: "सक्रिय",
+            },
+            legacy: {
+                en: "Legacy",
+                ne: "ऐतिहासिक",
+            },
+            featured: {
+                en: "Featured",
+                ne: "विशेष",
             },
         },
     },
@@ -1498,6 +1719,7 @@ export const LOCALES = {
             analyses: { en: "Election Articles", ne: "निर्वाचन लेखहरू" },
             prCandidates: { en: "PR Candidates", ne: "सामानुपातिक उम्मेदवार" },
             profiles: { en: "Candidates", ne: "उम्मेदवारहरू" },
+            manifestos: { en: "Manifestos", ne: "घोषणापत्रहरू" },
             parties: { en: "Parties", ne: "दलहरू" },
         },
         dashboard: {
@@ -1543,7 +1765,7 @@ export const LOCALES = {
                 manifestos: {
                     title: { en: "Party Manifestos", ne: "दलका घोषणापत्रहरू" },
                     desc: { en: "Compare policies and promises across political parties", ne: "राजनीतिक दलहरूका नीति र वाचाहरू तुलना गर्नुहोस्" },
-                    link: { en: "Compare Parties", ne: "दलहरू तुलना गर्नुहोस्" },
+                    link: { en: "Open Manifestos", ne: "घोषणापत्र खोल्नुहोस्" },
                     bgText: { en: "Manifestos", ne: "घोषणापत्र" }
                 }
             },
@@ -1645,6 +1867,61 @@ export const LOCALES = {
                 fptpParties: { en: "FPTP Party Entries", ne: "प्रत्यक्ष दल प्रविष्टि" },
                 prParties: { en: "PR Party Entries", ne: "समानुपातिक दल प्रविष्टि" },
                 lastSynced: { en: "Last Synced", ne: "अन्तिम समक्रमण" }
+            }
+        },
+        manifestos: {
+            archive: { en: "Election 2026 Archive", ne: "निर्वाचन २०२६ अभिलेख" },
+            heading: { en: "Party Manifesto Library", ne: "दल घोषणापत्र पुस्तकालय" },
+            description: {
+                en: "Browse verified party manifestos, compare promises, and review original policy documents from one structured election archive.",
+                ne: "प्रमाणित दल घोषणापत्रहरू हेर्नुहोस्, वाचा तुलना गर्नुहोस्, र मूल नीतिगत कागजातहरू एउटै संरचित निर्वाचन अभिलेखबाट अध्ययन गर्नुहोस्।"
+            },
+            searchPlaceholder: { en: "Search by party or manifesto file...", ne: "दल वा घोषणापत्र फाइल खोज्नुहोस्..." },
+            stats: {
+                totalDocuments: { en: "Total Documents", ne: "कुल कागजात" },
+                archiveSize: { en: "Archive Size", ne: "अभिलेख आकार" },
+                electionCycle: { en: "Election Cycle", ne: "निर्वाचन चक्र" },
+                lastUpdated: { en: "Last Updated", ne: "अन्तिम अपडेट" }
+            },
+            actions: {
+                openDossier: { en: "Open", ne: "खोल्नुहोस्" },
+                openPdf: { en: "Open PDF", ne: "PDF खोल्नुहोस्" },
+                downloadPdf: { en: "Download PDF", ne: "PDF डाउनलोड" },
+                backToLibrary: { en: "Back to Manifesto Library", ne: "घोषणापत्र पुस्तकालयमा फर्कनुहोस्" },
+                viewOtherManifestos: { en: "View Other Manifestos", ne: "अन्य घोषणापत्र हेर्नुहोस्" }
+            },
+            labels: {
+                policyDossier: { en: "Manifesto", ne: "घोषणापत्र" },
+                sourceFile: { en: "Source File", ne: "मूल फाइल" },
+                updated: { en: "Updated", ne: "अपडेट" },
+                cycle: { en: "Cycle", ne: "चक्र" },
+                fileSize: { en: "File Size", ne: "फाइल आकार" }
+            },
+            preview: {
+                title: { en: "Manifesto Preview", ne: "घोषणापत्र पूर्वावलोकन" },
+                note: {
+                    en: "Read the document inline or open the original PDF for full-screen review.",
+                    ne: "कागजात यहीँ पढ्नुहोस् वा पूर्ण स्क्रीनमा हेर्न मूल PDF खोल्नुहोस्।"
+                },
+                unavailable: {
+                    en: "Preview is unavailable in this browser. Open the PDF directly.",
+                    ne: "यस ब्राउजरमा पूर्वावलोकन उपलब्ध छैन। कृपया सिधै PDF खोल्नुहोस्।"
+                }
+            },
+            related: {
+                heading: { en: "Other Party Manifestos", ne: "अन्य दलका घोषणापत्रहरू" },
+                subtitle: { en: "Continue comparing policy positions across parties.", ne: "दलहरूबीच नीतिगत दृष्टिकोण तुलना जारी राख्नुहोस्।" }
+            },
+            empty: {
+                title: { en: "No Manifestos Found", ne: "कुनै घोषणापत्र फेला परेन" },
+                body: { en: "Try a different search keyword.", ne: "फरक खोजी शब्द प्रयोग गर्नुहोस्।" }
+            },
+            notFound: {
+                title: { en: "Manifesto Not Found", ne: "घोषणापत्र फेला परेन" },
+                body: {
+                    en: "This manifesto slug does not match any available file in the archive.",
+                    ne: "यो घोषणापत्र स्लग अभिलेखमा उपलब्ध कुनै फाइलसँग मेल खाएन।"
+                }
             }
         },
         mapV2: {

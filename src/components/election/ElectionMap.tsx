@@ -105,7 +105,7 @@ export function ElectionMap({ className }: { className?: string }) {
     }
 
     return (
-        <div className={cn("relative w-full h-full min-h-[300px] bg-slate-50/50 dark:bg-slate-900/10 rounded-xl overflow-hidden", className)}>
+        <div className={cn("relative h-full min-h-[300px] w-full overflow-hidden", className)}>
 
             {/* Show Labels Toggle */}
             <div className="absolute top-2 right-2 z-20">
@@ -123,7 +123,7 @@ export function ElectionMap({ className }: { className?: string }) {
             <svg
                 viewBox="0 0 1000 500"
                 className="w-full h-full max-h-[80vh]"
-                style={{ filter: "drop-shadow(0px 4px 12px rgba(0,0,0,0.05))" }}
+                style={{ filter: "none" }}
             >
                 <g>
                     {mapItems.map((item) => {

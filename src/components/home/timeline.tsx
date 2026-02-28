@@ -75,7 +75,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                 </motion.div>
             </div>
 
-            <div className="container relative z-10 mx-auto space-y-4 px-4 sm:space-y-6">
+            <div className="container relative z-10 mx-auto space-y-4 px-4 [--timeline-axis:33px] [--timeline-shift:8px] [--timeline-node-radius:13px] [--timeline-node-center:calc(var(--timeline-axis)+var(--timeline-shift))] [--timeline-content-start:56px] sm:space-y-6 sm:[--timeline-axis:45px] sm:[--timeline-content-start:104px]">
                 {/* Animated Vertical Spine */}
                 <AnimatedVerticalSpine itemCount={displayedData.length} />
 
@@ -86,8 +86,6 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                             series={series}
                             isOpen={activeSeriesId === series.id}
                             onClick={() => setActiveSeriesId(activeSeriesId === series.id ? null : series.id)}
-                            isFirst={index === 0}
-                            isLast={index === displayedData.length - 1}
                             index={index}
                         />
                     ))}
@@ -98,7 +96,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
-                        className="mt-9 pl-[42px] sm:pl-[80px]"
+                        className="mt-9 pl-[var(--timeline-content-start)]"
                     >
                         <Link
                             href="/history"
@@ -131,15 +129,11 @@ function TimelineItem({
     series,
     isOpen,
     onClick,
-    isFirst,
-    isLast,
     index
 }: {
     series: TimelineSeries;
     isOpen: boolean;
     onClick: () => void;
-    isFirst?: boolean;
-    isLast?: boolean;
     index: number;
 }) {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -162,23 +156,34 @@ function TimelineItem({
             )}
         >
             {/* Vertical Connection Node with horizontal connector */}
-            <div className="absolute left-6 top-1/2 z-10 -translate-y-1/2 -translate-x-1/2 sm:left-8">
-                <VerticalConnectionNode isFirst={isFirst} isLast={isLast} index={index} />
+            <div className="absolute left-[calc(var(--timeline-node-center)-var(--timeline-node-radius))] top-[calc(50%-13px)] z-10 h-[26px] w-[26px]">
+                <VerticalConnectionNode isActive={isOpen} />
             </div>
             {/* Horizontal connector line from spine to card */}
             <motion.div
-                className="absolute left-6 top-[calc(50%-1px)] z-[5] h-[2px] w-6 pointer-events-none sm:left-8 sm:w-[48px]"
+                className="pointer-events-none absolute left-[calc(var(--timeline-node-center)+var(--timeline-node-radius))] top-1/2 z-[5] h-[2px] w-[calc(var(--timeline-content-start)-var(--timeline-node-center)-var(--timeline-node-radius))] -translate-y-1/2"
                 initial={{ scaleX: 0, opacity: 0 }}
                 whileInView={{ scaleX: 1, opacity: 1 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 style={{ originX: 0 }}
             >
-                <div className="h-full w-full bg-border" />
+                <div className="relative h-full w-full">
+                    <div className="absolute inset-0 bg-border/80" />
+                    <motion.div
+                        className="absolute inset-0 bg-primary/85"
+                        animate={{
+                            opacity: isOpen ? 1 : 0.28,
+                            scaleX: isOpen ? 1 : 0.45,
+                        }}
+                        transition={{ duration: 0.35, ease: "easeOut" }}
+                        style={{ transformOrigin: "left center" }}
+                    />
+                </div>
             </motion.div>
             <div className={cn(
                 "relative flex flex-col lg:flex-row items-start w-full",
-                "py-2 pl-[42px] pr-0 sm:pl-[80px] sm:pr-4 lg:pr-8",
+                "py-2 pl-[var(--timeline-content-start)] pr-0 sm:pr-4 lg:pr-8",
                 isOpen ? "gap-4 sm:gap-7 lg:gap-12" : "gap-3.5 sm:gap-6 lg:gap-8 justify-start"
             )}>
                 {/* 
@@ -325,7 +330,7 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
                 Re-Centered: top-[calc(50%-24px)] for precise vertical alignment with spine.
                 Z-30 to sit ABOVE the card border.
             */}
-            <div className="pointer-events-none absolute top-[calc(50%-24px)] -left-[48px] z-30 hidden h-[48px] w-[48px] overflow-visible sm:block">
+            <div className="pointer-events-none absolute -left-[48px] top-1/2 z-30 hidden h-[48px] w-[48px] -translate-y-1/2 overflow-visible sm:block">
                 <ConnectionSystem />
             </div>
 
@@ -387,13 +392,12 @@ function StartNode() {
 
 function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
     return (
-        <div className="absolute bottom-0 left-6 top-0 z-0 w-[2px] overflow-visible sm:left-8" style={{ transform: "translateX(-50%)" }}>
+        <div className="absolute bottom-0 left-[calc(var(--timeline-node-center)-1px)] top-0 z-0 w-[2px] overflow-visible">
             <svg
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 h-full w-full"
                 style={{ overflow: "visible" }}
                 preserveAspectRatio="none"
             >
-                {/* Base spine line */}
                 <motion.line
                     x1="1"
                     y1="0"
@@ -408,7 +412,6 @@ function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
                     vectorEffect="non-scaling-stroke"
                 />
 
-                {/* Animated energy pulse */}
                 <motion.line
                     x1="1"
                     y1="0"
@@ -431,7 +434,6 @@ function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
                     vectorEffect="non-scaling-stroke"
                 />
 
-                {/* Flowing particles */}
                 {Array.from({ length: itemCount }).map((_, i) => (
                     <motion.circle
                         key={i}
@@ -458,112 +460,70 @@ function AnimatedVerticalSpine({ itemCount }: { itemCount: number }) {
 }
 
 function VerticalConnectionNode({
-    isFirst,
-    isLast,
-    index,
+    isActive,
 }: {
-    isFirst?: boolean;
-    isLast?: boolean;
-    index: number;
+    isActive: boolean;
 }) {
     return (
         <motion.svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
+            width="26"
+            height="26"
+            viewBox="0 0 26 26"
             className="overflow-visible"
-            initial="idle"
-            whileHover="active"
             animate={{
-                scale: [1, 1.05, 1],
+                scale: isActive ? [1, 1.06, 1] : [1, 1.03, 1],
             }}
             transition={{
-                scale: {
-                    duration: 2,
-                    delay: index * 0.3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                }
+                duration: isActive ? 1.6 : 2.4,
+                repeat: Infinity,
+                ease: "easeInOut",
             }}
         >
-            {/* Flowing outer glow */}
+            {/* Crosshair ring */}
+            <line x1="2" y1="13" x2="24" y2="13" stroke="var(--border)" strokeWidth="0.9" strokeOpacity="0.45" />
+            <line x1="13" y1="2" x2="13" y2="24" stroke="var(--border)" strokeWidth="0.9" strokeOpacity="0.45" />
+
             <motion.circle
-                cx="12"
-                cy="12"
-                r="14"
+                cx="13"
+                cy="13"
+                r="11"
                 fill="none"
                 stroke="var(--primary)"
-                strokeWidth="0.5"
-                initial={{ opacity: 0 }}
-                animate={{
-                    opacity: [0, 0.4, 0],
-                    scale: [0.8, 1.2, 0.8]
-                }}
-                transition={{
-                    duration: 2,
-                    delay: index * 0.3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                }}
+                strokeWidth="0.75"
+                initial={{ opacity: 0.1 }}
+                animate={isActive ? { opacity: [0.12, 0.45, 0.12], scale: [0.9, 1.06, 0.9] } : { opacity: 0.18 }}
+                transition={{ duration: 1.9, repeat: Infinity, ease: "easeInOut" }}
             />
 
-            {/* Outer Ring */}
             <motion.circle
-                cx="12"
-                cy="12"
-                r="10"
+                cx="13"
+                cy="13"
+                r="7.6"
                 fill="none"
-                stroke="var(--primary)"
+                stroke={isActive ? "var(--primary)" : "var(--border)"}
                 strokeWidth="1"
                 strokeDasharray="3 3"
-                variants={{
-                    idle: { opacity: 0.2, scale: 0.8, rotate: 0 },
-                    active: { opacity: 0.6, scale: 1, rotate: 360 }
-                }}
-                initial={{ rotate: 0 }}
-                animate={{ rotate: 360 }}
-                transition={{
-                    duration: 8,
-                    delay: index * 0.2,
-                    repeat: Infinity,
-                    ease: "linear"
-                }}
+                animate={isActive ? { rotate: 360 } : { rotate: 180 }}
+                transition={{ duration: isActive ? 5.5 : 9, repeat: Infinity, ease: "linear" }}
+                style={{ transformOrigin: "13px 13px" }}
             />
 
-            {/* Inner Core */}
-            <motion.circle
-                cx="12"
-                cy="12"
-                r="5"
+            <circle
+                cx="13"
+                cy="13"
+                r="4.6"
                 fill="var(--background)"
-                stroke="var(--foreground)"
-                strokeWidth="2"
-                variants={{
-                    idle: { scale: 1 },
-                    active: { scale: 1.2, stroke: "var(--primary)" }
-                }}
-                transition={{ duration: 0.3 }}
+                stroke={isActive ? "var(--primary)" : "var(--foreground)"}
+                strokeWidth="1.35"
             />
 
-            {/* Center Dot with pulse */}
             <motion.circle
-                cx="12"
-                cy="12"
-                r="2"
-                fill="var(--foreground)"
-                variants={{
-                    idle: { opacity: 0.7 },
-                    active: { opacity: 1, fill: "var(--primary)" }
-                }}
-                animate={{
-                    opacity: [0.7, 1, 0.7]
-                }}
-                transition={{
-                    duration: 1.5,
-                    delay: index * 0.3,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                }}
+                cx="13"
+                cy="13"
+                r="2.1"
+                fill={isActive ? "var(--primary)" : "var(--foreground)"}
+                animate={isActive ? { opacity: [0.72, 1, 0.72] } : { opacity: [0.65, 0.9, 0.65] }}
+                transition={{ duration: 1.3, repeat: Infinity, ease: "easeInOut" }}
             />
         </motion.svg>
     );
@@ -577,18 +537,13 @@ function ConnectionSystem() {
             viewBox="0 0 48 48"
             className="overflow-visible"
         >
-            {/* 
-                Persistent Base Line 
-                Connects precisely from x=0 to x=48
-            */}
             <line
                 x1="0" y1="24" x2="48" y2="24"
                 stroke="var(--foreground)"
-                strokeOpacity="0.4"
+                strokeOpacity="0.38"
                 strokeWidth="1"
             />
 
-            {/* Active Drawing Beam - Extends fully into the card */}
             <motion.path
                 d="M 0 24 L 48 24"
                 stroke="var(--primary)"
@@ -601,12 +556,7 @@ function ConnectionSystem() {
                 transition={{ duration: 0.4, ease: "easeOut" }}
             />
 
-            {/* 
-               The Node (Target Reticle)
-               Centered perfectly at 24, 24
-            */}
-            <g transform="translate(24, 24)">
-                {/* Inner Core (Solid) - Interactive trigger */}
+            <g transform="translate(48, 24)">
                 <motion.circle
                     r="4"
                     fill="var(--background)"
@@ -614,12 +564,10 @@ function ConnectionSystem() {
                     strokeWidth="2"
                     variants={{
                         idle: { scale: 1, stroke: "var(--foreground)" },
-                        active: { scale: 1.5, stroke: "var(--primary)", fill: "var(--primary)" }
+                        active: { scale: 1.45, stroke: "var(--primary)", fill: "var(--primary)" }
                     }}
-                    className="cursor-pointer" // Make it look clickable
                 />
 
-                {/* Outer Ring (Rotating Dashed) */}
                 <motion.circle
                     r="10"
                     fill="none"
@@ -627,15 +575,14 @@ function ConnectionSystem() {
                     strokeWidth="1"
                     strokeDasharray="4 4"
                     variants={{
-                        idle: { opacity: 0.3, scale: 0.8, rotate: 0 },
-                        active: { opacity: 1, scale: 1.2, rotate: 180 }
+                        idle: { opacity: 0.3, scale: 0.82, rotate: 0 },
+                        active: { opacity: 1, scale: 1.22, rotate: 180 }
                     }}
                     transition={{ duration: 0.8, ease: "circOut" }}
                 />
 
-                {/* Secondary Pulse Ring */}
                 <motion.circle
-                    r="16"
+                    r="15"
                     fill="none"
                     stroke="var(--primary)"
                     strokeWidth="0.5"

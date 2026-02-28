@@ -339,7 +339,7 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                 {/* Version info - Moved up closer to status */}
                 <div className="flex flex-col items-center gap-2 text-xs text-muted-foreground/50 mt-4">
                     <div className="flex items-center gap-4">
-                        <span className="font-mono tracking-wider">v1.6.0</span>
+                        <span className="font-mono tracking-wider">v1.7.0</span>
                         <span className="w-px h-4 bg-border/50" />
                         <span className="tracking-wide">© 2026 The Leaders</span>
                     </div>

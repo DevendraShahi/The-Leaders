@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useLanguage } from '@/components/providers/language-provider';
 import { LanguageToggle } from '@/components/language-toggle';
 import { MarkdownPreview } from '@/components/admin/MarkdownPreview';
+import { Edit, Trash } from 'lucide-react';
 
 function ContentList() {
     const searchParams = useSearchParams();
@@ -159,6 +160,8 @@ function ContentList() {
 
             if (res.ok) {
                 toast.success('Item deleted successfully');
+                setPreviewItem(null);
+                setPreviewItemType(null);
                 fetchContent(); // Refresh
             } else {
                 toast.error('Failed to delete item');
@@ -211,6 +214,16 @@ function ContentList() {
                     };
                 })
             );
+
+            // Also update preview item if it matches
+            if (previewItem && getBulkDeleteId(previewItem, previewItemType!) === itemId) {
+                setPreviewItem({
+                    ...previewItem,
+                    status,
+                    ...(itemType === 'brief' ? { isPublished: status === 'published' } : {})
+                });
+            }
+
             toast.success('Status updated');
         } catch (error: any) {
             toast.error(error?.message || 'Failed to update status');
@@ -582,22 +595,37 @@ function ContentList() {
                 </div>
             ) : previewItem ? (
                 <div className="border border-border bg-card/40 p-6 sm:p-8 space-y-6">
-                    <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border pb-4">
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            className="rounded-none"
-                            onClick={() => {
-                                setPreviewItem(null);
-                                setPreviewItemType(null);
-                            }}
-                        >
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {language === 'ne' ? 'फिर्ता सूचीमा' : 'Back to list'}
-                        </Button>
-                        <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                            {language === 'ne' ? 'कन्टेन्ट पूर्वावलोकन' : 'Content Preview'}
-                        </span>
+                    <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
+                        <div className="flex items-center gap-4">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-none h-9"
+                                onClick={() => {
+                                    setPreviewItem(null);
+                                    setPreviewItemType(null);
+                                }}
+                            >
+                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                {language === 'ne' ? 'फिर्ता' : 'Back'}
+                            </Button>
+                            <span className="hidden sm:inline-block font-mono text-[10px] uppercase tracking-widest text-muted-foreground border-l border-border pl-4">
+                                {language === 'ne' ? 'पूर्वावलोकन' : 'Preview'}
+                            </span>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            {/* Edit Button */}
+                            <Button variant="secondary" size="sm" className="h-9 rounded-none px-4" asChild>
+                                <Link
+                                    href={`/admin/content/${previewItemType}/${getBulkDeleteId(previewItem, previewItemType || '')}`}
+                                    title={language === "ne" ? "सम्पादन" : "Edit"}
+                                >
+                                    <Edit className="h-3.5 w-3.5 sm:mr-2" />
+                                    <span className="hidden sm:inline">{language === "ne" ? "सम्पादन" : "Edit"}</span>
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
 
                     <article className="space-y-5">
@@ -668,6 +696,43 @@ function ContentList() {
                                     </div>
                                 )}
                             </div>
+
+                            {/* Editor Decision Actions */}
+                            <div className="lg:col-span-8 mt-2 pt-6 border-t border-border/70 flex flex-wrap items-center justify-between gap-4">
+                                <div className="flex items-center gap-3">
+                                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                                        {language === 'ne' ? 'निर्णय लिनुहोस्:' : 'Publishing Decision:'}
+                                    </span>
+                                    <select
+                                        value={previewItem?.status === true ? 'published' : previewItem?.status === false ? 'draft' : previewItem?.status || 'draft'}
+                                        onChange={(e) => {
+                                            if (previewItem && previewItemType) {
+                                                handleStatusChange(previewItem, previewItemType, e.target.value);
+                                            }
+                                        }}
+                                        disabled={isStatusUpdating(previewItem, previewItemType || '')}
+                                        className="h-10 rounded-none border border-border bg-background px-4 font-mono text-[11px] font-bold uppercase tracking-wide text-foreground min-w-[140px]"
+                                    >
+                                        {isStatusUpdating(previewItem, previewItemType || '') && (
+                                            <option value={previewItem?.status}>{language === "ne" ? "सुरक्षित हुँदै..." : "Saving..."}</option>
+                                        )}
+                                        <option value="draft">{language === "ne" ? "मस्यौदा" : "Draft"}</option>
+                                        <option value="published">{language === "ne" ? "प्रकाशित" : "Published"}</option>
+                                        <option value="archived">{language === "ne" ? "अभिलेख" : "Archived"}</option>
+                                    </select>
+                                </div>
+
+                                <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    className="h-10 rounded-none px-5 font-mono text-[11px] uppercase tracking-wider"
+                                    onClick={() => handleDelete(getBulkDeleteId(previewItem, previewItemType || ''), previewItemType || '')}
+                                    title={language === "ne" ? "हटाउनुहोस्" : "Delete"}
+                                >
+                                    <Trash className="h-4 w-4 mr-2" />
+                                    {language === "ne" ? "हटाउनुहोस्" : "Delete"}
+                                </Button>
+                            </div>
                             <aside className="lg:col-span-4 space-y-4">
                                 <div className="border border-border bg-background/60 p-4">
                                     <h3 className="font-bebas text-2xl tracking-wide mb-3">
@@ -712,7 +777,7 @@ function ContentList() {
                             </aside>
                         </div>
                     </article>
-                </div>
+                </div >
             ) : (
                 <>
                     {/* Content Table - Clean & Sharp */}
@@ -769,7 +834,8 @@ function ContentList() {
                         </div>
                     )}
                 </>
-            )}
+            )
+            }
 
             <ConfirmDialog
                 open={!!pendingDelete}
@@ -808,7 +874,7 @@ function ContentList() {
                     setPendingBulkDeleteRows(null);
                 }}
             />
-        </div>
+        </div >
     );
 }
 

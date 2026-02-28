@@ -1,5 +1,53 @@
 # Changelog
 
+## [1.7.0] - 2026-02-28
+
+### Added
+- Full **Election 2026 Manifesto Library** experience with searchable index and per-party detail pages (`/election-2026/manifesto` and `/election-2026/manifesto/[slug]`), including inline PDF preview, direct open, and download actions.
+- Dynamic manifesto ingestion service (`src/lib/manifesto-data.ts`) that scans local manifesto PDFs, builds structured metadata, and generates stable slugs and localized descriptors.
+- New manifesto and media assets in `public/`:
+  - Official 2082 party manifesto PDF archive (`public/election/manifesto/*`)
+  - Expanded party symbol image set (`public/election/parties/symbols/*`)
+  - Reader background audio tracks (`public/reader-melody/*`)
+- Advanced article reader controls in `src/components/home/article-detail.tsx`:
+  - Reading mode panel (font size, family, line-height)
+  - Reading progress + floating reader toggle
+  - Optional background reading melodies
+  - Browser speech synthesis controls (English TTS with rate controls)
+  - Language-aware content switching and anchored section navigation
+- Project-wide design reference document: `design/HOMEPAGE-LED-DESIGN-STANDARD-v1.5.md`.
+
+### Changed
+- History experience rebuilt into an archival narrative layout with era selection, event spotlighting, localized date treatment, and premium visual framing (`src/app/history/page.tsx`, `src/app/history/layout.tsx`).
+- Leaders experience redesigned:
+  - New archive-style leaders list with richer filtering/sorting/labels
+  - Refined leader detail narrative, timeline rail, and key data panel
+  - Updated leaders metadata and 404 presentation styling
+- Articles index (`src/components/articles/ArticlesShell.tsx`) upgraded to a lead-first editorial layout with category filtering, localized date formatting, estimated read time, and progressive reveal behavior.
+- Election navigation and dashboard paths now surface the manifesto library directly:
+  - Navbar includes Manifestos tab
+  - Dashboard manifesto CTA routes to `/election-2026/manifesto`
+  - Homepage manifesto CTA now opens manifesto archive
+- Admin content management UX upgraded:
+  - Table row actions shifted to preview-first flow
+  - Status rendering moved to consistent badge treatment in list views
+  - In-preview editor controls for status updates, edit, and delete actions
+- Election snapshot data (`src/lib/election-snapshot-data.ts`) refreshed with expanded 2026 voter-roll, registration, and party participation metrics plus updated source lines.
+- Global theming expanded in `globals.css` with reusable **history-canvas** and **leaders-canvas** systems (including dark theme treatment).
+- Added Umami analytics script injection in root layout (`src/app/layout.tsx`).
+- Election map container styling simplified to remove decorative framing and shadow layer for cleaner integration with dashboard panels.
+
+### Fixed
+- Admin leader API now reliably resolves entities by Mongo ObjectId, slug, or legacy string id for read/update/delete (`src/app/api/admin/leaders/[id]/route.ts`).
+- Database connectivity hardened:
+  - SRV DNS fallback to `MONGODB_URI_DIRECT`
+  - IPv4 preference and explicit connection timeouts
+  - Better runtime failure isolation in leaders/settings fetch paths
+- Maintenance and analytics endpoints now degrade gracefully when DB/network is unavailable:
+  - `/api/maintenance/status` returns a non-breaking degraded payload
+  - `/api/track-view` uses best-effort success response instead of surfacing 500 to clients
+- Standardized manifesto asset path casing to `public/election/manifesto` for production-safe static file resolution.
+
 ## [1.6.0] - 2026-02-28
 
 ### Added

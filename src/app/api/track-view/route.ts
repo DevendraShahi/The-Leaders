@@ -157,6 +157,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error("Track view error:", error);
-        return NextResponse.json({ success: false, error: "Failed to track view" }, { status: 500 });
+        // Analytics tracking is best-effort. Do not fail requests when the DB is unavailable.
+        return NextResponse.json({ success: true, ignored: "tracking-unavailable" });
     }
 }

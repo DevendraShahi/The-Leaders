@@ -15,6 +15,11 @@ export async function GET() {
             data: settings?.maintenance || null
         });
     } catch (error) {
-        return NextResponse.json({ success: false, data: null }, { status: 500 });
+        console.error("Failed to load maintenance status:", error);
+        return NextResponse.json({
+            success: true,
+            data: null,
+            degraded: true
+        });
     }
 }

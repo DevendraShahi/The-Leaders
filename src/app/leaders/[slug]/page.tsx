@@ -40,9 +40,11 @@ export default async function LeaderProfile({ params }: { params: Promise<{ slug
 
     if (!leader) {
         return (
-            <div className="min-h-screen bg-black flex flex-col items-center justify-center text-center">
-                <h1 className="text-6xl font-bebas text-primary mb-4">404 - File Not Found</h1>
-                <p className="text-zinc-500 mb-8 font-manrope">The requested dossier does not exist or has been redacted.</p>
+            <div className="homepage-shell leaders-canvas election-typography flex min-h-screen flex-col items-center justify-center px-6 text-center">
+                <h1 className="mb-4 font-editorial text-5xl text-primary sm:text-6xl">404 - File Not Found</h1>
+                <p className="mb-8 max-w-xl text-sm text-muted-foreground sm:text-base">
+                    The requested leader profile does not exist or has been redacted.
+                </p>
                 <Link href="/leaders">
                     <Button variant="outline">Return to Roster</Button>
                 </Link>

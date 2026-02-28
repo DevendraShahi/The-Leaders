@@ -5,7 +5,7 @@ import { constructMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = constructMetadata({
     title: "Leaders",
-    description: "Explore profiles of influential political leaders in Nepal, with timelines, party context, and legacy.",
+    description: "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy — from the founding of the nation to the present day.",
     canonical: "/leaders",
     keywords: ["Nepal leaders", "political leader profiles Nepal", "Nepal political history leaders"],
 });

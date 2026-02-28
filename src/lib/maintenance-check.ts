@@ -18,10 +18,15 @@ import { unstable_cache } from 'next/cache';
 
 export const getSettings = unstable_cache(
     async () => {
-        await dbConnect();
-        const settings = await Settings.findOne().lean();
-        if (!settings) return null;
-        return JSON.parse(JSON.stringify(settings)) as ISettings;
+        try {
+            await dbConnect();
+            const settings = await Settings.findOne().lean();
+            if (!settings) return null;
+            return JSON.parse(JSON.stringify(settings)) as ISettings;
+        } catch (error) {
+            console.error("Failed to load settings from database:", error);
+            return null;
+        }
     },
     ['settings-cache'],
     { revalidate: 60, tags: ['settings'] }

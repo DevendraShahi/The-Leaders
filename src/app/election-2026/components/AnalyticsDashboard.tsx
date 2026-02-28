@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { ElectionMap } from "../../../components/election/ElectionMap";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImpressivePieChart } from "./charts/ImpressivePieChart";
 import { TurnoutTrendChart } from "./charts/TurnoutTrendChart";
 import { TabbedDemographics } from "./charts/TabbedDemographics";
 import { RegionalBreakdownChart } from "./charts/RegionalBreakdownChart";
 import { DistrictNewsPanel } from "./DistrictNewsPanel";
 import { TrendingTopicsSection } from "./TrendingTopicsSection";
-import { getAnalyticsData, getDistrictNews } from "@/lib/analytics-data";
+import { getAnalyticsData } from "@/lib/analytics-data";
 import { useElectionStore } from "@/lib/election-store";
 import { TrendingUp, Bell, ShieldCheck, Award } from "lucide-react";
 import Link from "next/link";
@@ -53,8 +52,6 @@ export default function AnalyticsDashboard({
 }: AnalyticsDashboardProps) {
     const analytics = getAnalyticsData();
     const { selectedDistrict } = useElectionStore();
-    const [districtNewsOpen, setDistrictNewsOpen] = useState(false);
-    const districtNews = selectedDistrict ? getDistrictNews(selectedDistrict) : null;
     const { language } = useLanguage();
     const l = LOCALES.election2026;
     const candidateLocale = LOCALES.election2026.candidateSnapshot;
@@ -68,13 +65,6 @@ export default function AnalyticsDashboard({
             })),
         }
         : analytics.demographicsData;
-
-    // Open district panel when district is selected
-    useState(() => {
-        if (selectedDistrict && getDistrictNews(selectedDistrict)) {
-            setDistrictNewsOpen(true);
-        }
-    });
 
     return (
         <div className="election-typography min-h-screen bg-background">
@@ -137,7 +127,7 @@ export default function AnalyticsDashboard({
                         </div>
 
                         {/* Backgroundless map container with Overlay */}
-                        <div className="relative h-[400px] w-full overflow-hidden rounded-xl md:h-[600px]">
+                        <div className="relative h-[400px] w-full overflow-hidden md:h-[600px]">
                             <ElectionMap className="h-full w-full" />
                         </div>
                         <p className="mt-4 text-center text-sm text-muted-foreground md:mt-6">
@@ -620,10 +610,6 @@ export default function AnalyticsDashboard({
             {/* District News Panel */}
             <DistrictNewsPanel
                 district={selectedDistrict}
-                data={districtNews}
-                onClose={() => {
-                    setDistrictNewsOpen(false);
-                }}
             />
         </div>
     );

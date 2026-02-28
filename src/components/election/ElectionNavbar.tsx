@@ -17,6 +17,7 @@ export function ElectionNavbar() {
         { name: tString(nav.analyses, language), href: "/election-2026/analyses" },
         { name: tString(nav.prCandidates, language), href: "/election-2026/pr-candidates" },
         { name: tString(nav.profiles, language), href: "/election-2026/profiles" },
+        { name: tString(nav.manifestos, language), href: "/election-2026/manifesto" },
         { name: tString(nav.parties, language), href: "/election-2026/parties" },
     ];
 
@@ -34,18 +35,25 @@ export function ElectionNavbar() {
                         </span>
                     </Link>
                     <nav className="flex items-center gap-4 md:gap-6 text-sm font-medium">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={cn(
-                                    "transition-colors hover:text-foreground/80 whitespace-nowrap px-2 py-1 rounded-md active:bg-accent/50 md:active:bg-transparent",
-                                    pathname === item.href ? "text-primary" : "text-foreground/60"
-                                )}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
+                        {navItems.map((item) => {
+                            const isRootItem = item.href === "/election-2026";
+                            const isActive =
+                                pathname === item.href ||
+                                (!isRootItem && pathname.startsWith(`${item.href}/`));
+
+                            return (
+                                <Link
+                                    key={item.href}
+                                    href={item.href}
+                                    className={cn(
+                                        "transition-colors hover:text-foreground/80 whitespace-nowrap px-2 py-1 rounded-md active:bg-accent/50 md:active:bg-transparent",
+                                        isActive ? "text-primary" : "text-foreground/60"
+                                    )}
+                                >
+                                    {item.name}
+                                </Link>
+                            );
+                        })}
                     </nav>
                 </div>
             </div>
