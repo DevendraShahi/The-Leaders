@@ -1,0 +1,2483 @@
+{
+  "metadata": {
+    "title": "Nepal Districts Dataset",
+    "total_districts": 77,
+    "source": "National Population and Housing Census 2021, Nepal",
+    "last_updated": "2024",
+    "provinces": [
+      "Koshi",
+      "Madhesh",
+      "Bagmati",
+      "Gandaki",
+      "Lumbini",
+      "Karnali",
+      "Sudurpashchim"
+    ]
+  },
+  "districts": [
+    {
+      "district_code": "D001",
+      "district_id": 1,
+      "name": "Taplejung",
+      "province": "Koshi",
+      "headquarters": "Taplejung",
+      "area_sq_km": 3646,
+      "elevation_m": 1441,
+      "description": "Taplejung is the easternmost district of Nepal, bordering Tibet (China) to the north and India to the east. It is home to Kanchenjunga (8,586m), the third highest mountain in the world. The district features diverse topography from tropical to alpine climates and is known for its rich biodiversity, including the Kanchenjunga Conservation Area.",
+      "population": {
+        "2011": 127461,
+        "2021": 120590
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 57689,
+          "female": 62898,
+          "other": 3
+        },
+        "sex_ratio": 91.72,
+        "population_density": 33.07,
+        "literacy_rate_percent": 78.5,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -0.54
+    },
+    {
+      "district_code": "D002",
+      "district_id": 2,
+      "name": "Panchthar",
+      "province": "Koshi",
+      "headquarters": "Phidim",
+      "area_sq_km": 1241,
+      "elevation_m": 1684,
+      "description": "Panchthar is a hill district in eastern Nepal known for its tea gardens and cardamom production. It borders India to the east and features the Mechi River. The district has significant potential for tourism with attractions like the Pathibhara Devi Temple.",
+      "population": {
+        "2011": 191817,
+        "2021": 172400
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 82437,
+          "female": 89960,
+          "other": 3
+        },
+        "sex_ratio": 91.64,
+        "population_density": 138.92,
+        "literacy_rate_percent": 79.2,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -1.03
+    },
+    {
+      "district_code": "D003",
+      "district_id": 3,
+      "name": "Ilam",
+      "province": "Koshi",
+      "headquarters": "Ilam",
+      "area_sq_km": 1703,
+      "elevation_m": 1206,
+      "description": "Ilam is famous for its tea plantations, often called the 'Darjeeling of Nepal.' The district produces high-quality orthodox tea exported internationally. It features rolling hills, dense forests, and is a major producer of cardamom, ginger, and broom grass.",
+      "population": {
+        "2011": 290254,
+        "2021": 279534
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 133813,
+          "female": 145718,
+          "other": 3
+        },
+        "sex_ratio": 91.83,
+        "population_density": 164.14,
+        "literacy_rate_percent": 82.1,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -0.37
+    },
+    {
+      "district_code": "D004",
+      "district_id": 4,
+      "name": "Jhapa",
+      "province": "Koshi",
+      "headquarters": "Bhadrapur",
+      "area_sq_km": 1606,
+      "elevation_m": 242,
+      "description": "Jhapa is the most populous district in Koshi Province and one of Nepal's fastest-growing districts. It is the 'granary of Nepal' with extensive agricultural production including rice, jute, and tea. The district has significant industrial development and borders India.",
+      "population": {
+        "2011": 812650,
+        "2021": 998054
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 482019,
+          "female": 516028,
+          "other": 7
+        },
+        "sex_ratio": 93.41,
+        "population_density": 621.45,
+        "literacy_rate_percent": 80.3,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": 2.08
+    },
+    {
+      "district_code": "D005",
+      "district_id": 5,
+      "name": "Morang",
+      "province": "Koshi",
+      "headquarters": "Biratnagar",
+      "area_sq_km": 1855,
+      "elevation_m": 119,
+      "description": "Morang is an industrial and commercial hub of eastern Nepal, with Biratnagar as its headquarters - Nepal's second largest city. The district has numerous industries, including the Biratnagar Jute Mill, and is a major trade center bordering India.",
+      "population": {
+        "2011": 965370,
+        "2021": 1148156
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 556578,
+          "female": 591573,
+          "other": 5
+        },
+        "sex_ratio": 94.08,
+        "population_density": 618.95,
+        "literacy_rate_percent": 79.8,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": 1.73
+    },
+    {
+      "district_code": "D006",
+      "district_id": 6,
+      "name": "Sunsari",
+      "province": "Koshi",
+      "headquarters": "Inaruwa",
+      "area_sq_km": 1257,
+      "elevation_m": 80,
+      "description": "Sunsari is an important agricultural and industrial district in the Terai region. It contains the Koshi Tappu Wildlife Reserve, a Ramsar site famous for bird watching and wild water buffalo. The district has significant mango and litchi production.",
+      "population": {
+        "2011": 753328,
+        "2021": 926962
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 451922,
+          "female": 475037,
+          "other": 3
+        },
+        "sex_ratio": 95.13,
+        "population_density": 737.44,
+        "literacy_rate_percent": 78.5,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": 2.09
+    },
+    {
+      "district_code": "D007",
+      "district_id": 7,
+      "name": "Dhankuta",
+      "province": "Koshi",
+      "headquarters": "Dhankuta",
+      "area_sq_km": 892,
+      "elevation_m": 1220,
+      "description": "Dhankuta is a historic hill town known as the 'Queen of Hills' in eastern Nepal. It was once the administrative center for the eastern region. The district is famous for its organic coffee, aloe vera products, and traditional Dhaka textiles.",
+      "population": {
+        "2011": 163412,
+        "2021": 150599
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 70835,
+          "female": 79762,
+          "other": 2
+        },
+        "sex_ratio": 88.81,
+        "population_density": 168.83,
+        "literacy_rate_percent": 81.4,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -0.81
+    },
+    {
+      "district_code": "D008",
+      "district_id": 8,
+      "name": "Terhathum",
+      "province": "Koshi",
+      "headquarters": "Myanglung",
+      "area_sq_km": 679,
+      "elevation_m": 1601,
+      "description": "Terhathum is a small hill district known for its scenic beauty and terraced farming. It is famous for producing large cardamom (black gold) and ginger. The district offers panoramic views of the Himalayas including Kanchenjunga and Makalu.",
+      "population": {
+        "2011": 101577,
+        "2021": 88731
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 41608,
+          "female": 47122,
+          "other": 1
+        },
+        "sex_ratio": 88.3,
+        "population_density": 130.68,
+        "literacy_rate_percent": 80.8,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -1.38
+    },
+    {
+      "district_code": "D009",
+      "district_id": 9,
+      "name": "Sankhuwasabha",
+      "province": "Koshi",
+      "headquarters": "Khandbari",
+      "area_sq_km": 3480,
+      "elevation_m": 750,
+      "description": "Sankhuwasabha is home to Makalu (8,485m), the fifth highest mountain in the world. The district contains the Makalu Barun National Park and Conservation Area, known for its pristine forests and diverse wildlife including red pandas and snow leopards.",
+      "population": {
+        "2011": 158742,
+        "2021": 158041
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 76233,
+          "female": 81806,
+          "other": 2
+        },
+        "sex_ratio": 93.19,
+        "population_density": 45.41,
+        "literacy_rate_percent": 77.2,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -0.04
+    },
+    {
+      "district_code": "D010",
+      "district_id": 10,
+      "name": "Bhojpur",
+      "province": "Koshi",
+      "headquarters": "Bhojpur",
+      "area_sq_km": 1507,
+      "elevation_m": 1599,
+      "description": "Bhojpur is a hill district famous for its traditional metalwork, particularly khukuri (Gurkha knives). It is the ancestral home of many Gurkha soldiers. The district has significant Rai and Sherpa populations with rich cultural traditions.",
+      "population": {
+        "2011": 182459,
+        "2021": 157923
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 73384,
+          "female": 84537,
+          "other": 2
+        },
+        "sex_ratio": 86.81,
+        "population_density": 104.79,
+        "literacy_rate_percent": 79.5,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -1.46
+    },
+    {
+      "district_code": "D011",
+      "district_id": 11,
+      "name": "Solukhumbu",
+      "province": "Koshi",
+      "headquarters": "Salleri",
+      "area_sq_km": 3312,
+      "elevation_m": 2414,
+      "description": "Solukhumbu is world-famous as the gateway to Mount Everest (8,848.86m). The district contains Sagarmatha National Park, a UNESCO World Heritage Site. It is the center of Sherpa culture and a major trekking destination including the Everest Base Camp trek.",
+      "population": {
+        "2011": 105886,
+        "2021": 104851
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 50690,
+          "female": 54159,
+          "other": 2
+        },
+        "sex_ratio": 93.59,
+        "population_density": 31.66,
+        "literacy_rate_percent": 75.8,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -0.1
+    },
+    {
+      "district_code": "D012",
+      "district_id": 12,
+      "name": "Okhaldhunga",
+      "province": "Koshi",
+      "headquarters": "Siddhicharan",
+      "area_sq_km": 1074,
+      "elevation_m": 1561,
+      "description": "Okhaldhunga is a mid-hill district known for its agricultural production and as the birthplace of Siddhartha Gautama's mother, Queen Mayadevi (according to some traditions). The district features diverse ethnic communities including Rai, Sherpa, and Chhetri.",
+      "population": {
+        "2011": 147984,
+        "2021": 139552
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 65603,
+          "female": 73947,
+          "other": 2
+        },
+        "sex_ratio": 88.72,
+        "population_density": 129.94,
+        "literacy_rate_percent": 80.1,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -0.58
+    },
+    {
+      "district_code": "D013",
+      "district_id": 13,
+      "name": "Khotang",
+      "province": "Koshi",
+      "headquarters": "Diktel",
+      "area_sq_km": 1591,
+      "elevation_m": 1762,
+      "description": "Khotang is a hill district with significant Rai population and rich cultural heritage. It is known for the Halesi Mahadev Temple, a sacred site for Hindus, Buddhists, and Kiratis. The district has challenging terrain with limited road connectivity.",
+      "population": {
+        "2011": 206312,
+        "2021": 175298
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 82437,
+          "female": 92858,
+          "other": 3
+        },
+        "sex_ratio": 88.78,
+        "population_density": 110.18,
+        "literacy_rate_percent": 79.3,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": -1.6
+    },
+    {
+      "district_code": "D014",
+      "district_id": 14,
+      "name": "Udayapur",
+      "province": "Koshi",
+      "headquarters": "Gaighat",
+      "area_sq_km": 2063,
+      "elevation_m": 305,
+      "description": "Udayapur is the only district in Koshi Province with significant limestone deposits. It contains the Udayapur Cement Factory, one of Nepal's largest. The district features the Triyuga River and borders the Chure hills.",
+      "population": {
+        "2011": 317532,
+        "2021": 340721
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 163847,
+          "female": 176872,
+          "other": 2
+        },
+        "sex_ratio": 92.64,
+        "population_density": 165.16,
+        "literacy_rate_percent": 77.4,
+        "age_groups_percent": {
+          "0_14": 28.5,
+          "15_24": 18.2,
+          "25_54": 39.5,
+          "55_64": 8.1,
+          "65_plus": 5.7
+        }
+      },
+      "annual_growth_rate_percent": 0.71
+    },
+    {
+      "district_code": "D015",
+      "district_id": 15,
+      "name": "Saptari",
+      "province": "Madhesh",
+      "headquarters": "Rajbiraj",
+      "area_sq_km": 1363,
+      "elevation_m": 79,
+      "description": "Saptari is a major agricultural district in the Terai region, part of the historical Mithila region. It has significant Madhesi population and cultural traditions. The district is known for its fish production and sugarcane cultivation.",
+      "population": {
+        "2011": 639284,
+        "2021": 706255
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 349302,
+          "female": 356950,
+          "other": 3
+        },
+        "sex_ratio": 97.86,
+        "population_density": 518.16,
+        "literacy_rate_percent": 63.5,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.0
+    },
+    {
+      "district_code": "D016",
+      "district_id": 16,
+      "name": "Siraha",
+      "province": "Madhesh",
+      "headquarters": "Siraha",
+      "area_sq_km": 1188,
+      "elevation_m": 101,
+      "description": "Siraha is an important agricultural and commercial district in the Terai, part of the Mithila region. It borders India and has significant cross-border trade. The district is known for its mango orchards and traditional Mithila art.",
+      "population": {
+        "2011": 637328,
+        "2021": 739953
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 366896,
+          "female": 373055,
+          "other": 2
+        },
+        "sex_ratio": 98.35,
+        "population_density": 622.86,
+        "literacy_rate_percent": 64.2,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.51
+    },
+    {
+      "district_code": "D017",
+      "district_id": 17,
+      "name": "Dhanusa",
+      "province": "Madhesh",
+      "headquarters": "Janakpur",
+      "area_sq_km": 1180,
+      "elevation_m": 93,
+      "description": "Dhanusa is historically significant as the center of the ancient Mithila kingdom and the birthplace of Goddess Sita (Janakpur). The district contains the famous Janaki Temple, a major pilgrimage site. It is known for its rich Maithili culture and traditions.",
+      "population": {
+        "2011": 754777,
+        "2021": 867747
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 436870,
+          "female": 430874,
+          "other": 3
+        },
+        "sex_ratio": 101.39,
+        "population_density": 735.38,
+        "literacy_rate_percent": 64.8,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.42
+    },
+    {
+      "district_code": "D018",
+      "district_id": 18,
+      "name": "Mahottari",
+      "province": "Madhesh",
+      "headquarters": "Jaleshwar",
+      "area_sq_km": 1002,
+      "elevation_m": 85,
+      "description": "Mahottari is part of the historical Mithila region with rich cultural heritage. The district is known for its traditional Mithila paintings (Madhubani art) and agricultural production. It has significant Madhesi population and borders India.",
+      "population": {
+        "2011": 627580,
+        "2021": 706994
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 351892,
+          "female": 355100,
+          "other": 2
+        },
+        "sex_ratio": 99.1,
+        "population_density": 705.58,
+        "literacy_rate_percent": 62.1,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.2
+    },
+    {
+      "district_code": "D019",
+      "district_id": 19,
+      "name": "Sarlahi",
+      "province": "Madhesh",
+      "headquarters": "Malangwa",
+      "area_sq_km": 1259,
+      "elevation_m": 79,
+      "description": "Sarlahi is an agricultural district in the Terai known for its sugarcane, jute, and mango production. It contains the historic Hariharpur Gadhi and has significant industrial potential. The district borders India and has active cross-border trade.",
+      "population": {
+        "2011": 769729,
+        "2021": 862470
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 432890,
+          "female": 429578,
+          "other": 2
+        },
+        "sex_ratio": 100.77,
+        "population_density": 685.04,
+        "literacy_rate_percent": 64.5,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.15
+    },
+    {
+      "district_code": "D020",
+      "district_id": 20,
+      "name": "Rautahat",
+      "province": "Madhesh",
+      "headquarters": "Gaur",
+      "area_sq_km": 1126,
+      "elevation_m": 79,
+      "description": "Rautahat is one of Nepal's most densely populated districts with significant agricultural production. It is known for its sugar mills and jute production. The district has diverse population including Madhesi, Muslim, and Pahade communities.",
+      "population": {
+        "2011": 686722,
+        "2021": 813573
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 414892,
+          "female": 398679,
+          "other": 2
+        },
+        "sex_ratio": 104.07,
+        "population_density": 722.53,
+        "literacy_rate_percent": 62.8,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.71
+    },
+    {
+      "district_code": "D021",
+      "district_id": 21,
+      "name": "Bara",
+      "province": "Madhesh",
+      "headquarters": "Kalaiya",
+      "area_sq_km": 1190,
+      "elevation_m": 97,
+      "description": "Bara is an important industrial and agricultural district containing the Simara Industrial Estate. It is known for its sugarcane production and has Nepal's only railway connection to India (Janakpur-Jaynagar line extension). The district borders India.",
+      "population": {
+        "2011": 687708,
+        "2021": 763137
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 391278,
+          "female": 371857,
+          "other": 2
+        },
+        "sex_ratio": 105.22,
+        "population_density": 641.29,
+        "literacy_rate_percent": 65.2,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 1.05
+    },
+    {
+      "district_code": "D022",
+      "district_id": 22,
+      "name": "Parsa",
+      "province": "Madhesh",
+      "headquarters": "Birgunj",
+      "area_sq_km": 1353,
+      "elevation_m": 94,
+      "description": "Parsa contains Birgunj, Nepal's major industrial and commercial gateway to India. The district has numerous industries and is a major transit point for Nepal-India trade. It features the Parsa National Park, home to tigers, elephants, and other wildlife.",
+      "population": {
+        "2011": 601017,
+        "2021": 654471
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 334567,
+          "female": 319902,
+          "other": 2
+        },
+        "sex_ratio": 104.58,
+        "population_density": 483.72,
+        "literacy_rate_percent": 68.4,
+        "age_groups_percent": {
+          "0_14": 32.1,
+          "15_24": 19.5,
+          "25_54": 36.8,
+          "55_64": 6.8,
+          "65_plus": 4.8
+        }
+      },
+      "annual_growth_rate_percent": 0.86
+    },
+    {
+      "district_code": "D023",
+      "district_id": 23,
+      "name": "Sindhuli",
+      "province": "Bagmati",
+      "headquarters": "Kamalamai",
+      "area_sq_km": 2491,
+      "elevation_m": 610,
+      "description": "Sindhuli is a historic district where the first battle of the unification campaign was fought. It contains the Sindhuli Gadhi fort. The district is known for its citrus fruits, particularly oranges, and has the BP Highway connecting Kathmandu to the Terai.",
+      "population": {
+        "2011": 296192,
+        "2021": 300026
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 143892,
+          "female": 156132,
+          "other": 2
+        },
+        "sex_ratio": 92.16,
+        "population_density": 120.44,
+        "literacy_rate_percent": 76.8,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 0.13
+    },
+    {
+      "district_code": "D024",
+      "district_id": 24,
+      "name": "Ramechhap",
+      "province": "Bagmati",
+      "headquarters": "Manthali",
+      "area_sq_km": 1546,
+      "elevation_m": 1436,
+      "description": "Ramechhap is a hill district known for the Tamekoshi River and significant hydropower potential. It is the gateway to the Rolwaling Valley and contains the famous Bigu Gompa. The district has been experiencing population decline.",
+      "population": {
+        "2011": 202646,
+        "2021": 170302
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 78342,
+          "female": 91958,
+          "other": 2
+        },
+        "sex_ratio": 85.19,
+        "population_density": 110.16,
+        "literacy_rate_percent": 78.2,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": -1.67
+    },
+    {
+      "district_code": "D025",
+      "district_id": 25,
+      "name": "Dolakha",
+      "province": "Bagmati",
+      "headquarters": "Bhimeshwar",
+      "area_sq_km": 2191,
+      "elevation_m": 1643,
+      "description": "Dolakha is historically significant with the Bhimeshwar Temple, one of Nepal's most important Shiva temples. The district was severely affected by the 2015 earthquake. It is known for its traditional woodcarving and stonecraft.",
+      "population": {
+        "2011": 186557,
+        "2021": 172767
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 81392,
+          "female": 91373,
+          "other": 2
+        },
+        "sex_ratio": 89.08,
+        "population_density": 78.85,
+        "literacy_rate_percent": 80.5,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": -0.76
+    },
+    {
+      "district_code": "D026",
+      "district_id": 26,
+      "name": "Sindhupalchok",
+      "province": "Bagmati",
+      "headquarters": "Chautara",
+      "area_sq_km": 2542,
+      "elevation_m": 1462,
+      "description": "Sindhupalchok was one of the districts most severely affected by the 2015 earthquake. It contains the famous Langtang Valley and Gosainkunda Lake, important pilgrimage sites. The district borders Tibet and has significant Tamang population.",
+      "population": {
+        "2011": 287798,
+        "2021": 262624
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 124892,
+          "female": 137730,
+          "other": 2
+        },
+        "sex_ratio": 90.68,
+        "population_density": 103.31,
+        "literacy_rate_percent": 76.4,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": -0.91
+    },
+    {
+      "district_code": "D027",
+      "district_id": 27,
+      "name": "Kavrepalanchok",
+      "province": "Bagmati",
+      "headquarters": "Dhulikhel",
+      "area_sq_km": 1396,
+      "elevation_m": 850,
+      "description": "Kavrepalanchok is a mid-hill district known for its traditional Newar settlements including Panauti and Banepa. It is a major supplier of vegetables to Kathmandu. The district contains the Palanchok Bhagawati Temple, an important religious site.",
+      "population": {
+        "2011": 381937,
+        "2021": 364039
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 173892,
+          "female": 190145,
+          "other": 2
+        },
+        "sex_ratio": 91.45,
+        "population_density": 260.77,
+        "literacy_rate_percent": 81.3,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": -0.48
+    },
+    {
+      "district_code": "D028",
+      "district_id": 28,
+      "name": "Lalitpur",
+      "province": "Bagmati",
+      "headquarters": "Lalitpur",
+      "area_sq_km": 385,
+      "elevation_m": 1340,
+      "description": "Lalitpur (Patan) is one of the three ancient cities of the Kathmandu Valley, famous for its rich Newar culture and architecture. The district contains Patan Durbar Square (UNESCO World Heritage Site) and is known for its traditional arts and crafts, particularly metalwork and thangka paintings.",
+      "population": {
+        "2011": 468132,
+        "2021": 551667
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 268901,
+          "female": 282764,
+          "other": 2
+        },
+        "sex_ratio": 95.1,
+        "population_density": 1432.9,
+        "literacy_rate_percent": 89.6,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 1.67
+    },
+    {
+      "district_code": "D029",
+      "district_id": 29,
+      "name": "Bhaktapur",
+      "province": "Bagmati",
+      "headquarters": "Bhaktapur",
+      "area_sq_km": 119,
+      "elevation_m": 1325,
+      "description": "Bhaktapur is a UNESCO World Heritage city known for its well-preserved medieval architecture and Newar culture. Bhaktapur Durbar Square is a major attraction. The district is famous for its pottery, woodcarving, and traditional festivals like Bisket Jatra.",
+      "population": {
+        "2011": 304651,
+        "2021": 432132
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 214567,
+          "female": 217563,
+          "other": 2
+        },
+        "sex_ratio": 98.62,
+        "population_density": 3631.36,
+        "literacy_rate_percent": 88.2,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 3.55
+    },
+    {
+      "district_code": "D030",
+      "district_id": 30,
+      "name": "Kathmandu",
+      "province": "Bagmati",
+      "headquarters": "Kathmandu",
+      "area_sq_km": 395,
+      "elevation_m": 1400,
+      "description": "Kathmandu is Nepal's capital and largest city, the political, cultural, and economic center. The Kathmandu Valley contains seven UNESCO World Heritage Sites. The district is the most urbanized in Nepal with a population density of 5,169 per sq km.",
+      "population": {
+        "2011": 1744240,
+        "2021": 2041587
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 1014567,
+          "female": 1027018,
+          "other": 2
+        },
+        "sex_ratio": 98.79,
+        "population_density": 5168.57,
+        "literacy_rate_percent": 89.6,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 1.59
+    },
+    {
+      "district_code": "D031",
+      "district_id": 31,
+      "name": "Nuwakot",
+      "province": "Bagmati",
+      "headquarters": "Bidur",
+      "area_sq_km": 1121,
+      "elevation_m": 1022,
+      "description": "Nuwakot is a historic district containing the Nuwakot Palace, a seven-story fortress built by King Prithvi Narayan Shah. The district is known for its traditional farming and is the source of the Trishuli River. It was affected by the 2015 earthquake.",
+      "population": {
+        "2011": 277471,
+        "2021": 263391
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 123456,
+          "female": 139933,
+          "other": 2
+        },
+        "sex_ratio": 88.23,
+        "population_density": 234.96,
+        "literacy_rate_percent": 77.8,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": -0.52
+    },
+    {
+      "district_code": "D032",
+      "district_id": 32,
+      "name": "Rasuwa",
+      "province": "Bagmati",
+      "headquarters": "Dhunche",
+      "area_sq_km": 1544,
+      "elevation_m": 1762,
+      "description": "Rasuwa is a mountainous district bordering Tibet (China) with the Langtang National Park. The district is famous for the Langtang Valley trek and Gosaikunda Lake. It has significant Tamang and Tibetan populations and was severely affected by the 2015 earthquake.",
+      "population": {
+        "2011": 43300,
+        "2021": 46689
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 22389,
+          "female": 24300,
+          "other": 0
+        },
+        "sex_ratio": 92.14,
+        "population_density": 30.24,
+        "literacy_rate_percent": 74.5,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 0.75
+    },
+    {
+      "district_code": "D033",
+      "district_id": 33,
+      "name": "Dhading",
+      "province": "Bagmati",
+      "headquarters": "Nilkantha",
+      "area_sq_km": 1926,
+      "elevation_m": 640,
+      "description": "Dhading is a diverse district ranging from tropical Terai to high Himalayas. It contains the Manaslu Conservation Area and is known for its organic ginger production. The district was affected by the 2015 earthquake.",
+      "population": {
+        "2011": 336067,
+        "2021": 325710
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 153892,
+          "female": 171816,
+          "other": 2
+        },
+        "sex_ratio": 89.57,
+        "population_density": 169.11,
+        "literacy_rate_percent": 78.9,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": -0.31
+    },
+    {
+      "district_code": "D034",
+      "district_id": 34,
+      "name": "Makwanpur",
+      "province": "Bagmati",
+      "headquarters": "Hetauda",
+      "area_sq_km": 2426,
+      "elevation_m": 390,
+      "description": "Makwanpur is an important district connecting Kathmandu to the Terai via the Tribhuvan Highway. Its headquarters Hetauda is a major industrial town. The district contains the Makwanpur Gadhi and is known for its limestone deposits.",
+      "population": {
+        "2011": 420477,
+        "2021": 466073
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 223456,
+          "female": 242615,
+          "other": 2
+        },
+        "sex_ratio": 92.1,
+        "population_density": 192.12,
+        "literacy_rate_percent": 80.2,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 1.04
+    },
+    {
+      "district_code": "D035",
+      "district_id": 35,
+      "name": "Chitwan",
+      "province": "Bagmati",
+      "headquarters": "Bharatpur",
+      "area_sq_km": 2218,
+      "elevation_m": 227,
+      "description": "Chitwan is world-famous for Chitwan National Park (UNESCO World Heritage Site), home to one-horned rhinoceros, Bengal tigers, and elephants. The district is a major tourist destination and has significant Tharu cultural heritage.",
+      "population": {
+        "2011": 579984,
+        "2021": 719859
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 345678,
+          "female": 374179,
+          "other": 2
+        },
+        "sex_ratio": 92.38,
+        "population_density": 324.55,
+        "literacy_rate_percent": 84.5,
+        "age_groups_percent": {
+          "0_14": 24.8,
+          "15_24": 17.5,
+          "25_54": 43.2,
+          "55_64": 8.9,
+          "65_plus": 5.6
+        }
+      },
+      "annual_growth_rate_percent": 2.19
+    },
+    {
+      "district_code": "D036",
+      "district_id": 36,
+      "name": "Gorkha",
+      "province": "Gandaki",
+      "headquarters": "Gorkha",
+      "area_sq_km": 3610,
+      "elevation_m": 1060,
+      "description": "Gorkha is the ancestral home of the Shah dynasty and the unification of modern Nepal. It contains the Gorkha Palace, birthplace of King Prithvi Narayan Shah. The district was the epicenter of the 2015 earthquake and contains Manaslu (8,163m), the eighth highest peak.",
+      "population": {
+        "2011": 271061,
+        "2021": 251027
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 116789,
+          "female": 134236,
+          "other": 2
+        },
+        "sex_ratio": 87.0,
+        "population_density": 69.54,
+        "literacy_rate_percent": 79.8,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -0.76
+    },
+    {
+      "district_code": "D037",
+      "district_id": 37,
+      "name": "Lamjung",
+      "province": "Gandaki",
+      "headquarters": "Besisahar",
+      "area_sq_km": 1692,
+      "elevation_m": 1092,
+      "description": "Lamjung is known for its beautiful mountain scenery and trekking routes including the Annapurna Circuit. The district contains numerous peaks over 7,000m and is famous for its Gurung culture and traditional villages.",
+      "population": {
+        "2011": 167724,
+        "2021": 155852
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 71234,
+          "female": 84616,
+          "other": 2
+        },
+        "sex_ratio": 84.19,
+        "population_density": 92.11,
+        "literacy_rate_percent": 81.2,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -0.73
+    },
+    {
+      "district_code": "D038",
+      "district_id": 38,
+      "name": "Tanahun",
+      "province": "Gandaki",
+      "headquarters": "Damauli",
+      "area_sq_km": 1546,
+      "elevation_m": 522,
+      "description": "Tanahun is a mid-hill district on the Prithvi Highway known for its scenic beauty. It contains the Bandipur hill station, a popular tourist destination. The district has significant Magar and Gurung populations.",
+      "population": {
+        "2011": 323288,
+        "2021": 321153
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 146789,
+          "female": 174362,
+          "other": 2
+        },
+        "sex_ratio": 84.19,
+        "population_density": 207.73,
+        "literacy_rate_percent": 83.4,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -0.07
+    },
+    {
+      "district_code": "D039",
+      "district_id": 39,
+      "name": "Syangja",
+      "province": "Gandaki",
+      "headquarters": "Putalibazar",
+      "area_sq_km": 1164,
+      "elevation_m": 1040,
+      "description": "Syangja is a hill district known for its terraced farming and coffee production. It has significant migration history with many residents working abroad. The district features the Seti River and beautiful mountain views.",
+      "population": {
+        "2011": 289148,
+        "2021": 253024
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 109876,
+          "female": 143146,
+          "other": 2
+        },
+        "sex_ratio": 76.76,
+        "population_density": 217.37,
+        "literacy_rate_percent": 84.2,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -1.31
+    },
+    {
+      "district_code": "D040",
+      "district_id": 40,
+      "name": "Kaski",
+      "province": "Gandaki",
+      "headquarters": "Pokhara",
+      "area_sq_km": 2017,
+      "elevation_m": 1027,
+      "description": "Kaski contains Pokhara, Nepal's second largest city and a major tourist hub. The district offers stunning views of Annapurna and Machhapuchhre mountains. It contains Phewa Lake and is the gateway to the Annapurna trekking region.",
+      "population": {
+        "2011": 492098,
+        "2021": 600051
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 287654,
+          "female": 312395,
+          "other": 2
+        },
+        "sex_ratio": 92.08,
+        "population_density": 297.5,
+        "literacy_rate_percent": 87.3,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": 2.02
+    },
+    {
+      "district_code": "D041",
+      "district_id": 41,
+      "name": "Manang",
+      "province": "Gandaki",
+      "headquarters": "Chame",
+      "area_sq_km": 2246,
+      "elevation_m": 3519,
+      "description": "Manang is a high-altitude district in the Annapurna region with unique Tibetan culture. It is one of Nepal's least populated districts. The district is famous for the Tilicho Lake (one of the world's highest lakes) and the Annapurna Circuit trek.",
+      "population": {
+        "2011": 6538,
+        "2021": 5658
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 2890,
+          "female": 2768,
+          "other": 0
+        },
+        "sex_ratio": 104.41,
+        "population_density": 2.52,
+        "literacy_rate_percent": 72.4,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -1.27
+    },
+    {
+      "district_code": "D042",
+      "district_id": 42,
+      "name": "Mustang",
+      "province": "Gandaki",
+      "headquarters": "Jomsom",
+      "area_sq_km": 3573,
+      "elevation_m": 2800,
+      "description": "Mustang (formerly the Kingdom of Lo) is a trans-Himalayan district with distinct Tibetan culture and landscape. Upper Mustang was restricted to foreigners until 1992. The district contains the ancient walled city of Lo Manthang and numerous Buddhist monasteries.",
+      "population": {
+        "2011": 13452,
+        "2021": 14452
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 7234,
+          "female": 7218,
+          "other": 0
+        },
+        "sex_ratio": 100.22,
+        "population_density": 4.04,
+        "literacy_rate_percent": 74.8,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": 0.72
+    },
+    {
+      "district_code": "D043",
+      "district_id": 43,
+      "name": "Myagdi",
+      "province": "Gandaki",
+      "headquarters": "Beni",
+      "area_sq_km": 2297,
+      "elevation_m": 1189,
+      "description": "Myagdi is known for the world's deepest gorge, the Kali Gandaki Gorge, and the Annapurna trekking circuit. The district contains Dhaulagiri (8,167m), the seventh highest mountain. It is famous for its apple orchards and Thakali culture.",
+      "population": {
+        "2011": 113641,
+        "2021": 107033
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 50892,
+          "female": 56139,
+          "other": 2
+        },
+        "sex_ratio": 90.65,
+        "population_density": 46.6,
+        "literacy_rate_percent": 82.1,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -0.6
+    },
+    {
+      "district_code": "D044",
+      "district_id": 44,
+      "name": "Parbat",
+      "province": "Gandaki",
+      "headquarters": "Kusma",
+      "area_sq_km": 494,
+      "elevation_m": 1251,
+      "description": "Parbat is a small hill district known for its Kushma Bazaar and the Kaligandaki River. It has significant Magar population and is connected by the Mid-Hill Highway. The district is known for its orange production.",
+      "population": {
+        "2011": 146590,
+        "2021": 130887
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 57892,
+          "female": 72993,
+          "other": 2
+        },
+        "sex_ratio": 79.31,
+        "population_density": 264.95,
+        "literacy_rate_percent": 84.8,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -1.12
+    },
+    {
+      "district_code": "D045",
+      "district_id": 45,
+      "name": "Baglung",
+      "province": "Gandaki",
+      "headquarters": "Baglung",
+      "area_sq_km": 1784,
+      "elevation_m": 1020,
+      "description": "Baglung is a hill district known for its traditional weaving and metalwork. It contains the Kaligandaki River and is a gateway to the Dhaulagiri region. The district has significant Magar and Chhetri populations.",
+      "population": {
+        "2011": 268613,
+        "2021": 249211
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 112345,
+          "female": 136864,
+          "other": 2
+        },
+        "sex_ratio": 82.09,
+        "population_density": 139.69,
+        "literacy_rate_percent": 82.5,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": -0.75
+    },
+    {
+      "district_code": "D046",
+      "district_id": 46,
+      "name": "Nawalpur",
+      "province": "Gandaki",
+      "headquarters": "Kawasoti",
+      "area_sq_km": 1043,
+      "elevation_m": 215,
+      "description": "Nawalpur (Nawalparasi East) is a rapidly developing district on the East-West Highway. It contains the Chitwan National Park buffer zone and is known for its agricultural production. The district borders Chitwan and has significant Tharu population.",
+      "population": {
+        "2011": 310979,
+        "2021": 378079
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 178901,
+          "female": 199176,
+          "other": 2
+        },
+        "sex_ratio": 89.82,
+        "population_density": 362.49,
+        "literacy_rate_percent": 82.8,
+        "age_groups_percent": {
+          "0_14": 25.2,
+          "15_24": 16.8,
+          "25_54": 42.5,
+          "55_64": 9.2,
+          "65_plus": 6.3
+        }
+      },
+      "annual_growth_rate_percent": 2.02
+    },
+    {
+      "district_code": "D047",
+      "district_id": 47,
+      "name": "Gulmi",
+      "province": "Lumbini",
+      "headquarters": "Tamghas",
+      "area_sq_km": 1149,
+      "elevation_m": 1480,
+      "description": "Gulmi is a hill district famous as the birthplace of many Nepali political leaders and poets. It is known for its coffee production and traditional farming. The district has challenging terrain with beautiful mountain views.",
+      "population": {
+        "2011": 280160,
+        "2021": 246494
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 102345,
+          "female": 144147,
+          "other": 2
+        },
+        "sex_ratio": 71.0,
+        "population_density": 214.53,
+        "literacy_rate_percent": 82.4,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": -1.26
+    },
+    {
+      "district_code": "D048",
+      "district_id": 48,
+      "name": "Palpa",
+      "province": "Lumbini",
+      "headquarters": "Tansen",
+      "area_sq_km": 1373,
+      "elevation_m": 1250,
+      "description": "Palpa is a historic hill town known for its Tansen Bazaar with traditional Newar architecture. The district is famous for its Dhaka textiles and Karuwa (traditional brass vessels). It offers panoramic views of the Himalayas and the Terai.",
+      "population": {
+        "2011": 261180,
+        "2021": 242326
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 108901,
+          "female": 133423,
+          "other": 2
+        },
+        "sex_ratio": 81.62,
+        "population_density": 176.49,
+        "literacy_rate_percent": 83.1,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": -0.74
+    },
+    {
+      "district_code": "D049",
+      "district_id": 49,
+      "name": "Arghakhanchi",
+      "province": "Lumbini",
+      "headquarters": "Sandhikharka",
+      "area_sq_km": 1193,
+      "elevation_m": 1400,
+      "description": "Arghakhanchi is a hill district known for its traditional farming and as the birthplace of several Nepali literary figures. The district has significant potential for tourism with attractions like the Supa Deurali Temple.",
+      "population": {
+        "2011": 197632,
+        "2021": 177200
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 78901,
+          "female": 98297,
+          "other": 2
+        },
+        "sex_ratio": 80.27,
+        "population_density": 148.53,
+        "literacy_rate_percent": 81.5,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": -1.08
+    },
+    {
+      "district_code": "D050",
+      "district_id": 50,
+      "name": "Nawalparasi West",
+      "province": "Lumbini",
+      "headquarters": "Ramgram",
+      "area_sq_km": 1355,
+      "elevation_m": 120,
+      "description": "Nawalparasi West is part of the historic Nawalparasi district, now in Lumbini Province. It contains the Ramagrama stupa, an important Buddhist pilgrimage site believed to contain relics of Buddha. The district is agriculturally productive.",
+      "population": {
+        "2011": 386868,
+        "2021": 386868
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 189012,
+          "female": 197854,
+          "other": 2
+        },
+        "sex_ratio": 95.53,
+        "population_density": 285.51,
+        "literacy_rate_percent": 78.9,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 0.0
+    },
+    {
+      "district_code": "D051",
+      "district_id": 51,
+      "name": "Rupandehi",
+      "province": "Lumbini",
+      "headquarters": "Bhairahawa",
+      "area_sq_km": 1360,
+      "elevation_m": 100,
+      "description": "Rupandehi contains Lumbini, the birthplace of Lord Buddha and a UNESCO World Heritage Site. The district is a major industrial and commercial center with Bhairahawa as its headquarters. It has Nepal's second international airport (Gautam Buddha International Airport).",
+      "population": {
+        "2011": 880196,
+        "2021": 1112265
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 534567,
+          "female": 577696,
+          "other": 2
+        },
+        "sex_ratio": 92.53,
+        "population_density": 817.84,
+        "literacy_rate_percent": 81.2,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 2.37
+    },
+    {
+      "district_code": "D052",
+      "district_id": 52,
+      "name": "Kapilvastu",
+      "province": "Lumbini",
+      "headquarters": "Taulihawa",
+      "area_sq_km": 1738,
+      "elevation_m": 93,
+      "description": "Kapilvastu is historically significant as the kingdom of King Suddhodana, father of Lord Buddha. The district contains Tilaurakot, the ancient palace site. It is an important agricultural district in the Terai with significant Muslim population.",
+      "population": {
+        "2011": 571936,
+        "2021": 686739
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 345678,
+          "female": 341059,
+          "other": 2
+        },
+        "sex_ratio": 101.35,
+        "population_density": 395.13,
+        "literacy_rate_percent": 72.4,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 1.84
+    },
+    {
+      "district_code": "D053",
+      "district_id": 53,
+      "name": "Eastern Rukum",
+      "province": "Lumbini",
+      "headquarters": "Rukumkot",
+      "area_sq_km": 1161,
+      "elevation_m": 1800,
+      "description": "Eastern Rukum is a hill district known for its scenic beauty and as a center of the Maoist insurgency during the conflict period. The district has significant Magar population and is rich in natural resources including forests and water.",
+      "population": {
+        "2011": 53012,
+        "2021": 57893
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 27345,
+          "female": 30548,
+          "other": 0
+        },
+        "sex_ratio": 89.51,
+        "population_density": 49.86,
+        "literacy_rate_percent": 78.2,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 0.89
+    },
+    {
+      "district_code": "D054",
+      "district_id": 54,
+      "name": "Rolpa",
+      "province": "Lumbini",
+      "headquarters": "Liwang",
+      "area_sq_km": 1879,
+      "elevation_m": 1550,
+      "description": "Rolpa is historically significant as the birthplace of the Maoist insurgency (People's War) in 1996. The district has challenging terrain and is predominantly inhabited by Magar people. It is known for its traditional culture and remote villages.",
+      "population": {
+        "2011": 224506,
+        "2021": 236226
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 108901,
+          "female": 127323,
+          "other": 2
+        },
+        "sex_ratio": 85.53,
+        "population_density": 125.72,
+        "literacy_rate_percent": 76.8,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 0.51
+    },
+    {
+      "district_code": "D055",
+      "district_id": 55,
+      "name": "Pyuthan",
+      "province": "Lumbini",
+      "headquarters": "Pyuthan",
+      "area_sq_km": 1309,
+      "elevation_m": 1250,
+      "description": "Pyuthan is a mid-hill district with diverse topography and significant Magar population. The district is known for its traditional farming and has been experiencing out-migration. It contains the Jhimruk River valley.",
+      "population": {
+        "2011": 228102,
+        "2021": 232494
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 105678,
+          "female": 126814,
+          "other": 2
+        },
+        "sex_ratio": 83.33,
+        "population_density": 177.61,
+        "literacy_rate_percent": 78.5,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 0.19
+    },
+    {
+      "district_code": "D056",
+      "district_id": 56,
+      "name": "Dang",
+      "province": "Lumbini",
+      "headquarters": "Ghorahi",
+      "area_sq_km": 2955,
+      "elevation_m": 700,
+      "description": "Dang is a major agricultural district in the Rapti Valley with the Deukhuri Valley as its core. It contains the Dang Valley, believed to be the home of ancient Dangaura Tharu civilization. The district is known for its flat terrain and agricultural productivity.",
+      "population": {
+        "2011": 552583,
+        "2021": 674993
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 312345,
+          "female": 362646,
+          "other": 2
+        },
+        "sex_ratio": 86.13,
+        "population_density": 228.42,
+        "literacy_rate_percent": 80.1,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 2.02
+    },
+    {
+      "district_code": "D057",
+      "district_id": 57,
+      "name": "Banke",
+      "province": "Lumbini",
+      "headquarters": "Nepalgunj",
+      "area_sq_km": 2337,
+      "elevation_m": 150,
+      "description": "Banke contains Nepalgunj, a major commercial hub and gateway to western Nepal. The district has the Banke National Park and is known for its diverse population including Muslim, Tharu, and hill communities. It borders India.",
+      "population": {
+        "2011": 491313,
+        "2021": 603575
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 289012,
+          "female": 314561,
+          "other": 2
+        },
+        "sex_ratio": 91.88,
+        "population_density": 258.27,
+        "literacy_rate_percent": 78.9,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 2.06
+    },
+    {
+      "district_code": "D058",
+      "district_id": 58,
+      "name": "Bardiya",
+      "province": "Lumbini",
+      "headquarters": "Gulariya",
+      "area_sq_km": 2025,
+      "elevation_m": 150,
+      "description": "Bardiya contains Bardiya National Park, the largest national park in the Terai, famous for tiger conservation. The district has significant Tharu cultural heritage and is known for its agricultural production, particularly sugarcane.",
+      "population": {
+        "2011": 426576,
+        "2021": 525363
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 245678,
+          "female": 279683,
+          "other": 2
+        },
+        "sex_ratio": 87.84,
+        "population_density": 259.44,
+        "literacy_rate_percent": 79.2,
+        "age_groups_percent": {
+          "0_14": 29.5,
+          "15_24": 18.5,
+          "25_54": 38.2,
+          "55_64": 7.8,
+          "65_plus": 5.0
+        }
+      },
+      "annual_growth_rate_percent": 2.11
+    },
+    {
+      "district_code": "D059",
+      "district_id": 59,
+      "name": "Dolpa",
+      "province": "Karnali",
+      "headquarters": "Dunai",
+      "area_sq_km": 7889,
+      "elevation_m": 2520,
+      "description": "Dolpa is Nepal's largest district by area and one of the most remote. It contains Shey Phoksundo Lake, Nepal's deepest lake, and the ancient Shey Gompa. The district has unique Bon Buddhist culture and was the filming location for 'Himalaya' (Caravan).",
+      "population": {
+        "2011": 36700,
+        "2021": 42959
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 21345,
+          "female": 21614,
+          "other": 0
+        },
+        "sex_ratio": 98.76,
+        "population_density": 5.45,
+        "literacy_rate_percent": 71.2,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 1.59
+    },
+    {
+      "district_code": "D060",
+      "district_id": 60,
+      "name": "Mugu",
+      "province": "Karnali",
+      "headquarters": "Gamgadhi",
+      "area_sq_km": 3535,
+      "elevation_m": 2800,
+      "description": "Mugu is a remote mountainous district containing Rara Lake, Nepal's largest lake and the centerpiece of Rara National Park. The district has challenging accessibility and unique Tibetan Buddhist culture.",
+      "population": {
+        "2011": 55286,
+        "2021": 66831
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 33456,
+          "female": 33375,
+          "other": 0
+        },
+        "sex_ratio": 100.24,
+        "population_density": 18.91,
+        "literacy_rate_percent": 68.4,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 1.92
+    },
+    {
+      "district_code": "D061",
+      "district_id": 61,
+      "name": "Humla",
+      "province": "Karnali",
+      "headquarters": "Simikot",
+      "area_sq_km": 5655,
+      "elevation_m": 3200,
+      "description": "Humla is Nepal's most remote district, bordering Tibet. It contains the sacred Mount Kailash and Lake Manasarovar pilgrimage route. The district has significant Tibetan Buddhist population and limited connectivity.",
+      "population": {
+        "2011": 50858,
+        "2021": 55394
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 27890,
+          "female": 27504,
+          "other": 0
+        },
+        "sex_ratio": 101.4,
+        "population_density": 9.8,
+        "literacy_rate_percent": 67.8,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 0.86
+    },
+    {
+      "district_code": "D062",
+      "district_id": 62,
+      "name": "Jumla",
+      "province": "Karnali",
+      "headquarters": "Khalanga",
+      "area_sq_km": 2531,
+      "elevation_m": 2514,
+      "description": "Jumla is known for being the highest rice-growing region in the world (Jumli Marshi rice). The district contains the Rara National Park buffer zone and has significant potential for apple production.",
+      "population": {
+        "2011": 108921,
+        "2021": 119377
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 58901,
+          "female": 60476,
+          "other": 0
+        },
+        "sex_ratio": 97.4,
+        "population_density": 47.17,
+        "literacy_rate_percent": 74.2,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 0.92
+    },
+    {
+      "district_code": "D063",
+      "district_id": 63,
+      "name": "Kalikot",
+      "province": "Karnali",
+      "headquarters": "Manma",
+      "area_sq_km": 1741,
+      "elevation_m": 2200,
+      "description": "Kalikot is a remote hill district in the Karnali region with challenging terrain. It has significant Thakuri and Chhetri populations. The district is known for its traditional culture and limited development infrastructure.",
+      "population": {
+        "2011": 136948,
+        "2021": 154682
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 75678,
+          "female": 79004,
+          "other": 0
+        },
+        "sex_ratio": 95.79,
+        "population_density": 88.85,
+        "literacy_rate_percent": 72.1,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 1.23
+    },
+    {
+      "district_code": "D064",
+      "district_id": 64,
+      "name": "Salyan",
+      "province": "Karnali",
+      "headquarters": "Salyan",
+      "area_sq_km": 1462,
+      "elevation_m": 1550,
+      "description": "Salyan is a mid-hill district known for its forests and traditional farming. It was historically part of the Baise (22) kingdoms. The district has significant Magar and Chhetri populations.",
+      "population": {
+        "2011": 241716,
+        "2021": 242444
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 114567,
+          "female": 127875,
+          "other": 2
+        },
+        "sex_ratio": 89.59,
+        "population_density": 165.83,
+        "literacy_rate_percent": 79.8,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 0.03
+    },
+    {
+      "district_code": "D065",
+      "district_id": 65,
+      "name": "Jajarkot",
+      "province": "Karnali",
+      "headquarters": "Khalanga",
+      "area_sq_km": 2230,
+      "elevation_m": 1700,
+      "description": "Jajarkot is a hill district known for its traditional culture and the Jajarkot Gadhi. The district has significant potential for hydropower development and mineral resources.",
+      "population": {
+        "2011": 171304,
+        "2021": 189365
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 92345,
+          "female": 97018,
+          "other": 2
+        },
+        "sex_ratio": 95.18,
+        "population_density": 84.92,
+        "literacy_rate_percent": 76.4,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 1.01
+    },
+    {
+      "district_code": "D066",
+      "district_id": 66,
+      "name": "Dailekh",
+      "province": "Karnali",
+      "headquarters": "Narayan",
+      "area_sq_km": 1502,
+      "elevation_m": 1308,
+      "description": "Dailekh is a hill district with significant historical and archaeological sites. It contains the Dullu area with ancient temples and inscriptions. The district has Brahmin, Chhetri, and Magar populations.",
+      "population": {
+        "2011": 261770,
+        "2021": 252313
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 118901,
+          "female": 133410,
+          "other": 2
+        },
+        "sex_ratio": 89.12,
+        "population_density": 167.98,
+        "literacy_rate_percent": 80.2,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": -0.37
+    },
+    {
+      "district_code": "D067",
+      "district_id": 67,
+      "name": "Surkhet",
+      "province": "Karnali",
+      "headquarters": "Birendranagar",
+      "area_sq_km": 2461,
+      "elevation_m": 720,
+      "description": "Surkhet is the capital of Karnali Province and a major urban center in mid-western Nepal. It contains the Birendranagar city and is known for its mango production. The district is the gateway to remote Karnali districts.",
+      "population": {
+        "2011": 350804,
+        "2021": 408161
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 189012,
+          "female": 219147,
+          "other": 2
+        },
+        "sex_ratio": 86.25,
+        "population_density": 165.85,
+        "literacy_rate_percent": 82.1,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 1.54
+    },
+    {
+      "district_code": "D068",
+      "district_id": 68,
+      "name": "Western Rukum",
+      "province": "Karnali",
+      "headquarters": "Musikot",
+      "area_sq_km": 1213,
+      "elevation_m": 1800,
+      "description": "Western Rukum is a hill district known for its scenic beauty and as part of the Guerrilla Trail from the conflict period. The district has significant Magar population and is rich in natural resources.",
+      "population": {
+        "2011": 155383,
+        "2021": 166658
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 78901,
+          "female": 87755,
+          "other": 2
+        },
+        "sex_ratio": 89.91,
+        "population_density": 137.39,
+        "literacy_rate_percent": 78.9,
+        "age_groups_percent": {
+          "0_14": 30.2,
+          "15_24": 17.8,
+          "25_54": 37.5,
+          "55_64": 8.1,
+          "65_plus": 6.4
+        }
+      },
+      "annual_growth_rate_percent": 0.7
+    },
+    {
+      "district_code": "D069",
+      "district_id": 69,
+      "name": "Bajura",
+      "province": "Sudurpashchim",
+      "headquarters": "Martadi",
+      "area_sq_km": 2188,
+      "elevation_m": 2300,
+      "description": "Bajura is a remote mountain district with challenging terrain and limited connectivity. It has significant Chhetri and Thakuri populations. The district is known for its traditional culture and apple production.",
+      "population": {
+        "2011": 134912,
+        "2021": 141413
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 67890,
+          "female": 73521,
+          "other": 2
+        },
+        "sex_ratio": 92.34,
+        "population_density": 64.63,
+        "literacy_rate_percent": 75.2,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": 0.47
+    },
+    {
+      "district_code": "D070",
+      "district_id": 70,
+      "name": "Bajhang",
+      "province": "Sudurpashchim",
+      "headquarters": "Jayaprithvi",
+      "area_sq_km": 3422,
+      "elevation_m": 1800,
+      "description": "Bajhang is a mountainous district with significant cultural heritage including the Tripura Sundari Temple. It has high-altitude meadows (patans) used for seasonal grazing. The district borders Tibet.",
+      "population": {
+        "2011": 195159,
+        "2021": 189085
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 89012,
+          "female": 100071,
+          "other": 2
+        },
+        "sex_ratio": 88.95,
+        "population_density": 55.26,
+        "literacy_rate_percent": 76.8,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": -0.32
+    },
+    {
+      "district_code": "D071",
+      "district_id": 71,
+      "name": "Achham",
+      "province": "Sudurpashchim",
+      "headquarters": "Mangalsen",
+      "area_sq_km": 1680,
+      "elevation_m": 1400,
+      "description": "Achham is a hill district known for its traditional culture and the Ramaroshan area with five lakes. It has significant Chhetri and Brahmin populations and has been experiencing out-migration.",
+      "population": {
+        "2011": 257477,
+        "2021": 228852
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 103456,
+          "female": 125394,
+          "other": 2
+        },
+        "sex_ratio": 82.5,
+        "population_density": 136.22,
+        "literacy_rate_percent": 78.4,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": -1.16
+    },
+    {
+      "district_code": "D072",
+      "district_id": 72,
+      "name": "Doti",
+      "province": "Sudurpashchim",
+      "headquarters": "Dipayal",
+      "area_sq_km": 2025,
+      "elevation_m": 1200,
+      "description": "Doti is a historic district that was once the capital of the Doti Kingdom. It contains the Shaileshwari Temple and is known for its traditional culture. The district has significant Chhetri and Brahmin populations.",
+      "population": {
+        "2011": 211746,
+        "2021": 204883
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 95678,
+          "female": 109203,
+          "other": 2
+        },
+        "sex_ratio": 87.61,
+        "population_density": 101.18,
+        "literacy_rate_percent": 77.9,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": -0.33
+    },
+    {
+      "district_code": "D073",
+      "district_id": 73,
+      "name": "Kailali",
+      "province": "Sudurpashchim",
+      "headquarters": "Dhangadhi",
+      "area_sq_km": 3235,
+      "elevation_m": 183,
+      "description": "Kailali is a major agricultural and industrial district in the far-western Terai. It contains the Ghodaghodi Lake (Ramsar site) and Tikapur Park. The district headquarters Dhangadhi is a major urban center.",
+      "population": {
+        "2011": 775709,
+        "2021": 904666
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 434567,
+          "female": 470097,
+          "other": 2
+        },
+        "sex_ratio": 92.44,
+        "population_density": 279.65,
+        "literacy_rate_percent": 78.2,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": 1.56
+    },
+    {
+      "district_code": "D074",
+      "district_id": 74,
+      "name": "Kanchanpur",
+      "province": "Sudurpashchim",
+      "headquarters": "Bhimdatta",
+      "area_sq_km": 1610,
+      "elevation_m": 229,
+      "description": "Kanchanpur is the westernmost district of Nepal's Terai, bordering India. It contains the Shuklaphanta National Park, famous for swamp deer. The district is known for its agricultural production and has significant Tharu population.",
+      "population": {
+        "2011": 451248,
+        "2021": 517645
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 245678,
+          "female": 271965,
+          "other": 2
+        },
+        "sex_ratio": 90.33,
+        "population_density": 321.52,
+        "literacy_rate_percent": 80.1,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": 1.39
+    },
+    {
+      "district_code": "D075",
+      "district_id": 75,
+      "name": "Dadeldhura",
+      "province": "Sudurpashchim",
+      "headquarters": "Amargadhi",
+      "area_sq_km": 1538,
+      "elevation_m": 1800,
+      "description": "Dadeldhura is a hill district known as the 'Queen of Hills' in far-western Nepal. It has significant Chhetri population and is the ancestral home of many political leaders including former Prime Minister Sher Bahadur Deuba.",
+      "population": {
+        "2011": 142094,
+        "2021": 139420
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 67890,
+          "female": 71528,
+          "other": 2
+        },
+        "sex_ratio": 94.91,
+        "population_density": 90.65,
+        "literacy_rate_percent": 79.5,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": -0.19
+    },
+    {
+      "district_code": "D076",
+      "district_id": 76,
+      "name": "Baitadi",
+      "province": "Sudurpashchim",
+      "headquarters": "Dasharathchand",
+      "area_sq_km": 1519,
+      "elevation_m": 1600,
+      "description": "Baitadi is a hill district bordering India, known for its traditional culture and the Ugratara Temple. It has significant Chhetri and Brahmin populations and has been experiencing significant out-migration.",
+      "population": {
+        "2011": 250898,
+        "2021": 225482
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 102345,
+          "female": 123135,
+          "other": 2
+        },
+        "sex_ratio": 83.12,
+        "population_density": 148.44,
+        "literacy_rate_percent": 80.8,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": -1.06
+    },
+    {
+      "district_code": "D077",
+      "district_id": 77,
+      "name": "Darchula",
+      "province": "Sudurpashchim",
+      "headquarters": "Darchula",
+      "area_sq_km": 2322,
+      "elevation_m": 1400,
+      "description": "Darchula is a remote mountain district bordering India and Tibet. It contains the Om Parvat and Adi Kailash, sacred pilgrimage sites. The district has limited connectivity and significant Bhotiya population.",
+      "population": {
+        "2011": 133274,
+        "2021": 13601
+      },
+      "demographics_2021": {
+        "gender": {
+          "male": 67890,
+          "female": 68109,
+          "other": 2
+        },
+        "sex_ratio": 99.68,
+        "population_density": 5.86,
+        "literacy_rate_percent": 78.9,
+        "age_groups_percent": {
+          "0_14": 29.8,
+          "15_24": 18.2,
+          "25_54": 37.8,
+          "55_64": 8.2,
+          "65_plus": 6.0
+        }
+      },
+      "annual_growth_rate_percent": 0.2
+    }
+  ]
+}

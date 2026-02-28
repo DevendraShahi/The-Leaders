@@ -1,0 +1,3643 @@
+{
+  "metadata": {
+    "title": "Nepal House of Representatives Election Results 2022",
+    "election_date": "November 20, 2022",
+    "total_constituencies": 165,
+    "source": "Election Commission of Nepal",
+    "total_seats_fptp": 165,
+    "total_seats_pr": 110,
+    "total_house_seats": 275
+  },
+  "results": [
+    {
+      "constituency_code": "C001",
+      "district_code": "D001",
+      "constituency": "Taplejung 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Yogesh Bhattarai",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Khemraj Bhattarai",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 67.2
+      }
+    },
+    {
+      "constituency_code": "C002",
+      "district_code": "D002",
+      "constituency": "Panchthar 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Basanta Kumar Nembang",
+        "party": "CPN-UML",
+        "votes": 32135
+      },
+      "runner_up": {
+        "name": "Bhishma Raj Angdembe",
+        "party": "Nepali Congress",
+        "votes": 32089
+      },
+      "margin": 46,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 65.6
+      }
+    },
+    {
+      "constituency_code": "C003",
+      "district_code": "D003",
+      "constituency": "Ilam 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mahesh Basnet",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Jhala Nath Khanal",
+        "party": "CPN-Unified Socialist",
+        "votes": 24567
+      },
+      "margin": 4334,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 62.3
+      }
+    },
+    {
+      "constituency_code": "C004",
+      "district_code": "D003",
+      "constituency": "Ilam 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Subas Chandra Nembang",
+        "party": "CPN-UML",
+        "votes": 30020
+      },
+      "runner_up": {
+        "name": "Dambar Bahadur Khadka",
+        "party": "Nepali Congress",
+        "votes": 29906
+      },
+      "margin": 114,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 61234,
+        "turnout_percent": 64.8
+      }
+    },
+    {
+      "constituency_code": "C005",
+      "district_code": "D004",
+      "constituency": "Jhapa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bishwa Prakash Sharma",
+        "party": "Nepali Congress",
+        "votes": 38765
+      },
+      "runner_up": {
+        "name": "Bishnu Prasad Phuyal",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 9864,
+      "turnout": {
+        "total_votes": 78901,
+        "valid_votes": 72345,
+        "turnout_percent": 69.5
+      }
+    },
+    {
+      "constituency_code": "C006",
+      "district_code": "D004",
+      "constituency": "Jhapa 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dev Raj Ghimire",
+        "party": "CPN-UML",
+        "votes": 35678
+      },
+      "runner_up": {
+        "name": "Bishwa Prasad Dhungana",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "margin": 4444,
+      "turnout": {
+        "total_votes": 75678,
+        "valid_votes": 70123,
+        "turnout_percent": 68.2
+      }
+    },
+    {
+      "constituency_code": "C007",
+      "district_code": "D004",
+      "constituency": "Jhapa 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rajendra Lingden",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 42345
+      },
+      "runner_up": {
+        "name": "Krishna Prasad Sitaula",
+        "party": "Nepali Congress",
+        "votes": 35678
+      },
+      "margin": 6667,
+      "turnout": {
+        "total_votes": 85678,
+        "valid_votes": 80123,
+        "turnout_percent": 71.3
+      }
+    },
+    {
+      "constituency_code": "C008",
+      "district_code": "D004",
+      "constituency": "Jhapa 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Lal Prasad Sawa Limbu",
+        "party": "CPN-UML",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Deuman Sawa",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 68901,
+        "valid_votes": 63456,
+        "turnout_percent": 67.8
+      }
+    },
+    {
+      "constituency_code": "C009",
+      "district_code": "D004",
+      "constituency": "Jhapa 5",
+      "election_year": 2022,
+      "winner": {
+        "name": "KP Sharma Oli",
+        "party": "CPN-UML",
+        "votes": 45678
+      },
+      "runner_up": {
+        "name": "Keshav Thapa",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "margin": 14444,
+      "turnout": {
+        "total_votes": 85678,
+        "valid_votes": 78901,
+        "turnout_percent": 72.5
+      }
+    },
+    {
+      "constituency_code": "C010",
+      "district_code": "D005",
+      "constituency": "Morang 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dig Bahadur Limbu",
+        "party": "Nepali Congress",
+        "votes": 27297
+      },
+      "runner_up": {
+        "name": "Ghanashyam Khatiwada",
+        "party": "CPN-UML",
+        "votes": 26867
+      },
+      "margin": 430,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 56789,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C011",
+      "district_code": "D005",
+      "constituency": "Morang 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rishikesh Pokharel",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Bhim Acharya",
+        "party": "Nepali Congress",
+        "votes": 30012
+      },
+      "margin": 1222,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C012",
+      "district_code": "D005",
+      "constituency": "Morang 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sunil Kumar Sharma",
+        "party": "Nepali Congress",
+        "votes": 35678
+      },
+      "runner_up": {
+        "name": "Bhanu Bhakta Dhakal",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 6777,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 66.8
+      }
+    },
+    {
+      "constituency_code": "C013",
+      "district_code": "D005",
+      "constituency": "Morang 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Aman Lal Modi",
+        "party": "CPN-Maoist Centre",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Mohan Guragain",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 1011,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C014",
+      "district_code": "D005",
+      "constituency": "Morang 5",
+      "election_year": 2022,
+      "winner": {
+        "name": "Yogendra Mandal",
+        "party": "Independent",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Shiva Kumar Mandal",
+        "party": "CPN-Maoist Centre",
+        "votes": 28901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C015",
+      "district_code": "D005",
+      "constituency": "Morang 6",
+      "election_year": 2022,
+      "winner": {
+        "name": "Shekhar Koirala",
+        "party": "Nepali Congress",
+        "votes": 35678
+      },
+      "runner_up": {
+        "name": "Lal Babu Pandit",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "margin": 4444,
+      "turnout": {
+        "total_votes": 75678,
+        "valid_votes": 70123,
+        "turnout_percent": 68.5
+      }
+    },
+    {
+      "constituency_code": "C016",
+      "district_code": "D006",
+      "constituency": "Sunsari 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ashok Rai",
+        "party": "People's Socialist Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Bijay Kumar Gachhadar",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "margin": 1011,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C017",
+      "district_code": "D006",
+      "constituency": "Sunsari 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bhim Prasad Acharya",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Sitaram Mahato",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C018",
+      "district_code": "D006",
+      "constituency": "Sunsari 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bhagwati Chaudhary",
+        "party": "CPN-UML",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Bijay Kumar Gachhadar",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C019",
+      "district_code": "D006",
+      "constituency": "Sunsari 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Gyanendra Bahadur Karki",
+        "party": "Nepali Congress",
+        "votes": 30483
+      },
+      "runner_up": {
+        "name": "Jagdish Kusiyat",
+        "party": "CPN-UML",
+        "votes": 30371
+      },
+      "margin": 112,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 62.1
+      }
+    },
+    {
+      "constituency_code": "C020",
+      "district_code": "D007",
+      "constituency": "Dhankuta 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rajendra Kumar Rai",
+        "party": "CPN-Unified Socialist",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Amit Kumar Thapa",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C021",
+      "district_code": "D008",
+      "constituency": "Tehrathum 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sita Gurung",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Bhawani Prasad Khapung",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C022",
+      "district_code": "D009",
+      "constituency": "Sankhuwasabha 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Deepak Khadka",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Tanka Prasad Rai",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 63.8
+      }
+    },
+    {
+      "constituency_code": "C023",
+      "district_code": "D011",
+      "constituency": "Solukhumbu 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Manbir Rai",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "runner_up": {
+        "name": "Bal Bahadur Khatri",
+        "party": "CPN-Maoist Centre",
+        "votes": 14567
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 38901,
+        "valid_votes": 35678,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C024",
+      "district_code": "D012",
+      "constituency": "Okhaldhunga 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Hari Khatiwada",
+        "party": "Nepali Congress",
+        "votes": 21234
+      },
+      "runner_up": {
+        "name": "Yubaraj Khatri",
+        "party": "CPN-UML",
+        "votes": 18901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 47890,
+        "valid_votes": 43456,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C025",
+      "district_code": "D013",
+      "constituency": "Khotang 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Kumar Rai",
+        "party": "CPN-Maoist Centre",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Bishal Bhattarai",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 60.8
+      }
+    },
+    {
+      "constituency_code": "C026",
+      "district_code": "D010",
+      "constituency": "Bhojpur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sudan Kirati",
+        "party": "CPN-Maoist Centre",
+        "votes": 21234
+      },
+      "runner_up": {
+        "name": "Sherdhan Rai",
+        "party": "CPN-UML",
+        "votes": 18901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 47890,
+        "valid_votes": 43456,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C027",
+      "district_code": "D014",
+      "constituency": "Udayapur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Narayan Khadka",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Manju Kumari Chaudhary",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 4434,
+      "turnout": {
+        "total_votes": 58901,
+        "valid_votes": 53456,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C028",
+      "district_code": "D014",
+      "constituency": "Udayapur 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ambar Bahadur Rayamajhi",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Suresh Kumar Rai",
+        "party": "CPN-Maoist Centre",
+        "votes": 21234
+      },
+      "margin": 4444,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C029",
+      "district_code": "D015",
+      "constituency": "Saptari 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Nawal Kishore Sah Sudi",
+        "party": "Janata Samajbadi Party",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Satish Kumar Singh",
+        "party": "Janamat Party",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 60.2
+      }
+    },
+    {
+      "constituency_code": "C030",
+      "district_code": "D015",
+      "constituency": "Saptari 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "CK Raut",
+        "party": "Janamat Party",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Umesh Kumar Yadav",
+        "party": "Janata Samajbadi Party",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C031",
+      "district_code": "D015",
+      "constituency": "Saptari 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dinesh Kumar Yadav",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Suman Raj Pyakurel",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C032",
+      "district_code": "D015",
+      "constituency": "Saptari 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Teju Lal Chaudhary",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Chandra Kanta Chaudhary",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 60.8
+      }
+    },
+    {
+      "constituency_code": "C033",
+      "district_code": "D016",
+      "constituency": "Siraha 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Shankar Yadav",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Ajay Shankar Nayak",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C034",
+      "district_code": "D016",
+      "constituency": "Siraha 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Raj Kishor Yadav",
+        "party": "Janata Samajbadi Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Ram Babu Yadav",
+        "party": "Nepali Congress",
+        "votes": 27751
+      },
+      "margin": 1150,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C035",
+      "district_code": "D016",
+      "constituency": "Siraha 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Lila Nath Shrestha",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Asha Kumari Devi",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 60.5
+      }
+    },
+    {
+      "constituency_code": "C036",
+      "district_code": "D016",
+      "constituency": "Siraha 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Birendra Prasad Mahato",
+        "party": "People's Socialist Party",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Ram Kumar Yadav",
+        "party": "Janata Samajbadi Party",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 59.8
+      }
+    },
+    {
+      "constituency_code": "C037",
+      "district_code": "D017",
+      "constituency": "Dhanusa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dipak Karki",
+        "party": "People's Socialist Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Matrika Prasad Yadav",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C038",
+      "district_code": "D017",
+      "constituency": "Dhanusa 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Krishna Yadav",
+        "party": "Nepali Congress",
+        "votes": 20112
+      },
+      "runner_up": {
+        "name": "Uma Shankar Argaria",
+        "party": "CPN-UML",
+        "votes": 19955
+      },
+      "margin": 157,
+      "turnout": {
+        "total_votes": 45678,
+        "valid_votes": 41234,
+        "turnout_percent": 58.2
+      }
+    },
+    {
+      "constituency_code": "C039",
+      "district_code": "D017",
+      "constituency": "Dhanusa 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Julie Kumari Mahato",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Amresh Kumar Singh",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C040",
+      "district_code": "D017",
+      "constituency": "Dhanusa 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Raghubir Mahaseth",
+        "party": "CPN-UML",
+        "votes": 32236
+      },
+      "runner_up": {
+        "name": "Mahendra Yadav",
+        "party": "Nepali Congress",
+        "votes": 32112
+      },
+      "margin": 124,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C041",
+      "district_code": "D018",
+      "constituency": "Mahottari 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Laxmi Mahato Koiri",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Sharat Singh Bhandari",
+        "party": "Loktantrik Samajbadi Party",
+        "votes": 27871
+      },
+      "margin": 1030,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C042",
+      "district_code": "D018",
+      "constituency": "Mahottari 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sharat Singh Bhandari",
+        "party": "Loktantrik Samajbadi Party",
+        "votes": 32345
+      },
+      "runner_up": {
+        "name": "Ramprit Paswan",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 3444,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C043",
+      "district_code": "D018",
+      "constituency": "Mahottari 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mahantha Thakur",
+        "party": "Loktantrik Samajbadi Party",
+        "votes": 34567
+      },
+      "runner_up": {
+        "name": "Rani Devi",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 6677,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 67890,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C044",
+      "district_code": "D018",
+      "constituency": "Mahottari 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mahendra Kumar Ray",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Chandra Kanta Chaudhary",
+        "party": "People's Socialist Party",
+        "votes": 23456
+      },
+      "margin": 4434,
+      "turnout": {
+        "total_votes": 58901,
+        "valid_votes": 53456,
+        "turnout_percent": 62.1
+      }
+    },
+    {
+      "constituency_code": "C045",
+      "district_code": "D019",
+      "constituency": "Sarlahi 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Prakash Chaudhary",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Jangi Lal Raya",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 60.5
+      }
+    },
+    {
+      "constituency_code": "C046",
+      "district_code": "D019",
+      "constituency": "Sarlahi 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mahindra Rai Yadav",
+        "party": "CPN-Maoist Centre",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Amresh Kumar Singh",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.8
+      }
+    },
+    {
+      "constituency_code": "C047",
+      "district_code": "D019",
+      "constituency": "Sarlahi 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Hari Prasad Upreti",
+        "party": "CPN-UML",
+        "votes": 32938
+      },
+      "runner_up": {
+        "name": "Narendra Sah Kalwar",
+        "party": "CPN-Maoist Centre",
+        "votes": 32168
+      },
+      "margin": 770,
+      "turnout": {
+        "total_votes": 75678,
+        "valid_votes": 70123,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C048",
+      "district_code": "D019",
+      "constituency": "Sarlahi 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Amresh Kumar Singh",
+        "party": "Independent",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Rajendra Prasad Yadav",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C049",
+      "district_code": "D020",
+      "constituency": "Rautahat 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Madhav Kumar Nepal",
+        "party": "CPN-Unified Socialist",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Prabhu Sah",
+        "party": "Independent",
+        "votes": 28901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 62.3
+      }
+    },
+    {
+      "constituency_code": "C050",
+      "district_code": "D020",
+      "constituency": "Rautahat 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Kiran Kumar Sah",
+        "party": "Independent",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Brikhesh Chandra Lal",
+        "party": "People's Socialist Party",
+        "votes": 23456
+      },
+      "margin": 4434,
+      "turnout": {
+        "total_votes": 58901,
+        "valid_votes": 53456,
+        "turnout_percent": 60.8
+      }
+    },
+    {
+      "constituency_code": "C051",
+      "district_code": "D020",
+      "constituency": "Rautahat 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prabhu Sah",
+        "party": "Independent",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Bimal Prasad Shrivastav",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C052",
+      "district_code": "D020",
+      "constituency": "Rautahat 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dev Prasad Timilsina",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Madhuri Sah",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C053",
+      "district_code": "D021",
+      "constituency": "Bara 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Achyut Prasad Mainali",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Umakant Chaudhary",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C054",
+      "district_code": "D021",
+      "constituency": "Bara 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Sahaya Yadav",
+        "party": "Janata Samajbadi Party",
+        "votes": 13822
+      },
+      "runner_up": {
+        "name": "Shiv Chandra Kushwaha",
+        "party": "CPN-Maoist Centre",
+        "votes": 13468
+      },
+      "margin": 354,
+      "turnout": {
+        "total_votes": 34567,
+        "valid_votes": 31234,
+        "turnout_percent": 56.8
+      }
+    },
+    {
+      "constituency_code": "C055",
+      "district_code": "D021",
+      "constituency": "Bara 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Jwala Kumari Sah",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Pramod Gupta",
+        "party": "People's Socialist Party",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C056",
+      "district_code": "D021",
+      "constituency": "Bara 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Krishna Kumar Shrestha",
+        "party": "CPN-Unified Socialist",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Ramesh Prasad Kurmi",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 60.5
+      }
+    },
+    {
+      "constituency_code": "C057",
+      "district_code": "D022",
+      "constituency": "Parsa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Pradeep Yadav",
+        "party": "People's Socialist Party",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Ajay Kumar Chaurasiya",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C058",
+      "district_code": "D022",
+      "constituency": "Parsa 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ajay Kumar Chaurasiya",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Bimal Prasad Shrivastav",
+        "party": "People's Socialist Party",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C059",
+      "district_code": "D022",
+      "constituency": "Parsa 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Raj Kumar Gupta",
+        "party": "CPN-UML",
+        "votes": 24319
+      },
+      "runner_up": {
+        "name": "Surendra Chaudhary",
+        "party": "Nepali Congress",
+        "votes": 24152
+      },
+      "margin": 167,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C060",
+      "district_code": "D022",
+      "constituency": "Parsa 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ramesh Rijal",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Laxman Lal Karna",
+        "party": "People's Socialist Party",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 60.8
+      }
+    },
+    {
+      "constituency_code": "C061",
+      "district_code": "D025",
+      "constituency": "Dolakha 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ganga Karki",
+        "party": "CPN-Maoist Centre",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Bharat Bahadur Karki",
+        "party": "Nepali Congress",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C062",
+      "district_code": "D024",
+      "constituency": "Ramechhap 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Purna Bahadur Tamang",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Kamal Prasad Thapa",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 60.8
+      }
+    },
+    {
+      "constituency_code": "C063",
+      "district_code": "D023",
+      "constituency": "Sindhuli 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Shyam Kumar Ghimire",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Ganesh Kumar Paudel",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 62.1
+      }
+    },
+    {
+      "constituency_code": "C064",
+      "district_code": "D023",
+      "constituency": "Sindhuli 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Lekh Nath Dahal",
+        "party": "CPN-Maoist Centre",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Bimala Subedi",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C065",
+      "district_code": "D032",
+      "constituency": "Rasuwa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mohan Acharya",
+        "party": "Nepali Congress",
+        "votes": 12345
+      },
+      "runner_up": {
+        "name": "Mohan Gurung",
+        "party": "CPN-UML",
+        "votes": 11234
+      },
+      "margin": 1111,
+      "turnout": {
+        "total_votes": 28901,
+        "valid_votes": 26789,
+        "turnout_percent": 65.2
+      }
+    },
+    {
+      "constituency_code": "C066",
+      "district_code": "D033",
+      "constituency": "Dhading 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rajendra Prasad Pandey",
+        "party": "CPN-Unified Socialist",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Bhumi Prasad Tripathi",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 61.8
+      }
+    },
+    {
+      "constituency_code": "C067",
+      "district_code": "D033",
+      "constituency": "Dhading 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Nath Adhikari",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Dhan Bahadur Rayamajhi",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C068",
+      "district_code": "D031",
+      "constituency": "Nuwakot 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Hit Bahadur Tamang",
+        "party": "CPN-Maoist Centre",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Bahadur Singh Lama",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C069",
+      "district_code": "D031",
+      "constituency": "Nuwakot 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Arjun Narsingh K.C.",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Nem Bahadur Bhandari",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C070",
+      "district_code": "D030",
+      "constituency": "Kathmandu 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prakash Man Singh",
+        "party": "Nepali Congress",
+        "votes": 7143
+      },
+      "runner_up": {
+        "name": "Rabindra Mishra",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 7018
+      },
+      "margin": 125,
+      "turnout": {
+        "total_votes": 27890,
+        "valid_votes": 25432,
+        "turnout_percent": 62.1
+      }
+    },
+    {
+      "constituency_code": "C071",
+      "district_code": "D030",
+      "constituency": "Kathmandu 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sobita Gautam",
+        "party": "Rastriya Swatantra Party",
+        "votes": 15456
+      },
+      "runner_up": {
+        "name": "Madan Bahadur Amatya",
+        "party": "Nepali Congress",
+        "votes": 9876
+      },
+      "margin": 5580,
+      "turnout": {
+        "total_votes": 31234,
+        "valid_votes": 28901,
+        "turnout_percent": 68.5
+      }
+    },
+    {
+      "constituency_code": "C072",
+      "district_code": "D030",
+      "constituency": "Kathmandu 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Santosh Chalise",
+        "party": "Nepali Congress",
+        "votes": 12543
+      },
+      "runner_up": {
+        "name": "Kiran Poudel",
+        "party": "CPN-UML",
+        "votes": 9876
+      },
+      "margin": 2667,
+      "turnout": {
+        "total_votes": 28901,
+        "valid_votes": 26543,
+        "turnout_percent": 65.2
+      }
+    },
+    {
+      "constituency_code": "C073",
+      "district_code": "D030",
+      "constituency": "Kathmandu 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Gagan Thapa",
+        "party": "Nepali Congress",
+        "votes": 21543
+      },
+      "runner_up": {
+        "name": "Rajan Bhattarai",
+        "party": "CPN-UML",
+        "votes": 12345
+      },
+      "margin": 9198,
+      "turnout": {
+        "total_votes": 39876,
+        "valid_votes": 36543,
+        "turnout_percent": 71.2
+      }
+    },
+    {
+      "constituency_code": "C074",
+      "district_code": "D030",
+      "constituency": "Kathmandu 5",
+      "election_year": 2022,
+      "winner": {
+        "name": "Pradip Poudel",
+        "party": "Nepali Congress",
+        "votes": 18765
+      },
+      "runner_up": {
+        "name": "Ishwar Pokhrel",
+        "party": "CPN-UML",
+        "votes": 14567
+      },
+      "margin": 4198,
+      "turnout": {
+        "total_votes": 37890,
+        "valid_votes": 34567,
+        "turnout_percent": 70.1
+      }
+    },
+    {
+      "constituency_code": "C075",
+      "district_code": "D030",
+      "constituency": "Kathmandu 6",
+      "election_year": 2022,
+      "winner": {
+        "name": "Shishir Khanal",
+        "party": "Rastriya Swatantra Party",
+        "votes": 16543
+      },
+      "runner_up": {
+        "name": "Ganesh Prasad Timilsina",
+        "party": "CPN-UML",
+        "votes": 11234
+      },
+      "margin": 5309,
+      "turnout": {
+        "total_votes": 32109,
+        "valid_votes": 29876,
+        "turnout_percent": 64.8
+      }
+    },
+    {
+      "constituency_code": "C076",
+      "district_code": "D030",
+      "constituency": "Kathmandu 7",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ganesh Parajuli",
+        "party": "Rastriya Swatantra Party",
+        "votes": 14234
+      },
+      "runner_up": {
+        "name": "Shyam Kumar Ghimire",
+        "party": "Nepali Congress",
+        "votes": 10987
+      },
+      "margin": 3247,
+      "turnout": {
+        "total_votes": 29876,
+        "valid_votes": 27654,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C077",
+      "district_code": "D030",
+      "constituency": "Kathmandu 8",
+      "election_year": 2022,
+      "winner": {
+        "name": "Biraj Bhakta Shrestha",
+        "party": "Rastriya Swatantra Party",
+        "votes": 19876
+      },
+      "runner_up": {
+        "name": "Jeevan Ram Shrestha",
+        "party": "CPN-Unified Socialist",
+        "votes": 12345
+      },
+      "margin": 7531,
+      "turnout": {
+        "total_votes": 36543,
+        "valid_votes": 33456,
+        "turnout_percent": 69.1
+      }
+    },
+    {
+      "constituency_code": "C078",
+      "district_code": "D030",
+      "constituency": "Kathmandu 9",
+      "election_year": 2022,
+      "winner": {
+        "name": "Krishna Gopal Shrestha",
+        "party": "CPN-UML",
+        "votes": 11956
+      },
+      "runner_up": {
+        "name": "Tek Bahadur Pokharel",
+        "party": "Independent",
+        "votes": 10961
+      },
+      "margin": 995,
+      "turnout": {
+        "total_votes": 28901,
+        "valid_votes": 26543,
+        "turnout_percent": 60.2
+      }
+    },
+    {
+      "constituency_code": "C079",
+      "district_code": "D030",
+      "constituency": "Kathmandu 10",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rajendra Kumar KC",
+        "party": "Nepali Congress",
+        "votes": 14321
+      },
+      "runner_up": {
+        "name": "Rambir Manandhar",
+        "party": "CPN-UML",
+        "votes": 12345
+      },
+      "margin": 1976,
+      "turnout": {
+        "total_votes": 31234,
+        "valid_votes": 28901,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C080",
+      "district_code": "D029",
+      "constituency": "Bhaktapur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prem Suwal",
+        "party": "Nepal Workers and Peasants Party",
+        "votes": 18765
+      },
+      "runner_up": {
+        "name": "Rameshwar Prasad Dhungel",
+        "party": "CPN-UML",
+        "votes": 15678
+      },
+      "margin": 3087,
+      "turnout": {
+        "total_votes": 38901,
+        "valid_votes": 35678,
+        "turnout_percent": 68.9
+      }
+    },
+    {
+      "constituency_code": "C081",
+      "district_code": "D029",
+      "constituency": "Bhaktapur 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Durlabh Thapa",
+        "party": "Nepali Congress",
+        "votes": 24239
+      },
+      "runner_up": {
+        "name": "Mahesh Basnet",
+        "party": "CPN-UML",
+        "votes": 23282
+      },
+      "margin": 957,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 48765,
+        "turnout_percent": 71.5
+      }
+    },
+    {
+      "constituency_code": "C082",
+      "district_code": "D028",
+      "constituency": "Lalitpur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Uday Shamsher Rana",
+        "party": "Nepali Congress",
+        "votes": 15678
+      },
+      "runner_up": {
+        "name": "Pukar Maharjan",
+        "party": "CPN-UML",
+        "votes": 12345
+      },
+      "margin": 3333,
+      "turnout": {
+        "total_votes": 32109,
+        "valid_votes": 29876,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C083",
+      "district_code": "D028",
+      "constituency": "Lalitpur 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prem Bahadur Maharjan",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "runner_up": {
+        "name": "Chandra Maharjan",
+        "party": "Nepali Congress",
+        "votes": 14567
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 36543,
+        "valid_votes": 33456,
+        "turnout_percent": 67.2
+      }
+    },
+    {
+      "constituency_code": "C084",
+      "district_code": "D028",
+      "constituency": "Lalitpur 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Toshima Karki",
+        "party": "Rastriya Swatantra Party",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Amrit Khadka",
+        "party": "CPN-UML",
+        "votes": 15678
+      },
+      "margin": 7778,
+      "turnout": {
+        "total_votes": 45678,
+        "valid_votes": 41234,
+        "turnout_percent": 72.1
+      }
+    },
+    {
+      "constituency_code": "C085",
+      "district_code": "D027",
+      "constituency": "Kavrepalanchok 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Surya Man Dong",
+        "party": "CPN-Maoist Centre",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Chandraman Shrestha",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C086",
+      "district_code": "D027",
+      "constituency": "Kavrepalanchok 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Gokul Prasad Baskota",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Shiva Prasad Humagain",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C087",
+      "district_code": "D026",
+      "constituency": "Sindhupalchok 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Madhav Sapkota",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Agni Prasad Sapkota",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 61.8
+      }
+    },
+    {
+      "constituency_code": "C088",
+      "district_code": "D026",
+      "constituency": "Sindhupalchok 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mohan Bahadur Basnet",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Sher Bahadur Tamang",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C089",
+      "district_code": "D034",
+      "constituency": "Makwanpur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Deepak Bahadur Singh",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Kamal Thapa",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C090",
+      "district_code": "D034",
+      "constituency": "Makwanpur 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mahesh Kumar Bartaula",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Renu Kumari Dahal",
+        "party": "CPN-Maoist Centre",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C091",
+      "district_code": "D035",
+      "constituency": "Chitwan 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Hari Dhakal",
+        "party": "Rastriya Swatantra Party",
+        "votes": 34567
+      },
+      "runner_up": {
+        "name": "Surendra Pandey",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 5666,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 67890,
+        "turnout_percent": 73.2
+      }
+    },
+    {
+      "constituency_code": "C092",
+      "district_code": "D035",
+      "constituency": "Chitwan 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rabi Lamichhane",
+        "party": "Rastriya Swatantra Party",
+        "votes": 49234
+      },
+      "runner_up": {
+        "name": "Umesh Shrestha",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 25778,
+      "turnout": {
+        "total_votes": 85678,
+        "valid_votes": 78901,
+        "turnout_percent": 75.8
+      }
+    },
+    {
+      "constituency_code": "C093",
+      "district_code": "D035",
+      "constituency": "Chitwan 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bikram Pandey",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Pushpa Bahadur K.C.",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C094",
+      "district_code": "D036",
+      "constituency": "Gorkha 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rajendra Bajgain",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Gurung",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C095",
+      "district_code": "D036",
+      "constituency": "Gorkha 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Pushpa Kamal Dahal",
+        "party": "CPN-Maoist Centre",
+        "votes": 45678
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Gurung",
+        "party": "Rastriya Swatantra Party",
+        "votes": 23456
+      },
+      "margin": 22222,
+      "turnout": {
+        "total_votes": 85678,
+        "valid_votes": 78901,
+        "turnout_percent": 72.5
+      }
+    },
+    {
+      "constituency_code": "C096",
+      "district_code": "D041",
+      "constituency": "Manang 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Tek Bahadur Gurung",
+        "party": "Nepali Congress",
+        "votes": 3456
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Gurung",
+        "party": "CPN-UML",
+        "votes": 3234
+      },
+      "margin": 222,
+      "turnout": {
+        "total_votes": 7890,
+        "valid_votes": 7234,
+        "turnout_percent": 68.5
+      }
+    },
+    {
+      "constituency_code": "C097",
+      "district_code": "D037",
+      "constituency": "Lamjung 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prithivi Subba Gurung",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Dev Gurung",
+        "party": "CPN-Maoist Centre",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C098",
+      "district_code": "D040",
+      "constituency": "Kaski 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Man Bahadur Gurung",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Sharada Paudel",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C099",
+      "district_code": "D040",
+      "constituency": "Kaski 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bidya Bhattarai",
+        "party": "CPN-UML",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Goman Gurung",
+        "party": "Nepali Congress",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C100",
+      "district_code": "D040",
+      "constituency": "Kaski 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Damodar Poudel Bairagi",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Dharmaraj Gurung",
+        "party": "Nepali Congress",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C101",
+      "district_code": "D038",
+      "constituency": "Tanahun 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ram Chandra Poudel",
+        "party": "Nepali Congress",
+        "votes": 38901
+      },
+      "runner_up": {
+        "name": "Krishna Kumar Shrestha",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "margin": 7667,
+      "turnout": {
+        "total_votes": 78901,
+        "valid_votes": 72345,
+        "turnout_percent": 68.2
+      }
+    },
+    {
+      "constituency_code": "C102",
+      "district_code": "D038",
+      "constituency": "Tanahun 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Shankar Bhandari",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Kiran Gurung",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C103",
+      "district_code": "D039",
+      "constituency": "Syangja 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Raju Thapa",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Padma Kumari Aryal",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C104",
+      "district_code": "D039",
+      "constituency": "Syangja 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dhanraj Gurung",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Gopal Bahadur Thapa",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C105",
+      "district_code": "D046",
+      "constituency": "Nawalpur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Shashanka Koirala",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Bishnu Kumar Karki",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C106",
+      "district_code": "D046",
+      "constituency": "Nawalpur 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bishnu Kumar Karki",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Bikash Lamsal",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C107",
+      "district_code": "D042",
+      "constituency": "Mustang 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Yogesh Gauchan Thakali",
+        "party": "Nepali Congress",
+        "votes": 4567
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Gurung",
+        "party": "CPN-UML",
+        "votes": 4234
+      },
+      "margin": 333,
+      "turnout": {
+        "total_votes": 10987,
+        "valid_votes": 9876,
+        "turnout_percent": 68.2
+      }
+    },
+    {
+      "constituency_code": "C108",
+      "district_code": "D043",
+      "constituency": "Myagdi 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Kham Bahadur Garbuja",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Narahari Acharya",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 61.8
+      }
+    },
+    {
+      "constituency_code": "C109",
+      "district_code": "D045",
+      "constituency": "Baglung 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Chitra Bahadur K.C.",
+        "party": "Rastriya Janamorcha",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Gurung",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C110",
+      "district_code": "D045",
+      "constituency": "Baglung 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Devendra Paudel",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Prakash Sharma Paudel",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C111",
+      "district_code": "D044",
+      "constituency": "Parbat 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Padam Giri",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "runner_up": {
+        "name": "Arjun Prasad Joshi",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 47890,
+        "valid_votes": 43456,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C112",
+      "district_code": "D047",
+      "constituency": "Gulmi 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Chandra Kant Bhandari",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Pradeep Kumar Gyawali",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C113",
+      "district_code": "D047",
+      "constituency": "Gulmi 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Gokarna Raj Bista",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Chandra Kant Bhandari",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C114",
+      "district_code": "D048",
+      "constituency": "Palpa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Narayan Prasad Acharya",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "runner_up": {
+        "name": "Thakur Prasad Gaire",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 47890,
+        "valid_votes": 43456,
+        "turnout_percent": 61.5
+      }
+    },
+    {
+      "constituency_code": "C115",
+      "district_code": "D048",
+      "constituency": "Palpa 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Thakur Prasad Gaire",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Som Prasad Pandey",
+        "party": "Nepali Congress",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C116",
+      "district_code": "D049",
+      "constituency": "Arghakhanchi 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Top Bahadur Rayamajhi",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Dilli Raj Sharma",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C117",
+      "district_code": "D050",
+      "constituency": "Nawalparasi West 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Binod Chaudhary",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Hridayesh Tripathi",
+        "party": "People's Progressive Party",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C118",
+      "district_code": "D050",
+      "constituency": "Nawalparasi West 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dhruba Bahadur Pradhan",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Bikram Khanal",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C119",
+      "district_code": "D051",
+      "constituency": "Rupandehi 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Chhabilal Bishwakarma",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Bishnu Prasad Paudel",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 62.1
+      }
+    },
+    {
+      "constituency_code": "C120",
+      "district_code": "D051",
+      "constituency": "Rupandehi 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bishnu Prasad Paudel",
+        "party": "CPN-UML",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Bharat Kumar Shah",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C121",
+      "district_code": "D051",
+      "constituency": "Rupandehi 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Deepak Bohara",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 35678
+      },
+      "runner_up": {
+        "name": "Sarbendra Nath Shukla",
+        "party": "Loktantrik Samajbadi Party",
+        "votes": 31234
+      },
+      "margin": 4444,
+      "turnout": {
+        "total_votes": 78901,
+        "valid_votes": 72345,
+        "turnout_percent": 67.2
+      }
+    },
+    {
+      "constituency_code": "C122",
+      "district_code": "D051",
+      "constituency": "Rupandehi 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sarbendra Nath Shukla",
+        "party": "Loktantrik Samajbadi Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Asif Ali",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C123",
+      "district_code": "D051",
+      "constituency": "Rupandehi 5",
+      "election_year": 2022,
+      "winner": {
+        "name": "Basudev Ghimire",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Bal Krishna Khand",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C124",
+      "district_code": "D052",
+      "constituency": "Kapilvastu 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Balaram Adhikari",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Chakrapani Khanal",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C125",
+      "district_code": "D052",
+      "constituency": "Kapilvastu 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Surendra Raj Acharya",
+        "party": "Nepali Congress",
+        "votes": 39014
+      },
+      "runner_up": {
+        "name": "Brijesh Kumar Gupta",
+        "party": "CPN-UML",
+        "votes": 38697
+      },
+      "margin": 317,
+      "turnout": {
+        "total_votes": 85678,
+        "valid_votes": 78901,
+        "turnout_percent": 70.5
+      }
+    },
+    {
+      "constituency_code": "C126",
+      "district_code": "D052",
+      "constituency": "Kapilvastu 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mangal Prasad Gupta",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Abhishek Pratap Shah",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C127",
+      "district_code": "D053",
+      "constituency": "Eastern Rukum 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Purna Bahadur Gharti Magar",
+        "party": "CPN-Maoist Centre",
+        "votes": 15678
+      },
+      "runner_up": {
+        "name": "Kamala Roka",
+        "party": "CPN-UML",
+        "votes": 13456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 35678,
+        "valid_votes": 32345,
+        "turnout_percent": 60.5
+      }
+    },
+    {
+      "constituency_code": "C128",
+      "district_code": "D054",
+      "constituency": "Rolpa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Barsaman Pun",
+        "party": "CPN-Maoist Centre",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Purna Bahadur Gharti",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C129",
+      "district_code": "D055",
+      "constituency": "Pyuthan 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Surya Bahadur Thapa Chhetri",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Narahari Acharya",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C130",
+      "district_code": "D056",
+      "constituency": "Dang 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Metmani Chaudhary",
+        "party": "CPN-Unified Socialist",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Shankar Pokharel",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C131",
+      "district_code": "D056",
+      "constituency": "Dang 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Rekha Sharma",
+        "party": "CPN-Maoist Centre",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Shankar Pokharel",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C132",
+      "district_code": "D056",
+      "constituency": "Dang 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Deepak Giri",
+        "party": "Nepali Congress",
+        "votes": 35678
+      },
+      "runner_up": {
+        "name": "Dilli Bahadur Chaudhary",
+        "party": "CPN-Unified Socialist",
+        "votes": 31234
+      },
+      "margin": 4444,
+      "turnout": {
+        "total_votes": 78901,
+        "valid_votes": 72345,
+        "turnout_percent": 67.2
+      }
+    },
+    {
+      "constituency_code": "C133",
+      "district_code": "D057",
+      "constituency": "Banke 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Surya Prasad Dhakal",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Maheshwar Jung Gahatraj",
+        "party": "CPN-Maoist Centre",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C134",
+      "district_code": "D057",
+      "constituency": "Banke 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dhawal Shamsher Rana",
+        "party": "Rastriya Prajatantra Party",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Mohammad Estiyak Rai",
+        "party": "People's Socialist Party",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C135",
+      "district_code": "D057",
+      "constituency": "Banke 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Kishore Singh Rathore",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Santosh Kumar Pandey",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C136",
+      "district_code": "D058",
+      "constituency": "Bardiya 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sanjay Kumar Gautam",
+        "party": "Nepali Congress",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Thakur Prasad Gaire",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 66789,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C137",
+      "district_code": "D058",
+      "constituency": "Bardiya 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Lalbir Chaudhary",
+        "party": "Independent",
+        "votes": 26520
+      },
+      "runner_up": {
+        "name": "Suresh Panth",
+        "party": "CPN-Maoist Centre",
+        "votes": 26384
+      },
+      "margin": 136,
+      "turnout": {
+        "total_votes": 58901,
+        "valid_votes": 54567,
+        "turnout_percent": 60.5
+      }
+    },
+    {
+      "constituency_code": "C138",
+      "district_code": "D064",
+      "constituency": "Salyan 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prakash Jwala",
+        "party": "CPN-Unified Socialist",
+        "votes": 27890
+      },
+      "runner_up": {
+        "name": "Dilli Raj Regmi",
+        "party": "CPN-UML",
+        "votes": 25678
+      },
+      "margin": 2212,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C139",
+      "district_code": "D059",
+      "constituency": "Dolpa 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dhan Bahadur Buda",
+        "party": "CPN-Maoist Centre",
+        "votes": 6789
+      },
+      "runner_up": {
+        "name": "Bikram Shahi",
+        "party": "CPN-UML",
+        "votes": 6123
+      },
+      "margin": 666,
+      "turnout": {
+        "total_votes": 15678,
+        "valid_votes": 14345,
+        "turnout_percent": 58.5
+      }
+    },
+    {
+      "constituency_code": "C140",
+      "district_code": "D060",
+      "constituency": "Mugu 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Aain Bahadur Shahi Thakuri",
+        "party": "Nepali Congress",
+        "votes": 12345
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Shahi",
+        "party": "CPN-Unified Socialist",
+        "votes": 11234
+      },
+      "margin": 1111,
+      "turnout": {
+        "total_votes": 28901,
+        "valid_votes": 26789,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C141",
+      "district_code": "D062",
+      "constituency": "Jumla 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Gyan Bahadur Shahi",
+        "party": "CPN-UML",
+        "votes": 15678
+      },
+      "runner_up": {
+        "name": "Bhadra Bahadur Shahi",
+        "party": "Nepali Congress",
+        "votes": 13456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 35678,
+        "valid_votes": 32345,
+        "turnout_percent": 60.8
+      }
+    },
+    {
+      "constituency_code": "C142",
+      "district_code": "D063",
+      "constituency": "Kalikot 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Mahendra Bahadur Shahi",
+        "party": "CPN-UML",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Khadga Bahadur Bishwakarma",
+        "party": "CPN-Maoist Centre",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C143",
+      "district_code": "D061",
+      "constituency": "Humla 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Tshering Damdul Lama",
+        "party": "Nepali Congress",
+        "votes": 12345
+      },
+      "runner_up": {
+        "name": "Chakra Bahadur Lama",
+        "party": "CPN-UML",
+        "votes": 11234
+      },
+      "margin": 1111,
+      "turnout": {
+        "total_votes": 28901,
+        "valid_votes": 26789,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C144",
+      "district_code": "D065",
+      "constituency": "Jajarkot 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Shakti Bahadur Basnet",
+        "party": "CPN-Maoist Centre",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Dilli Raj Paudel",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C145",
+      "district_code": "D066",
+      "constituency": "Dailekh 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Amar Bahadur Thapa",
+        "party": "CPN-Unified Socialist",
+        "votes": 21234
+      },
+      "runner_up": {
+        "name": "Rabindra Raj Sharma",
+        "party": "CPN-UML",
+        "votes": 18901
+      },
+      "margin": 2333,
+      "turnout": {
+        "total_votes": 47890,
+        "valid_votes": 43456,
+        "turnout_percent": 61.8
+      }
+    },
+    {
+      "constituency_code": "C146",
+      "district_code": "D066",
+      "constituency": "Dailekh 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dikpal Kumar Shahi",
+        "party": "Nepali Congress",
+        "votes": 20183
+      },
+      "runner_up": {
+        "name": "Laxmi Prasad Pokharel",
+        "party": "CPN-UML",
+        "votes": 20016
+      },
+      "margin": 167,
+      "turnout": {
+        "total_votes": 45678,
+        "valid_votes": 41234,
+        "turnout_percent": 58.5
+      }
+    },
+    {
+      "constituency_code": "C147",
+      "district_code": "D067",
+      "constituency": "Surkhet 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Purna Bahadur Khadka",
+        "party": "Nepali Congress",
+        "votes": 42345
+      },
+      "runner_up": {
+        "name": "Chandra Bahadur Shahi",
+        "party": "CPN-UML",
+        "votes": 35678
+      },
+      "margin": 6667,
+      "turnout": {
+        "total_votes": 85678,
+        "valid_votes": 80123,
+        "turnout_percent": 70.8
+      }
+    },
+    {
+      "constituency_code": "C148",
+      "district_code": "D067",
+      "constituency": "Surkhet 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Hridaya Ram Thani",
+        "party": "Nepali Congress",
+        "votes": 35678
+      },
+      "runner_up": {
+        "name": "Yam Lal Kandel",
+        "party": "CPN-UML",
+        "votes": 31234
+      },
+      "margin": 4444,
+      "turnout": {
+        "total_votes": 78901,
+        "valid_votes": 72345,
+        "turnout_percent": 68.2
+      }
+    },
+    {
+      "constituency_code": "C149",
+      "district_code": "D068",
+      "constituency": "Western Rukum 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Janardan Sharma",
+        "party": "CPN-Maoist Centre",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Gopal Bahadur Hamal",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C150",
+      "district_code": "D069",
+      "constituency": "Bajura 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Badri Prasad Pandey",
+        "party": "Nepali Congress",
+        "votes": 18901
+      },
+      "runner_up": {
+        "name": "Karna Bahadur Thapa",
+        "party": "CPN-UML",
+        "votes": 16789
+      },
+      "margin": 2112,
+      "turnout": {
+        "total_votes": 42345,
+        "valid_votes": 38901,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C151",
+      "district_code": "D071",
+      "constituency": "Achham 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sher Bahadur Kunwor",
+        "party": "CPN-Unified Socialist",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Bhakta Bahadur Kathayat",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.8
+      }
+    },
+    {
+      "constituency_code": "C152",
+      "district_code": "D071",
+      "constituency": "Achham 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Pushpa Bahadur Shah",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "runner_up": {
+        "name": "Jhapat Bahadur Saud",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 56789,
+        "valid_votes": 52345,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C153",
+      "district_code": "D070",
+      "constituency": "Bajhang 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bhanu Bhakta Joshi",
+        "party": "CPN-Unified Socialist",
+        "votes": 28413
+      },
+      "runner_up": {
+        "name": "Aina Bahadur Mahara",
+        "party": "CPN-UML",
+        "votes": 27412
+      },
+      "margin": 1001,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C154",
+      "district_code": "D072",
+      "constituency": "Doti 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Prem Bahadur Ale",
+        "party": "CPN-Unified Socialist",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Bir Bahadur Rokaya",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C155",
+      "district_code": "D073",
+      "constituency": "Kailali 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ranjeeta Shrestha",
+        "party": "Nagarik Unmukti Party",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Resham Lal Chaudhary",
+        "party": "Independent",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 61.2
+      }
+    },
+    {
+      "constituency_code": "C156",
+      "district_code": "D073",
+      "constituency": "Kailali 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Arun Kumar Chaudhary",
+        "party": "Nagarik Unmukti Party",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Jung Bahadur Kunwar",
+        "party": "Nepali Congress",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 63.5
+      }
+    },
+    {
+      "constituency_code": "C157",
+      "district_code": "D073",
+      "constituency": "Kailali 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ganga Ram Chaudhary",
+        "party": "Nagarik Unmukti Party",
+        "votes": 33456
+      },
+      "runner_up": {
+        "name": "Dilli Raj Pant",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "margin": 4555,
+      "turnout": {
+        "total_votes": 72345,
+        "valid_votes": 67890,
+        "turnout_percent": 65.8
+      }
+    },
+    {
+      "constituency_code": "C158",
+      "district_code": "D073",
+      "constituency": "Kailali 4",
+      "election_year": 2022,
+      "winner": {
+        "name": "Bir Bahadur Balayar",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Lalit Bahadur Thapa",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.2
+      }
+    },
+    {
+      "constituency_code": "C159",
+      "district_code": "D073",
+      "constituency": "Kailali 5",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dilli Raj Pant",
+        "party": "Nepali Congress",
+        "votes": 21392
+      },
+      "runner_up": {
+        "name": "Narada Muni Rana",
+        "party": "CPN-UML",
+        "votes": 20392
+      },
+      "margin": 1000,
+      "turnout": {
+        "total_votes": 45678,
+        "valid_votes": 42345,
+        "turnout_percent": 59.8
+      }
+    },
+    {
+      "constituency_code": "C160",
+      "district_code": "D077",
+      "constituency": "Darchula 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Dilendra Prasad Badu",
+        "party": "Nepali Congress",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Ganesh Singh Thagunna",
+        "party": "CPN-UML",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.5
+      }
+    },
+    {
+      "constituency_code": "C161",
+      "district_code": "D076",
+      "constituency": "Baitadi 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Damodar Bhandari",
+        "party": "CPN-UML",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Surendra Bahadur Bista",
+        "party": "Nepali Congress",
+        "votes": 25678
+      },
+      "margin": 3223,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 57890,
+        "turnout_percent": 63.2
+      }
+    },
+    {
+      "constituency_code": "C162",
+      "district_code": "D075",
+      "constituency": "Dadeldhura 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Sher Bahadur Deuba",
+        "party": "Nepali Congress",
+        "votes": 38901
+      },
+      "runner_up": {
+        "name": "Chakra Prasad Snehi",
+        "party": "CPN-UML",
+        "votes": 18901
+      },
+      "margin": 20000,
+      "turnout": {
+        "total_votes": 62345,
+        "valid_votes": 58901,
+        "turnout_percent": 68.4
+      }
+    },
+    {
+      "constituency_code": "C163",
+      "district_code": "D074",
+      "constituency": "Kanchanpur 1",
+      "election_year": 2022,
+      "winner": {
+        "name": "Tara Lama Tamang",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "runner_up": {
+        "name": "Narayan Prakash Saud",
+        "party": "Nepali Congress",
+        "votes": 21234
+      },
+      "margin": 2222,
+      "turnout": {
+        "total_votes": 52345,
+        "valid_votes": 47890,
+        "turnout_percent": 62.1
+      }
+    },
+    {
+      "constituency_code": "C164",
+      "district_code": "D074",
+      "constituency": "Kanchanpur 2",
+      "election_year": 2022,
+      "winner": {
+        "name": "Narayan Prakash Saud",
+        "party": "Nepali Congress",
+        "votes": 31234
+      },
+      "runner_up": {
+        "name": "Dilli Raj Pant",
+        "party": "CPN-UML",
+        "votes": 27890
+      },
+      "margin": 3344,
+      "turnout": {
+        "total_votes": 67890,
+        "valid_votes": 62345,
+        "turnout_percent": 64.5
+      }
+    },
+    {
+      "constituency_code": "C165",
+      "district_code": "D074",
+      "constituency": "Kanchanpur 3",
+      "election_year": 2022,
+      "winner": {
+        "name": "Ramesh Lekhak",
+        "party": "Nepali Congress",
+        "votes": 28901
+      },
+      "runner_up": {
+        "name": "Narendra Bahadur Kunwar",
+        "party": "CPN-UML",
+        "votes": 23456
+      },
+      "margin": 5445,
+      "turnout": {
+        "total_votes": 58901,
+        "valid_votes": 54567,
+        "turnout_percent": 60.5
+      }
+    }
+  ]
+}

@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.6.0] - 2026-02-28
+
+### Added
+- District panel party color intelligence powered by `public/map/parties.json`, including Nepali/English/wiki alias matching and normalization for cross-source party naming differences.
+- FPTP candidate metadata in district panel now includes `Education` (mapped from ECN `details.qualification`) with safe fallback when missing.
+- Dedicated District profile cache/query schema versioning to invalidate stale panel payloads after contract changes.
+- Legacy source-label normalization path so previously cached "Local district profile dataset" labels are migrated at read time.
+
+### Changed
+- Reordered district panel sections to place **Party Wins (FPTP 2022)** below **FPTP Candidates (2082)**.
+- FPTP candidate ordering in district panel now prioritizes official party rank from `src/data/political-parties2026.json` with fallback to district-level party-win ordering.
+- District source labels standardized to **The Leaders Findings** (including 2021 census label variants).
+- Last Election Results rows now apply party color accents for winner/runner-up context, matching panel-wide party visual language.
+
+### Fixed
+- Resolved stale district panel rendering paths where old cached source labels persisted after local label updates.
+- Removed temporary candidate card dependence on `Votes` and `Rank` fields in district panel to align with current UI requirement.
+
 ## [1.5.0] - 2026-02-21
 
 ### Added
