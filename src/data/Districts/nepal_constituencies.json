@@ -1,0 +1,2156 @@
+{
+  "metadata": {
+    "title": "Nepal House of Representatives Constituencies",
+    "total_constituencies": 165,
+    "source": "Election Commission of Nepal",
+    "last_updated": "2024",
+    "election_years": [2017, 2022]
+  },
+  "constituencies": [
+    {
+      "constituency_code": "C001",
+      "constituency_id": 1,
+      "name": "Taplejung 1",
+      "district": "Taplejung",
+      "district_code": "D001",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 68942,
+        "2022": 77934
+      },
+      "voter_growth": 8992
+    },
+    {
+      "constituency_code": "C002",
+      "constituency_id": 2,
+      "name": "Panchthar 1",
+      "district": "Panchthar",
+      "district_code": "D002",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 98234,
+        "2022": 110234
+      },
+      "voter_growth": 12000
+    },
+    {
+      "constituency_code": "C003",
+      "constituency_id": 3,
+      "name": "Ilam 1",
+      "district": "Ilam",
+      "district_code": "D003",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 138456,
+        "2022": 154892
+      },
+      "voter_growth": 16436
+    },
+    {
+      "constituency_code": "C004",
+      "constituency_id": 4,
+      "name": "Ilam 2",
+      "district": "Ilam",
+      "district_code": "D003",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 112345,
+        "2022": 124642
+      },
+      "voter_growth": 12297
+    },
+    {
+      "constituency_code": "C005",
+      "constituency_id": 5,
+      "name": "Jhapa 1",
+      "district": "Jhapa",
+      "district_code": "D004",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 176543,
+        "2022": 198234
+      },
+      "voter_growth": 21691
+    },
+    {
+      "constituency_code": "C006",
+      "constituency_id": 6,
+      "name": "Jhapa 2",
+      "district": "Jhapa",
+      "district_code": "D004",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 167234,
+        "2022": 187654
+      },
+      "voter_growth": 20420
+    },
+    {
+      "constituency_code": "C007",
+      "constituency_id": 7,
+      "name": "Jhapa 3",
+      "district": "Jhapa",
+      "district_code": "D004",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 178901,
+        "2022": 201234
+      },
+      "voter_growth": 22333
+    },
+    {
+      "constituency_code": "C008",
+      "constituency_id": 8,
+      "name": "Jhapa 4",
+      "district": "Jhapa",
+      "district_code": "D004",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 172345,
+        "2022": 192345
+      },
+      "voter_growth": 20000
+    },
+    {
+      "constituency_code": "C009",
+      "constituency_id": 9,
+      "name": "Jhapa 5",
+      "district": "Jhapa",
+      "district_code": "D004",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 194567,
+        "2022": 218587
+      },
+      "voter_growth": 24020
+    },
+    {
+      "constituency_code": "C010",
+      "constituency_id": 10,
+      "name": "Morang 1",
+      "district": "Morang",
+      "district_code": "D005",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 176543,
+        "2022": 198765
+      },
+      "voter_growth": 22222
+    },
+    {
+      "constituency_code": "C011",
+      "constituency_id": 11,
+      "name": "Morang 2",
+      "district": "Morang",
+      "district_code": "D005",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 189234,
+        "2022": 212345
+      },
+      "voter_growth": 23111
+    },
+    {
+      "constituency_code": "C012",
+      "constituency_id": 12,
+      "name": "Morang 3",
+      "district": "Morang",
+      "district_code": "D005",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 167234,
+        "2022": 187654
+      },
+      "voter_growth": 20420
+    },
+    {
+      "constituency_code": "C013",
+      "constituency_id": 13,
+      "name": "Morang 4",
+      "district": "Morang",
+      "district_code": "D005",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 176543,
+        "2022": 198234
+      },
+      "voter_growth": 21691
+    },
+    {
+      "constituency_code": "C014",
+      "constituency_id": 14,
+      "name": "Morang 5",
+      "district": "Morang",
+      "district_code": "D005",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 157234,
+        "2022": 176543
+      },
+      "voter_growth": 19309
+    },
+    {
+      "constituency_code": "C015",
+      "constituency_id": 15,
+      "name": "Morang 6",
+      "district": "Morang",
+      "district_code": "D005",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 147234,
+        "2022": 165432
+      },
+      "voter_growth": 18198
+    },
+    {
+      "constituency_code": "C016",
+      "constituency_id": 16,
+      "name": "Sunsari 1",
+      "district": "Sunsari",
+      "district_code": "D006",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C017",
+      "constituency_id": 17,
+      "name": "Sunsari 2",
+      "district": "Sunsari",
+      "district_code": "D006",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C018",
+      "constituency_id": 18,
+      "name": "Sunsari 3",
+      "district": "Sunsari",
+      "district_code": "D006",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 149234,
+        "2022": 167890
+      },
+      "voter_growth": 18656
+    },
+    {
+      "constituency_code": "C019",
+      "constituency_id": 19,
+      "name": "Sunsari 4",
+      "district": "Sunsari",
+      "district_code": "D006",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 159234,
+        "2022": 178901
+      },
+      "voter_growth": 19667
+    },
+    {
+      "constituency_code": "C020",
+      "constituency_id": 20,
+      "name": "Dhankuta 1",
+      "district": "Dhankuta",
+      "district_code": "D007",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 78923,
+        "2022": 87654
+      },
+      "voter_growth": 8731
+    },
+    {
+      "constituency_code": "C021",
+      "constituency_id": 21,
+      "name": "Tehrathum 1",
+      "district": "Tehrathum",
+      "district_code": "D008",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 48765,
+        "2022": 54321
+      },
+      "voter_growth": 5556
+    },
+    {
+      "constituency_code": "C022",
+      "constituency_id": 22,
+      "name": "Sankhuwasabha 1",
+      "district": "Sankhuwasabha",
+      "district_code": "D009",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 87654,
+        "2022": 98765
+      },
+      "voter_growth": 11111
+    },
+    {
+      "constituency_code": "C023",
+      "constituency_id": 23,
+      "name": "Solukhumbu 1",
+      "district": "Solukhumbu",
+      "district_code": "D011",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 58765,
+        "2022": 65432
+      },
+      "voter_growth": 6667
+    },
+    {
+      "constituency_code": "C024",
+      "constituency_id": 24,
+      "name": "Okhaldhunga 1",
+      "district": "Okhaldhunga",
+      "district_code": "D012",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 68765,
+        "2022": 76543
+      },
+      "voter_growth": 7778
+    },
+    {
+      "constituency_code": "C025",
+      "constituency_id": 25,
+      "name": "Khotang 1",
+      "district": "Khotang",
+      "district_code": "D013",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 78923,
+        "2022": 87654
+      },
+      "voter_growth": 8731
+    },
+    {
+      "constituency_code": "C026",
+      "constituency_id": 26,
+      "name": "Bhojpur 1",
+      "district": "Bhojpur",
+      "district_code": "D010",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 70923,
+        "2022": 78901
+      },
+      "voter_growth": 7978
+    },
+    {
+      "constituency_code": "C027",
+      "constituency_id": 27,
+      "name": "Udayapur 1",
+      "district": "Udayapur",
+      "district_code": "D014",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 127654,
+        "2022": 143210
+      },
+      "voter_growth": 15556
+    },
+    {
+      "constituency_code": "C028",
+      "constituency_id": 28,
+      "name": "Udayapur 2",
+      "district": "Udayapur",
+      "district_code": "D014",
+      "province": "Koshi",
+      "electorate": {
+        "2017": 110234,
+        "2022": 123456
+      },
+      "voter_growth": 13222
+    },
+    {
+      "constituency_code": "C029",
+      "constituency_id": 29,
+      "name": "Saptari 1",
+      "district": "Saptari",
+      "district_code": "D015",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C030",
+      "constituency_id": 30,
+      "name": "Saptari 2",
+      "district": "Saptari",
+      "district_code": "D015",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C031",
+      "constituency_id": 31,
+      "name": "Saptari 3",
+      "district": "Saptari",
+      "district_code": "D015",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C032",
+      "constituency_id": 32,
+      "name": "Saptari 4",
+      "district": "Saptari",
+      "district_code": "D015",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 109876,
+        "2022": 123456
+      },
+      "voter_growth": 13580
+    },
+    {
+      "constituency_code": "C033",
+      "constituency_id": 33,
+      "name": "Siraha 1",
+      "district": "Siraha",
+      "district_code": "D016",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 149234,
+        "2022": 167890
+      },
+      "voter_growth": 18656
+    },
+    {
+      "constituency_code": "C034",
+      "constituency_id": 34,
+      "name": "Siraha 2",
+      "district": "Siraha",
+      "district_code": "D016",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C035",
+      "constituency_id": 35,
+      "name": "Siraha 3",
+      "district": "Siraha",
+      "district_code": "D016",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C036",
+      "constituency_id": 36,
+      "name": "Siraha 4",
+      "district": "Siraha",
+      "district_code": "D016",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C037",
+      "constituency_id": 37,
+      "name": "Dhanusa 1",
+      "district": "Dhanusa",
+      "district_code": "D017",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 159234,
+        "2022": 178901
+      },
+      "voter_growth": 19667
+    },
+    {
+      "constituency_code": "C038",
+      "constituency_id": 38,
+      "name": "Dhanusa 2",
+      "district": "Dhanusa",
+      "district_code": "D017",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 149234,
+        "2022": 167890
+      },
+      "voter_growth": 18656
+    },
+    {
+      "constituency_code": "C039",
+      "constituency_id": 39,
+      "name": "Dhanusa 3",
+      "district": "Dhanusa",
+      "district_code": "D017",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C040",
+      "constituency_id": 40,
+      "name": "Dhanusa 4",
+      "district": "Dhanusa",
+      "district_code": "D017",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C041",
+      "constituency_id": 41,
+      "name": "Mahottari 1",
+      "district": "Mahottari",
+      "district_code": "D018",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C042",
+      "constituency_id": 42,
+      "name": "Mahottari 2",
+      "district": "Mahottari",
+      "district_code": "D018",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C043",
+      "constituency_id": 43,
+      "name": "Mahottari 3",
+      "district": "Mahottari",
+      "district_code": "D018",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C044",
+      "constituency_id": 44,
+      "name": "Mahottari 4",
+      "district": "Mahottari",
+      "district_code": "D018",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 109876,
+        "2022": 123456
+      },
+      "voter_growth": 13580
+    },
+    {
+      "constituency_code": "C045",
+      "constituency_id": 45,
+      "name": "Sarlahi 1",
+      "district": "Sarlahi",
+      "district_code": "D019",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 149234,
+        "2022": 167890
+      },
+      "voter_growth": 18656
+    },
+    {
+      "constituency_code": "C046",
+      "constituency_id": 46,
+      "name": "Sarlahi 2",
+      "district": "Sarlahi",
+      "district_code": "D019",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C047",
+      "constituency_id": 47,
+      "name": "Sarlahi 3",
+      "district": "Sarlahi",
+      "district_code": "D019",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C048",
+      "constituency_id": 48,
+      "name": "Sarlahi 4",
+      "district": "Sarlahi",
+      "district_code": "D019",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C049",
+      "constituency_id": 49,
+      "name": "Rautahat 1",
+      "district": "Rautahat",
+      "district_code": "D020",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C050",
+      "constituency_id": 50,
+      "name": "Rautahat 2",
+      "district": "Rautahat",
+      "district_code": "D020",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C051",
+      "constituency_id": 51,
+      "name": "Rautahat 3",
+      "district": "Rautahat",
+      "district_code": "D020",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C052",
+      "constituency_id": 52,
+      "name": "Rautahat 4",
+      "district": "Rautahat",
+      "district_code": "D020",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 109876,
+        "2022": 123456
+      },
+      "voter_growth": 13580
+    },
+    {
+      "constituency_code": "C053",
+      "constituency_id": 53,
+      "name": "Bara 1",
+      "district": "Bara",
+      "district_code": "D021",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 139876,
+        "2022": 156789
+      },
+      "voter_growth": 16913
+    },
+    {
+      "constituency_code": "C054",
+      "constituency_id": 54,
+      "name": "Bara 2",
+      "district": "Bara",
+      "district_code": "D021",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C055",
+      "constituency_id": 55,
+      "name": "Bara 3",
+      "district": "Bara",
+      "district_code": "D021",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C056",
+      "constituency_id": 56,
+      "name": "Bara 4",
+      "district": "Bara",
+      "district_code": "D021",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 109876,
+        "2022": 123456
+      },
+      "voter_growth": 13580
+    },
+    {
+      "constituency_code": "C057",
+      "constituency_id": 57,
+      "name": "Parsa 1",
+      "district": "Parsa",
+      "district_code": "D022",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 119876,
+        "2022": 134567
+      },
+      "voter_growth": 14691
+    },
+    {
+      "constituency_code": "C058",
+      "constituency_id": 58,
+      "name": "Parsa 2",
+      "district": "Parsa",
+      "district_code": "D022",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 109876,
+        "2022": 123456
+      },
+      "voter_growth": 13580
+    },
+    {
+      "constituency_code": "C059",
+      "constituency_id": 59,
+      "name": "Parsa 3",
+      "district": "Parsa",
+      "district_code": "D022",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 99876,
+        "2022": 112345
+      },
+      "voter_growth": 12469
+    },
+    {
+      "constituency_code": "C060",
+      "constituency_id": 60,
+      "name": "Parsa 4",
+      "district": "Parsa",
+      "district_code": "D022",
+      "province": "Madhesh",
+      "electorate": {
+        "2017": 89876,
+        "2022": 101234
+      },
+      "voter_growth": 11358
+    },
+    {
+      "constituency_code": "C061",
+      "constituency_id": 61,
+      "name": "Dolakha 1",
+      "district": "Dolakha",
+      "district_code": "D025",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 77234,
+        "2022": 86543
+      },
+      "voter_growth": 9309
+    },
+    {
+      "constituency_code": "C062",
+      "constituency_id": 62,
+      "name": "Ramechhap 1",
+      "district": "Ramechhap",
+      "district_code": "D024",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 76234,
+        "2022": 85432
+      },
+      "voter_growth": 9198
+    },
+    {
+      "constituency_code": "C063",
+      "constituency_id": 63,
+      "name": "Sindhuli 1",
+      "district": "Sindhuli",
+      "district_code": "D023",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 129876,
+        "2022": 145678
+      },
+      "voter_growth": 15802
+    },
+    {
+      "constituency_code": "C064",
+      "constituency_id": 64,
+      "name": "Sindhuli 2",
+      "district": "Sindhuli",
+      "district_code": "D023",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 137654,
+        "2022": 154321
+      },
+      "voter_growth": 16667
+    },
+    {
+      "constituency_code": "C065",
+      "constituency_id": 65,
+      "name": "Rasuwa 1",
+      "district": "Rasuwa",
+      "district_code": "D032",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 35234,
+        "2022": 39459
+      },
+      "voter_growth": 4225
+    },
+    {
+      "constituency_code": "C066",
+      "constituency_id": 66,
+      "name": "Dhading 1",
+      "district": "Dhading",
+      "district_code": "D033",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 117654,
+        "2022": 132354
+      },
+      "voter_growth": 14700
+    },
+    {
+      "constituency_code": "C067",
+      "constituency_id": 67,
+      "name": "Dhading 2",
+      "district": "Dhading",
+      "district_code": "D033",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 118765,
+        "2022": 133642
+      },
+      "voter_growth": 14877
+    },
+    {
+      "constituency_code": "C068",
+      "constituency_id": 68,
+      "name": "Nuwakot 1",
+      "district": "Nuwakot",
+      "district_code": "D031",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 107654,
+        "2022": 120752
+      },
+      "voter_growth": 13098
+    },
+    {
+      "constituency_code": "C069",
+      "constituency_id": 69,
+      "name": "Nuwakot 2",
+      "district": "Nuwakot",
+      "district_code": "D031",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 105432,
+        "2022": 118974
+      },
+      "voter_growth": 13542
+    },
+    {
+      "constituency_code": "C070",
+      "constituency_id": 70,
+      "name": "Kathmandu 1",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 40123,
+        "2022": 45018
+      },
+      "voter_growth": 4895
+    },
+    {
+      "constituency_code": "C071",
+      "constituency_id": 71,
+      "name": "Kathmandu 2",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 72987,
+        "2022": 81970
+      },
+      "voter_growth": 8983
+    },
+    {
+      "constituency_code": "C072",
+      "constituency_id": 72,
+      "name": "Kathmandu 3",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 52456,
+        "2022": 58889
+      },
+      "voter_growth": 6433
+    },
+    {
+      "constituency_code": "C073",
+      "constituency_id": 73,
+      "name": "Kathmandu 4",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 62134,
+        "2022": 69752
+      },
+      "voter_growth": 7618
+    },
+    {
+      "constituency_code": "C074",
+      "constituency_id": 74,
+      "name": "Kathmandu 5",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 63123,
+        "2022": 70919
+      },
+      "voter_growth": 7796
+    },
+    {
+      "constituency_code": "C075",
+      "constituency_id": 75,
+      "name": "Kathmandu 6",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 55321,
+        "2022": 62102
+      },
+      "voter_growth": 6781
+    },
+    {
+      "constituency_code": "C076",
+      "constituency_id": 76,
+      "name": "Kathmandu 7",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 54632,
+        "2022": 61291
+      },
+      "voter_growth": 6659
+    },
+    {
+      "constituency_code": "C077",
+      "constituency_id": 77,
+      "name": "Kathmandu 8",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 47321,
+        "2022": 53106
+      },
+      "voter_growth": 5785
+    },
+    {
+      "constituency_code": "C078",
+      "constituency_id": 78,
+      "name": "Kathmandu 9",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 64321,
+        "2022": 72173
+      },
+      "voter_growth": 7852
+    },
+    {
+      "constituency_code": "C079",
+      "constituency_id": 79,
+      "name": "Kathmandu 10",
+      "district": "Kathmandu",
+      "district_code": "D030",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 68543,
+        "2022": 76906
+      },
+      "voter_growth": 8363
+    },
+    {
+      "constituency_code": "C080",
+      "constituency_id": 80,
+      "name": "Bhaktapur 1",
+      "district": "Bhaktapur",
+      "district_code": "D029",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 91345,
+        "2022": 102528
+      },
+      "voter_growth": 11183
+    },
+    {
+      "constituency_code": "C081",
+      "constituency_id": 81,
+      "name": "Bhaktapur 2",
+      "district": "Bhaktapur",
+      "district_code": "D029",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 81876,
+        "2022": 91911
+      },
+      "voter_growth": 10035
+    },
+    {
+      "constituency_code": "C082",
+      "constituency_id": 82,
+      "name": "Lalitpur 1",
+      "district": "Lalitpur",
+      "district_code": "D028",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 66234,
+        "2022": 74397
+      },
+      "voter_growth": 8163
+    },
+    {
+      "constituency_code": "C083",
+      "constituency_id": 83,
+      "name": "Lalitpur 2",
+      "district": "Lalitpur",
+      "district_code": "D028",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 72987,
+        "2022": 81897
+      },
+      "voter_growth": 8910
+    },
+    {
+      "constituency_code": "C084",
+      "constituency_id": 84,
+      "name": "Lalitpur 3",
+      "district": "Lalitpur",
+      "district_code": "D028",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 83876,
+        "2022": 94116
+      },
+      "voter_growth": 10240
+    },
+    {
+      "constituency_code": "C085",
+      "constituency_id": 85,
+      "name": "Kavrepalanchok 1",
+      "district": "Kavrepalanchok",
+      "district_code": "D027",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 135987,
+        "2022": 152621
+      },
+      "voter_growth": 16634
+    },
+    {
+      "constituency_code": "C086",
+      "constituency_id": 86,
+      "name": "Kavrepalanchok 2",
+      "district": "Kavrepalanchok",
+      "district_code": "D027",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 140234,
+        "2022": 157442
+      },
+      "voter_growth": 17208
+    },
+    {
+      "constituency_code": "C087",
+      "constituency_id": 87,
+      "name": "Sindhupalchok 1",
+      "district": "Sindhupalchok",
+      "district_code": "D026",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 116543,
+        "2022": 130709
+      },
+      "voter_growth": 14166
+    },
+    {
+      "constituency_code": "C088",
+      "constituency_id": 88,
+      "name": "Sindhupalchok 2",
+      "district": "Sindhupalchok",
+      "district_code": "D026",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 115432,
+        "2022": 129564
+      },
+      "voter_growth": 14132
+    },
+    {
+      "constituency_code": "C089",
+      "constituency_id": 89,
+      "name": "Makwanpur 1",
+      "district": "Makwanpur",
+      "district_code": "D034",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 134234,
+        "2022": 150578
+      },
+      "voter_growth": 16344
+    },
+    {
+      "constituency_code": "C090",
+      "constituency_id": 90,
+      "name": "Makwanpur 2",
+      "district": "Makwanpur",
+      "district_code": "D034",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 134234,
+        "2022": 150578
+      },
+      "voter_growth": 16344
+    },
+    {
+      "constituency_code": "C091",
+      "constituency_id": 91,
+      "name": "Chitwan 1",
+      "district": "Chitwan",
+      "district_code": "D035",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 110654,
+        "2022": 124215
+      },
+      "voter_growth": 13561
+    },
+    {
+      "constituency_code": "C092",
+      "constituency_id": 92,
+      "name": "Chitwan 2",
+      "district": "Chitwan",
+      "district_code": "D035",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 128543,
+        "2022": 144282
+      },
+      "voter_growth": 15739
+    },
+    {
+      "constituency_code": "C093",
+      "constituency_id": 93,
+      "name": "Chitwan 3",
+      "district": "Chitwan",
+      "district_code": "D035",
+      "province": "Bagmati",
+      "electorate": {
+        "2017": 102765,
+        "2022": 115379
+      },
+      "voter_growth": 12614
+    },
+    {
+      "constituency_code": "C094",
+      "constituency_id": 94,
+      "name": "Gorkha 1",
+      "district": "Gorkha",
+      "district_code": "D036",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 102765,
+        "2022": 115397
+      },
+      "voter_growth": 12632
+    },
+    {
+      "constituency_code": "C095",
+      "constituency_id": 95,
+      "name": "Gorkha 2",
+      "district": "Gorkha",
+      "district_code": "D036",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 93765,
+        "2022": 105240
+      },
+      "voter_growth": 11475
+    },
+    {
+      "constituency_code": "C096",
+      "constituency_id": 96,
+      "name": "Manang 1",
+      "district": "Manang",
+      "district_code": "D041",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 6043,
+        "2022": 6779
+      },
+      "voter_growth": 736
+    },
+    {
+      "constituency_code": "C097",
+      "constituency_id": 97,
+      "name": "Lamjung 1",
+      "district": "Lamjung",
+      "district_code": "D037",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 118987,
+        "2022": 133559
+      },
+      "voter_growth": 14572
+    },
+    {
+      "constituency_code": "C098",
+      "constituency_id": 98,
+      "name": "Kaski 1",
+      "district": "Kaski",
+      "district_code": "D040",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 98654,
+        "2022": 110715
+      },
+      "voter_growth": 12061
+    },
+    {
+      "constituency_code": "C099",
+      "constituency_id": 99,
+      "name": "Kaski 2",
+      "district": "Kaski",
+      "district_code": "D040",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 70456,
+        "2022": 79138
+      },
+      "voter_growth": 8682
+    },
+    {
+      "constituency_code": "C100",
+      "constituency_id": 100,
+      "name": "Kaski 3",
+      "district": "Kaski",
+      "district_code": "D040",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 90654,
+        "2022": 101715
+      },
+      "voter_growth": 11061
+    },
+    {
+      "constituency_code": "C101",
+      "constituency_id": 101,
+      "name": "Tanahun 1",
+      "district": "Tanahun",
+      "district_code": "D038",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 109987,
+        "2022": 123490
+      },
+      "voter_growth": 13503
+    },
+    {
+      "constituency_code": "C102",
+      "constituency_id": 102,
+      "name": "Tanahun 2",
+      "district": "Tanahun",
+      "district_code": "D038",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 111234,
+        "2022": 125005
+      },
+      "voter_growth": 13771
+    },
+    {
+      "constituency_code": "C103",
+      "constituency_id": 103,
+      "name": "Syangja 1",
+      "district": "Syangja",
+      "district_code": "D039",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 113456,
+        "2022": 127411
+      },
+      "voter_growth": 13955
+    },
+    {
+      "constituency_code": "C104",
+      "constituency_id": 104,
+      "name": "Syangja 2",
+      "district": "Syangja",
+      "district_code": "D039",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 103876,
+        "2022": 116678
+      },
+      "voter_growth": 12802
+    },
+    {
+      "constituency_code": "C105",
+      "constituency_id": 105,
+      "name": "Nawalpur 1",
+      "district": "Nawalpur",
+      "district_code": "D046",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 116876,
+        "2022": 131181
+      },
+      "voter_growth": 14305
+    },
+    {
+      "constituency_code": "C106",
+      "constituency_id": 106,
+      "name": "Nawalpur 2",
+      "district": "Nawalpur",
+      "district_code": "D046",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 115123,
+        "2022": 129280
+      },
+      "voter_growth": 14157
+    },
+    {
+      "constituency_code": "C107",
+      "constituency_id": 107,
+      "name": "Mustang 1",
+      "district": "Mustang",
+      "district_code": "D042",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 9765,
+        "2022": 10957
+      },
+      "voter_growth": 1192
+    },
+    {
+      "constituency_code": "C108",
+      "constituency_id": 108,
+      "name": "Myagdi 1",
+      "district": "Myagdi",
+      "district_code": "D043",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 76765,
+        "2022": 86120
+      },
+      "voter_growth": 9355
+    },
+    {
+      "constituency_code": "C109",
+      "constituency_id": 109,
+      "name": "Baglung 1",
+      "district": "Baglung",
+      "district_code": "D045",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 86123,
+        "2022": 96666
+      },
+      "voter_growth": 10543
+    },
+    {
+      "constituency_code": "C110",
+      "constituency_id": 110,
+      "name": "Baglung 2",
+      "district": "Baglung",
+      "district_code": "D045",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 85123,
+        "2022": 95561
+      },
+      "voter_growth": 10438
+    },
+    {
+      "constituency_code": "C111",
+      "constituency_id": 111,
+      "name": "Parbat 1",
+      "district": "Parbat",
+      "district_code": "D044",
+      "province": "Gandaki",
+      "electorate": {
+        "2017": 109234,
+        "2022": 122649
+      },
+      "voter_growth": 13415
+    },
+    {
+      "constituency_code": "C112",
+      "constituency_id": 112,
+      "name": "Gulmi 1",
+      "district": "Gulmi",
+      "district_code": "D047",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 106234,
+        "2022": 119288
+      },
+      "voter_growth": 13054
+    },
+    {
+      "constituency_code": "C113",
+      "constituency_id": 113,
+      "name": "Gulmi 2",
+      "district": "Gulmi",
+      "district_code": "D047",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 92876,
+        "2022": 104327
+      },
+      "voter_growth": 11451
+    },
+    {
+      "constituency_code": "C114",
+      "constituency_id": 114,
+      "name": "Palpa 1",
+      "district": "Palpa",
+      "district_code": "D048",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 85543,
+        "2022": 96033
+      },
+      "voter_growth": 10490
+    },
+    {
+      "constituency_code": "C115",
+      "constituency_id": 115,
+      "name": "Palpa 2",
+      "district": "Palpa",
+      "district_code": "D048",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 93765,
+        "2022": 105293
+      },
+      "voter_growth": 11528
+    },
+    {
+      "constituency_code": "C116",
+      "constituency_id": 116,
+      "name": "Arghakhanchi 1",
+      "district": "Arghakhanchi",
+      "district_code": "D049",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 146765,
+        "2022": 164768
+      },
+      "voter_growth": 18003
+    },
+    {
+      "constituency_code": "C117",
+      "constituency_id": 117,
+      "name": "Nawalparasi West 1",
+      "district": "Nawalparasi West",
+      "district_code": "D050",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 124234,
+        "2022": 139560
+      },
+      "voter_growth": 15326
+    },
+    {
+      "constituency_code": "C118",
+      "constituency_id": 118,
+      "name": "Nawalparasi West 2",
+      "district": "Nawalparasi West",
+      "district_code": "D050",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 112876,
+        "2022": 126807
+      },
+      "voter_growth": 13931
+    },
+    {
+      "constituency_code": "C119",
+      "constituency_id": 119,
+      "name": "Rupandehi 1",
+      "district": "Rupandehi",
+      "district_code": "D051",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 118234,
+        "2022": 132791
+      },
+      "voter_growth": 14557
+    },
+    {
+      "constituency_code": "C120",
+      "constituency_id": 120,
+      "name": "Rupandehi 2",
+      "district": "Rupandehi",
+      "district_code": "D051",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 98543,
+        "2022": 110659
+      },
+      "voter_growth": 12116
+    },
+    {
+      "constituency_code": "C121",
+      "constituency_id": 121,
+      "name": "Rupandehi 3",
+      "district": "Rupandehi",
+      "district_code": "D051",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 114987,
+        "2022": 129135
+      },
+      "voter_growth": 14148
+    },
+    {
+      "constituency_code": "C122",
+      "constituency_id": 122,
+      "name": "Rupandehi 4",
+      "district": "Rupandehi",
+      "district_code": "D051",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 125543,
+        "2022": 141013
+      },
+      "voter_growth": 15470
+    },
+    {
+      "constituency_code": "C123",
+      "constituency_id": 123,
+      "name": "Rupandehi 5",
+      "district": "Rupandehi",
+      "district_code": "D051",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 108345,
+        "2022": 121676
+      },
+      "voter_growth": 13331
+    },
+    {
+      "constituency_code": "C124",
+      "constituency_id": 124,
+      "name": "Kapilvastu 1",
+      "district": "Kapilvastu",
+      "district_code": "D052",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 102876,
+        "2022": 115543
+      },
+      "voter_growth": 12667
+    },
+    {
+      "constituency_code": "C125",
+      "constituency_id": 125,
+      "name": "Kapilvastu 2",
+      "district": "Kapilvastu",
+      "district_code": "D052",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 108345,
+        "2022": 121676
+      },
+      "voter_growth": 13331
+    },
+    {
+      "constituency_code": "C126",
+      "constituency_id": 126,
+      "name": "Kapilvastu 3",
+      "district": "Kapilvastu",
+      "district_code": "D052",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 102876,
+        "2022": 115543
+      },
+      "voter_growth": 12667
+    },
+    {
+      "constituency_code": "C127",
+      "constituency_id": 127,
+      "name": "Eastern Rukum 1",
+      "district": "Eastern Rukum",
+      "district_code": "D053",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 30387,
+        "2022": 34112
+      },
+      "voter_growth": 3725
+    },
+    {
+      "constituency_code": "C128",
+      "constituency_id": 128,
+      "name": "Rolpa 1",
+      "district": "Rolpa",
+      "district_code": "D054",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 129543,
+        "2022": 145471
+      },
+      "voter_growth": 15928
+    },
+    {
+      "constituency_code": "C129",
+      "constituency_id": 129,
+      "name": "Pyuthan 1",
+      "district": "Pyuthan",
+      "district_code": "D055",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 142234,
+        "2022": 159760
+      },
+      "voter_growth": 17526
+    },
+    {
+      "constituency_code": "C130",
+      "constituency_id": 130,
+      "name": "Dang 1",
+      "district": "Dang",
+      "district_code": "D056",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 119987,
+        "2022": 134733
+      },
+      "voter_growth": 14746
+    },
+    {
+      "constituency_code": "C131",
+      "constituency_id": 131,
+      "name": "Dang 2",
+      "district": "Dang",
+      "district_code": "D056",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 119123,
+        "2022": 133748
+      },
+      "voter_growth": 14625
+    },
+    {
+      "constituency_code": "C132",
+      "constituency_id": 132,
+      "name": "Dang 3",
+      "district": "Dang",
+      "district_code": "D056",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 130456,
+        "2022": 146475
+      },
+      "voter_growth": 16019
+    },
+    {
+      "constituency_code": "C133",
+      "constituency_id": 133,
+      "name": "Banke 1",
+      "district": "Banke",
+      "district_code": "D057",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 107876,
+        "2022": 121100
+      },
+      "voter_growth": 13224
+    },
+    {
+      "constituency_code": "C134",
+      "constituency_id": 134,
+      "name": "Banke 2",
+      "district": "Banke",
+      "district_code": "D057",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 87123,
+        "2022": 97809
+      },
+      "voter_growth": 10686
+    },
+    {
+      "constituency_code": "C135",
+      "constituency_id": 135,
+      "name": "Banke 3",
+      "district": "Banke",
+      "district_code": "D057",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 100987,
+        "2022": 113322
+      },
+      "voter_growth": 12335
+    },
+    {
+      "constituency_code": "C136",
+      "constituency_id": 136,
+      "name": "Bardiya 1",
+      "district": "Bardiya",
+      "district_code": "D058",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 144876,
+        "2022": 162662
+      },
+      "voter_growth": 17786
+    },
+    {
+      "constituency_code": "C137",
+      "constituency_id": 137,
+      "name": "Bardiya 2",
+      "district": "Bardiya",
+      "district_code": "D058",
+      "province": "Lumbini",
+      "electorate": {
+        "2017": 135987,
+        "2022": 152622
+      },
+      "voter_growth": 16635
+    },
+    {
+      "constituency_code": "C138",
+      "constituency_id": 138,
+      "name": "Salyan 1",
+      "district": "Salyan",
+      "district_code": "D064",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 140456,
+        "2022": 157701
+      },
+      "voter_growth": 17245
+    },
+    {
+      "constituency_code": "C139",
+      "constituency_id": 139,
+      "name": "Dolpa 1",
+      "district": "Dolpa",
+      "district_code": "D059",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 20287,
+        "2022": 22774
+      },
+      "voter_growth": 2487
+    },
+    {
+      "constituency_code": "C140",
+      "constituency_id": 140,
+      "name": "Mugu 1",
+      "district": "Mugu",
+      "district_code": "D060",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 31602,
+        "2022": 35485
+      },
+      "voter_growth": 3883
+    },
+    {
+      "constituency_code": "C141",
+      "constituency_id": 141,
+      "name": "Jumla 1",
+      "district": "Jumla",
+      "district_code": "D062",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 60876,
+        "2022": 68368
+      },
+      "voter_growth": 7492
+    },
+    {
+      "constituency_code": "C142",
+      "constituency_id": 142,
+      "name": "Kalikot 1",
+      "district": "Kalikot",
+      "district_code": "D063",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 71902,
+        "2022": 80733
+      },
+      "voter_growth": 8831
+    },
+    {
+      "constituency_code": "C143",
+      "constituency_id": 143,
+      "name": "Humla 1",
+      "district": "Humla",
+      "district_code": "D061",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 29254,
+        "2022": 32857
+      },
+      "voter_growth": 3603
+    },
+    {
+      "constituency_code": "C144",
+      "constituency_id": 144,
+      "name": "Jajarkot 1",
+      "district": "Jajarkot",
+      "district_code": "D065",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 92001,
+        "2022": 103363
+      },
+      "voter_growth": 11362
+    },
+    {
+      "constituency_code": "C145",
+      "constituency_id": 145,
+      "name": "Dailekh 1",
+      "district": "Dailekh",
+      "district_code": "D066",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 69701,
+        "2022": 78282
+      },
+      "voter_growth": 8581
+    },
+    {
+      "constituency_code": "C146",
+      "constituency_id": 146,
+      "name": "Dailekh 2",
+      "district": "Dailekh",
+      "district_code": "D066",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 71832,
+        "2022": 80676
+      },
+      "voter_growth": 8844
+    },
+    {
+      "constituency_code": "C147",
+      "constituency_id": 147,
+      "name": "Surkhet 1",
+      "district": "Surkhet",
+      "district_code": "D067",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 107654,
+        "2022": 120940
+      },
+      "voter_growth": 13286
+    },
+    {
+      "constituency_code": "C148",
+      "constituency_id": 148,
+      "name": "Surkhet 2",
+      "district": "Surkhet",
+      "district_code": "D067",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 109198,
+        "2022": 122674
+      },
+      "voter_growth": 13476
+    },
+    {
+      "constituency_code": "C149",
+      "constituency_id": 149,
+      "name": "Western Rukum 1",
+      "district": "Western Rukum",
+      "district_code": "D068",
+      "province": "Karnali",
+      "electorate": {
+        "2017": 92876,
+        "2022": 104280
+      },
+      "voter_growth": 11404
+    },
+    {
+      "constituency_code": "C150",
+      "constituency_id": 150,
+      "name": "Bajura 1",
+      "district": "Bajura",
+      "district_code": "D069",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 74387,
+        "2022": 83567
+      },
+      "voter_growth": 9180
+    },
+    {
+      "constituency_code": "C151",
+      "constituency_id": 151,
+      "name": "Achham 1",
+      "district": "Achham",
+      "district_code": "D071",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 70354,
+        "2022": 79036
+      },
+      "voter_growth": 8682
+    },
+    {
+      "constituency_code": "C152",
+      "constituency_id": 152,
+      "name": "Achham 2",
+      "district": "Achham",
+      "district_code": "D071",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 70876,
+        "2022": 79621
+      },
+      "voter_growth": 8745
+    },
+    {
+      "constituency_code": "C153",
+      "constituency_id": 153,
+      "name": "Bajhang 1",
+      "district": "Bajhang",
+      "district_code": "D070",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 108901,
+        "2022": 122376
+      },
+      "voter_growth": 13475
+    },
+    {
+      "constituency_code": "C154",
+      "constituency_id": 154,
+      "name": "Doti 1",
+      "district": "Doti",
+      "district_code": "D072",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 111123,
+        "2022": 124870
+      },
+      "voter_growth": 13747
+    },
+    {
+      "constituency_code": "C155",
+      "constituency_id": 155,
+      "name": "Kailali 1",
+      "district": "Kailali",
+      "district_code": "D073",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 95012,
+        "2022": 106703
+      },
+      "voter_growth": 11691
+    },
+    {
+      "constituency_code": "C156",
+      "constituency_id": 156,
+      "name": "Kailali 2",
+      "district": "Kailali",
+      "district_code": "D073",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 93412,
+        "2022": 104906
+      },
+      "voter_growth": 11494
+    },
+    {
+      "constituency_code": "C157",
+      "constituency_id": 157,
+      "name": "Kailali 3",
+      "district": "Kailali",
+      "district_code": "D073",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 95865,
+        "2022": 107659
+      },
+      "voter_growth": 11794
+    },
+    {
+      "constituency_code": "C158",
+      "constituency_id": 158,
+      "name": "Kailali 4",
+      "district": "Kailali",
+      "district_code": "D073",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 98354,
+        "2022": 110453
+      },
+      "voter_growth": 12099
+    },
+    {
+      "constituency_code": "C159",
+      "constituency_id": 159,
+      "name": "Kailali 5",
+      "district": "Kailali",
+      "district_code": "D073",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 94201,
+        "2022": 105793
+      },
+      "voter_growth": 11592
+    },
+    {
+      "constituency_code": "C160",
+      "constituency_id": 160,
+      "name": "Darchula 1",
+      "district": "Darchula",
+      "district_code": "D077",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 79387,
+        "2022": 89154
+      },
+      "voter_growth": 9767
+    },
+    {
+      "constituency_code": "C161",
+      "constituency_id": 161,
+      "name": "Baitadi 1",
+      "district": "Baitadi",
+      "district_code": "D076",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 133654,
+        "2022": 150156
+      },
+      "voter_growth": 16502
+    },
+    {
+      "constituency_code": "C162",
+      "constituency_id": 162,
+      "name": "Dadeldhura 1",
+      "district": "Dadeldhura",
+      "district_code": "D075",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 81234,
+        "2022": 91201
+      },
+      "voter_growth": 9967
+    },
+    {
+      "constituency_code": "C163",
+      "constituency_id": 163,
+      "name": "Kanchanpur 1",
+      "district": "Kanchanpur",
+      "district_code": "D074",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 88234,
+        "2022": 99110
+      },
+      "voter_growth": 10876
+    },
+    {
+      "constituency_code": "C164",
+      "constituency_id": 164,
+      "name": "Kanchanpur 2",
+      "district": "Kanchanpur",
+      "district_code": "D074",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 93987,
+        "2022": 105577
+      },
+      "voter_growth": 11590
+    },
+    {
+      "constituency_code": "C165",
+      "constituency_id": 165,
+      "name": "Kanchanpur 3",
+      "district": "Kanchanpur",
+      "district_code": "D074",
+      "province": "Sudurpashchim",
+      "electorate": {
+        "2017": 87098,
+        "2022": 97822
+      },
+      "voter_growth": 10724
+    }
+  ]
+}

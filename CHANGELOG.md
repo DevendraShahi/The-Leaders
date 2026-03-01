@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.8.0] - 2026-03-01
+
+### Added
+- Added a second verified election baseline for analytics with **2074 federal results** (`electionResults2074`) and updated party-level seat/vote structures (FPTP + PR breakdown fields).
+- Added voter-cycle demographics model (`voterRollByCycle`) with source metadata for 2017, 2022 local/federal, and 2026 federal references.
+- Added a dedicated trending-topic API endpoint (`/api/election/trending-topics`) and live aggregation pipeline support in `news-service` (verified RSS + optional X/Twitter signal ingestion + normalized references).
+- Added richer regional breakdown intelligence models: seat gap, PR vote gap, seat-share split, and bilingual province/party labels for chart rendering.
+
+### Changed
+- Rebuilt **Official Candidate Snapshot** into a higher-signal intelligence layout (coverage, candidate mix, representation, and structural metrics).
+- Refined 2022/2074 pie-chart analytics experience:
+  - restored and upgraded chart composition
+  - improved mobile interaction behavior
+  - normalized PR vote percentage + PR seat presentation
+  - expanded localized party-name mapping for language switching
+- Updated turnout and voter demographic sections with current verified roll metrics and clearer summary cards.
+- Redesigned provincial breakdown chart UX with bilingual labels, compact explanatory hints, pinned detail context, and improved interaction flow.
+- Updated detail-page markdown rendering and typography in both:
+  - `DailyBriefDetailClient`
+  - `AnalysisDetailClient`
+  with improved heading/body balance, list rendering, inline markdown handling, and mobile-first spacing.
+
+### Removed
+- Removed **Trending Topics** section from the main Election 2026 analytics dashboard layout (component and API remain available for future reactivation).
+- Kept Candidate Demographics profile block disabled in the combined demographics view per current product direction.
+
+### Fixed
+- Corrected verified 2022 district winner party mapping for **Gyan Bahadur Shahi** to **Rastriya Prajatantra Party** in district results data.
+- Fixed tooltip overlap/clipping behavior for province info hints by improving layer order and popup placement.
+- Fixed markdown heading parsing edge cases where heading markers could render as plain text in briefing/detail pages.
+- Fixed multiple mobile readability and wrapping issues in long-form election content pages.
+
 ## [1.7.0] - 2026-02-28
 
 ### Added

@@ -9,6 +9,18 @@ interface TurnoutTrendChartProps {
 }
 
 export function TurnoutTrendChart({ data }: TurnoutTrendChartProps) {
+    const formatMillions = (value: number) => `${(value / 1000000).toFixed(1)}M`;
+    const data2022 = data.find((entry) => entry.year === 2022);
+    const data2026 = data.find((entry) => entry.year === 2026);
+    const turnoutPeak = data.reduce<TurnoutHistoryEntry | null>((best, entry) => {
+        if (!best) return entry;
+        return entry.percentage > best.percentage ? entry : best;
+    }, null);
+    const voterGrowthFrom2022 =
+        data2022 && data2022.totalVoters > 0 && data2026
+            ? (((data2026.totalVoters - data2022.totalVoters) / data2022.totalVoters) * 100).toFixed(1)
+            : null;
+
     const CustomTooltip = ({ active, payload }: any) => {
         if (active && payload && payload.length) {
             const data = payload[0].payload;
@@ -19,7 +31,7 @@ export function TurnoutTrendChart({ data }: TurnoutTrendChartProps) {
                         Turnout: <span className="font-bold text-[#B71C1C]">{data.percentage}%</span>
                     </p>
                     <p className="text-xs text-muted-foreground">
-                        {(data.totalVoters / 1000000).toFixed(1)}M voters
+                        {formatMillions(data.totalVoters)} voters
                     </p>
                 </div>
             );
@@ -80,18 +92,28 @@ export function TurnoutTrendChart({ data }: TurnoutTrendChartProps) {
             <div className="grid grid-cols-3 gap-4">
                 <div className="rounded-lg bg-muted/10 p-3 text-center transition-all hover:bg-muted/20">
                     <p className="text-xs uppercase tracking-wider text-muted-foreground">Peak Turnout</p>
-                    <p className="mt-1 font-bebas text-2xl text-foreground">78.3%</p>
-                    <p className="text-xs text-muted-foreground">2013</p>
+                    <p className="mt-1 font-bebas text-2xl text-foreground">
+                        {turnoutPeak ? `${turnoutPeak.percentage}%` : "N/A"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{turnoutPeak?.year ?? "N/A"}</p>
                 </div>
                 <div className="rounded-lg bg-muted/10 p-3 text-center transition-all hover:bg-muted/20">
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground">2026 Projection</p>
-                    <p className="mt-1 font-bebas text-2xl text-[#B71C1C]">68.5%</p>
-                    <p className="text-xs text-green-500">+7.5% from 2022</p>
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground">2026 Registered Voters</p>
+                    <p className="mt-1 font-bebas text-2xl text-[#B71C1C]">
+                        {data2026 ? formatMillions(data2026.totalVoters) : "N/A"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {data2026 ? data2026.totalVoters.toLocaleString() : "No data"}
+                    </p>
                 </div>
                 <div className="rounded-lg bg-muted/10 p-3 text-center transition-all hover:bg-muted/20">
-                    <p className="text-xs uppercase tracking-wider text-muted-foreground">Expected Voters</p>
-                    <p className="mt-1 font-bebas text-2xl text-foreground">19.2M</p>
-                    <p className="text-xs text-muted-foreground">Projected</p>
+                    <p className="text-xs uppercase tracking-wider text-muted-foreground">Change vs 2022 Roll</p>
+                    <p className="mt-1 font-bebas text-2xl text-foreground">
+                        {voterGrowthFrom2022 ? `+${voterGrowthFrom2022}%` : "N/A"}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                        {data2022 ? `2022: ${data2022.totalVoters.toLocaleString()}` : "No baseline"}
+                    </p>
                 </div>
             </div>
         </motion.div>

@@ -1,0 +1,54 @@
+[
+  {
+    "metric": "Total Districts",
+    "value": "77"
+  },
+  {
+    "metric": "Total Population 2021",
+    "value": "29104972"
+  },
+  {
+    "metric": "Total Population 2011",
+    "value": "26537784"
+  },
+  {
+    "metric": "Population Growth (2011-2021)",
+    "value": "2567188"
+  },
+  {
+    "metric": "Average Literacy Rate (%)",
+    "value": "77.73"
+  },
+  {
+    "metric": "Highest Population District",
+    "value": "Kathmandu"
+  },
+  {
+    "metric": "Highest Population Value",
+    "value": "2041587"
+  },
+  {
+    "metric": "Lowest Population District",
+    "value": "Manang"
+  },
+  {
+    "metric": "Lowest Population Value",
+    "value": "5658"
+  },
+  {
+    "metric": "Largest District (Area)",
+    "value": "Dolpa"
+  },
+  {
+    "metric": "Largest Area (sq km)",
+    "value": "7889"
+  },
+  {
+    "metric": "Smallest District (Area)",
+    "value": "Bhaktapur"
+  },
+  {
+    "metric": "Smallest Area (sq km)",
+    "value": "119"
+  }
+]

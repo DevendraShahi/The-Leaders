@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "topLevelComponents": [
+    "#TopStatusStrip",
+    "#Main",
+    "#DriverRail",
+    "#SpeedCard",
+    "#StatPill",
+    "#MapPanel",
+    "#BottomNav",
+    "#ModeTab"
+  ],
+  "contentTypes": {
+    "nodes": ["#SpeedCard", "#StatPill", "#MapPanel", "#ModeTab"]
+  },
+  "previewContent": [
+    {
+      "name": "Drive Screen (Default)",
+      "nodes": [
+        { "count": 1, "node": "#TopStatusStrip" },
+        { "count": 1, "node": "#SpeedCard" },
+        { "count": 3, "node": "#StatPill" },
+        { "count": 1, "node": "#MapPanel" },
+        { "count": 5, "node": "#ModeTab" }
+      ]
+    }
+  ]
+}

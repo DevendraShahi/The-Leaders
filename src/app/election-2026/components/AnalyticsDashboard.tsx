@@ -8,10 +8,13 @@ import { TurnoutTrendChart } from "./charts/TurnoutTrendChart";
 import { TabbedDemographics } from "./charts/TabbedDemographics";
 import { RegionalBreakdownChart } from "./charts/RegionalBreakdownChart";
 import { DistrictNewsPanel } from "./DistrictNewsPanel";
-import { TrendingTopicsSection } from "./TrendingTopicsSection";
 import { getAnalyticsData } from "@/lib/analytics-data";
 import { useElectionStore } from "@/lib/election-store";
-import { TrendingUp, Bell, ShieldCheck, Award } from "lucide-react";
+import {
+    TrendingUp,
+    Bell,
+    ShieldCheck,
+} from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/providers/language-provider";
@@ -54,7 +57,6 @@ export default function AnalyticsDashboard({
     const { selectedDistrict } = useElectionStore();
     const { language } = useLanguage();
     const l = LOCALES.election2026;
-    const candidateLocale = LOCALES.election2026.candidateSnapshot;
     const demographicsData = candidateSummary
         ? {
             ...analytics.demographicsData,
@@ -138,226 +140,88 @@ export default function AnalyticsDashboard({
                         </p>
                     </motion.section>
 
-                    {candidateSummary && (
-                        <motion.section
-                            className="space-y-6"
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <div className="text-center">
-                                <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                    {tString(candidateLocale.title, language)}
-                                </h2>
-                                <p className="mx-auto mt-2 max-w-3xl text-muted-foreground">
-                                    {tString(candidateLocale.subtitle, language)}
-                                </p>
-                            </div>
-
-                            <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-                                {[
-                                    {
-                                        label: tString(candidateLocale.cards.fptpCandidates, language),
-                                        value: candidateSummary.fptpCandidates.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.fptpParties, language),
-                                        value: candidateSummary.fptpParties.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.prCandidates, language),
-                                        value: candidateSummary.prCandidates.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.prParties, language),
-                                        value: candidateSummary.prParties.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.districts, language),
-                                        value: candidateSummary.fptpDistricts.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.constituencies, language),
-                                        value: candidateSummary.fptpConstituencies.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.provinces, language),
-                                        value: candidateSummary.provinces.toLocaleString(),
-                                    },
-                                    {
-                                        label: tString(candidateLocale.cards.lastSynced, language),
-                                        value: candidateSummary.lastSyncedAt
-                                            ? new Date(candidateSummary.lastSyncedAt).toLocaleString(language === "ne" ? "ne-NP" : "en-US", {
-                                                year: "numeric",
-                                                month: "short",
-                                                day: "numeric",
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })
-                                            : tString(candidateLocale.notAvailable, language),
-                                    },
-                                ].map((item) => (
-                                    <Card key={item.label} className="rounded-none border border-border/60 bg-card/60">
-                                        <CardContent className="p-4">
-                                            <p className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground">
-                                                {item.label}
-                                            </p>
-                                            <p className="mt-2 font-bebas text-4xl leading-none tracking-tight text-foreground md:text-5xl">
-                                                {item.value}
-                                            </p>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
-
-                            <div className="grid gap-3 md:grid-cols-2">
-                                {candidateSummary.genderBreakdown.map((entry) => {
-                                    const genderLabel = tString(candidateLocale.genders[entry.gender], language);
-
-                                    return (
-                                        <Card key={entry.gender} className="rounded-none border border-border/60 bg-muted/10">
-                                            <CardContent className="p-4">
-                                                <div className="mb-2 flex items-end justify-between gap-3">
-                                                    <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                                                        {genderLabel}
-                                                    </p>
-                                                    <p className="font-bebas text-3xl leading-none text-foreground">
-                                                        {entry.count.toLocaleString()}
-                                                    </p>
-                                                </div>
-                                                <div className="h-2 overflow-hidden rounded-full bg-muted">
-                                                    <div
-                                                        className="h-full bg-[#B71C1C]"
-                                                        style={{ width: `${Math.max(1, entry.percentage)}%` }}
-                                                    />
-                                                </div>
-                                                <p className="mt-2 text-xs text-muted-foreground">
-                                                    {entry.percentage}% {tString(candidateLocale.ofTotal, language)}
-                                                </p>
-                                            </CardContent>
-                                        </Card>
-                                    );
-                                })}
-                            </div>
-                        </motion.section>
-                    )}
-
                     {/* Subtle Divider */}
                     <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
 
-                    {/* Section 2: Most Competitive Races */}
+                    {/* Section: 2022 Election Results Pie */}
                     <motion.section
+                        className="space-y-6"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
                         transition={{ duration: 0.6 }}
-                        className="space-y-4 md:space-y-6"
                     >
                         <div className="text-center">
                             <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                {tString(l.races.title, language)}
+                                {language === "en" ? "2022 Election Results" : "२०७९ निर्वाचन परिणाम"}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                {tString(l.races.subtitle, language)}
+                                {language === "en"
+                                    ? "Verified total seats with PR vote share and PR seats"
+                                    : "प्रमाणित कुल सिट, समानुपातिक मत प्रतिशत र समानुपातिक सिट"}
                             </p>
+                            <p className="mt-2 text-xs text-muted-foreground">
+                                {language === "en"
+                                    ? "Tap or hover a party row or pie slice to inspect details."
+                                    : "विवरण हेर्न दलको पंक्ति वा पाइ स्लाइसमा ट्याप/होभर गर्नुहोस्।"}
+                            </p>
+                            <a
+                                href="https://en.wikipedia.org/wiki/2022_Nepalese_general_election"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-3 inline-flex items-center border border-border/65 bg-background/70 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                            >
+                                {language === "en" ? "Source: Wikipedia (2022 Nepalese general election)" : "स्रोत: विकिपिडिया (२०७९ नेपाल आम निर्वाचन)"}
+                            </a>
                         </div>
-
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-                            {analytics.districtCompetitiveness.map((district, index) => (
-                                <motion.div
-                                    key={district.district}
-                                    initial={{ opacity: 0, scale: 0.95 }}
-                                    whileInView={{ opacity: 1, scale: 1 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1, duration: 0.4 }}
-                                >
-                                    {/* Competitive race cards with subtle borders */}
-                                    <div className="group rounded-lg border border-border/50 bg-background/50 p-4 transition-all hover:border-border hover:shadow-sm">
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#B71C1C]/10 font-bebas text-lg text-[#B71C1C]">
-                                                {index + 1}
-                                            </div>
-                                            {index === 0 && (
-                                                <Award className="h-5 w-5 text-yellow-500" />
-                                            )}
-                                        </div>
-                                        <h4 className="mt-3 font-bebas text-xl uppercase leading-tight text-foreground md:text-2xl">
-                                            {district.district}
-                                        </h4>
-
-                                        <div className="mt-4 space-y-3">
-                                            <div className="flex items-baseline justify-between">
-                                                <span className="text-xs uppercase tracking-wider text-muted-foreground">Margin</span>
-                                                <span className="font-bebas text-2xl text-[#B71C1C] md:text-3xl">
-                                                    {district.margin}%
-                                                </span>
-                                            </div>
-                                            <div className="rounded-lg bg-muted/20 p-3">
-                                                <p className="text-xs uppercase tracking-wider text-muted-foreground">Leading Party</p>
-                                                <p className="mt-1 font-bold text-foreground">{district.leadingParty}</p>
-                                            </div>
-                                            <div>
-                                                <div className="h-2 overflow-hidden rounded-full bg-muted/30">
-                                                    <motion.div
-                                                        className="h-full bg-[#B71C1C]"
-                                                        initial={{ width: 0 }}
-                                                        whileInView={{ width: `${100 - district.competitivenessScore}%` }}
-                                                        viewport={{ once: true }}
-                                                        transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
-                                                    />
-                                                </div>
-                                                <p className="mt-1.5 text-xs text-muted-foreground">
-                                                    Competitiveness: {district.competitivenessScore}/100
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            ))}
+                        <div className="mx-auto w-full max-w-7xl">
+                            <ImpressivePieChart data={analytics.electionResults2079} />
                         </div>
                     </motion.section>
 
                     {/* Subtle Divider */}
                     <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
 
-                    {/* Section 3: Party Projections */}
+                    {/* Section: 2074 Election Results Pie */}
                     <motion.section
                         className="space-y-6"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6 }}
                     >
-                        <div className="space-y-24">
-                            <ImpressivePieChart
-                                data={analytics.partyProjections}
-                                title={tString(l.projections.title, language)}
-                                subtitle={tString(l.projections.subtitle, language)}
-                            />
-
-                            <div className="relative">
-                                <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                    <div className="w-full border-t border-border/50"></div>
-                                </div>
-                                <div className="relative flex justify-center">
-                                    <span className="bg-background px-3 text-sm text-muted-foreground uppercase tracking-widest">
-                                        {tString(l.projections.comparison, language)}
-                                    </span>
-                                </div>
-                            </div>
-
-                            <ImpressivePieChart
-                                data={analytics.electionResults2079}
-                                title="2022 Election Results" // Missing from locales? Using static for now or add to locales
-                                subtitle="Actual results from 2022 General Election (2079 BS)"
-                            />
+                        <div className="text-center">
+                            <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
+                                {language === "en" ? "2074 Election Results" : "२०७४ निर्वाचन परिणाम"}
+                            </h2>
+                            <p className="mt-2 text-muted-foreground">
+                                {language === "en"
+                                    ? "Verified total seats with PR vote share and PR seats"
+                                    : "प्रमाणित कुल सिट, समानुपातिक मत प्रतिशत र समानुपातिक सिट"}
+                            </p>
+                            <p className="mt-2 text-xs text-muted-foreground">
+                                {language === "en"
+                                    ? "Tap or hover a party row or pie slice to inspect details."
+                                    : "विवरण हेर्न दलको पंक्ति वा पाइ स्लाइसमा ट्याप/होभर गर्नुहोस्।"}
+                            </p>
+                            <a
+                                href="https://en.wikipedia.org/wiki/2017_Nepalese_legislative_election"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-3 inline-flex items-center border border-border/65 bg-background/70 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                            >
+                                {language === "en" ? "Source: Wikipedia (2017 Nepalese legislative election)" : "स्रोत: विकिपिडिया (२०७४ नेपालको संसदीय निर्वाचन)"}
+                            </a>
+                        </div>
+                        <div className="mx-auto w-full max-w-7xl">
+                            <ImpressivePieChart data={analytics.electionResults2074} />
                         </div>
                     </motion.section>
 
                     {/* Subtle Divider */}
                     <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
 
-                    {/* Section 4: Voter Turnout Trends */}
+                    {/* Section 2: Voter Turnout Trends */}
                     <motion.section
                         className="space-y-6"
                         initial={{ opacity: 0 }}
@@ -392,10 +256,41 @@ export default function AnalyticsDashboard({
                                 {tString(l.provincial.title, language)}
                             </h2>
                             <p className="mt-2 text-muted-foreground">
-                                {tString(l.provincial.subtitle, language)}
+                                {language === "en"
+                                    ? "2022 province-wise FPTP winners and PR vote share"
+                                    : "२०२२ प्रदेशगत प्रत्यक्ष विजेता र समानुपातिक मत हिस्सा"}
                             </p>
                         </div>
                         <RegionalBreakdownChart data={analytics.regionalBreakdown} />
+
+                        <div className="rounded-lg border border-border/60 bg-card/45 p-4 sm:p-5">
+                            <p className="text-[11px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+                                {language === "en" ? "Provincial Reference Notes" : "प्रदेशगत सन्दर्भ नोट"}
+                            </p>
+                            <p className="mt-2 text-sm leading-7 text-muted-foreground">
+                                {language === "en"
+                                    ? "This section uses Wikipedia's 2022 province result tables. FPTP seats come from constituency results, and PR shares come from party-list vote by province. Province 1 is shown as Koshi."
+                                    : "यो भाग विकिपिडियाको २०२२ प्रदेशगत नतिजा तालिकाबाट बनाइएको हो। प्रत्यक्ष सिट निर्वाचन क्षेत्र नतिजाबाट र समानुपातिक हिस्सा पार्टी-लिस्ट मत तालिकाबाट लिइएको हो। प्रदेश १ लाई कोशी नाममा देखाइएको छ।"}
+                            </p>
+                            <div className="mt-3 flex flex-wrap items-center gap-2">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/2022_Nepalese_general_election#Results_by_province"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="border border-border/65 bg-background/70 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                                >
+                                    Wikipedia (Province Table)
+                                </a>
+                                <a
+                                    href="https://result.election.gov.np/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="border border-border/65 bg-background/70 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                                >
+                                    ECN Results
+                                </a>
+                            </div>
+                        </div>
                     </motion.section>
 
                     {/* Section 6-7: Combined Demographics (Tabbed) */}
@@ -416,28 +311,6 @@ export default function AnalyticsDashboard({
                         <div className="mx-auto max-w-5xl">
                             <TabbedDemographics data={demographicsData} />
                         </div>
-                    </motion.section>
-
-                    {/* Subtle Divider */}
-                    <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
-
-                    {/* Section 8: Trending Topics */}
-                    <motion.section
-                        className="space-y-6"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true, margin: "-100px" }}
-                    >
-                        <div className="text-center">
-                            <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
-                                {tString(l.trending.title, language)}
-                            </h2>
-                            <p className="mt-2 text-muted-foreground">
-                                {tString(l.trending.subtitle, language)}
-                            </p>
-                        </div>
-
-                        <TrendingTopicsSection initialData={analytics.trendingTopics} />
                     </motion.section>
 
                     {/* Subtle Divider */}
