@@ -6,7 +6,7 @@ import History from '@/models/History';
 import { DailyBrief, FactCheck, ElectionArticle } from '@/models/ElectionContent';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://theleaders.com.np';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://theleaders.com';
     const currentDate = new Date();
 
     // Static pages
