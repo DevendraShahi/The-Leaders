@@ -35,9 +35,9 @@
       },
       "margin": 2251,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -63,9 +63,9 @@
       },
       "margin": 2499,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -91,9 +91,9 @@
       },
       "margin": 911,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -119,9 +119,9 @@
       },
       "margin": 7776,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -147,9 +147,9 @@
       },
       "margin": 35130,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -175,9 +175,9 @@
       },
       "margin": 48742,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -203,9 +203,9 @@
       },
       "margin": 21380,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -231,9 +231,9 @@
       },
       "margin": 31645,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -259,9 +259,9 @@
       },
       "margin": 49614,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -287,9 +287,9 @@
       },
       "margin": 9845,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -315,9 +315,9 @@
       },
       "margin": 25300,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -343,9 +343,9 @@
       },
       "margin": 12570,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -371,9 +371,9 @@
       },
       "margin": 28015,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -399,9 +399,9 @@
       },
       "margin": 21019,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -427,9 +427,9 @@
       },
       "margin": 42663,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -455,9 +455,9 @@
       },
       "margin": 8492,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -483,9 +483,9 @@
       },
       "margin": 41277,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -511,9 +511,9 @@
       },
       "margin": 26920,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -539,9 +539,9 @@
       },
       "margin": 26184,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -567,9 +567,9 @@
       },
       "margin": 3875,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -595,9 +595,9 @@
       },
       "margin": 879,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -623,9 +623,9 @@
       },
       "margin": 666,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -651,9 +651,9 @@
       },
       "margin": 3752,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -679,9 +679,9 @@
       },
       "margin": 5,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -707,9 +707,9 @@
       },
       "margin": 3898,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -735,9 +735,9 @@
       },
       "margin": 1913,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -763,9 +763,9 @@
       },
       "margin": 18984,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -791,9 +791,9 @@
       },
       "margin": 7154,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -819,9 +819,9 @@
       },
       "margin": 30348,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -847,9 +847,9 @@
       },
       "margin": 14141,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -875,9 +875,9 @@
       },
       "margin": 17636,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -903,9 +903,9 @@
       },
       "margin": 23309,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -931,9 +931,9 @@
       },
       "margin": 31548,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -959,9 +959,9 @@
       },
       "margin": 26747,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -987,9 +987,9 @@
       },
       "margin": 22093,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1015,9 +1015,9 @@
       },
       "margin": 28238,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1043,9 +1043,9 @@
       },
       "margin": 928,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1071,9 +1071,9 @@
       },
       "margin": 31439,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1099,9 +1099,9 @@
       },
       "margin": 27336,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1127,9 +1127,9 @@
       },
       "margin": 32462,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1155,9 +1155,9 @@
       },
       "margin": 22012,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1183,9 +1183,9 @@
       },
       "margin": 22524,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1211,9 +1211,9 @@
       },
       "margin": 26482,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1239,9 +1239,9 @@
       },
       "margin": 21390,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1267,9 +1267,9 @@
       },
       "margin": 36311,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1295,9 +1295,9 @@
       },
       "margin": 33989,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1323,9 +1323,9 @@
       },
       "margin": 33552,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1351,9 +1351,9 @@
       },
       "margin": 12857,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1379,9 +1379,9 @@
       },
       "margin": 18253,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1407,9 +1407,9 @@
       },
       "margin": 11086,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1435,9 +1435,9 @@
       },
       "margin": 15364,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1463,9 +1463,9 @@
       },
       "margin": 21011,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1491,9 +1491,9 @@
       },
       "margin": 25775,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1519,9 +1519,9 @@
       },
       "margin": 21394,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1547,9 +1547,9 @@
       },
       "margin": 30645,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1575,9 +1575,9 @@
       },
       "margin": 29561,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1603,9 +1603,9 @@
       },
       "margin": 14243,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1631,9 +1631,9 @@
       },
       "margin": 18850,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1659,9 +1659,9 @@
       },
       "margin": 13313,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1687,9 +1687,9 @@
       },
       "margin": 15472,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1715,9 +1715,9 @@
       },
       "margin": 14927,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1743,9 +1743,9 @@
       },
       "margin": 7199,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1771,9 +1771,9 @@
       },
       "margin": 784,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1799,9 +1799,9 @@
       },
       "margin": 3160,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1827,9 +1827,9 @@
       },
       "margin": 5085,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1855,9 +1855,9 @@
       },
       "margin": 24096,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1883,9 +1883,9 @@
       },
       "margin": 5866,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1911,9 +1911,9 @@
       },
       "margin": 4012,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1939,9 +1939,9 @@
       },
       "margin": 16551,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1967,9 +1967,9 @@
       },
       "margin": 9091,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -1995,9 +1995,9 @@
       },
       "margin": 25361,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2023,9 +2023,9 @@
       },
       "margin": 7586,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2051,9 +2051,9 @@
       },
       "margin": 20318,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2079,9 +2079,9 @@
       },
       "margin": 21578,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2107,9 +2107,9 @@
       },
       "margin": 21249,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2135,9 +2135,9 @@
       },
       "margin": 23823,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2163,9 +2163,9 @@
       },
       "margin": 21375,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2191,9 +2191,9 @@
       },
       "margin": 29633,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2219,9 +2219,9 @@
       },
       "margin": 29369,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2247,9 +2247,9 @@
       },
       "margin": 5289,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2275,9 +2275,9 @@
       },
       "margin": 31368,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2303,9 +2303,9 @@
       },
       "margin": 9853,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2331,9 +2331,9 @@
       },
       "margin": 32071,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2359,9 +2359,9 @@
       },
       "margin": 34051,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2387,9 +2387,9 @@
       },
       "margin": 10452,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2415,9 +2415,9 @@
       },
       "margin": 35476,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2443,9 +2443,9 @@
       },
       "margin": 7085,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2471,9 +2471,9 @@
       },
       "margin": 2553,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2499,9 +2499,9 @@
       },
       "margin": 21995,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2527,9 +2527,9 @@
       },
       "margin": 11204,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2555,9 +2555,9 @@
       },
       "margin": 45175,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2583,9 +2583,9 @@
       },
       "margin": 39838,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2611,9 +2611,9 @@
       },
       "margin": 38662,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2639,9 +2639,9 @@
       },
       "margin": 14498,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2667,9 +2667,9 @@
       },
       "margin": 14960,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2695,9 +2695,9 @@
       },
       "margin": 1961,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2723,9 +2723,9 @@
       },
       "margin": 17022,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2751,9 +2751,9 @@
       },
       "margin": 28669,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2779,9 +2779,9 @@
       },
       "margin": 24418,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2807,9 +2807,9 @@
       },
       "margin": 24970,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2835,9 +2835,9 @@
       },
       "margin": 21809,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2863,9 +2863,9 @@
       },
       "margin": 18552,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2891,9 +2891,9 @@
       },
       "margin": 10214,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2919,9 +2919,9 @@
       },
       "margin": 4524,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2947,9 +2947,9 @@
       },
       "margin": 34652,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -2975,9 +2975,9 @@
       },
       "margin": 25592,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3003,9 +3003,9 @@
       },
       "margin": 1501,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3031,9 +3031,9 @@
       },
       "margin": 14931,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3059,9 +3059,9 @@
       },
       "margin": 8983,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3087,9 +3087,9 @@
       },
       "margin": 779,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3115,9 +3115,9 @@
       },
       "margin": 10607,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3143,9 +3143,9 @@
       },
       "margin": 14461,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3171,9 +3171,9 @@
       },
       "margin": 561,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3199,9 +3199,9 @@
       },
       "margin": 1517,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3227,9 +3227,9 @@
       },
       "margin": 13744,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3255,9 +3255,9 @@
       },
       "margin": 12374,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3283,9 +3283,9 @@
       },
       "margin": 35739,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3311,9 +3311,9 @@
       },
       "margin": 28193,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3339,9 +3339,9 @@
       },
       "margin": 42863,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3367,9 +3367,9 @@
       },
       "margin": 43689,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3395,9 +3395,9 @@
       },
       "margin": 50379,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3423,9 +3423,9 @@
       },
       "margin": 7804,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3451,9 +3451,9 @@
       },
       "margin": 25706,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3479,9 +3479,9 @@
       },
       "margin": 18288,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3507,9 +3507,9 @@
       },
       "margin": 6108,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3535,9 +3535,9 @@
       },
       "margin": 4645,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3563,9 +3563,9 @@
       },
       "margin": 6778,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3591,9 +3591,9 @@
       },
       "margin": 15452,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3619,9 +3619,9 @@
       },
       "margin": 9131,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3647,9 +3647,9 @@
       },
       "margin": 27322,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3675,9 +3675,9 @@
       },
       "margin": 28272,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3703,9 +3703,9 @@
       },
       "margin": 27795,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3731,9 +3731,9 @@
       },
       "margin": 17491,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3759,9 +3759,9 @@
       },
       "margin": 6046,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3787,9 +3787,9 @@
       },
       "margin": 14908,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3815,9 +3815,9 @@
       },
       "margin": 34988,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3843,9 +3843,9 @@
       },
       "margin": 9276,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3871,9 +3871,9 @@
       },
       "margin": 2285,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3899,9 +3899,9 @@
       },
       "margin": 1406,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3927,9 +3927,9 @@
       },
       "margin": 1196,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3955,9 +3955,9 @@
       },
       "margin": 3181,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -3983,9 +3983,9 @@
       },
       "margin": 1087,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4011,9 +4011,9 @@
       },
       "margin": 1554,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4039,9 +4039,9 @@
       },
       "margin": 2735,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4067,9 +4067,9 @@
       },
       "margin": 576,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4095,9 +4095,9 @@
       },
       "margin": 4337,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4123,9 +4123,9 @@
       },
       "margin": 8007,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4151,9 +4151,9 @@
       },
       "margin": 14434,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4179,9 +4179,9 @@
       },
       "margin": 4948,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4207,9 +4207,9 @@
       },
       "margin": 540,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4235,9 +4235,9 @@
       },
       "margin": 526,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4263,9 +4263,9 @@
       },
       "margin": 472,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4291,9 +4291,9 @@
       },
       "margin": 2239,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4319,9 +4319,9 @@
       },
       "margin": 787,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4347,9 +4347,9 @@
       },
       "margin": 4959,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4375,9 +4375,9 @@
       },
       "margin": 7108,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4403,9 +4403,9 @@
       },
       "margin": 8376,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4431,9 +4431,9 @@
       },
       "margin": 17255,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4459,9 +4459,9 @@
       },
       "margin": 19995,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4487,9 +4487,9 @@
       },
       "margin": 3055,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4515,9 +4515,9 @@
       },
       "margin": 3940,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4543,9 +4543,9 @@
       },
       "margin": 7010,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4571,9 +4571,9 @@
       },
       "margin": 13222,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4599,9 +4599,9 @@
       },
       "margin": 23125,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     },
     {
@@ -4627,9 +4627,9 @@
       },
       "margin": 17675,
       "turnout": {
-        "total_votes": null,
-        "valid_votes": null,
-        "turnout_percent": null
+        "total_votes": 0,
+        "valid_votes": 0,
+        "turnout_percent": 0
       }
     }
   ]
