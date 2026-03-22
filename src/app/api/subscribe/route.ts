@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Subscriber from "@/models/Subscriber";
+import { enforceRateLimit, getClientIp } from "@/lib/rate-limit";
 import {
     generateVerificationCode,
     getOtpExpiryDate,
@@ -14,7 +15,19 @@ import {
 
 export async function POST(req: Request) {
     try {
-        await dbConnect();
+        const clientIp = getClientIp(req);
+        const ipRateLimit = enforceRateLimit(`subscribe:ip:${clientIp}`, 12, 10 * 60 * 1000);
+        if (ipRateLimit.limited) {
+            return NextResponse.json(
+                { error: "Too many subscription requests. Please try again shortly." },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": String(ipRateLimit.retryAfterSeconds ?? 60),
+                    },
+                }
+            );
+        }
 
         const { email } = await req.json();
         const normalizedEmail = normalizeEmail(String(email || ""));
@@ -25,6 +38,21 @@ export async function POST(req: Request) {
                 { status: 400 }
             );
         }
+
+        const emailRateLimit = enforceRateLimit(`subscribe:email:${normalizedEmail}`, 6, 30 * 60 * 1000);
+        if (emailRateLimit.limited) {
+            return NextResponse.json(
+                { error: "Too many verification requests for this email. Please try again later." },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": String(emailRateLimit.retryAfterSeconds ?? 60),
+                    },
+                }
+            );
+        }
+
+        await dbConnect();
 
         const existing = await Subscriber.findOne({ email: normalizedEmail }).select("+verificationCodeHash");
 

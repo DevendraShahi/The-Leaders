@@ -25,6 +25,7 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
     const router = useRouter();
     const { token } = useAuth();
     const [loading, setLoading] = useState(false);
+    const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
 
     // Helper to normalize bilingual fields
     const normalize = (val: any) => {
@@ -81,6 +82,40 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
 
     const onSubmit = async (data: any) => {
         setLoading(true);
+        let imageUrl = data.image;
+
+        // Perform deferred image upload if a file was selected locally
+        if (selectedImageFile) {
+            const formData = new FormData();
+            formData.append('file', selectedImageFile);
+            formData.append('category', 'article');
+            formData.append('folder', 'articles');
+
+            try {
+                const uploadRes = await fetch('/api/admin/media/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${token}` },
+                    body: formData
+                });
+                if (!uploadRes.ok) throw new Error('Failed to upload image');
+                const uploadData = await uploadRes.json();
+                imageUrl = uploadData.data.media.secureUrl;
+                data.image = imageUrl;
+            } catch (error) {
+                console.error("Image upload failed", error);
+                toast.error('Failed to upload image.');
+                setLoading(false);
+                return;
+            }
+        }
+
+        // Ensure slug exists
+        if (!data.slug && data.title?.en) {
+            data.slug = data.title.en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+        } else if (!data.slug) {
+            data.slug = 'article-' + Date.now();
+        }
+
         const method = id === "new" ? "POST" : "PUT";
         const endpoint = id === "new" ? "/api/admin/articles" : `/api/admin/articles/${id}`;
 
@@ -175,7 +210,32 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
                             <CardContent className="space-y-6 pt-6">
                                 <BilingualInput form={form} name="title" label="Article Title" />
 
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <FormField
+                                    control={control}
+                                    name="slug"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <div className="flex justify-between items-center">
+                                                <FormLabel className="font-mono text-xs uppercase text-muted-foreground flex items-center gap-2 tracking-widest">
+                                                    <Tag className="w-3 h-3" /> URL Slug
+                                                </FormLabel>
+                                            </div>
+                                            <FormControl>
+                                                <div className="flex items-center">
+                                                    <span className="bg-muted px-3 py-2 border border-r-0 border-border text-xs text-muted-foreground font-mono rounded-l-none">/articles/</span>
+                                                    <Input
+                                                        {...field}
+                                                        placeholder="auto-generated-from-title"
+                                                        className="rounded-none rounded-r-sm font-mono text-sm border-border focus-visible:ring-1 bg-background"
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <p className="text-[10px] text-muted-foreground mt-1">Leave empty to auto-generate from English Title</p>
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <div className="grid grid-cols-1 gap-6">
                                     <FormField
                                         control={control}
                                         name="excerpt.en"
@@ -271,6 +331,7 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
                                                     <ImageUploader
                                                         value={field.value}
                                                         onChange={field.onChange}
+                                                        onFileSelect={setSelectedImageFile}
                                                         folder="articles"
                                                     />
                                                 </div>

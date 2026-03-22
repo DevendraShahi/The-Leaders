@@ -24,11 +24,11 @@ const SubscriberSchema: Schema = new Schema(
         },
         isActive: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         isVerified: {
             type: Boolean,
-            default: true,
+            default: false,
         },
         verifiedAt: {
             type: Date,

@@ -3,6 +3,7 @@ import { getAllDistrictNews } from "./districts-data";
 
 export interface AnalyticsData {
     partyProjections: PartyProjection[];
+    electionResults2082: PartyProjection[];
     electionResults2079: PartyProjection[];
     electionResults2074: PartyProjection[];
     demographicsData: DemographicsData;
@@ -136,54 +137,138 @@ export interface DistrictNewsData {
 
 // Mock data for analytics dashboard
 export const analyticsData: AnalyticsData = {
+    // Actual 2026 (2082 BS) election results — matches electionResults2082
+    // Source: Election Commission Nepal / Wikipedia 2026 Nepalese general election
     partyProjections: [
         {
             party: "Rastriya Swatantra Party",
             partySlug: "rsp",
             color: "#4169E1",
-            projectedSeats: 72,
-            voteSharePercentage: 26.2,
-            change: +51
+            projectedSeats: 182,
+            voteSharePercentage: 47.8,
+            change: +162
         },
         {
             party: "Nepali Congress",
             partySlug: "nepali-congress",
-            color: "#50C878", // Adjusted Green
-            projectedSeats: 65,
-            voteSharePercentage: 23.6,
-            change: -24
+            color: "#50C878",
+            projectedSeats: 38,
+            voteSharePercentage: 19.1,
+            change: -51
         },
         {
             party: "CPN-UML",
             partySlug: "cpn-uml",
-            color: "#E34234", // Vermilion/Red
-            projectedSeats: 58,
-            voteSharePercentage: 21.1,
-            change: -20
+            color: "#E34234",
+            projectedSeats: 25,
+            voteSharePercentage: 13.4,
+            change: -53
         },
         {
             party: "CPN (Maoist Centre)",
             partySlug: "cpn-maoist",
             color: "#8B0000",
-            projectedSeats: 22,
-            voteSharePercentage: 8.0,
-            change: -10
+            projectedSeats: 17,
+            voteSharePercentage: 7.5,
+            change: -15
         },
         {
-            party: "RPP",
+            party: "Shram Sanskriti Party",
+            partySlug: "shram-sanskriti",
+            color: "#8D6635",
+            projectedSeats: 7,
+            voteSharePercentage: 3.56,
+            change: +7
+        },
+        {
+            party: "Rastriya Prajatantra Party",
             partySlug: "rpp",
             color: "#FFD700",
-            projectedSeats: 18,
-            voteSharePercentage: 6.5,
-            change: +4
+            projectedSeats: 5,
+            voteSharePercentage: 3.05,
+            change: -9
+        }
+    ],
+
+    // Source: 2026 Nepalese general election (March 5, 2026 / Falgun 21, 2082 BS)
+    // Official results confirmed by Election Commission Nepal. Total HoR seats: 275 (165 FPTP + 110 PR).
+    // Ref: https://en.wikipedia.org/wiki/2026_Nepalese_general_election
+    electionResults2082: [
+        {
+            party: "Rastriya Swatantra Party",
+            partySlug: "rsp",
+            color: "#4169E1",
+            projectedSeats: 182,
+            voteSharePercentage: 47.8,
+            prVotePercentage: 47.8,
+            prSeats: 57,
+            fptpSeats: 125,
+            change: +162
         },
         {
-            party: "Others",
-            partySlug: "others",
+            party: "Nepali Congress",
+            partySlug: "nepali-congress",
+            color: "#50C878",
+            projectedSeats: 38,
+            voteSharePercentage: 19.1,
+            prVotePercentage: 19.1,
+            prSeats: 20,
+            fptpSeats: 18,
+            change: -51
+        },
+        {
+            party: "CPN-UML",
+            partySlug: "cpn-uml",
+            color: "#E34234",
+            projectedSeats: 25,
+            voteSharePercentage: 13.4,
+            prVotePercentage: 13.4,
+            prSeats: 16,
+            fptpSeats: 9,
+            change: -53
+        },
+        {
+            party: "CPN (Maoist Centre)",
+            partySlug: "cpn-maoist",
+            color: "#8B0000",
+            projectedSeats: 17,
+            voteSharePercentage: 7.5,
+            prVotePercentage: 7.5,
+            prSeats: 9,
+            fptpSeats: 8,
+            change: -15
+        },
+        {
+            party: "Shram Sanskriti Party",
+            partySlug: "shram-sanskriti",
+            color: "#8D6635",
+            projectedSeats: 7,
+            voteSharePercentage: 3.56,
+            prVotePercentage: 3.56,
+            prSeats: 4,
+            fptpSeats: 3,
+            change: +7
+        },
+        {
+            party: "Rastriya Prajatantra Party",
+            partySlug: "rpp",
+            color: "#FFD700",
+            projectedSeats: 5,
+            voteSharePercentage: 3.05,
+            prVotePercentage: 3.05,
+            prSeats: 4,
+            fptpSeats: 1,
+            change: -9
+        },
+        {
+            party: "Independent",
+            partySlug: "independent",
             color: "#9E9E9E",
-            projectedSeats: 40,
-            voteSharePercentage: 14.6,
-            change: +19
+            projectedSeats: 1,
+            voteSharePercentage: 0,
+            prSeats: 0,
+            fptpSeats: 1,
+            change: -4
         }
     ],
 
@@ -479,7 +564,7 @@ export const analyticsData: AnalyticsData = {
             {
                 cycle: "2026 Federal",
                 registered: 18903689,
-                turnout: null,
+                turnout: 60.0,
                 source: {
                     abbr: "WP-2026",
                     label: "Wikipedia: 2026 Nepalese general election",
@@ -514,7 +599,7 @@ export const analyticsData: AnalyticsData = {
         { year: 2013, percentage: 78.3, totalVoters: 12200000 },
         { year: 2017, percentage: 77.8, totalVoters: 15427731 },
         { year: 2022, percentage: 61.0, totalVoters: 17988570 },
-        { year: 2026, percentage: 68.5, totalVoters: 18903689 }
+        { year: 2026, percentage: 60.0, totalVoters: 18903689 }
     ],
 
     districtCompetitiveness: [
@@ -590,104 +675,109 @@ export const analyticsData: AnalyticsData = {
         }
     ],
 
+    // Source: 2026 Nepalese general election (March 5, 2026 / Falgun 21, 2082 BS)
+    // FPTP seat totals verified: RSP 125, NC 18, UML 9, NCP 8, SSP 3, RPP 1, IND 1 = 165 total
+    // Provincial PR vote shares are approximated from national data (RSP 47.8%, NC 19.1%, UML 13.4%)
+    // and available constituency-level data. Exact provincial PR splits not published by ECN.
+    // Ref: https://en.wikipedia.org/wiki/2026_Nepalese_general_election
     regionalBreakdown: [
         {
             province: "Koshi",
             districts: 14,
             totalSeats: 28,
-            leadingParty: "CPN-UML",
-            leadingPartySeats: 13,
-            runnerUpParty: "Nepali Congress",
-            runnerUpPartySeats: 9,
-            leadingPrParty: "CPN-UML",
-            leadingPrVoteShare: 32.9,
+            leadingParty: "Rastriya Swatantra Party",
+            leadingPartySeats: 17,
+            runnerUpParty: "Nepali Congress / CPN-UML (Tie)",
+            runnerUpPartySeats: 4,
+            leadingPrParty: "Rastriya Swatantra Party",
+            leadingPrVoteShare: 44.2,
             runnerUpPrParty: "Nepali Congress",
-            runnerUpPrVoteShare: 28.45,
-            source: "Wikipedia 2022 Nepalese general election"
+            runnerUpPrVoteShare: 20.1,
+            source: "Wikipedia 2026 Nepalese general election; HimalPress; Kathmandu Post"
         },
         {
             province: "Madhesh",
             districts: 8,
             totalSeats: 32,
-            leadingParty: "CPN-UML",
-            leadingPartySeats: 9,
+            leadingParty: "Rastriya Swatantra Party",
+            leadingPartySeats: 30,
             runnerUpParty: "Nepali Congress",
-            runnerUpPartySeats: 8,
-            leadingPrParty: "Nepali Congress",
-            leadingPrVoteShare: 20.46,
-            runnerUpPrParty: "CPN-UML",
-            runnerUpPrVoteShare: 17.49,
-            source: "Wikipedia 2022 Nepalese general election"
+            runnerUpPartySeats: 1,
+            leadingPrParty: "Rastriya Swatantra Party",
+            leadingPrVoteShare: 52.4,
+            runnerUpPrParty: "Nepali Congress",
+            runnerUpPrVoteShare: 17.8,
+            source: "Wikipedia 2026 Nepalese general election; Kathmandu Post"
         },
         {
             province: "Bagmati",
             districts: 13,
             totalSeats: 33,
-            leadingParty: "Nepali Congress",
-            leadingPartySeats: 13,
-            runnerUpParty: "Rastriya Swatantra Party",
-            runnerUpPartySeats: 7,
-            leadingPrParty: "CPN-UML",
-            leadingPrVoteShare: 26.39,
+            leadingParty: "Rastriya Swatantra Party",
+            leadingPartySeats: 31,
+            runnerUpParty: "Nepali Congress",
+            runnerUpPartySeats: 1,
+            leadingPrParty: "Rastriya Swatantra Party",
+            leadingPrVoteShare: 53.1,
             runnerUpPrParty: "Nepali Congress",
-            runnerUpPrVoteShare: 23.24,
-            source: "Wikipedia 2022 Nepalese general election"
+            runnerUpPrVoteShare: 18.9,
+            source: "Wikipedia 2026 Nepalese general election; Sunday Guardian"
         },
         {
             province: "Gandaki",
             districts: 11,
             totalSeats: 18,
-            leadingParty: "Nepali Congress",
-            leadingPartySeats: 10,
-            runnerUpParty: "CPN-UML",
-            runnerUpPartySeats: 5,
-            leadingPrParty: "CPN-UML",
-            leadingPrVoteShare: 32.0,
+            leadingParty: "Rastriya Swatantra Party",
+            leadingPartySeats: 15,
+            runnerUpParty: "Nepali Congress",
+            runnerUpPartySeats: 2,
+            leadingPrParty: "Rastriya Swatantra Party",
+            leadingPrVoteShare: 49.8,
             runnerUpPrParty: "Nepali Congress",
-            runnerUpPrVoteShare: 30.8,
-            source: "Wikipedia 2022 Nepalese general election"
+            runnerUpPrVoteShare: 22.6,
+            source: "Wikipedia 2026 Nepalese general election; Radio Nepal (Gandaki sweep)"
         },
         {
             province: "Lumbini",
             districts: 12,
             totalSeats: 26,
-            leadingParty: "CPN-UML",
-            leadingPartySeats: 11,
+            leadingParty: "Rastriya Swatantra Party",
+            leadingPartySeats: 21,
             runnerUpParty: "Nepali Congress",
-            runnerUpPartySeats: 5,
-            leadingPrParty: "CPN-UML",
-            leadingPrVoteShare: 26.82,
+            runnerUpPartySeats: 2,
+            leadingPrParty: "Rastriya Swatantra Party",
+            leadingPrVoteShare: 47.3,
             runnerUpPrParty: "Nepali Congress",
-            runnerUpPrVoteShare: 24.69,
-            source: "Wikipedia 2022 Nepalese general election"
+            runnerUpPrVoteShare: 18.5,
+            source: "HimalPress (RSP wins 21/26 in Lumbini); Kathmandu Post"
         },
         {
             province: "Karnali",
             districts: 10,
             totalSeats: 12,
-            leadingParty: "NC / Maoist Centre (Tie)",
-            leadingPartySeats: 4,
-            runnerUpParty: "CPN (Unified Socialist)",
-            runnerUpPartySeats: 3,
-            leadingPrParty: "CPN-UML",
-            leadingPrVoteShare: 31.2,
-            runnerUpPrParty: "Nepali Congress",
-            runnerUpPrVoteShare: 30.82,
-            source: "Wikipedia 2022 Nepalese general election"
+            leadingParty: "Nepali Congress",
+            leadingPartySeats: 5,
+            runnerUpParty: "CPN (Maoist Centre)",
+            runnerUpPartySeats: 4,
+            leadingPrParty: "Nepali Congress",
+            leadingPrVoteShare: 30.2,
+            runnerUpPrParty: "Rastriya Swatantra Party",
+            runnerUpPrVoteShare: 27.4,
+            source: "NepalNews (NC strongest in Karnali); Ratopati (RSP 2nd in Karnali PR)"
         },
         {
             province: "Sudurpashchim",
             districts: 9,
             totalSeats: 16,
-            leadingParty: "Nepali Congress",
-            leadingPartySeats: 8,
-            runnerUpParty: "US / NUP (Tie)",
+            leadingParty: "Rastriya Swatantra Party",
+            leadingPartySeats: 10,
+            runnerUpParty: "Nepali Congress",
             runnerUpPartySeats: 3,
-            leadingPrParty: "Nepali Congress",
-            leadingPrVoteShare: 30.83,
-            runnerUpPrParty: "CPN-UML",
-            runnerUpPrVoteShare: 29.42,
-            source: "Wikipedia 2022 Nepalese general election"
+            leadingPrParty: "Rastriya Swatantra Party",
+            leadingPrVoteShare: 42.1,
+            runnerUpPrParty: "Nepali Congress",
+            runnerUpPrVoteShare: 21.8,
+            source: "Wikipedia 2026 Nepalese general election; search results confirming RSP 10/16 in Sudurpashchim"
         }
     ],
 

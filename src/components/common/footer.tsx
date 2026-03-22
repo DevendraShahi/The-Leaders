@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Twitter, Linkedin, Globe } from "lucide-react";
 import { SubscribeForm } from "./subscribe-form";
+import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/providers/language-provider";
 
 export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
@@ -119,38 +120,52 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                         </ul>
                     </div>
 
-                    {/* Newsletter */}
-                    <div>
-                        <h4 className="font-serif font-bold text-lg mb-6 text-foreground">
-                            {language === "ne" ? "जोडिएका रहनुहोस्" : "Stay Connected"}
-                        </h4>
-                        <p className="text-muted-foreground text-sm mb-4">
-                            {language === "ne"
-                                ? "नवीनतम जीवनीहरू र ऐतिहासिक विश्लेषणहरू प्राप्त गर्न सदस्यता लिनुहोस्।"
-                                : "Subscribe to get the latest biographies and historical insights."}
-                        </p>
-                        <SubscribeForm />
-                        <div className="flex gap-4 mt-6">
-                            {socialLinks && socialLinks.length > 0 ? (
-                                socialLinks.map((link, i) => {
-                                    const Icon = IconMap[link.platform] || Globe;
-                                    return (
-                                        <a
-                                            key={i}
-                                            href={link.url}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
-                                        >
-                                            <Icon className="w-5 h-5" />
-                                        </a>
-                                    );
-                                })
-                            ) : (
-                                <p className="text-sm text-muted-foreground italic">No social links configured.</p>
-                            )}
-                        </div>
-                    </div>
+{/* Newsletter */}
+                     <div>
+                         <h4 className="font-serif font-bold text-lg mb-6 text-foreground">
+                             {language === "ne" ? "जोडिएका रहनुहोस्" : "Stay Connected"}
+                         </h4>
+                         <p className="text-muted-foreground text-sm mb-4">
+                             {language === "ne"
+                                 ? "नवीनतम जीवनीहरू र ऐतिहासिक विश्लेषणहरू प्राप्त गर्न सदस्यता लिनुहोस्।"
+                                 : "Subscribe to get the latest biographies and historical insights."}
+                         </p>
+                         <p className="mb-3 text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                             {language === "ne"
+                                 ? "Google वा Email OTP मार्फत सुरक्षित सदस्यता"
+                                 : "Secure subscription with Google or email OTP"}
+                         </p>
+                          <Link href="/subscribe">
+                              <Button variant="default" size="sm" className="w-full cursor-pointer">
+                                  {language === "ne" ? "सदस्यता लिनुहोस्" : "Subscribe"}
+                              </Button>
+                          </Link>
+                         <p className="mt-2 text-xs text-muted-foreground/80">
+                             {language === "ne"
+                                 ? "सदस्यता लिएर तपाईं हाम्रो गोपनीयता नीति र सेवाका सर्तहरूमा सहमत हुनुहुन्छ।"
+                                 : "By subscribing, you agree to our Privacy Policy and Terms of Service."}
+                         </p>
+                         <div className="flex gap-4 mt-6">
+                             {socialLinks && socialLinks.length > 0 ? (
+                                 socialLinks.map((link, i) => {
+                                     const Icon = IconMap[link.platform] || Globe;
+                                     return (
+                                         <a
+                                             key={i}
+                                             href={link.url}
+                                             target="_blank"
+                                             rel="noopener noreferrer"
+                                             className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                                         >
+                                             <Icon className="w-5 h-5" />
+                                         </a>
+                                     );
+                                 })
+                             ) : (
+                                 <p className="text-sm text-muted-foreground italic">No social links configured.</p>
+                             )}
+                         </div>
+                     </div>
                 </div>
 
                 <div className="border-t border-border pt-8 flex flex-col md:flex-row justify-between items-center gap-4">

@@ -54,19 +54,34 @@ import ViewTracker from "@/components/analytics/ViewTracker";
 
 export async function generateMetadata() {
     const settings = await getSettings();
-
-    return constructMetadata({
-        title: settings?.siteName?.en || "The Leaders",
-        description: settings?.siteDescription?.en || "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy — from the founding of the nation to the present day.",
-        canonical: "/",
-        keywords: settings?.metaKeywords || [
+    const defaultDescription = "An independent digital archive documenting Nepal's political leaders, democratic history, election intelligence, and civic legacy. Also known as LeadersNP.";
+    const configuredDescription = settings?.siteDescription?.en?.trim() || defaultDescription;
+    const enrichedDescription = /leadersnp/i.test(configuredDescription)
+        ? configuredDescription
+        : `${configuredDescription} Also known as LeadersNP.`;
+    const configuredKeywords = Array.isArray(settings?.metaKeywords) && settings?.metaKeywords.length > 0
+        ? settings.metaKeywords
+        : [
             "political biography",
             "Nepal history",
             "democratic leadership",
             "Nepal Congress party",
             "election 2026",
             "Nepal manifesto",
-        ],
+        ];
+    const keywordSet = new Set([
+        ...configuredKeywords,
+        "leadersnp",
+        "leaders np",
+        "The Leaders Nepal",
+        "Nepal political leaders",
+        "Nepal election analysis",
+    ]);
+
+    return constructMetadata({
+        title: settings?.siteName?.en || "The Leaders",
+        description: enrichedDescription,
+        keywords: Array.from(keywordSet),
         icons: settings?.faviconUrl ? {
             icon: settings.faviconUrl,
             shortcut: settings.faviconUrl,
@@ -84,14 +99,19 @@ export default async function RootLayout({
     const settings = await getSettings();
     const maintenanceSettings = settings?.maintenance || null;
     const socialLinks = settings?.socialLinks || [];
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://theleaders.com.np";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://the-leadersnp.com";
+    const facebookAppId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID;
+    const facebookDomainVerification = process.env.NEXT_PUBLIC_FACEBOOK_DOMAIN_VERIFICATION;
     const sameAs = (socialLinks || [])
         .map((item: any) => item?.url)
         .filter((url: string) => typeof url === "string" && /^https?:\/\//.test(url));
     const organizationJsonLd = {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": `${siteUrl}/#organization`,
         name: "The Leaders",
+        alternateName: ["LeadersNP", "The Leaders Nepal", "leadersnp"],
+        description: "Independent civic archive and election intelligence platform focused on Nepal's political leadership, democracy, and public history.",
         url: siteUrl,
         logo: `${siteUrl}/logo.svg`,
         sameAs,
@@ -99,18 +119,23 @@ export default async function RootLayout({
     const websiteJsonLd = {
         "@context": "https://schema.org",
         "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
         name: "The Leaders",
+        alternateName: ["LeadersNP", "leadersnp"],
         url: siteUrl,
         inLanguage: ["en", "ne"],
         publisher: {
-            "@type": "Organization",
-            name: "The Leaders",
+            "@id": `${siteUrl}/#organization`,
         },
     };
 
     return (
         <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <head>
+                {facebookAppId ? <meta property="fb:app_id" content={facebookAppId} /> : null}
+                {facebookDomainVerification ? (
+                    <meta name="facebook-domain-verification" content={facebookDomainVerification} />
+                ) : null}
                 <script defer src="https://cloud.umami.is/script.js" data-website-id="0bb523e8-e03b-451a-9d6a-fea47d96e5f2"></script>
             </head>
             <body

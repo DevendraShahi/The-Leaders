@@ -1,18 +1,18 @@
 import { getLeaders } from "@/lib/leaders-db";
-import LeadersList from "@/components/leaders/LeadersList";
+import LeaderAccordionSlider from "@/components/leaders/LeaderAccordionSlider";
 import { Metadata } from "next";
 import { constructMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = constructMetadata({
-    title: "Leaders",
-    description: "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy — from the founding of the nation to the present day.",
+    title: "Leaders Gallery",
+    description: "Explore Nepal's political leaders in an immersive gallery view. An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy.",
     canonical: "/leaders",
-    keywords: ["Nepal leaders", "political leader profiles Nepal", "Nepal political history leaders"],
+    keywords: ["Nepal leaders gallery", "political leader profiles Nepal", "Nepal political history"],
 });
 
 export const revalidate = 3600;
 
 export default async function LeadersPage() {
     const leaders = await getLeaders();
-    return <LeadersList leaders={leaders} />;
+    return <LeaderAccordionSlider leaders={leaders} />;
 }

@@ -28,7 +28,7 @@ export default async function ElectionDashboard() {
     const [briefs, factChecks, electionArticles, prData, fptpDataset] = await Promise.all([
         getDailyBriefs(),
         getFactChecks(),
-        getElectionArticles(3),
+        getElectionArticles(6),
         getPRData(),
         getFPTPCandidateDataset(),
     ]);
@@ -43,6 +43,8 @@ export default async function ElectionDashboard() {
             latestFactCheck={latestFactCheck}
             electionArticles={electionArticles}
             candidateSummary={candidateSummary}
+            allBriefs={briefs}
+            allFactChecks={factChecks}
         />
     );
 }

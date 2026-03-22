@@ -48,24 +48,24 @@ export interface IArticle {
 const ArticleSchema = new Schema<IArticle>(
     {
         title: {
-            en: { type: String, required: true },
-            ne: { type: String, required: true },
+            en: { type: String, default: "" },
+            ne: { type: String, default: "" },
         },
         content: {
-            en: { type: String, required: true },
-            ne: { type: String, required: true },
+            en: { type: String, default: "" },
+            ne: { type: String, default: "" },
         },
         excerpt: {
-            en: { type: String, required: true },
-            ne: { type: String, required: true },
+            en: { type: String, default: "" },
+            ne: { type: String, default: "" },
         },
         author: {
-            en: { type: String, required: true },
-            ne: { type: String, required: true },
+            en: { type: String, default: "" },
+            ne: { type: String, default: "" },
         },
         category: {
-            en: { type: String, required: true },
-            ne: { type: String, required: true },
+            en: { type: String, default: "" },
+            ne: { type: String, default: "" },
         },
         slug: { type: String, required: true, unique: true },
         image: { type: String, required: false, default: '' },
@@ -108,6 +108,11 @@ ArticleSchema.index({ status: 1 });
 ArticleSchema.index({ publishedDate: -1 });
 ArticleSchema.index({ 'title.en': 'text', 'title.ne': 'text' }); // Text search
 
-const Article: Model<IArticle> = models.Article || mongoose.model("Article", ArticleSchema);
+// Clear mongoose model cache for this model to allow Next.js hot-reloading to apply schema changes
+if (mongoose.models.Article) {
+    delete mongoose.models.Article;
+}
+
+const Article: Model<IArticle> = mongoose.model("Article", ArticleSchema);
 
 export default Article;

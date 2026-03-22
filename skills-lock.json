@@ -7,14 +7,19 @@
       "computedHash": "79fa87cd5460c80dc842153155b26bd4a3cad9858475c2e1ee50cab6dcd1fbbe"
     },
     "frontend-design": {
-      "source": "sickn33/antigravity-awesome-skills",
+      "source": "anthropics/skills",
       "sourceType": "github",
-      "computedHash": "932dffd1cbf32f81317d9b6f209991fca1f41f7785f307667ec5a09168ecbb21"
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
     },
     "frontend-ui-ux-engineer": {
       "source": "404kidwiz/claude-supercode-skills",
       "sourceType": "github",
       "computedHash": "074176a7c86baeea322124c5d3dd0104561d752ca408ff994ae742b61c19ca66"
+    },
+    "seo-audit": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "computedHash": "27156d103697411bba81520fef469e77bfba4c65d904c841e4965a158d531fbd"
     },
     "shadcn-ui": {
       "source": "google-labs-code/stitch-skills",

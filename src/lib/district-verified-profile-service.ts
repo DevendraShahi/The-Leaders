@@ -19,8 +19,8 @@ import type {
 const WIKIPEDIA_REST_BASE = "https://en.wikipedia.org/api/rest_v1";
 const WIKIPEDIA_ACTION_BASE = "https://en.wikipedia.org/w/api.php";
 const WIKIDATA_ENTITY_BASE = "https://www.wikidata.org/wiki/Special:EntityData";
-const WIKIPEDIA_ELECTION_2022_URL =
-    "https://en.wikipedia.org/wiki/2022_Nepalese_general_election";
+const WIKIPEDIA_ELECTION_2026_URL =
+    "https://en.wikipedia.org/wiki/2026_Nepalese_general_election";
 
 const CACHE_TTL_MS = 1000 * 60 * 60 * 6;
 const REQUEST_TIMEOUT_MS = 6500;
@@ -626,13 +626,14 @@ function parseElectorateFromHtml(html: string): number | undefined {
     return parseIntLike(stripHtml(electorateMatch[1])) ?? undefined;
 }
 
-function parse2022ConstituencyResultFromHtml(
+function parse2026ConstituencyResultFromHtml(
     html: string
 ): Omit<WikiConstituencyResult, "constituencyName" | "pageTitle" | "sourceUrl"> | null {
+    // Try 2026 section first, then fall back to any 2026 mention
     const headingIndex =
-        html.search(/id=["']2022_general_election["']/i) >= 0
-            ? html.search(/id=["']2022_general_election["']/i)
-            : html.search(/2022 general election/i);
+        html.search(/id=["']2026_general_election["']/i) >= 0
+            ? html.search(/id=["']2026_general_election["']/i)
+            : html.search(/2026 general election/i);
 
     if (headingIndex < 0) return null;
 
@@ -730,7 +731,7 @@ async function resolveConstituencyPage(constituencyName: string): Promise<{ titl
     return null;
 }
 
-async function fetchConstituency2022Result(
+async function fetchConstituency2026Result(
     constituencyName: string
 ): Promise<WikiConstituencyResult | null> {
     const cacheKey = normalizeKey(constituencyName);
@@ -743,7 +744,7 @@ async function fetchConstituency2022Result(
         return null;
     }
 
-    const parsed = parse2022ConstituencyResultFromHtml(resolved.html);
+    const parsed = parse2026ConstituencyResultFromHtml(resolved.html);
     if (!parsed) {
         constituencyCache.set(cacheKey, { data: null, expiresAt: Date.now() + CACHE_TTL_MS });
         return null;
@@ -764,7 +765,7 @@ async function enrichElectionRowsWithWikipedia(
     rows: DistrictConstituencyResult[]
 ): Promise<{ rows: DistrictConstituencyResult[]; verifiedCount: number; sourcePages: string[] }> {
     const wikiRows = await Promise.all(
-        rows.map((row) => fetchConstituency2022Result(row.constituencyName))
+        rows.map((row) => fetchConstituency2026Result(row.constituencyName))
     );
 
     let verifiedCount = 0;
@@ -960,7 +961,7 @@ export async function getVerifiedDistrictProfile(
 
     const resolvedSummary = summarize(electionEnriched.rows);
     const electionSourceUrl =
-        electionEnriched.sourcePages[0] ?? WIKIPEDIA_ELECTION_2022_URL;
+        electionEnriched.sourcePages[0] ?? WIKIPEDIA_ELECTION_2026_URL;
 
     const mergedProfile: DistrictVerifiedProfile = {
         ...localProfile,
@@ -984,12 +985,12 @@ export async function getVerifiedDistrictProfile(
                 : source("The Leaders Findings", "local"),
             electionData:
                 electionEnriched.verifiedCount > 0
-                    ? source("Wikipedia constituency election tables (2022)", "wikipedia", {
+                    ? source("Wikipedia constituency election tables (2026)", "wikipedia", {
                         url: electionSourceUrl,
-                        note: `${electionEnriched.verifiedCount}/${electionEnriched.rows.length} constituency results were verified from Wikipedia pages; remaining rows use local fallback.`,
+                        note: `${electionEnriched.verifiedCount}/${electionEnriched.rows.length} constituency results were verified from Wikipedia pages; remaining rows use local 2026 dataset.`,
                     })
-                    : source("Local constituency election dataset", "local", {
-                        note: "Wikipedia constituency verification unavailable for this district in this request.",
+                    : source("Local 2026 constituency election dataset", "local", {
+                        note: "Wikipedia 2026 constituency verification unavailable; local March 5, 2026 election results are shown.",
                     }),
             candidateData: source("ECN FPTP-2082 candidate dataset", "local", {
                 note: `${districtFptpCandidates.length} district candidates loaded from the official Election Commission candidate file.`,

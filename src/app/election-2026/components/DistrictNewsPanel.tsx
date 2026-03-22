@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/components/providers/language-provider";
 import { getDistrictElectionProfileByName } from "@/lib/district-election-data";
+import { getHorDistrictProfileByName } from "@/lib/district-election-data-2026";
 import { useElectionStore } from "@/lib/election-store";
 import type {
     DistrictProfileApiResponse,
@@ -35,14 +36,16 @@ type SectionKey =
     | "demographics"
     | "snapshot"
     | "partyWins"
+    | "knowYourHor"
     | "constituencies"
     | "candidates"
     | "trust";
 
 const DEFAULT_SECTION_STATE: Record<SectionKey, boolean> = {
-    demographics: false,
+    demographics: true,
     snapshot: false,
     partyWins: false,
+    knowYourHor: true,
     constituencies: false,
     candidates: false,
     trust: false,
@@ -57,6 +60,9 @@ const PARTY_COLOR_ALIASES: Record<string, string> = {
         "नेपाल कम्युनिष्ट पार्टी (माओवादी केन्द्र)",
     "जनता समाजवादी पार्टी, नेपाल": "जनसमाजवादी पार्टी, नेपाल",
     "राष्ट्रिय स्वतन्त्र पार्टी": "Rastriya Swatantra Party",
+    "श्रम संस्कृति पार्टी": "Shram Sanskriti Party",
+    "RSP": "Rastriya Swatantra Party",
+    "SSP": "Shram Sanskriti Party",
     "जनमत पार्टी": "Janamat Party",
     "लोकतान्त्रिक समाजवादी पार्टी": "Loktantrik Samajbadi Party Nepal",
     "लोकतान्त्रिक समाजवादी पार्टी नेपाल":
@@ -385,6 +391,11 @@ export function DistrictNewsPanel({ district, onClose }: DistrictNewsPanelProps)
         [district]
     );
 
+    const horProfile = useMemo(
+        () => (district ? getHorDistrictProfileByName(district) : null),
+        [district]
+    );
+
     const { data: verifiedProfile, isFetching: isVerifiedFetching } = useQuery({
         queryKey: ["district-verified-profile", DISTRICT_PROFILE_QUERY_VERSION, district],
         queryFn: () =>
@@ -496,6 +507,9 @@ export function DistrictNewsPanel({ district, onClose }: DistrictNewsPanelProps)
         onClose?.();
     };
 
+    const leadingParty = profile?.summary.partyWins[0] ?? null;
+    const leadingPartyColor = leadingParty ? getPartyColor(leadingParty.party) : null;
+
     const summaryMetrics = profile
         ? [
             {
@@ -539,15 +553,54 @@ export function DistrictNewsPanel({ district, onClose }: DistrictNewsPanelProps)
                                     </p>
                                 )}
                                 <div className="mt-3 flex flex-wrap items-center gap-2">
+                                    <span
+                                        className="border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.17em]"
+                                        style={{
+                                            borderColor: "#4169E1",
+                                            color: "#4169E1",
+                                            backgroundColor: "#4169E11A",
+                                        }}
+                                    >
+                                        March 5, 2026 · 2082 Election
+                                    </span>
+                                    {horProfile && horProfile.constituencyResults.length > 0 && (
+                                        <span
+                                            className="border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.15em]"
+                                            style={{
+                                                borderColor: "#059669",
+                                                color: "#059669",
+                                                backgroundColor: "#0596691A",
+                                            }}
+                                        >
+                                            {horProfile.constituencyResults.length} HoR Seat
+                                            {horProfile.constituencyResults.length > 1 ? "s" : ""}
+                                        </span>
+                                    )}
+                                    {leadingParty && leadingPartyColor && (
+                                        <span
+                                            className="inline-flex items-center gap-1.5 border px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.15em]"
+                                            style={{
+                                                borderColor: withHexAlpha(leadingPartyColor, "66"),
+                                                color: leadingPartyColor,
+                                                backgroundColor: withHexAlpha(leadingPartyColor, "12"),
+                                            }}
+                                        >
+                                            <span
+                                                className="inline-block h-1.5 w-1.5 rounded-full"
+                                                style={{ backgroundColor: leadingPartyColor }}
+                                            />
+                                            {leadingParty.party} · {leadingParty.wins} seat{leadingParty.wins > 1 ? "s" : ""}
+                                        </span>
+                                    )}
                                     <span className="border border-border/75 bg-muted/20 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.17em] text-muted-foreground">
                                         {verifiedProfile
-                                            ? "Verified data mode"
-                                            : "Local fallback mode"}
+                                            ? "Verified"
+                                            : "Local data"}
                                     </span>
                                     {isVerifiedFetching && (
                                         <span className="inline-flex items-center gap-1.5 text-[11px] text-muted-foreground">
                                             <Loader2 className="h-3 w-3 animate-spin" />
-                                            Syncing trusted sources
+                                            Syncing
                                         </span>
                                     )}
                                 </div>
@@ -606,92 +659,435 @@ export function DistrictNewsPanel({ district, onClose }: DistrictNewsPanelProps)
                                     </div>
                                 </section>
 
+                                {openSections.partyWins && (
                                 <PanelSection
-                                    title="District Demographics"
-                                    open={openSections.demographics}
-                                    onToggle={() =>
-                                        toggleSection("demographics")
-                                    }
+                                    title="Party Wins · 2026 FPTP"
+                                    open={openSections.partyWins}
+                                    onToggle={() => toggleSection("partyWins")}
                                 >
-                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                                        {[
-                                            {
-                                                label: "Population (2021)",
-                                                value: compactNumber.format(
-                                                    profile.population2021
-                                                ),
-                                                sourceKey:
-                                                    "population2021" as const,
-                                                icon: Users,
-                                            },
-                                            {
-                                                label: "Literacy Rate",
-                                                value: `${profile.literacyRatePercent}%`,
-                                                sourceKey:
-                                                    "literacyRatePercent" as const,
-                                                icon: TrendingUp,
-                                            },
-                                            {
-                                                label: "Area",
-                                                value: `${fullNumber.format(
-                                                    profile.areaSqKm
-                                                )} km²`,
-                                                sourceKey: "areaSqKm" as const,
-                                                icon: MapPin,
-                                            },
-                                            {
-                                                label: "Population Density",
-                                                value: `${fullNumber.format(
-                                                    profile.populationDensity
-                                                )} /km²`,
-                                                sourceKey:
-                                                    "populationDensity" as const,
-                                                icon: Users,
-                                            },
-                                            {
-                                                label: "Sex Ratio",
-                                                value: `${profile.sexRatio}`,
-                                                sourceKey: "sexRatio" as const,
-                                                icon: Users,
-                                            },
-                                            {
-                                                label: "Annual Growth",
-                                                value: `${profile.annualGrowthRatePercent}%`,
-                                                sourceKey:
-                                                    "annualGrowthRatePercent" as const,
-                                                icon: TrendingUp,
-                                            },
-                                        ].map((item) => (
-                                            <div
-                                                key={item.label}
-                                                className="border border-border/70 bg-background/65 p-4"
-                                            >
-                                                <div className="flex items-center gap-2 text-muted-foreground">
-                                                    <item.icon className="h-3.5 w-3.5" />
-                                                    <span className="font-mono text-[10px] uppercase tracking-[0.15em]">
-                                                        {item.label}
-                                                    </span>
-                                                </div>
-                                                <p className="mt-2 font-editorial text-[1.75rem] leading-none text-foreground">
-                                                    {item.value}
-                                                </p>
-                                                <div className="mt-2 text-[11px] text-muted-foreground">
-                                                    <SourceReference
-                                                        label={sourceLabel(
-                                                            item.sourceKey
-                                                        )}
-                                                        href={sourceUrl(
-                                                            item.sourceKey
-                                                        )}
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    {profile.summary.partyWins.length === 0 ? (
+                                        <p className="text-sm text-muted-foreground">
+                                            No party wins data available.
+                                        </p>
+                                    ) : (
+                                        <div className="space-y-2.5">
+                                            {profile.summary.partyWins.map(
+                                                (party) => {
+                                                    const seatShare =
+                                                        profile.summary
+                                                            .constituencyCount >
+                                                            0
+                                                            ? toOneDecimal(
+                                                                (party.wins /
+                                                                    profile
+                                                                        .summary
+                                                                        .constituencyCount) *
+                                                                100
+                                                            )
+                                                            : 0;
+                                                    const partyColor =
+                                                        getPartyColor(
+                                                            party.party
+                                                        );
+
+                                                    return (
+                                                        <div
+                                                            key={party.party}
+                                                            className="border border-border/70 bg-background/65 p-3"
+                                                            style={
+                                                                partyColor
+                                                                    ? {
+                                                                        borderColor:
+                                                                            withHexAlpha(
+                                                                                partyColor,
+                                                                                "66"
+                                                                            ),
+                                                                        backgroundColor:
+                                                                            withHexAlpha(
+                                                                                partyColor,
+                                                                                "10"
+                                                                            ),
+                                                                    }
+                                                                    : undefined
+                                                            }
+                                                        >
+                                                            <div className="mb-2 flex items-center justify-between gap-3">
+                                                                <div className="flex items-center gap-2">
+                                                                    {partyColor && (
+                                                                        <span
+                                                                            className="inline-block h-2.5 w-2.5 shrink-0 rounded-full"
+                                                                            style={{ backgroundColor: partyColor }}
+                                                                        />
+                                                                    )}
+                                                                    <p className="text-sm font-medium text-foreground">
+                                                                        {party.party}
+                                                                    </p>
+                                                                </div>
+                                                                <p className="font-mono text-xs text-muted-foreground">
+                                                                    {party.wins}{" "}
+                                                                    seat
+                                                                    {party.wins >
+                                                                        1
+                                                                        ? "s"
+                                                                        : ""}{" "}
+                                                                    ({seatShare}
+                                                                    %)
+                                                                </p>
+                                                            </div>
+                                                            <div className="h-1.5 overflow-hidden bg-muted/60">
+                                                                <div
+                                                                    className="h-full transition-all duration-500"
+                                                                    style={{
+                                                                        width: `${Math.max(
+                                                                            seatShare,
+                                                                            party.wins >
+                                                                                0
+                                                                                ? 8
+                                                                                : 0
+                                                                        )}%`,
+                                                                        backgroundColor:
+                                                                            partyColor ??
+                                                                            "hsl(var(--primary))",
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                            )}
+                                        </div>
+                                    )}
                                 </PanelSection>
+                                )}
 
                                 <PanelSection
-                                    title="Election Snapshot"
+                                    title="Know your HoR"
+                                    open={openSections.knowYourHor}
+                                    onToggle={() => toggleSection("knowYourHor")}
+                                    meta="House of Representatives"
+                                >
+                                    {!horProfile ? (
+                                        <p className="text-sm text-muted-foreground">
+                                            2026 HoR data is not available for
+                                            this district.
+                                        </p>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            {horProfile.constituencyResults.map(
+                                                (result, index) => {
+                                                    const winnerPartyColor =
+                                                        getPartyColor(
+                                                            result.winnerParty
+                                                        );
+                                                    const leadingColor =
+                                                        winnerPartyColor;
+
+                                                    return (
+                                                        <div
+                                                            key={
+                                                                result.constituencyCode
+                                                            }
+                                                            className="overflow-hidden border border-border/75 bg-card/40"
+                                                            style={
+                                                                leadingColor
+                                                                    ? {
+                                                                          borderLeft: `4px solid ${leadingColor}`,
+                                                                          backgroundColor:
+                                                                              withHexAlpha(
+                                                                                  leadingColor,
+                                                                                  "08"
+                                                                              ),
+                                                                      }
+                                                                    : undefined
+                                                            }
+                                                        >
+                                                            <div className="flex flex-wrap items-start justify-between gap-2 border-b border-border/50 bg-muted/25 px-4 py-3">
+                                                                <div>
+                                                                    <p className="home-title-md text-[1.05rem] !leading-[1.2] text-foreground">
+                                                                        {
+                                                                            result.constituencyName
+                                                                        }
+                                                                    </p>
+                                                                    <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+                                                                        Seat #
+                                                                        {index +
+                                                                            1}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="text-right">
+                                                                    <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                        Turnout
+                                                                    </p>
+                                                                    <p className="font-mono text-sm font-semibold text-foreground">
+                                                                        {
+                                                                            result.turnoutPercent
+                                                                        }
+                                                                        %
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="p-4">
+                                                                <div className="mb-3 flex items-center justify-between gap-3 rounded-none border-2 px-4 py-3"
+                                                                    style={
+                                                                        winnerPartyColor
+                                                                            ? {
+                                                                                  borderColor:
+                                                                                      withHexAlpha(
+                                                                                          winnerPartyColor,
+                                                                                          "55"
+                                                                                      ),
+                                                                                  backgroundColor:
+                                                                                      withHexAlpha(
+                                                                                          winnerPartyColor,
+                                                                                          "14"
+                                                                                      ),
+                                                                              }
+                                                                            : undefined
+                                                                    }
+                                                                        >
+                                                                            <div className="min-w-0 flex-1">
+                                                                                <div className="mb-1.5 flex items-center gap-2">
+                                                                                    <span
+                                                                                className="inline-block rounded-full bg-emerald-500/90 px-2 py-0.5 font-mono text-[9px] font-semibold uppercase tracking-[0.1em] text-white"
+                                                                            >
+                                                                                Winner
+                                                                            </span>
+                                                                            {winnerPartyColor && (
+                                                                                <span
+                                                                                    className="inline-block h-2 w-2 rounded-full"
+                                                                                    style={{
+                                                                                        backgroundColor:
+                                                                                            winnerPartyColor,
+                                                                                    }}
+                                                                                />
+                                                                            )}
+                                                                        </div>
+                                                                        <p className="truncate font-semibold text-foreground">
+                                                                            {
+                                                                                result.winnerName
+                                                                            }
+                                                                        </p>
+                                                                        <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                                                                            <span
+                                                                                className="inline-flex items-center border px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.08em]"
+                                                                                style={
+                                                                                    winnerPartyColor
+                                                                                        ? {
+                                                                                              borderColor: withHexAlpha(
+                                                                                                  winnerPartyColor,
+                                                                                                  "70"
+                                                                                              ),
+                                                                                              backgroundColor: withHexAlpha(
+                                                                                                  winnerPartyColor,
+                                                                                                  "20"
+                                                                                              ),
+                                                                                              color: winnerPartyColor,
+                                                                                          }
+                                                                                        : undefined
+                                                                                }
+                                                                            >
+                                                                                {
+                                                                                    result.winnerPartyAbbr
+                                                                                }
+                                                                            </span>
+                                                                            <span className="font-mono text-[10px] text-muted-foreground">
+                                                                                {
+                                                                                    result.winnerParty
+                                                                                }
+                                                                            </span>
+                                                                            <span className="text-muted-foreground/60">
+                                                                                •
+                                                                            </span>
+                                                                            <span className="font-mono text-[10px] text-muted-foreground">
+                                                                                {
+                                                                                    result.winnerSymbol
+                                                                                }
+                                                                            </span>
+                                                                        </div>
+                                                                            </div>
+                                                                    <div className="shrink-0 text-right">
+                                                                        <p className="font-editorial text-[1.6rem] leading-none text-foreground">
+                                                                            {fullNumber.format(
+                                                                                result.winnerVotes
+                                                                            )}
+                                                                        </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                            )}
+                                        </div>
+                                    )}
+                                </PanelSection>
+
+                                {openSections.constituencies && (
+                                <PanelSection
+                                    title="Constituency Results · 2026"
+                                    open={openSections.constituencies}
+                                    onToggle={() =>
+                                        toggleSection("constituencies")
+                                    }
+                                >
+                                    {profile.constituencyResults.length === 0 ? (
+                                        <p className="text-sm text-muted-foreground">
+                                            Constituency-level result rows are
+                                            not available for this district.
+                                        </p>
+                                    ) : (
+                                        <div className="overflow-hidden border border-border/75">
+                                            {profile.constituencyResults.map(
+                                                (result, index) => {
+                                                    const winnerPartyColor =
+                                                        getPartyColor(
+                                                            result.winnerParty
+                                                        );
+                                                    const runnerUpPartyColor =
+                                                        getPartyColor(
+                                                            result.runnerUpParty
+                                                        );
+                                                    const leadingPartyColor =
+                                                        winnerPartyColor ??
+                                                        runnerUpPartyColor;
+
+                                                    return (
+                                                        <div
+                                                            key={
+                                                                result.constituencyCode
+                                                            }
+                                                            className="border-b border-border/65 bg-card/40 p-4 last:border-b-0"
+                                                            style={
+                                                                leadingPartyColor
+                                                                    ? {
+                                                                        borderLeft: `3px solid ${leadingPartyColor}`,
+                                                                        backgroundColor:
+                                                                            withHexAlpha(
+                                                                                leadingPartyColor,
+                                                                                "08"
+                                                                            ),
+                                                                    }
+                                                                    : undefined
+                                                            }
+                                                        >
+                                                            <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+                                                                <div>
+                                                                    <p className="home-title-md text-[1.1rem] !leading-[1.2] text-foreground">
+                                                                        {
+                                                                            result.constituencyName
+                                                                        }
+                                                                    </p>
+                                                                    <p className="mt-0.5 font-mono text-[9px] uppercase tracking-[0.14em] text-muted-foreground">
+                                                                        Seat #{index + 1}
+                                                                    </p>
+                                                                </div>
+                                                                <div className="text-right">
+                                                                    <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                        Turnout
+                                                                    </p>
+                                                                    <p className="font-mono text-sm font-medium text-foreground">
+                                                                        {result.turnoutPercent}%
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="space-y-2">
+                                                                <div className="flex items-center justify-between gap-3 rounded-none border border-border/50 bg-background/60 px-3 py-2">
+                                                                    <div className="min-w-0 flex-1">
+                                                                        <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                            Winner
+                                                                        </p>
+                                                                        <p className="truncate text-sm font-semibold text-foreground">
+                                                                            {result.winnerName}
+                                                                        </p>
+                                                                        <span
+                                                                            className="mt-0.5 inline-flex items-center border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em]"
+                                                                            style={
+                                                                                winnerPartyColor
+                                                                                    ? {
+                                                                                        borderColor: withHexAlpha(winnerPartyColor, "66"),
+                                                                                        backgroundColor: withHexAlpha(winnerPartyColor, "1A"),
+                                                                                        color: winnerPartyColor,
+                                                                                    }
+                                                                                    : undefined
+                                                                            }
+                                                                        >
+                                                                            {result.winnerParty}
+                                                                        </span>
+                                                                    </div>
+                                                                    <p className="shrink-0 font-editorial text-[1.4rem] leading-none text-foreground">
+                                                                        {fullNumber.format(result.winnerVotes)}
+                                                                    </p>
+                                                                </div>
+
+                                                                <div className="flex items-center justify-between gap-3 px-3 py-2 opacity-80">
+                                                                    <div className="min-w-0 flex-1">
+                                                                        <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                            Runner-up
+                                                                        </p>
+                                                                        <p className="truncate text-sm text-foreground">
+                                                                            {result.runnerUpName}
+                                                                        </p>
+                                                                        <span
+                                                                            className="mt-0.5 inline-flex items-center border px-1.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.1em]"
+                                                                            style={
+                                                                                runnerUpPartyColor
+                                                                                    ? {
+                                                                                        borderColor: withHexAlpha(runnerUpPartyColor, "66"),
+                                                                                        backgroundColor: withHexAlpha(runnerUpPartyColor, "1A"),
+                                                                                        color: runnerUpPartyColor,
+                                                                                    }
+                                                                                    : undefined
+                                                                            }
+                                                                        >
+                                                                            {result.runnerUpParty}
+                                                                        </span>
+                                                                    </div>
+                                                                    <p className="shrink-0 font-mono text-sm text-foreground">
+                                                                        {fullNumber.format(result.runnerUpVotes)}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="mt-2.5 grid grid-cols-3 gap-2 border-t border-dashed border-border/60 pt-2.5 text-xs">
+                                                                <div>
+                                                                    <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                        Margin
+                                                                    </p>
+                                                                    <p className="mt-0.5 font-mono font-medium text-foreground">
+                                                                        {fullNumber.format(result.marginVotes)}
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                        Vote Share
+                                                                    </p>
+                                                                    <p className="mt-0.5 font-mono font-medium text-foreground">
+                                                                        {result.winnerVoteShare}%
+                                                                    </p>
+                                                                </div>
+                                                                <div>
+                                                                    <p className="font-mono text-[9px] uppercase tracking-[0.12em] text-muted-foreground">
+                                                                        Valid Votes
+                                                                    </p>
+                                                                    <p className="mt-0.5 font-mono font-medium text-foreground">
+                                                                        {fullNumber.format(result.validVotes)}
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                }
+                                            )}
+                                        </div>
+                                    )}
+                                </PanelSection>
+                                )}
+
+                                {openSections.snapshot && (
+                                <PanelSection
+                                    title="Election Snapshot · 2026"
                                     open={openSections.snapshot}
                                     onToggle={() => toggleSection("snapshot")}
                                     meta={sourceLabel("electionData")}
@@ -759,7 +1155,9 @@ export function DistrictNewsPanel({ district, onClose }: DistrictNewsPanelProps)
                                         ))}
                                     </div>
                                 </PanelSection>
+                                )}
 
+                                {openSections.candidates && (
                                 <PanelSection
                                     title="FPTP Candidates (2082)"
                                     open={openSections.candidates}
@@ -902,288 +1300,7 @@ export function DistrictNewsPanel({ district, onClose }: DistrictNewsPanelProps)
                                         )}
                                     </div>
                                 </PanelSection>
-
-                                <PanelSection
-                                    title="Party Wins (FPTP 2022)"
-                                    open={openSections.partyWins}
-                                    onToggle={() => toggleSection("partyWins")}
-                                >
-                                    {profile.summary.partyWins.length === 0 ? (
-                                        <p className="text-sm text-muted-foreground">
-                                            No party wins data available.
-                                        </p>
-                                    ) : (
-                                        <div className="space-y-2.5">
-                                            {profile.summary.partyWins.map(
-                                                (party) => {
-                                                    const seatShare =
-                                                        profile.summary
-                                                            .constituencyCount >
-                                                            0
-                                                            ? toOneDecimal(
-                                                                (party.wins /
-                                                                    profile
-                                                                        .summary
-                                                                        .constituencyCount) *
-                                                                100
-                                                            )
-                                                            : 0;
-                                                    const partyColor =
-                                                        getPartyColor(
-                                                            party.party
-                                                        );
-
-                                                    return (
-                                                        <div
-                                                            key={party.party}
-                                                            className="border border-border/70 bg-background/65 p-3"
-                                                            style={
-                                                                partyColor
-                                                                    ? {
-                                                                        borderColor:
-                                                                            withHexAlpha(
-                                                                                partyColor,
-                                                                                "66"
-                                                                            ),
-                                                                        backgroundColor:
-                                                                            withHexAlpha(
-                                                                                partyColor,
-                                                                                "10"
-                                                                            ),
-                                                                    }
-                                                                    : undefined
-                                                            }
-                                                        >
-                                                            <div className="mb-2 flex items-center justify-between gap-3">
-                                                                <p className="text-sm font-medium text-foreground">
-                                                                    {party.party}
-                                                                </p>
-                                                                <p className="font-mono text-xs text-muted-foreground">
-                                                                    {party.wins}{" "}
-                                                                    seat
-                                                                    {party.wins >
-                                                                        1
-                                                                        ? "s"
-                                                                        : ""}{" "}
-                                                                    ({seatShare}
-                                                                    %)
-                                                                </p>
-                                                            </div>
-                                                            <div className="h-1.5 overflow-hidden bg-muted/60">
-                                                                <div
-                                                                    className="h-full transition-all duration-500"
-                                                                    style={{
-                                                                        width: `${Math.max(
-                                                                            seatShare,
-                                                                            party.wins >
-                                                                                0
-                                                                                ? 8
-                                                                                : 0
-                                                                        )}%`,
-                                                                        backgroundColor:
-                                                                            partyColor ??
-                                                                            "hsl(var(--primary))",
-                                                                    }}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                            )}
-                                        </div>
-                                    )}
-                                </PanelSection>
-
-                                <PanelSection
-                                    title="Last Election Results (2022)"
-                                    open={openSections.constituencies}
-                                    onToggle={() =>
-                                        toggleSection("constituencies")
-                                    }
-                                >
-                                    {profile.constituencyResults.length === 0 ? (
-                                        <p className="text-sm text-muted-foreground">
-                                            Constituency-level result rows are
-                                            not available for this district.
-                                        </p>
-                                    ) : (
-                                        <div className="overflow-hidden border border-border/75">
-                                            {profile.constituencyResults.map(
-                                                (result, index) => {
-                                                    const winnerPartyColor =
-                                                        getPartyColor(
-                                                            result.winnerParty
-                                                        );
-                                                    const runnerUpPartyColor =
-                                                        getPartyColor(
-                                                            result.runnerUpParty
-                                                        );
-                                                    const leadingPartyColor =
-                                                        winnerPartyColor ??
-                                                        runnerUpPartyColor;
-
-                                                    return (
-                                                        <div
-                                                            key={
-                                                                result.constituencyCode
-                                                            }
-                                                            className="border-b border-border/65 bg-card/40 p-4 last:border-b-0"
-                                                            style={
-                                                                leadingPartyColor
-                                                                    ? {
-                                                                        borderLeft: `3px solid ${leadingPartyColor}`,
-                                                                        backgroundColor:
-                                                                            withHexAlpha(
-                                                                                leadingPartyColor,
-                                                                                "08"
-                                                                            ),
-                                                                    }
-                                                                    : undefined
-                                                            }
-                                                        >
-                                                            <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
-                                                                <div>
-                                                                    <p className="home-title-md text-[1.25rem] !leading-[1.15] text-foreground">
-                                                                        {
-                                                                            result.constituencyName
-                                                                        }
-                                                                    </p>
-                                                                    <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
-                                                                        Seat #
-                                                                        {index + 1}
-                                                                    </p>
-                                                                </div>
-                                                                <p className="font-mono text-xs text-muted-foreground">
-                                                                    Turnout:{" "}
-                                                                    {
-                                                                        result.turnoutPercent
-                                                                    }
-                                                                    %
-                                                                </p>
-                                                            </div>
-
-                                                            <div className="space-y-2 text-sm">
-                                                                <div className="grid grid-cols-[1fr_auto] gap-3">
-                                                                    <p className="text-muted-foreground">
-                                                                        Winner:{" "}
-                                                                        <span className="font-semibold text-foreground">
-                                                                            {
-                                                                                result.winnerName
-                                                                            }
-                                                                        </span>{" "}
-                                                                        <span
-                                                                            className="inline-flex items-center border px-1.5 py-0.5 align-middle"
-                                                                            style={
-                                                                                winnerPartyColor
-                                                                                    ? {
-                                                                                        borderColor:
-                                                                                            withHexAlpha(
-                                                                                                winnerPartyColor,
-                                                                                                "66"
-                                                                                            ),
-                                                                                        backgroundColor:
-                                                                                            withHexAlpha(
-                                                                                                winnerPartyColor,
-                                                                                                "1A"
-                                                                                            ),
-                                                                                        color: winnerPartyColor,
-                                                                                    }
-                                                                                    : undefined
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                result.winnerParty
-                                                                            }
-                                                                        </span>
-                                                                    </p>
-                                                                    <p className="font-mono text-foreground">
-                                                                        {fullNumber.format(
-                                                                            result.winnerVotes
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-
-                                                                <div className="grid grid-cols-[1fr_auto] gap-3">
-                                                                    <p className="text-muted-foreground">
-                                                                        Runner-up:{" "}
-                                                                        <span className="font-semibold text-foreground">
-                                                                            {
-                                                                                result.runnerUpName
-                                                                            }
-                                                                        </span>{" "}
-                                                                        <span
-                                                                            className="inline-flex items-center border px-1.5 py-0.5 align-middle"
-                                                                            style={
-                                                                                runnerUpPartyColor
-                                                                                    ? {
-                                                                                        borderColor:
-                                                                                            withHexAlpha(
-                                                                                                runnerUpPartyColor,
-                                                                                                "66"
-                                                                                            ),
-                                                                                        backgroundColor:
-                                                                                            withHexAlpha(
-                                                                                                runnerUpPartyColor,
-                                                                                                "1A"
-                                                                                            ),
-                                                                                        color: runnerUpPartyColor,
-                                                                                    }
-                                                                                    : undefined
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                result.runnerUpParty
-                                                                            }
-                                                                        </span>
-                                                                    </p>
-                                                                    <p className="font-mono text-foreground">
-                                                                        {fullNumber.format(
-                                                                            result.runnerUpVotes
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="mt-3 grid grid-cols-3 gap-2 border-t border-dashed border-border/70 pt-3 text-xs">
-                                                                <div>
-                                                                    <p className="text-muted-foreground">
-                                                                        Margin
-                                                                    </p>
-                                                                    <p className="font-mono text-foreground">
-                                                                        {fullNumber.format(
-                                                                            result.marginVotes
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-                                                                <div>
-                                                                    <p className="text-muted-foreground">
-                                                                        Winner Share
-                                                                    </p>
-                                                                    <p className="font-mono text-foreground">
-                                                                        {
-                                                                            result.winnerVoteShare
-                                                                        }
-                                                                        %
-                                                                    </p>
-                                                                </div>
-                                                                <div>
-                                                                    <p className="text-muted-foreground">
-                                                                        Valid Votes
-                                                                    </p>
-                                                                    <p className="font-mono text-foreground">
-                                                                        {fullNumber.format(
-                                                                            result.validVotes
-                                                                        )}
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }
-                                            )}
-                                        </div>
-                                    )}
-                                </PanelSection>
+                                )}
 
                                 <PanelSection
                                     title="Data Trust Layer"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -21,12 +21,17 @@ interface LeadersGridClientProps {
     leaders: Leader[];
 }
 
+const CARD_COLLAPSED_WIDTH = 104;
+const CARD_EXPANDED_WIDTH = 300;
+const CONTAINER_PADDING = 32;
+
 export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
     const { language } = useLanguage();
     const l = LOCALES.home.leadersGrid;
     const isNepali = language === "ne";
     const [expandedMobileCard, setExpandedMobileCard] = useState<number | null>(null);
     const [isMobileViewport, setIsMobileViewport] = useState(false);
+    const [visibleCount, setVisibleCount] = useState<number | null>(null);
     const railRef = useRef<HTMLDivElement | null>(null);
 
     const resolveContent = (content: { en?: string; ne?: string } | string | undefined | null): string => {
@@ -39,6 +44,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
 
     useEffect(() => {
         if (typeof window === "undefined") return;
+        
         const media = window.matchMedia("(max-width: 767px)");
         const sync = () => {
             const isMobile = media.matches;
@@ -49,6 +55,38 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
         media.addEventListener("change", sync);
         return () => media.removeEventListener("change", sync);
     }, []);
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        
+        const calculateVisibleCount = () => {
+            const viewportWidth = window.innerWidth;
+            
+            if (viewportWidth < 768) {
+                setVisibleCount(3);
+                return;
+            }
+            
+            const availableWidth = viewportWidth - CONTAINER_PADDING;
+            const minCardWidth = CARD_COLLAPSED_WIDTH + 1;
+            const cardsThatFit = Math.floor(availableWidth / minCardWidth);
+            const withBrowseCard = Math.max(0, cardsThatFit - 1);
+            
+            setVisibleCount(Math.min(withBrowseCard, leaders.length));
+        };
+        
+        calculateVisibleCount();
+        
+        window.addEventListener('resize', calculateVisibleCount);
+        return () => window.removeEventListener('resize', calculateVisibleCount);
+    }, [leaders.length]);
+
+    const displayedLeaders = useMemo(() => {
+        if (visibleCount === null) return leaders;
+        return leaders.slice(0, visibleCount);
+    }, [leaders, visibleCount]);
+
+    const showBrowseCard = true;
 
     useEffect(() => {
         if (!isMobileViewport || expandedMobileCard === null) return;
@@ -95,7 +133,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                     className="overflow-x-auto border border-border/80 bg-card/30 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-border/85 [&::-webkit-scrollbar-track]:bg-transparent"
                 >
                     <div className="flex min-w-max">
-                        {leaders.map((leader, index) => {
+                        {displayedLeaders.map((leader, index) => {
                             const leaderName = resolveContent(leader.name);
                             const leaderPosition = resolveContent(leader.position);
                             const leaderDescription = resolveContent(leader.desc);
@@ -217,7 +255,8 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                             );
                         })}
 
-                        <Link
+                        {showBrowseCard && (
+                            <Link
                             href="/leaders"
                             aria-label={tString(l.viewAll, language)}
                             className="group/rail relative flex h-[540px] min-w-[104px] basis-[104px] shrink-0 items-center justify-center bg-card/80 transition-[flex-basis,background-color] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:basis-[260px] hover:bg-card focus-visible:basis-[260px] focus-visible:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
@@ -254,6 +293,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                 </div>
                             </div>
                         </Link>
+                        )}
                     </div>
                 </div>
             </div>

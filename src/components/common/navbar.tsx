@@ -12,14 +12,17 @@ import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LanguageToggle } from "@/components/language-toggle";
-import { SubscribeDialog } from "./subscribe-dialog";
 
 const links = [
     { href: "/", labelEn: "Home", labelNe: "गृहपृष्ठ" },
     { href: "/leaders", labelEn: "Leaders", labelNe: "नेताहरू" },
     { href: "/history", labelEn: "History", labelNe: "इतिहास" },
-    { href: "/election-2026", labelEn: "Election 2026", labelNe: "निर्वाचन २०२६" },
     { href: "/articles", labelEn: "Articles", labelNe: "लेखहरू" },
+    {
+        href: "/election-2026",
+        labelEn: "Election 2026",
+        labelNe: "निर्वाचन २०२६",
+    },
     { href: "/about", labelEn: "About Us", labelNe: "हाम्रा बारेमा" },
 ];
 
@@ -62,14 +65,18 @@ export function Navbar() {
                 <div className="hidden md:block">
                     <nav className="flex items-center gap-2">
                         {links.map((link) => {
-                            const label = language === "ne" ? (link.labelNe || link.labelEn) : link.labelEn;
+                            const label =
+                                language === "ne"
+                                    ? link.labelNe || link.labelEn
+                                    : link.labelEn;
+                            const isActive = pathname === link.href;
                             return (
                                 <Link
                                     key={link.href}
                                     href={link.href}
                                     className={cn(
                                         "relative px-5 py-2 text-sm font-medium uppercase transition-all duration-200 rounded",
-                                        pathname === link.href
+                                        isActive
                                             ? "bg-primary text-primary-foreground"
                                             : "text-muted-foreground hover:text-foreground hover:bg-accent"
                                     )}
@@ -122,11 +129,11 @@ export function Navbar() {
                     <ThemeToggle />
 
                     <div className="hidden md:block">
-                        <SubscribeDialog>
+                        <Link href="/subscribe">
                             <Button variant="default" size="default">
                                 Subscribe
                             </Button>
-                        </SubscribeDialog>
+                        </Link>
                     </div>
 
                     {/* Mobile Menu */}
@@ -165,11 +172,11 @@ export function Navbar() {
                                     </nav>
 
                                     <div className="mt-auto mb-8 space-y-4">
-                                        <SubscribeDialog>
+                                        <Link href="/subscribe" onClick={() => setIsSheetOpen(false)}>
                                             <Button size="lg" className="w-full font-bebas tracking-wide text-xl">
                                                 Subscribe
                                             </Button>
-                                        </SubscribeDialog>
+                                        </Link>
                                     </div>
                                 </div>
                             </SheetContent>

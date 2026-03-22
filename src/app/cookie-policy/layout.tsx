@@ -1,10 +1,13 @@
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = constructMetadata({
     title: "Cookie Policy",
-    description: "Information about how we use cookies on The Leaders platform.",
-};
+    description: "Cookie policy for The Leaders Nepal (LeadersNP), including how cookies are used for analytics and performance.",
+    canonical: "/cookie-policy",
+    keywords: ["leadersnp cookie policy", "the leaders nepal cookies"],
+});
 
 export default function CookiePolicyLayout({
     children,

@@ -322,5 +322,21 @@
   "स्वतन्त्र": {
     "color": "#808080",
     "englishName": "Independent"
+  },
+  "राष्ट्रिय स्वतन्त्र पार्टी": {
+    "color": "#4169E1",
+    "englishName": "Rastriya Swatantra Party"
+  },
+  "Rastriya Swatantra Party": {
+    "color": "#4169E1",
+    "englishName": "Rastriya Swatantra Party"
+  },
+  "श्रम संस्कृति पार्टी": {
+    "color": "#8D6635",
+    "englishName": "Shram Sanskriti Party"
+  },
+  "Shram Sanskriti Party": {
+    "color": "#8D6635",
+    "englishName": "Shram Sanskriti Party"
   }
 }

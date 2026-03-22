@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, ArrowUpRight } from "lucide-react";
+import { Search, ArrowUpRight, Grid } from "lucide-react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ILeader } from "@/models/Leader";
@@ -293,6 +293,15 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                             <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
                                 {tString(locale.hero.subheading, language)}
                             </p>
+                            <div className="mt-4">
+                                <Link
+                                    href="/leaders/gallery"
+                                    className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
+                                >
+                                    <Grid className="w-4 h-4" />
+                                    {language === "ne" ? "ग्यालरी दृश्य" : "Gallery View"}
+                                </Link>
+                            </div>
                             <p className="home-body mt-5 max-w-3xl">{tString(locale.hero.description, language)}</p>
 
                             <div className="mt-7">

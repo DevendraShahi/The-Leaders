@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { constructMetadata } from "@/lib/metadata";
+import { absoluteUrl } from "@/lib/seo";
 import { findFPTPCandidateBySlug, getFPTPCandidateSlug } from "@/lib/candidate-slug";
 import { getFPTPCandidateDataset } from "@/lib/fptp-candidate-data";
 import { getParties } from "@/lib/election-data";
@@ -109,10 +110,43 @@ export default async function CandidateProfilePage({ params }: CandidateProfileP
         { label: "Qualification", value: valueOrDash(details.qualification) },
         { label: "Institution", value: valueOrDash(details.institution) },
     ];
+    const profileUrl = absoluteUrl(`/election-2026/profiles/${getFPTPCandidateSlug(candidate)}`);
+    const candidateJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        url: profileUrl,
+        name: `${candidate.candidateName} Candidate Profile`,
+        isPartOf: {
+            "@type": "WebSite",
+            name: "The Leaders",
+            url: absoluteUrl("/"),
+        },
+        mainEntity: {
+            "@type": "Person",
+            name: candidate.candidateName,
+            jobTitle: "Election Candidate",
+            affiliation: {
+                "@type": "Organization",
+                name: valueOrDash(candidate.partyName),
+            },
+            address: {
+                "@type": "PostalAddress",
+                addressLocality: valueOrDash(candidate.district),
+                addressRegion: valueOrDash(candidate.province),
+                addressCountry: "NP",
+            },
+            image: candidate.imageUrl || absoluteUrl("/the-leader.png"),
+        },
+    };
 
     return (
-        <div className="election-typography min-h-screen bg-background">
-            <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(candidateJsonLd) }}
+            />
+            <div className="election-typography min-h-screen bg-background">
+                <div className="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
                 <div className="flex items-center justify-between gap-4 border-b border-border/70 pb-4">
                     <Button variant="outline" className="rounded-none" asChild>
                         <Link href="/election-2026/profiles">
@@ -257,7 +291,8 @@ export default async function CandidateProfilePage({ params }: CandidateProfileP
                         )}
                     </CardContent>
                 </Card>
+                </div>
             </div>
-        </div>
+        </>
     );
 }

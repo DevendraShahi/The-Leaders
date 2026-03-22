@@ -24,13 +24,16 @@ export function SubscribeDialog({ children }: { children: React.ReactNode }) {
                     <DialogDescription className="text-center font-manrope text-base">
                         Subscribe to receive exclusive insights, biography updates, and historical archives directly to your inbox.
                     </DialogDescription>
+                    <p className="text-center text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+                        Continue with Google for one-click verified subscription
+                    </p>
                 </DialogHeader>
 
                 <div className="py-6 px-2">
                     <div className="w-full">
                         {/* SubscribeForm has its own margins/widths suited for footer, 
                              but here we constrain it or rely on its fluid width */}
-                        <SubscribeForm />
+                        <SubscribeForm layout="dialog" />
                     </div>
                 </div>
             </DialogContent>

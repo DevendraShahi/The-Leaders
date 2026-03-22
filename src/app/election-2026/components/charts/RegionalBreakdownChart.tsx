@@ -42,10 +42,8 @@ const PARTY_LABELS: Record<string, { en: string; ne: string }> = {
     "CPN-UML": { en: "CPN-UML", ne: "नेकपा (एमाले)" },
     "Nepali Congress": { en: "Nepali Congress", ne: "नेपाली कांग्रेस" },
     "Rastriya Swatantra Party": { en: "Rastriya Swatantra Party", ne: "राष्ट्रिय स्वतन्त्र पार्टी" },
-    "CPN (Unified Socialist)": { en: "CPN (Unified Socialist)", ne: "नेकपा (एकीकृत समाजवादी)" },
     "CPN (Maoist Centre)": { en: "CPN (Maoist Centre)", ne: "नेकपा (माओवादी केन्द्र)" },
-    "NC / Maoist Centre (Tie)": { en: "NC / Maoist Centre (Tie)", ne: "कांग्रेस / माओवादी (बराबरी)" },
-    "US / NUP (Tie)": { en: "US / NUP (Tie)", ne: "एस / एनयूपी (बराबरी)" },
+    "Nepali Congress / CPN-UML (Tie)": { en: "Nepali Congress / CPN-UML (Tie)", ne: "कांग्रेस / एमाले (बराबरी)" },
 };
 
 const LABELS = {

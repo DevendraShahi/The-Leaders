@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import RichTextEditor, { PendingImage } from './RichTextEditor';
+import RichTextEditor from './RichTextEditor';
 
 interface BilingualRichTextProps {
     label: string;
@@ -9,8 +9,6 @@ interface BilingualRichTextProps {
     valueNe: string;
     onChangeEn: (value: string) => void;
     onChangeNe: (value: string) => void;
-    onPendingImagesChangeEn?: (images: PendingImage[]) => void;
-    onPendingImagesChangeNe?: (images: PendingImage[]) => void;
     placeholderEn?: string;
     placeholderNe?: string;
     required?: boolean;
@@ -23,8 +21,6 @@ export default function BilingualRichText({
     valueNe,
     onChangeEn,
     onChangeNe,
-    onPendingImagesChangeEn,
-    onPendingImagesChangeNe,
     placeholderEn,
     placeholderNe,
     required = false,
@@ -68,7 +64,6 @@ export default function BilingualRichText({
                     <RichTextEditor
                         value={valueEn}
                         onChange={onChangeEn}
-                        onPendingImagesChange={onPendingImagesChangeEn}
                         placeholder={placeholderEn}
                     />
                 </div>
@@ -76,7 +71,6 @@ export default function BilingualRichText({
                     <RichTextEditor
                         value={valueNe}
                         onChange={onChangeNe}
-                        onPendingImagesChange={onPendingImagesChangeNe}
                         placeholder={placeholderNe}
                     />
                 </div>

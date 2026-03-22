@@ -15,7 +15,7 @@ export function ElectionNavbar() {
         { name: tString(nav.dailyBrief, language), href: "/election-2026/daily-brief" },
         { name: tString(nav.factChecks, language), href: "/election-2026/fact-checks" },
         { name: tString(nav.analyses, language), href: "/election-2026/analyses" },
-        { name: tString(nav.prCandidates, language), href: "/election-2026/pr-candidates" },
+        // { name: tString(nav.prCandidates, language), href: "/election-2026/pr-candidates" },
         { name: tString(nav.profiles, language), href: "/election-2026/profiles" },
         { name: tString(nav.manifestos, language), href: "/election-2026/manifesto" },
         { name: tString(nav.parties, language), href: "/election-2026/parties" },

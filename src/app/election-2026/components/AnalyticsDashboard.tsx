@@ -9,6 +9,7 @@ import { TabbedDemographics } from "./charts/TabbedDemographics";
 import { RegionalBreakdownChart } from "./charts/RegionalBreakdownChart";
 import { DistrictNewsPanel } from "./DistrictNewsPanel";
 import { getAnalyticsData } from "@/lib/analytics-data";
+import { ElectionSpecial } from "@/components/home/ElectionSpecial";
 import { useElectionStore } from "@/lib/election-store";
 import {
     TrendingUp,
@@ -45,6 +46,8 @@ interface AnalyticsDashboardProps {
         title_ne?: string;
         excerpt_ne?: string;
     }[];
+    allBriefs?: any[];
+    allFactChecks?: any[];
 }
 
 export default function AnalyticsDashboard({
@@ -52,6 +55,8 @@ export default function AnalyticsDashboard({
     latestFactCheck,
     candidateSummary,
     electionArticles = [],
+    allBriefs = [],
+    allFactChecks = [],
 }: AnalyticsDashboardProps) {
     const analytics = getAnalyticsData();
     const { selectedDistrict } = useElectionStore();
@@ -107,6 +112,13 @@ export default function AnalyticsDashboard({
                 </div>
             </motion.section>
 
+            {/* Road to 2026 Election Section */}
+            <ElectionSpecial
+                dailyBriefs={allBriefs.slice(0, 6)}
+                factChecks={allFactChecks.slice(0, 6)}
+                analyses={electionArticles.slice(0, 6)}
+            />
+
             {/* Main Content - Spacious Vertical Layout */}
             <div className="container mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
                 <div className="space-y-24">
@@ -138,6 +150,58 @@ export default function AnalyticsDashboard({
                                 : tString(l.map.placeholder, language)
                             }
                         </p>
+                    </motion.section>
+
+                    {/* Subtle Divider */}
+                    <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-border/50 to-transparent" />
+
+                    {/* Section: 2026/2082 Election Results Pie */}
+                    <motion.section
+                        className="space-y-6"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6 }}
+                    >
+                        <div className="text-center">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#4169E1] text-white text-[11px] font-mono uppercase tracking-widest mb-4">
+                                {language === "en" ? "Official Final Results · March 5, 2026" : "आधिकारिक अन्तिम नतिजा · फाल्गुन २१, २०८२"}
+                            </div>
+                            <h2 className="font-bebas text-4xl uppercase tracking-wide text-foreground md:text-5xl">
+                                {language === "en" ? "2026 Election Results" : "२०८२ निर्वाचन परिणाम"}
+                            </h2>
+                            <p className="mt-2 text-muted-foreground">
+                                {language === "en"
+                                    ? "Verified total seats (275) with PR vote share and FPTP / PR seat breakdown"
+                                    : "प्रमाणित कुल सिट (२७५) — समानुपातिक मत प्रतिशत र प्रत्यक्ष/समानुपातिक विभाजन"}
+                            </p>
+                            <p className="mt-2 text-xs text-muted-foreground">
+                                {language === "en"
+                                    ? "RSP's 182-seat landslide is the largest single-party majority since democracy was restored in 1991."
+                                    : "RSP को १८२ सिटको ऐतिहासिक जित — १९९१ पछिको सबभन्दा ठूलो एकल दलको बहुमत।"}
+                            </p>
+                            <div className="mt-3 flex flex-wrap justify-center gap-2">
+                                <a
+                                    href="https://en.wikipedia.org/wiki/2026_Nepalese_general_election"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center border border-border/65 bg-background/70 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                                >
+                                    {language === "en" ? "Source: Wikipedia (2026 Nepalese general election)" : "स्रोत: विकिपिडिया (२०८२ नेपाल आम निर्वाचन)"}
+                                </a>
+                                <a
+                                    href="https://election.gov.np/np"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center border border-border/65 bg-background/70 px-2.5 py-1 text-[11px] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                                >
+                                    {language === "en" ? "Election Commission Nepal" : "निर्वाचन आयोग नेपाल"}
+                                </a>
+                            </div>
+                        </div>
+                        <div className="mx-auto w-full max-w-7xl">
+                            <ImpressivePieChart data={analytics.electionResults2082} />
+                        </div>
                     </motion.section>
 
                     {/* Subtle Divider */}
@@ -257,8 +321,8 @@ export default function AnalyticsDashboard({
                             </h2>
                             <p className="mt-2 text-muted-foreground">
                                 {language === "en"
-                                    ? "2022 province-wise FPTP winners and PR vote share"
-                                    : "२०२२ प्रदेशगत प्रत्यक्ष विजेता र समानुपातिक मत हिस्सा"}
+                                    ? "2026 province-wise FPTP winners and PR vote share"
+                                    : "२०८२ प्रदेशगत प्रत्यक्ष विजेता र समानुपातिक मत हिस्सा"}
                             </p>
                         </div>
                         <RegionalBreakdownChart data={analytics.regionalBreakdown} />
@@ -269,25 +333,33 @@ export default function AnalyticsDashboard({
                             </p>
                             <p className="mt-2 text-sm leading-7 text-muted-foreground">
                                 {language === "en"
-                                    ? "This section uses Wikipedia's 2022 province result tables. FPTP seats come from constituency results, and PR shares come from party-list vote by province. Province 1 is shown as Koshi."
-                                    : "यो भाग विकिपिडियाको २०२२ प्रदेशगत नतिजा तालिकाबाट बनाइएको हो। प्रत्यक्ष सिट निर्वाचन क्षेत्र नतिजाबाट र समानुपातिक हिस्सा पार्टी-लिस्ट मत तालिकाबाट लिइएको हो। प्रदेश १ लाई कोशी नाममा देखाइएको छ।"}
+                                    ? "FPTP seat totals are verified (RSP 125, NC 18, UML 9, NCP 8, SSP 3, RPP 1, IND 1 = 165). Provincial PR vote shares are approximated from national figures (RSP 47.8%, NC 19.1%, UML 13.4%) and available constituency data — exact provincial PR splits were not published by ECN."
+                                    : "प्रत्यक्ष सिट संख्या प्रमाणित छ (RSP १२५, कांग्रेस १८, एमाले ९, NCP ८, SSP ३, RPP १, IND १ = १६५)। प्रदेशगत समानुपातिक मत राष्ट्रिय तथ्याङ्क र उपलब्ध क्षेत्रगत डेटाबाट अनुमान गरिएको हो।"}
                             </p>
                             <div className="mt-3 flex flex-wrap items-center gap-2">
                                 <a
-                                    href="https://en.wikipedia.org/wiki/2022_Nepalese_general_election#Results_by_province"
+                                    href="https://en.wikipedia.org/wiki/2026_Nepalese_general_election"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="border border-border/65 bg-background/70 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
                                 >
-                                    Wikipedia (Province Table)
+                                    Wikipedia (2026 Election)
                                 </a>
                                 <a
-                                    href="https://result.election.gov.np/"
+                                    href="https://election.gov.np/en/page/result-hor"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="border border-border/65 bg-background/70 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
                                 >
-                                    ECN Results
+                                    ECN Official Results
+                                </a>
+                                <a
+                                    href="https://kathmandupost.com/national/2026/03/09/rsp-wins-125-fptp-seats-maintains-wide-lead-in-proportional-representation-vote-count"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="border border-border/65 bg-background/70 px-2 py-1 text-[10px] font-mono uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/45 hover:text-primary"
+                                >
+                                    Kathmandu Post
                                 </a>
                             </div>
                         </div>

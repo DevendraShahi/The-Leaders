@@ -1,10 +1,13 @@
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = constructMetadata({
     title: "Privacy Policy",
-    description: "Our commitment to protecting your privacy and personal data.",
-};
+    description: "Privacy policy for The Leaders Nepal (LeadersNP), including data handling, consent, and user rights.",
+    canonical: "/privacy-policy",
+    keywords: ["leadersnp privacy policy", "the leaders nepal privacy", "nepal news site privacy policy"],
+});
 
 export default function PrivacyPolicyLayout({
     children,

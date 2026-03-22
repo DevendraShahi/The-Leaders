@@ -2,11 +2,14 @@ import { TimelineRoot } from "@/components/timeline/v2/TimelineRoot";
 import timelineDataRaw from "@/data/Sep8-Mar5.json";
 import { TimelineData } from "@/lib/types/timeline-types";
 import { Metadata } from "next";
+import { constructMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-    title: "Timeline of Chaos - Election 2026 | The Leaders",
-    description: "A chronological archive of Nepal's political journey from September 2025 to March 2026.",
-};
+export const metadata: Metadata = constructMetadata({
+    title: "Timeline of Chaos - Election 2026",
+    description: "Chronological archive of Nepal's political journey from September 2025 to March 2026, with high-context election milestones.",
+    canonical: "/election-2026/timeline",
+    keywords: ["Nepal election timeline", "timeline of chaos", "leadersnp timeline"],
+});
 
 export default function TimelinePage() {
     // Cast raw JSON to typed interface

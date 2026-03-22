@@ -45,6 +45,7 @@ const PARTY_NAME_BY_SLUG: Record<string, { en: string; ne: string }> = {
         ne: "संघीय समाजवादी फोरम, नेपाल",
     },
     "naya-shakti-party-nepal": { en: "Naya Shakti Party, Nepal", ne: "नयाँ शक्ति पार्टी, नेपाल" },
+    "shram-sanskriti": { en: "Shram Sanskriti Party", ne: "श्रम संस्कृति पार्टी" },
     independent: { en: "Independent", ne: "स्वतन्त्र" },
     [GROUPED_PARTIES_SLUG]: { en: "Other small parties", ne: "अन्य साना दल" },
 };

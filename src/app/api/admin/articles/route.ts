@@ -142,7 +142,7 @@ async function createArticle(request: NextRequest, { user }: { user: any }) {
             action: 'create',
             entityType: 'Article',
             entityId: article._id.toString(),
-            description: `Created article: ${data.title.en}`,
+            description: `Created article: ${data.title?.en || data.title?.ne}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });

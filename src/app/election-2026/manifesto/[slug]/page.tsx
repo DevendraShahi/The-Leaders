@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { constructMetadata } from "@/lib/metadata";
+import { absoluteUrl } from "@/lib/seo";
 import {
     getPartyManifestoBySlug,
     getPartyManifestos,
@@ -57,6 +58,32 @@ export default async function ManifestoDetailPage({ params }: PageProps) {
     const related = manifestos
         .filter((item) => item.slug !== manifesto.slug)
         .slice(0, 4);
+    const manifestoJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "CreativeWork",
+        name: `${manifesto.partyName.en} Manifesto ${manifesto.year}`,
+        description: manifesto.blurb.en,
+        url: absoluteUrl(`/election-2026/manifesto/${manifesto.slug}`),
+        inLanguage: ["en", "ne"],
+        ...(manifesto.updatedAtISO ? { dateModified: manifesto.updatedAtISO } : {}),
+        author: {
+            "@type": "Organization",
+            name: manifesto.partyName.en,
+        },
+        publisher: {
+            "@type": "Organization",
+            name: "The Leaders",
+            url: absoluteUrl("/"),
+        },
+    };
 
-    return <ManifestoDetailClient manifesto={manifesto} related={related} />;
+    return (
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(manifestoJsonLd) }}
+            />
+            <ManifestoDetailClient manifesto={manifesto} related={related} />
+        </>
+    );
 }

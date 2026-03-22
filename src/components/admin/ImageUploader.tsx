@@ -8,6 +8,7 @@ import { useAuth } from '@/components/admin/AuthProvider';
 interface ImageUploaderProps {
     value?: string;
     onChange: (url: string) => void;
+    onFileSelect?: (file: File) => void;
     category?: 'article' | 'leader' | 'history' | 'general';
     folder?: string;
     label?: string;
@@ -17,6 +18,7 @@ interface ImageUploaderProps {
 export default function ImageUploader({
     value,
     onChange,
+    onFileSelect,
     category = 'general',
     folder,
     label = "Cover Image",
@@ -55,6 +57,13 @@ export default function ImageUploader({
     const handleUpload = async (file: File) => {
         if (!file.type.startsWith('image/')) {
             toast.error('Please upload an image file');
+            return;
+        }
+
+        if (onFileSelect) {
+            const previewUrl = window.URL.createObjectURL(file);
+            onChange(previewUrl);
+            onFileSelect(file);
             return;
         }
 

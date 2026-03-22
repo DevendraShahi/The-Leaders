@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Subscriber from "@/models/Subscriber";
+import { enforceRateLimit, getClientIp } from "@/lib/rate-limit";
 import {
     generateVerificationCode,
     getOtpExpiryDate,
@@ -14,7 +15,20 @@ import {
 
 export async function POST(req: Request) {
     try {
-        await dbConnect();
+        const clientIp = getClientIp(req);
+        const ipRateLimit = enforceRateLimit(`subscribe-resend:ip:${clientIp}`, 10, 10 * 60 * 1000);
+        if (ipRateLimit.limited) {
+            return NextResponse.json(
+                { error: "Too many resend attempts. Please try again later." },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": String(ipRateLimit.retryAfterSeconds ?? 60),
+                    },
+                }
+            );
+        }
+
         const { email } = await req.json();
         const normalizedEmail = normalizeEmail(String(email || ""));
 
@@ -22,9 +36,27 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Please provide a valid email address." }, { status: 400 });
         }
 
+        const emailRateLimit = enforceRateLimit(`subscribe-resend:email:${normalizedEmail}`, 6, 30 * 60 * 1000);
+        if (emailRateLimit.limited) {
+            return NextResponse.json(
+                { error: "Too many resend attempts for this email. Please try again later." },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": String(emailRateLimit.retryAfterSeconds ?? 60),
+                    },
+                }
+            );
+        }
+
+        await dbConnect();
+
         const subscriber = await Subscriber.findOne({ email: normalizedEmail }).select("+verificationCodeHash");
         if (!subscriber) {
-            return NextResponse.json({ error: "No pending subscription found for this email." }, { status: 404 });
+            return NextResponse.json(
+                { message: "If a pending subscription exists, a new verification code has been sent." },
+                { status: 200 }
+            );
         }
 
         if (subscriber.isVerified && subscriber.isActive) {

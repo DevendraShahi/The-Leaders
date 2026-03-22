@@ -369,8 +369,8 @@ export const LOCALES = {
             },
         ],
         footer: {
-            en: "For any privacy-related questions, please contact us at privacy@theleaders.np.",
-            ne: "गोपनीयता सम्बन्धी कुनै प्रश्न भएमा, कृपया privacy@theleaders.np मा सम्पर्क गर्नुहोस्।",
+            en: "For any privacy-related questions, please contact us at hello@the-leadersnp.com.",
+            ne: "गोपनीयता सम्बन्धी कुनै प्रश्न भएमा, कृपया hello@the-leadersnp.com मा सम्पर्क गर्नुहोस्।",
         },
     },
     accessibility: {
@@ -810,12 +810,12 @@ export const LOCALES = {
             ne: "प्रोफाइल कथा",
         },
         keyStatsHeading: {
-            en: "Key Leadership Data",
-            ne: "प्रमुख नेतृत्व तथ्यांक",
+            en: "Key Data",
+            ne: "प्रमुख तथ्यांक",
         },
         timelineHeading: {
-            en: "Political Timeline",
-            ne: "राजनीतिक कालक्रम",
+            en: "Timeline",
+            ne: "कालक्रम",
         },
         statusLabel: {
             en: "Leadership Status",
@@ -1026,8 +1026,8 @@ export const LOCALES = {
             },
         ],
         footer: {
-            en: "For any questions regarding these terms, please contact us at legal@theleaders.np.",
-            ne: "यी सर्तहरू सम्बन्धी कुनै प्रश्न भएमा, कृपया हामीलाई legal@theleaders.np मा सम्पर्क गर्नुहोस्।",
+            en: "For any questions regarding these terms, please contact us at hello@the-leadersnp.com.",
+            ne: "यी सर्तहरू सम्बन्धी कुनै प्रश्न भएमा, कृपया हामीलाई hello@the-leadersnp.com मा सम्पर्क गर्नुहोस्।",
         },
     },
     dailyBriefIndex: {
@@ -1588,8 +1588,8 @@ export const LOCALES = {
             }
         ],
         footer: {
-            en: "For any questions regarding these terms, please contact us at legal@theleaders.np.",
-            ne: "यी सर्तहरू सम्बन्धी कुनै प्रश्न भएमा, कृपया हामीलाई legal@theleaders.np मा सम्पर्क गर्नुहोस्।"
+            en: "For any questions regarding these terms, please contact us at hello@the-leadersnp.com.",
+            ne: "यी सर्तहरू सम्बन्धी कुनै प्रश्न भएमा, कृपया हामीलाई hello@the-leadersnp.com मा सम्पर्क गर्नुहोस्।"
         }
     },
     cookiePolicy: {
@@ -1627,8 +1627,8 @@ export const LOCALES = {
             }
         ],
         footer: {
-            en: "For questions about our use of cookies, please contact us at privacy@theleaders.np.",
-            ne: "हाम्रो कुकी प्रयोग सम्बन्धी प्रश्नहरूको लागि, कृपया हामीलाई privacy@theleaders.np मा सम्पर्क गर्नुहोस्।"
+            en: "For questions about our use of cookies, please contact us at hello@the-leadersnp.com.",
+            ne: "हाम्रो कुकी प्रयोग सम्बन्धी प्रश्नहरूको लागि, कृपया हामीलाई hello@the-leadersnp.com मा सम्पर्क गर्नुहोस्।"
         }
     },
     contact: {

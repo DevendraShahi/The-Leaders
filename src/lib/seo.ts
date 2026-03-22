@@ -1,5 +1,5 @@
 export function getSiteUrl(): string {
-    return process.env.NEXT_PUBLIC_SITE_URL || "https://theleaders.com.np";
+    return process.env.NEXT_PUBLIC_SITE_URL || "https://the-leadersnp.com";
 }
 
 export function absoluteUrl(path: string): string {

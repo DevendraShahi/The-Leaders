@@ -1,19 +1,54 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Subscriber from "@/models/Subscriber";
-import { hashVerificationCode, isValidEmail, normalizeEmail, verificationConfig } from "@/lib/subscription-verification";
+import { enforceRateLimit, getClientIp } from "@/lib/rate-limit";
+import {
+    hashVerificationCode,
+    isValidEmail,
+    isValidVerificationCode,
+    normalizeEmail,
+    sendWelcomeEmail,
+    verificationConfig,
+} from "@/lib/subscription-verification";
 
 export async function POST(req: Request) {
     try {
-        await dbConnect();
+        const clientIp = getClientIp(req);
+        const ipRateLimit = enforceRateLimit(`subscribe-verify:ip:${clientIp}`, 20, 10 * 60 * 1000);
+        if (ipRateLimit.limited) {
+            return NextResponse.json(
+                { error: "Too many verification attempts. Please try again later." },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": String(ipRateLimit.retryAfterSeconds ?? 60),
+                    },
+                }
+            );
+        }
+
         const { email, code } = await req.json();
 
         const normalizedEmail = normalizeEmail(String(email || ""));
         const normalizedCode = String(code || "").trim();
+        const emailRateLimit = enforceRateLimit(`subscribe-verify:email:${normalizedEmail}`, 12, 15 * 60 * 1000);
+        if (emailRateLimit.limited) {
+            return NextResponse.json(
+                { error: "Too many verification attempts for this email. Please request a new code later." },
+                {
+                    status: 429,
+                    headers: {
+                        "Retry-After": String(emailRateLimit.retryAfterSeconds ?? 60),
+                    },
+                }
+            );
+        }
 
-        if (!isValidEmail(normalizedEmail) || !normalizedCode) {
+        if (!isValidEmail(normalizedEmail) || !isValidVerificationCode(normalizedCode)) {
             return NextResponse.json({ error: "Invalid email or verification code." }, { status: 400 });
         }
+
+        await dbConnect();
 
         const subscriber = await Subscriber.findOne({ email: normalizedEmail }).select("+verificationCodeHash");
         if (!subscriber) {
@@ -52,6 +87,12 @@ export async function POST(req: Request) {
         subscriber.verificationSentAt = undefined;
         subscriber.verificationAttempts = 0;
         await subscriber.save();
+
+        try {
+            await sendWelcomeEmail(normalizedEmail);
+        } catch (welcomeEmailError) {
+            console.error("Welcome email send failed:", welcomeEmailError);
+        }
 
         return NextResponse.json({ message: "Email verified. Subscription completed successfully." }, { status: 200 });
     } catch (error) {

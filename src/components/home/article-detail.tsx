@@ -124,7 +124,7 @@ const extractNewspaperSections = (html: string, language: "en" | "ne") => {
     };
 
     const blockRegex =
-        /<(h[23])\b[^>]*>[\s\S]*?<\/\1>|<p\b[^>]*>[\s\S]*?<\/p>|<ul\b[^>]*>[\s\S]*?<\/ul>|<ol\b[^>]*>[\s\S]*?<\/ol>|<blockquote\b[^>]*>[\s\S]*?<\/blockquote>/gi;
+        /<(h[23])\b[^>]*>[\s\S]*?<\/\1>|<p\b[^>]*>[\s\S]*?<\/p>|<ul\b[^>]*>[\s\S]*?<\/ul>|<ol\b[^>]*>[\s\S]*?<\/ol>|<blockquote\b[^>]*>[\s\S]*?<\/blockquote>|<figure\b[^>]*>[\s\S]*?<\/figure>|<img\b[^>]*>|<iframe\b[^>]*>[\s\S]*?<\/iframe>|<video\b[^>]*>[\s\S]*?<\/video>/gi;
 
     const flush = () => {
         if (!current.headingHtml && !current.blocks.length) return;
@@ -153,7 +153,8 @@ const extractNewspaperSections = (html: string, language: "en" | "ne") => {
         }
 
         const cleaned = stripHtml(block);
-        if (!cleaned) return;
+        const hasMedia = /<img\b|<iframe\b|<video\b|<figure\b/i.test(block);
+        if (!cleaned && !hasMedia) return;
         current.blocks.push(block);
     });
 
@@ -410,11 +411,41 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
     const [readProgress, setReadProgress] = useState(0);
     const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
 
-    const title = article.title?.[contentLanguage] || article.title?.en || "";
-    const content = article.content?.[contentLanguage] || article.content?.en || "";
-    const excerpt = article.excerpt?.[contentLanguage] || article.excerpt?.en || "";
-    const author = article.author?.[contentLanguage] || article.author?.en || "";
-    const category = article.category?.[contentLanguage] || article.category?.en || "";
+    const displayLang = useMemo(() => {
+        const primary = contentLanguage;
+        const fallback = primary === 'en' ? 'ne' : 'en';
+        
+        const hasActualContent = (lang: 'en' | 'ne') => {
+            const rawContent = article.content?.[lang] || '';
+            const stripped = stripHtml(rawContent);
+            const hasMedia = /<img|<iframe|<video|<figure/i.test(rawContent);
+            return stripped.length > 0 || hasMedia;
+        };
+
+        if (hasActualContent(primary)) return primary;
+        if (hasActualContent(fallback)) return fallback;
+        return primary;
+    }, [article.content, contentLanguage]);
+
+    const isShowingFallback = useMemo(() => {
+        const primary = contentLanguage;
+        const fallback = primary === 'en' ? 'ne' : 'en';
+        const rawContentPrimary = article.content?.[primary] || '';
+        const strippedPrimary = stripHtml(rawContentPrimary);
+        const hasMediaPrimary = /<img|<iframe|<video|<figure/i.test(rawContentPrimary);
+        
+        const rawContentFallback = article.content?.[fallback] || '';
+        const strippedFallback = stripHtml(rawContentFallback);
+        const hasMediaFallback = /<img|<iframe|<video|<figure/i.test(rawContentFallback);
+        
+        return !(strippedPrimary.length > 0 || hasMediaPrimary) && (strippedFallback.length > 0 || hasMediaFallback);
+    }, [article.content, contentLanguage]);
+
+    const title = article.title?.[displayLang] || article.title?.en || article.title?.ne || "";
+    const content = article.content?.[displayLang] || article.content?.en || article.content?.ne || "";
+    const excerpt = article.excerpt?.[displayLang] || article.excerpt?.en || article.excerpt?.ne || "";
+    const author = article.author?.[displayLang] || article.author?.en || article.author?.ne || "";
+    const category = article.category?.[displayLang] || article.category?.en || article.category?.ne || "";
     const image = article.image || "https://placehold.co/1920x1080/png?text=Article";
 
     const publishedAt = new Date(article.publishedDate);
@@ -431,34 +462,26 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
     const wordCount = useMemo(() => stripHtml(content).split(" ").filter(Boolean).length, [content]);
 
     const { html: contentHtml, toc: tocHeadings } = useMemo(
-        () => extractContentWithAnchors(content, contentLanguage),
-        [content, contentLanguage]
+        () => extractContentWithAnchors(content, displayLang),
+        [content, displayLang]
     );
-    const newspaperSections = useMemo(
-        () => extractNewspaperSections(contentHtml, contentLanguage),
-        [contentHtml, contentLanguage]
-    );
+
     const leadParagraphs = useMemo(() => {
-        const intro = newspaperSections[0];
-        const source = intro?.blocks.length
-            ? intro.blocks.map((block) => stripHtml(block))
-            : [stripHtml(excerpt || content)];
+        if (excerpt) {
+            return excerpt.split('\n').map(p => stripHtml(p).trim()).filter(Boolean);
+        }
+        const text = stripHtml(contentHtml);
+        return [text.slice(0, 250) + "..."].filter(t => t !== "...");
+    }, [excerpt, contentHtml]);
 
-        return source.filter(Boolean).slice(0, 3);
-    }, [newspaperSections, excerpt, content]);
-    const sectionCount = newspaperSections.filter((section) => section.headingHtml).length || 0;
+    const sectionCount = tocHeadings.length;
+
     const speechText = useMemo(() => {
-        const sectionContent = newspaperSections.flatMap((section) => {
-            const headingText = section.headingHtml ? [stripHtml(section.headingHtml)] : [];
-            const blockText = section.blocks.map((block) => stripHtml(block));
-            return [...headingText, ...blockText];
-        });
-
-        return [title, excerpt, ...sectionContent]
+        return [title, excerpt, stripHtml(contentHtml)]
             .map((entry) => entry.trim())
             .filter(Boolean)
             .join(". ");
-    }, [title, excerpt, newspaperSections]);
+    }, [title, excerpt, contentHtml]);
 
     useEffect(() => {
         const audio = new Audio();
@@ -949,37 +972,49 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                             <p className="np-subhead">{language === "en" ? "Political Ledger And Public Analysis" : "राजनीतिक अभिलेख र सार्वजनिक विश्लेषण"}</p>
                         </section>
 
-                        <section className="np-front-grid border-b border-[var(--np-rule)]">
-                            <article className="np-lead border-b border-[var(--np-rule)] p-4 sm:p-6 lg:border-b-0 lg:border-r lg:p-8">
-                                <div className="mb-4 flex flex-wrap items-center gap-2">
-                                    <Badge variant="secondary" className="rounded-none border border-[var(--np-accent)] bg-[color:var(--np-accent-soft)] px-2 py-1 text-[10px] uppercase tracking-[0.13em] text-[var(--np-accent)]">
+                        <section className="border-b border-[var(--np-rule)]">
+                            <figure className="relative w-full border-b border-[var(--np-rule)] bg-[var(--np-paper-soft)] flex justify-center items-center overflow-hidden">
+                                <img src={image} alt={title || "Article"} className="w-full h-auto max-h-[85vh] object-contain saturate-100 contrast-100" />
+                                <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.0)_70%,rgba(0,0,0,0.15)_100%)] pointer-events-none" />
+                            </figure>
+
+                            <article className="np-lead p-6 sm:p-8 lg:p-12 xl:px-16 mx-auto max-w-[100ch]">
+                                {isShowingFallback && (
+                                    <div className="mb-6 w-full border border-amber-500/30 bg-amber-500/10 p-4 text-center text-xs sm:text-sm font-mono tracking-wide text-amber-700 dark:text-amber-400">
+                                        {contentLanguage === 'en' 
+                                            ? "The English version of this article is currently unavailable. Displaying the Nepali version instead."
+                                            : "यस लेखको नेपाली संस्करण हाल उपलब्ध छैन। अङ्ग्रेजी संस्करण देखाइएको छ।"}
+                                    </div>
+                                )}
+                                <div className="mb-6 flex flex-wrap items-center justify-center gap-3">
+                                    <Badge variant="secondary" className="rounded-none border border-[var(--np-accent)] bg-[color:var(--np-accent-soft)] px-3 py-1 text-xs uppercase tracking-[0.15em] text-[var(--np-accent)]">
                                         {category}
                                     </Badge>
                                     <span className="np-dot" />
-                                    <span className="np-meta inline-flex items-center gap-1.5">
-                                        <User className="h-3.5 w-3.5 text-[var(--np-accent)]" />
+                                    <span className="np-meta inline-flex items-center gap-1.5 text-sm">
+                                        <User className="h-4 w-4 text-[var(--np-accent)]" />
                                         {author}
                                     </span>
                                     <span className="np-dot" />
-                                    <span className="np-meta inline-flex items-center gap-1.5">
-                                        <Clock3 className="h-3.5 w-3.5 text-[var(--np-accent)]" />
+                                    <span className="np-meta inline-flex items-center gap-1.5 text-sm">
+                                        <Clock3 className="h-4 w-4 text-[var(--np-accent)]" />
                                         {readingMinutes} {language === "en" ? "min" : "मिनेट"}
                                     </span>
                                 </div>
 
-                                <h1 className="np-headline">{title}</h1>
+                                <h1 className="np-headline text-center text-4xl sm:text-5xl lg:text-6xl mb-8 leading-tight">{title}</h1>
 
-                                <div className="np-lede mt-4">
+                                <div className="np-lede mt-6 text-center text-lg sm:text-xl leading-relaxed text-[var(--np-ink-soft)] font-medium max-w-[80ch] mx-auto">
                                     {leadParagraphs.map((paragraph, idx) => (
-                                        <p key={`${idx}-${paragraph.slice(0, 20)}`}>{paragraph}</p>
+                                        <p key={`${idx}-${paragraph.slice(0, 20)}`} className="mb-4 last:mb-0">{paragraph}</p>
                                     ))}
                                 </div>
 
-                                <div className="mt-6 flex flex-wrap gap-2">
+                                <div className="mt-8 flex flex-wrap justify-center gap-4">
                                     <button
                                         type="button"
                                         onClick={shareCurrentLink}
-                                        className="inline-flex min-h-11 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
+                                        className="inline-flex min-h-12 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
                                     >
                                         <Share2 className="h-4 w-4" />
                                         {shared
@@ -993,7 +1028,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                     <button
                                         type="button"
                                         onClick={copyCurrentLink}
-                                        className="inline-flex min-h-11 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
+                                        className="inline-flex min-h-12 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
                                     >
                                         <Link2 className="h-4 w-4" />
                                         {copied
@@ -1006,24 +1041,6 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                     </button>
                                 </div>
                             </article>
-
-                            <figure className="np-photo relative min-h-[260px] sm:min-h-[320px]">
-                                <img src={image} alt={title || "Article"} className="absolute inset-0 h-full w-full object-cover saturate-75 contrast-105 grayscale-[0.16]" />
-                                <div className="absolute inset-0 bg-[linear-gradient(180deg,var(--np-photo-overlay-start)_0%,var(--np-photo-overlay-end)_100%)]" />
-                                <motion.figcaption
-                                    animate={
-                                        shouldReduceMotion
-                                            ? undefined
-                                            : {
-                                                opacity: [0.24, 0.36, 0.24],
-                                            }
-                                    }
-                                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                                    className="absolute bottom-0 left-0 right-0 border-t border-[var(--np-rule)] bg-[var(--np-photo-caption-bg)] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--np-ink)]"
-                                >
-                                    {language === "en" ? "Front Page Visual" : "मुख्य पृष्ठ दृश्य"}
-                                </motion.figcaption>
-                            </figure>
                         </section>
 
                         <section className="np-reading-grid grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_340px]">
@@ -1038,55 +1055,14 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                     )}
                                 >
                                     <div className="np-article-flow mx-auto max-w-[90ch]">
-                                        {newspaperSections.map((section, sectionIndex) => {
-                                            if (!section.blocks.length) return null;
-
-                                            const sectionTextLength = section.blocks.reduce((sum, block) => sum + stripHtml(block).length, 0);
-                                            const useTwoColumns = section.blocks.length >= 4 && sectionTextLength >= 1500;
-                                            const splitIndex = Math.ceil(section.blocks.length / 2);
-                                            const leftBlocks = useTwoColumns ? section.blocks.slice(0, splitIndex) : section.blocks;
-                                            const rightBlocks = useTwoColumns ? section.blocks.slice(splitIndex) : [];
-
-                                            return (
-                                                <section
-                                                    key={`${section.id}-${sectionIndex}`}
-                                                    className={cn(
-                                                        "np-section-block pt-4 first:pt-0",
-                                                        section.headingHtml ? "mt-2" : ""
-                                                    )}
-                                                >
-                                                    {section.headingHtml ? (
-                                                        <div
-                                                            className="article-content prose prose-neutral prose-headings:scroll-mt-24 prose-headings:text-[var(--np-ink)] prose-strong:text-[var(--np-ink)] prose-a:text-[var(--np-accent)] prose-a:no-underline hover:prose-a:underline"
-                                                            dangerouslySetInnerHTML={{ __html: section.headingHtml }}
-                                                        />
-                                                    ) : null}
-
-                                                    <div className={cn("np-section-columns grid grid-cols-1 gap-0", useTwoColumns ? "lg:grid-cols-2 lg:gap-x-10" : "")}>
-                                                        <div className="article-content prose prose-neutral prose-headings:scroll-mt-24 prose-headings:text-[var(--np-ink)] prose-strong:text-[var(--np-ink)] prose-a:text-[var(--np-accent)] prose-a:no-underline hover:prose-a:underline">
-                                                            {leftBlocks.map((block, blockIndex) => (
-                                                                <div
-                                                                    key={`left-${section.id}-${blockIndex}`}
-                                                                    className={sectionIndex === 0 && blockIndex === 0 ? "np-first-paragraph" : undefined}
-                                                                    dangerouslySetInnerHTML={{ __html: block }}
-                                                                />
-                                                            ))}
-                                                        </div>
-
-                                                        {useTwoColumns ? (
-                                                            <div className="article-content prose prose-neutral prose-headings:scroll-mt-24 prose-headings:text-[var(--np-ink)] prose-strong:text-[var(--np-ink)] prose-a:text-[var(--np-accent)] prose-a:no-underline hover:prose-a:underline">
-                                                                {rightBlocks.map((block, blockIndex) => (
-                                                                    <div
-                                                                        key={`right-${section.id}-${blockIndex}`}
-                                                                        dangerouslySetInnerHTML={{ __html: block }}
-                                                                    />
-                                                                ))}
-                                                            </div>
-                                                        ) : null}
-                                                    </div>
-                                                </section>
-                                            );
-                                        })}
+                                        <div className="np-section-block pt-4">
+                                            <div className="np-section-columns grid grid-cols-1 gap-0">
+                                                <div 
+                                                    className="np-first-paragraph article-content prose prose-neutral prose-headings:scroll-mt-24 prose-headings:text-[var(--np-ink)] prose-strong:text-[var(--np-ink)] prose-a:text-[var(--np-accent)] prose-a:no-underline hover:prose-a:underline"
+                                                    dangerouslySetInnerHTML={{ __html: contentHtml }}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </main>
@@ -1775,12 +1751,6 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                 }
                 .np-lede p + p {
                     margin-top: 0.9rem;
-                }
-                @media (min-width: 1024px) {
-                    .np-lede {
-                        column-count: 2;
-                        column-gap: 1.7rem;
-                    }
                 }
                 .np-index-row {
                     display: flex;

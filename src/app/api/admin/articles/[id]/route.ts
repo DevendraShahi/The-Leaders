@@ -56,7 +56,7 @@ async function updateArticle(request: NextRequest, { user, params }: { user: any
             action: 'update',
             entityType: 'Article',
             entityId: article._id.toString(),
-            description: `Updated article: ${article.title.en}`,
+            description: `Updated article: ${article.title?.en || article.title?.ne}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
@@ -95,7 +95,7 @@ async function deleteArticle(request: NextRequest, { user, params }: { user: any
             action: 'delete',
             entityType: 'Article',
             entityId: id,
-            description: `Deleted article: ${article.title.en}`,
+            description: `Deleted article: ${article.title?.en || article.title?.ne}`,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });

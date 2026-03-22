@@ -500,7 +500,7 @@ async function fetchRssSignals(): Promise<ExternalSignal[]> {
             const response = await fetchWithTimeout(feed.url, {
                 next: { revalidate: 900 },
                 headers: {
-                    "User-Agent": "TheLeadersBot/1.0 (+https://theleaders.com)",
+                    "User-Agent": "TheLeadersBot/1.0 (+https://the-leadersnp.com)",
                     Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml",
                 },
             });
