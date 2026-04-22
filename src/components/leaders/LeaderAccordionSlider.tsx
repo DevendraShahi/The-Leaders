@@ -3,7 +3,7 @@
 import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, X, ChevronLeft, ChevronRight, ArrowRight, Users, Award, Clock, LayoutGrid } from "lucide-react";
+import { Search, X, ChevronLeft, ChevronRight, ArrowRight, Users, LayoutGrid } from "lucide-react";
 import { ILeader } from "@/models/Leader";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString, type LanguageCode } from "@/lib/locales";
@@ -88,8 +88,6 @@ export default function LeaderAccordionSlider({ leaders }: LeaderAccordionSlider
 
     const stats = useMemo(() => ({
         total: leaders.length,
-        active: leaders.filter(l => l.isActive && String(l.status).toLowerCase() !== "archived").length,
-        legacy: leaders.filter(l => !l.isActive || String(l.status).toLowerCase() === "archived").length,
     }), [leaders]);
 
     const goTo = useCallback((index: number) => {
@@ -123,8 +121,6 @@ export default function LeaderAccordionSlider({ leaders }: LeaderAccordionSlider
     const statusOptions = [
         { value: "all", label: isNepali ? "सबै" : "All" },
         { value: "featured", label: isNepali ? "विशेष" : "Featured" },
-        { value: "active", label: isNepali ? "सक्रिय" : "Active" },
-        { value: "legacy", label: isNepali ? "ऐतिहासिक" : "Legacy" },
     ];
 
     return (
@@ -167,22 +163,6 @@ export default function LeaderAccordionSlider({ leaders }: LeaderAccordionSlider
                         <div>
                             <p className="accordion-stat-label">{isNepali ? "जम्मा" : "Total"}</p>
                             <p className="accordion-stat-value">{stats.total}</p>
-                        </div>
-                    </div>
-                    <div className="accordion-stat-divider" />
-                    <div className="accordion-stat">
-                        <Award className="w-5 h-5 accordion-stat-icon" />
-                        <div>
-                            <p className="accordion-stat-label">{isNepali ? "सक्रिय" : "Active"}</p>
-                            <p className="accordion-stat-value">{stats.active}</p>
-                        </div>
-                    </div>
-                    <div className="accordion-stat-divider" />
-                    <div className="accordion-stat">
-                        <Clock className="w-5 h-5 accordion-stat-icon" />
-                        <div>
-                            <p className="accordion-stat-label">{isNepali ? "ऐतिहासिक" : "Legacy"}</p>
-                            <p className="accordion-stat-value">{stats.legacy}</p>
                         </div>
                     </div>
 

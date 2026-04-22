@@ -12,7 +12,7 @@ interface PageProps {
     params: Promise<{ slug: string }>;
 }
 
-export const revalidate = 300;
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
 
 export async function generateStaticParams() {
     const manifestos = await getPartyManifestos();

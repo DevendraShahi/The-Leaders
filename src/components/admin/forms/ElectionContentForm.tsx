@@ -13,10 +13,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import BilingualInput from "@/components/admin/BilingualInput";
+import BilingualRichText from "@/components/admin/BilingualRichText";
 import ImageUploader from "@/components/admin/ImageUploader";
 import { slugify } from "@/lib/slug";
 
-type ElectionContentType = "brief" | "fact-check" | "election-article";
+type ElectionContentType = "brief" | "fact-check" | "election-article" | "column-article";
 
 interface ElectionContentFormProps {
     id: string;
@@ -43,6 +44,7 @@ interface FormValues {
     articleTitle: { en: string; ne: string };
     articleExcerpt: { en: string; ne: string };
     articleContent: { en: string; ne: string };
+    category: string;
 }
 
 const normalizeLocalized = (value: unknown): { en: string; ne: string } => {
@@ -97,6 +99,15 @@ const getTypeConfig = (type: ElectionContentType) => {
         };
     }
 
+    if (type === "column-article") {
+        return {
+            title: "Edit Column",
+            endpoint: "/api/admin/column-articles",
+            redirectType: "column-articles",
+            saveLabel: "Save Column",
+        };
+    }
+
     return {
         title: "Edit Election Article",
         endpoint: "/api/admin/election-articles",
@@ -143,6 +154,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
             en: initialData?.content_en,
             ne: initialData?.content_ne,
         }),
+        category: normalizeString(initialData?.category),
     };
 
     const form = useForm<FormValues>({ defaultValues: defaults });
@@ -151,6 +163,30 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
     const briefTitle = useWatch({ control, name: "title" });
     const factClaim = useWatch({ control, name: "claim" });
     const articleTitle = useWatch({ control, name: "articleTitle" });
+    
+    const [categories, setCategories] = useState<string[]>([]);
+    const [isCustomCategory, setIsCustomCategory] = useState(false);
+    
+    useEffect(() => {
+        if (type === 'column-article' && token) {
+            fetch('/api/admin/column-articles/categories', {
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.data?.categories) {
+                    const fetchedCategories = data.data.categories;
+                    setCategories(fetchedCategories);
+                    // Check if current value requires Custom Input toggle to be open
+                    const currentCategory = getValues("category");
+                    if (currentCategory && !fetchedCategories.includes(currentCategory)) {
+                        setIsCustomCategory(true);
+                    }
+                }
+            })
+            .catch(console.error);
+        }
+    }, [type, token, getValues]);
 
     useEffect(() => {
         const sourceText =
@@ -217,6 +253,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
             } else {
                 payload = {
                     editor: values.editor || "The Leaders Editorial",
+                    category: type === 'column-article' ? values.category : undefined,
                     title_en: values.articleTitle.en,
                     title_ne: values.articleTitle.ne || undefined,
                     excerpt_en: values.articleExcerpt.en,
@@ -293,7 +330,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                             <CardTitle className="font-bebas text-lg tracking-wide">Content</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-6 pt-6">
-                            {(type === "brief" || type === "fact-check" || type === "election-article") && (
+                            {(type === "brief" || type === "fact-check" || type === "election-article" || type === "column-article") && (
                                 <FormField
                                     control={control}
                                     name="slug"
@@ -373,7 +410,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                                 </>
                             )}
 
-                            {type === "election-article" && (
+                            {(type === "election-article" || type === "column-article") && (
                                 <>
                                     <FormField
                                         control={control}
@@ -387,9 +424,81 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                                             </FormItem>
                                         )}
                                     />
+                                    {type === 'column-article' && (
+                                        <>
+                                            <FormField
+                                                control={control}
+                                                name="category"
+                                                render={({ field }) => (
+                                                    <FormItem>
+                                                        <FormLabel className="font-mono text-xs uppercase">Category</FormLabel>
+                                                        {!isCustomCategory ? (
+                                                            <Select 
+                                                                onValueChange={(val) => {
+                                                                    if (val === 'custom') {
+                                                                        setIsCustomCategory(true);
+                                                                        field.onChange('');
+                                                                    } else {
+                                                                        field.onChange(val);
+                                                                    }
+                                                                }} 
+                                                                value={categories.includes(field.value) ? field.value : ''}
+                                                            >
+                                                                <FormControl>
+                                                                    <SelectTrigger className="rounded-none border-border">
+                                                                        <SelectValue placeholder="Select a category" />
+                                                                    </SelectTrigger>
+                                                                </FormControl>
+                                                                <SelectContent className="rounded-none">
+                                                                    {categories.map((cat, i) => (
+                                                                        <SelectItem key={i} value={cat}>{cat}</SelectItem>
+                                                                    ))}
+                                                                    <SelectItem value="custom" className="font-semibold text-primary">
+                                                                        + Add Custom Category...
+                                                                    </SelectItem>
+                                                                </SelectContent>
+                                                            </Select>
+                                                        ) : (
+                                                            <div className="flex gap-2">
+                                                                <FormControl>
+                                                                    <Input 
+                                                                        {...field} 
+                                                                        className="rounded-none border-border flex-1" 
+                                                                        placeholder="Type custom category..." 
+                                                                    />
+                                                                </FormControl>
+                                                                <Button 
+                                                                    type="button" 
+                                                                    variant="outline" 
+                                                                    onClick={() => { setIsCustomCategory(false); field.onChange(''); }}
+                                                                    className="rounded-none"
+                                                                >
+                                                                    Cancel
+                                                                </Button>
+                                                            </div>
+                                                        )}
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </>
+                                    )}
                                     <BilingualInput form={form} name="articleTitle" label="Title" required />
                                     <BilingualInput form={form} name="articleExcerpt" label="Excerpt" type="textarea" />
-                                    <BilingualInput form={form} name="articleContent" label="Content" type="textarea" required />
+                                    
+                                    <FormField
+                                        control={control}
+                                        name="articleContent"
+                                        render={({ field }) => (
+                                            <BilingualRichText
+                                                label="Content"
+                                                valueEn={field.value.en}
+                                                valueNe={field.value.ne}
+                                                onChangeEn={(val) => field.onChange({ ...field.value, en: val })}
+                                                onChangeNe={(val) => field.onChange({ ...field.value, ne: val })}
+                                                required
+                                            />
+                                        )}
+                                    />
                                 </>
                             )}
                         </CardContent>
@@ -428,7 +537,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                                 )}
                             />
 
-                            {(type === "brief" || type === "fact-check" || type === "election-article") && (
+                            {(type === "brief" || type === "fact-check" || type === "election-article" || type === "column-article") && (
                                 <FormField
                                     control={control}
                                     name="status"

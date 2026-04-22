@@ -10,7 +10,7 @@ export const metadata: Metadata = constructMetadata({
     keywords: ["election fact check", "nepal fact check", "claim verification nepal election"],
 });
 
-export const revalidate = 60;
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
 
 export default async function ElectionFactChecks() {
     const factChecks = await getFactChecks();

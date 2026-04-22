@@ -3,32 +3,31 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
-import { Menu, Search } from "lucide-react";
+import { motion } from "framer-motion";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { Input } from "@/components/ui/input";
+
 import { ThemeToggle } from "@/components/theme-toggle";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LanguageToggle } from "@/components/language-toggle";
 
 const links = [
     { href: "/", labelEn: "Home", labelNe: "गृहपृष्ठ" },
-    { href: "/leaders", labelEn: "Leaders", labelNe: "नेताहरू" },
+    { href: "/leaders", labelEn: "Leaders", labelNe: "स्तम्भहरू" },
     { href: "/history", labelEn: "History", labelNe: "इतिहास" },
     { href: "/articles", labelEn: "Articles", labelNe: "लेखहरू" },
     {
-        href: "/election-2026",
-        labelEn: "Election 2026",
-        labelNe: "निर्वाचन २०२६",
+        href: "/coverage",
+        labelEn: "Coverage",
+        labelNe: "कभरेज",
     },
     { href: "/about", labelEn: "About Us", labelNe: "हाम्रा बारेमा" },
 ];
 
 export function Navbar() {
     const [isScrolled, setIsScrolled] = React.useState(false);
-    const [isSearchOpen, setIsSearchOpen] = React.useState(false);
     const [isSheetOpen, setIsSheetOpen] = React.useState(false);
     const pathname = usePathname();
     const { language } = useLanguage();
@@ -90,33 +89,6 @@ export function Navbar() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-3">
-                    <div className="hidden sm:block">
-                        <AnimatePresence>
-                            {isSearchOpen ? (
-                                <motion.div
-                                    initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: 240, opacity: 1 }}
-                                    exit={{ width: 0, opacity: 0 }}
-                                    className="overflow-hidden"
-                                >
-                                    <Input
-                                        placeholder="Search..."
-                                        className="h-10 bg-background border-border focus-visible:ring-ring"
-                                        autoFocus
-                                        onBlur={() => setIsSearchOpen(false)}
-                                    />
-                                </motion.div>
-                            ) : (
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() => setIsSearchOpen(true)}
-                                >
-                                    <Search className="h-5 w-5" />
-                                </Button>
-                            )}
-                        </AnimatePresence>
-                    </div>
 
                     {/* Language toggle */}
                     <div className="hidden sm:flex items-center">

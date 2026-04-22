@@ -1,4 +1,4 @@
-import { getElectionArticleBySlug } from "@/lib/election-data";
+import { getElectionArticleBySlug, getElectionArticles } from "@/lib/election-data";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { AnalysisDetailClient } from "./AnalysisDetailClient";
@@ -34,7 +34,11 @@ export async function generateMetadata({ params }: AnalysisDetailPageProps): Pro
     });
 }
 
-export const revalidate = 600;
+export async function generateStaticParams() {
+    const analyses = await getElectionArticles(); // pre-build analysis slugs 
+    return analyses.map((a) => ({ slug: a.slug }));
+}
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
 
 export default async function AnalysisDetailPage({ params }: AnalysisDetailPageProps) {
     const { slug } = await params;

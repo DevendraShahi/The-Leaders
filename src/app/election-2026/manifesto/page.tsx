@@ -16,7 +16,7 @@ export const metadata: Metadata = constructMetadata({
     ],
 });
 
-export const revalidate = 300;
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
 
 export default async function ElectionManifestoPage() {
     const manifestos = await getPartyManifestos();

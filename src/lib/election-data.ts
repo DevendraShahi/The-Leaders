@@ -115,7 +115,24 @@ export interface ElectionArticleDTO {
     image?: string;
 }
 
+export interface ColumnArticleDTO {
+    editor?: string;
+    title_en: string;
+    title_ne?: string;
+    excerpt_en: string;
+    excerpt_ne?: string;
+    content_en: string;
+    content_ne?: string;
+    slug: string;
+    category?: string;
+    tags: string[];
+    status: "draft" | "published" | "archived";
+    createdAt?: string;
+    image?: string;
+}
+
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 // ... existing interfaces ...
 
@@ -152,7 +169,7 @@ export const getElectionData = cache(async (): Promise<ElectionData> => {
     }
 });
 
-export async function getDailyBriefs() {
+export const getDailyBriefs = unstable_cache(async () => {
     try {
         const { default: dbConnect } = await import("@/lib/db");
         const { DailyBrief } = await import("@/models/ElectionContent");
@@ -183,9 +200,9 @@ export async function getDailyBriefs() {
         const data = await getElectionData();
         return data.dailyBriefs || [];
     }
-}
+}, ['daily-briefs'], { tags: ['daily-briefs', 'election-data'] });
 
-export async function getFactChecks() {
+export const getFactChecks = unstable_cache(async () => {
     try {
         const { default: dbConnect } = await import("@/lib/db");
         const { FactCheck } = await import("@/models/ElectionContent");
@@ -217,7 +234,7 @@ export async function getFactChecks() {
         const data = await getElectionData();
         return data.factChecks || [];
     }
-}
+}, ['fact-checks'], { tags: ['fact-checks', 'election-data'] });
 
 export async function getParties() {
     const data = await getElectionData();
@@ -239,7 +256,7 @@ export async function getLatestHeadlines(limit: number = 8): Promise<string[]> {
     }
 }
 
-export async function getElectionArticles(limit: number = 3): Promise<ElectionArticleDTO[]> {
+export const getElectionArticles = unstable_cache(async (limit: number = 3): Promise<ElectionArticleDTO[]> => {
     try {
         const { default: dbConnect } = await import("@/lib/db");
         const { ElectionArticle } = await import("@/models/ElectionContent");
@@ -268,9 +285,9 @@ export async function getElectionArticles(limit: number = 3): Promise<ElectionAr
         console.error("Failed to load election articles from database:", error);
         return [];
     }
-}
+}, ['election-articles'], { tags: ['election-articles', 'election-data'] });
 
-export async function getElectionArticleBySlug(slug: string): Promise<ElectionArticleDTO | null> {
+export const getElectionArticleBySlug = unstable_cache(async (slug: string): Promise<ElectionArticleDTO | null> => {
     const target = normalizeSlug(slug);
     try {
         const { default: dbConnect } = await import("@/lib/db");
@@ -328,4 +345,95 @@ export async function getElectionArticleBySlug(slug: string): Promise<ElectionAr
     if (match) return match;
     match = articles.find((a) => normalizeSlug(a.title_en) === target);
     return match || null;
-}
+}, ['election-article-by-slug'], { tags: ['election-articles', 'election-data'] });
+
+export const getColumnArticles = unstable_cache(async (limit: number = 3): Promise<ColumnArticleDTO[]> => {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { ColumnArticle } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        const articles = await ColumnArticle.find({ status: "published" })
+            .sort({ createdAt: -1 })
+            .limit(limit)
+            .lean();
+
+        return articles.map((a: any) => ({
+            editor: resolveLocalizedString(a.editor),
+            title_en: resolveLocalizedString(a.title_en),
+            title_ne: resolveLocalizedString(a.title_ne),
+            excerpt_en: resolveLocalizedString(a.excerpt_en),
+            excerpt_ne: resolveLocalizedString(a.excerpt_ne),
+            content_en: resolveLocalizedString(a.content_en),
+            content_ne: resolveLocalizedString(a.content_ne),
+            slug: a.slug,
+            category: a.category,
+            tags: a.tags || [],
+            status: a.status,
+            createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : String(a.createdAt),
+            image: a.image || "",
+        })) as ColumnArticleDTO[];
+    } catch (error) {
+        console.error("Failed to load column articles from database:", error);
+        return [];
+    }
+}, ['column-articles'], { tags: ['column-articles', 'election-data'] });
+
+export const getColumnArticleBySlug = unstable_cache(async (slug: string): Promise<ColumnArticleDTO | null> => {
+    const target = normalizeSlug(slug);
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { ColumnArticle } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        const candidates = await ColumnArticle.find({
+            status: "published",
+            $or: [
+                { slug },
+                { slug: target },
+                { slug: { $regex: target, $options: "i" } },
+            ],
+        }).lean();
+
+        if (candidates.length) {
+            const normalized = candidates.map((a: any) => ({
+                editor: resolveLocalizedString(a.editor),
+                title_en: resolveLocalizedString(a.title_en),
+                title_ne: resolveLocalizedString(a.title_ne),
+                excerpt_en: resolveLocalizedString(a.excerpt_en),
+                excerpt_ne: resolveLocalizedString(a.excerpt_ne),
+                content_en: resolveLocalizedString(a.content_en),
+                content_ne: resolveLocalizedString(a.content_ne),
+                slug: a.slug,
+                category: a.category,
+                tags: a.tags || [],
+                status: a.status,
+                createdAt: a.createdAt instanceof Date ? a.createdAt.toISOString() : String(a.createdAt),
+                image: a.image || "",
+            })) as ColumnArticleDTO[];
+
+            let match = normalized.find((a) => normalizeSlug(a.slug) === target);
+            if (match) return match;
+            match = normalized.find((a) => normalizeSlug(a.slug).endsWith(target));
+            if (match) return match;
+            match = normalized.find((a) => normalizeSlug(a.slug).includes(target));
+            if (match) return match;
+            match = normalized.find((a) => normalizeSlug(a.title_en) === target);
+            return match || normalized[0];
+        }
+    } catch (error) {
+        console.error("Failed to load column article by slug:", error);
+    }
+
+    const articles = await getColumnArticles(100);
+    if (!articles.length) return null;
+
+    let match = articles.find((a) => normalizeSlug(a.slug) === target);
+    if (match) return match;
+    match = articles.find((a) => normalizeSlug(a.slug).endsWith(target));
+    if (match) return match;
+    match = articles.find((a) => normalizeSlug(a.slug).includes(target));
+    if (match) return match;
+    match = articles.find((a) => normalizeSlug(a.title_en) === target);
+    return match || null;
+}, ['column-article-by-slug'], { tags: ['column-articles', 'election-data'] });

@@ -73,7 +73,12 @@ export async function generateMetadata({ params }: CandidateProfilePageProps): P
     });
 }
 
-export const revalidate = 3600;
+export async function generateStaticParams() {
+    const dataset = await getFPTPCandidateDataset();
+    return dataset.candidates.map((c) => ({ slug: getFPTPCandidateSlug(c) }));
+}
+
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
 
 export default async function CandidateProfilePage({ params }: CandidateProfilePageProps) {
     const { candidate, partyRank } = await getCandidateFromParams(params);

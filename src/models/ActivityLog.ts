@@ -14,7 +14,8 @@ export interface IActivityLog {
         | 'ElectionContent'
         | 'DailyBrief'
         | 'FactCheck'
-        | 'ElectionArticle';
+        | 'ElectionArticle'
+        | 'ColumnArticle';
     entityId?: string;
     description: string;
     metadata?: any;
@@ -45,7 +46,8 @@ const ActivityLogSchema = new Schema<IActivityLog>(
                 'ElectionContent',
                 'DailyBrief',
                 'FactCheck',
-                'ElectionArticle'
+                'ElectionArticle',
+                'ColumnArticle'
             ],
             required: true
         },

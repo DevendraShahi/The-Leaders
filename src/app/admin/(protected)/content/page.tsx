@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { DataTable } from '@/components/admin/DataTable';
 import { ConfirmDialog } from '@/components/admin/ConfirmDialog';
-import { articleColumns, leaderColumns, historyColumns, briefColumns, factCheckColumns, electionArticleColumns } from './columns';
+import { articleColumns, leaderColumns, historyColumns, briefColumns, factCheckColumns, electionArticleColumns, columnArticleColumns } from './columns';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { toast } from 'sonner';
 import { Plus, Loader2, RefreshCw, Upload, ArrowLeft, Calendar, User } from 'lucide-react';
@@ -36,7 +36,7 @@ function ContentList() {
     const [pendingDelete, setPendingDelete] = useState<{ id: string; type: string } | null>(null);
     const [pendingBulkDeleteRows, setPendingBulkDeleteRows] = useState<any[] | null>(null);
     const [previewItem, setPreviewItem] = useState<any | null>(null);
-    const [previewItemType, setPreviewItemType] = useState<'article' | 'leader' | 'history' | 'brief' | 'fact-check' | 'election-article' | null>(null);
+    const [previewItemType, setPreviewItemType] = useState<'article' | 'leader' | 'history' | 'brief' | 'fact-check' | 'election-article' | 'column-article' | null>(null);
     const [previewLoading, setPreviewLoading] = useState(false);
 
     const pickLocalized = (value: any) => {
@@ -69,6 +69,7 @@ function ContentList() {
                 let key = type;
                 if (type === 'fact-checks') key = 'factChecks';
                 if (type === 'election-articles') key = 'electionArticles';
+                if (type === 'column-articles') key = 'columnArticles';
 
                 setData(responseData.data[key] || []);
                 setTotalPages(responseData.data.pagination.pages);
@@ -102,10 +103,10 @@ function ContentList() {
     };
 
     const handlePreview = async (row: any, itemType: string) => {
-        const allowedTypes = new Set(['article', 'leader', 'history', 'brief', 'fact-check', 'election-article']);
+        const allowedTypes = new Set(['article', 'leader', 'history', 'brief', 'fact-check', 'election-article', 'column-article']);
         if (!allowedTypes.has(itemType)) return;
         if (!token) return;
-        const normalizedType = itemType as 'article' | 'leader' | 'history' | 'brief' | 'fact-check' | 'election-article';
+        const normalizedType = itemType as 'article' | 'leader' | 'history' | 'brief' | 'fact-check' | 'election-article' | 'column-article';
         const itemId = getBulkDeleteId(row, normalizedType);
         const routeType = getRouteType(normalizedType);
         if (!itemId || !routeType) return;
@@ -124,6 +125,7 @@ function ContentList() {
                 brief: 'brief',
                 'fact-check': 'factCheck',
                 'election-article': 'electionArticle',
+                'column-article': 'columnArticle',
             };
             const payloadKey = keyMap[normalizedType];
             const previewPayload = response?.data?.[payloadKey];
@@ -148,7 +150,8 @@ function ContentList() {
                 'history': 'history',
                 'brief': 'briefs',
                 'fact-check': 'fact-checks',
-                'election-article': 'election-articles'
+                'election-article': 'election-articles',
+                'column-article': 'column-articles'
             };
 
             const routeType = mapping[deleteType] || deleteType;
@@ -249,13 +252,14 @@ function ContentList() {
             'history': 'history',
             'brief': 'briefs',
             'fact-check': 'fact-checks',
-            'election-article': 'election-articles'
+            'election-article': 'election-articles',
+            'column-article': 'column-articles'
         };
         return mapping[deleteType] || deleteType;
     };
 
     const getBulkDeleteId = (row: any, deleteType: string): string => {
-        if (deleteType === 'brief' || deleteType === 'fact-check' || deleteType === 'election-article') {
+        if (deleteType === 'brief' || deleteType === 'fact-check' || deleteType === 'election-article' || deleteType === 'column-article') {
             if (row?.slug) return String(row.slug);
         }
         const raw = row?.id ?? row?._id ?? row?.slug;
@@ -275,7 +279,8 @@ function ContentList() {
             history: 'history',
             briefs: 'brief',
             'fact-checks': 'fact-check',
-            'election-articles': 'election-article'
+            'election-articles': 'election-article',
+            'column-articles': 'column-article'
         };
         const itemType = sectionTypeMap[type] || type;
         const routeType = getRouteType(itemType);
@@ -318,9 +323,8 @@ function ContentList() {
         switch (type) {
             case 'leaders': return leaderColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
             case 'history': return historyColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
-            case 'fact-checks': return factCheckColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
             case 'briefs': return briefColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
-            case 'election-articles': return electionArticleColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
+            case 'column-articles': return columnArticleColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
             case 'articles':
             default: return articleColumns(handleDelete, handleStatusChange, isStatusUpdating, language, handlePreview);
         }
@@ -332,6 +336,7 @@ function ContentList() {
         if (type === 'briefs') return '/admin/content/brief/new';
         if (type === 'fact-checks') return '/admin/content/fact-check/new';
         if (type === 'election-articles') return '/admin/content/election-article/new';
+        if (type === 'column-articles') return '/admin/content/column-article/new';
         return '/admin/content/article/new';
     };
 
@@ -340,6 +345,7 @@ function ContentList() {
         if (type === 'briefs') return language === 'ne' ? 'नयाँ संक्षिप्त' : 'New Brief';
         if (type === 'fact-checks') return language === 'ne' ? 'नयाँ तथ्य जाँच' : 'New Fact Check';
         if (type === 'election-articles') return language === 'ne' ? 'नयाँ चुनावी लेख' : 'New Election Article';
+        if (type === 'column-articles') return language === 'ne' ? 'नयाँ स्तम्भ' : 'New Column Article';
         return language === 'ne' ? `नयाँ ${type.slice(0, -1)}` : `New ${type.slice(0, -1)}`;
     };
 
@@ -354,7 +360,7 @@ function ContentList() {
                     ? pickLocalized(previewItem?.title)
                     : previewItemType === 'fact-check'
                         ? pickLocalized(previewItem?.claim)
-                        : previewItemType === 'election-article'
+                        : previewItemType === 'election-article' || previewItemType === 'column-article'
                             ? (language === 'ne' ? (previewItem?.title_ne || previewItem?.title_en) : (previewItem?.title_en || previewItem?.title_ne))
                             : '';
 
@@ -368,7 +374,7 @@ function ContentList() {
                     ? pickLocalized(previewItem?.summary)
                     : previewItemType === 'fact-check'
                         ? pickLocalized(previewItem?.claimBy)
-                        : previewItemType === 'election-article'
+                        : previewItemType === 'election-article' || previewItemType === 'column-article'
                             ? (language === 'ne' ? (previewItem?.excerpt_ne || previewItem?.excerpt_en) : (previewItem?.excerpt_en || previewItem?.excerpt_ne))
                             : '';
 
@@ -382,7 +388,7 @@ function ContentList() {
                     ? pickLocalized(previewItem?.content)
                     : previewItemType === 'fact-check'
                         ? pickLocalized(previewItem?.analysis)
-                        : previewItemType === 'election-article'
+                        : previewItemType === 'election-article' || previewItemType === 'column-article'
                             ? (language === 'ne' ? (previewItem?.content_ne || previewItem?.content_en) : (previewItem?.content_en || previewItem?.content_ne))
                             : '';
 
@@ -392,7 +398,7 @@ function ContentList() {
             ? pickLocalized(previewItem?.position)
             : previewItemType === 'fact-check'
                 ? (language === 'ne' ? 'दाबीकर्ता' : 'Claimed by')
-                : previewItemType === 'election-article'
+                : previewItemType === 'election-article' || previewItemType === 'column-article'
                     ? (previewItem?.editor || (language === 'ne' ? 'सम्पादक अज्ञात' : 'Unknown editor'))
                     : '';
 
@@ -427,7 +433,9 @@ function ContentList() {
                     ? (language === 'ne' ? 'सम्बन्धित संक्षिप्त' : 'Related Briefs')
                     : previewItemType === 'fact-check'
                         ? (language === 'ne' ? 'सम्बन्धित तथ्य जाँच' : 'Related Fact Checks')
-                        : (language === 'ne' ? 'सम्बन्धित चुनावी लेखहरू' : 'Related Election Articles');
+                        : previewItemType === 'election-article'
+                            ? (language === 'ne' ? 'सम्बन्धित चुनावी लेखहरू' : 'Related Election Articles')
+                            : (language === 'ne' ? 'सम्बन्धित स्तम्भहरू' : 'Related Columns');
 
     // Editorial Theme Classes
     const tabBase = "flex-none shrink-0 whitespace-nowrap px-6 py-2 text-sm font-mono uppercase tracking-wider transition-all border-b-2";
@@ -552,12 +560,6 @@ function ContentList() {
                         {language === 'ne' ? 'लेखहरू' : 'Articles'}
                     </button>
                     <button
-                        onClick={() => handleTabChange('election-articles')}
-                        className={`${tabBase} ${type === 'election-articles' ? activeTab : inactiveTab}`}
-                    >
-                        {language === 'ne' ? 'चुनावी लेखहरू' : 'Election Articles'}
-                    </button>
-                    <button
                         onClick={() => handleTabChange('leaders')}
                         className={`${tabBase} ${type === 'leaders' ? activeTab : inactiveTab}`}
                     >
@@ -576,10 +578,10 @@ function ContentList() {
                         {language === 'ne' ? 'संक्षिप्तहरू' : 'Briefs'}
                     </button>
                     <button
-                        onClick={() => handleTabChange('fact-checks')}
-                        className={`${tabBase} ${type === 'fact-checks' ? activeTab : inactiveTab}`}
+                        onClick={() => handleTabChange('column-articles')}
+                        className={`${tabBase} ${type === 'column-articles' ? activeTab : inactiveTab}`}
                     >
-                        {language === 'ne' ? 'तथ्य जाँच' : 'Fact Checks'}
+                        {language === 'ne' ? 'स्तम्भहरू' : 'Column Articles'}
                     </button>
                 </div>
             </div>
@@ -765,7 +767,7 @@ function ContentList() {
                                                             ? (pickLocalized(item?.name) || (language === 'ne' ? 'शीर्षक उपलब्ध छैन' : 'Untitled'))
                                                             : previewItemType === 'fact-check'
                                                                 ? (pickLocalized(item?.claim) || (language === 'ne' ? 'शीर्षक उपलब्ध छैन' : 'Untitled'))
-                                                                : previewItemType === 'election-article'
+                                                                : previewItemType === 'election-article' || previewItemType === 'column-article'
                                                                     ? (language === 'ne' ? (item?.title_ne || item?.title_en) : (item?.title_en || item?.title_ne))
                                                                     : (pickLocalized(item?.title) || (language === 'ne' ? 'शीर्षक उपलब्ध छैन' : 'Untitled'))}
                                                     </div>

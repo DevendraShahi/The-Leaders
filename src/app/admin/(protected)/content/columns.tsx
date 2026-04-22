@@ -520,3 +520,80 @@ export const electionArticleColumns = (
             cell: ({ row }) => <ActionCell row={row.original} type="election-article" onPreview={onPreview} language={language} />
         },
     ]
+
+export const columnArticleColumns = (
+    onDelete: any,
+    onStatusChange: any,
+    isStatusUpdating: any,
+    language: LanguageCode = "en",
+    onPreview?: (row: any, type: string) => void
+): ColumnDef<any>[] => [
+        {
+            accessorKey: "image",
+            header: language === "ne" ? "तस्बिर" : "Image",
+            cell: ({ row }) => {
+                const rowId = getRowSlugOrId(row.original);
+                if (row.original?.image) {
+                    return (
+                        <div className="w-12 h-12 border border-border overflow-hidden bg-muted">
+                            <img src={row.original.image} alt="" className="w-full h-full object-cover" />
+                        </div>
+                    );
+                }
+                return (
+                    <Link
+                        href={`/admin/content/column-article/${rowId}`}
+                        className="inline-flex items-center px-2 py-1 text-[10px] font-mono uppercase tracking-widest border border-border hover:border-primary text-muted-foreground hover:text-primary transition-colors"
+                    >
+                        {language === "ne" ? "तस्बिर थप्नुहोस्" : "Add image"}
+                    </Link>
+                );
+            }
+        },
+        {
+            id: "title_en",
+            accessorKey: "title_en",
+            header: language === "ne" ? "शीर्षक" : "Title",
+            enableColumnFilter: true,
+            cell: ({ row }) => (
+                <div className="py-1">
+                    <div className="font-manrope font-bold text-foreground text-sm line-clamp-2">
+                        {(language === "ne" ? row.original.title_ne || row.original.title_en : row.original.title_en || row.original.title_ne) || (language === "ne" ? "शीर्षक नभएको स्तम्भ" : "Untitled Column")}
+                    </div>
+                    {row.original.editor && (
+                        <div className="font-mono text-[10px] text-muted-foreground mt-0.5 uppercase tracking-wide">
+                            {row.original.editor}
+                        </div>
+                    )}
+                </div>
+            )
+        },
+        {
+            accessorKey: "status",
+            header: language === "ne" ? "स्थिति" : "Status",
+            cell: ({ row }) => (
+                <StatusBadgeCell current={row.original.status} language={language} />
+            )
+        },
+        {
+            accessorKey: "createdAt",
+            header: language === "ne" ? "मिति" : "Date",
+            cell: ({ row }) => {
+                if (!row.original.createdAt) return <span className="text-muted-foreground text-xs font-mono">-</span>;
+                try {
+                    return (
+                        <span className="font-mono text-xs text-muted-foreground whitespace-nowrap">
+                            {format(new Date(row.original.createdAt), 'MMM d, yyyy')}
+                        </span>
+                    );
+                } catch (e) {
+                    return <span className="text-destructive text-xs font-mono">Invalid</span>;
+                }
+            }
+        },
+        {
+            id: "actions",
+            enableHiding: false,
+            cell: ({ row }) => <ActionCell row={row.original} type="column-article" onPreview={onPreview} language={language} />
+        },
+    ]

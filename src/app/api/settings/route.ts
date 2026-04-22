@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Settings from '@/models/Settings';
 
-export const revalidate = 60; // Revalidate every minute
+// export const revalidate = false; // API caches indefinitely until on-demand revalidation
 
 export async function GET() {
     try {

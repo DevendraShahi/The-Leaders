@@ -15,7 +15,7 @@ export const metadata: Metadata = constructMetadata({
     ],
 });
 
-export const revalidate = 600;
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
 
 export default async function ElectionAnalysesPage() {
     // Fetch a generous number of articles; these are editor-curated

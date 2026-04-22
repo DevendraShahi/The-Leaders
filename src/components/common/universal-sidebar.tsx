@@ -86,9 +86,9 @@ const DEFAULT_ROUTE_GUIDES: Record<string, LocalizedLabel> = {
         en: "Trace political eras and connect events over time.",
         ne: "राजनीतिक युगहरू ट्र्याक गरी घटनाहरू समयरेखासँग जोड्नुहोस्।",
     },
-    "/election-2026": {
-        en: "Monitor election modules, briefs, and verified snapshot data.",
-        ne: "निर्वाचन मोड्युल, ब्रिफ र प्रमाणित स्न्यापशट डेटा ट्र्याक गर्नुहोस्।",
+    "/coverage": {
+        en: "Monitor coverage modules, columns, and daily briefs.",
+        ne: "कभरेज मोड्युल, स्तम्भ र दैनिक ब्रिफ ट्र्याक गर्नुहोस्।",
     },
     "/articles": {
         en: "Read context-rich editorial stories and analysis.",
@@ -106,12 +106,12 @@ const DEFAULT_ROUTE_GUIDES: Record<string, LocalizedLabel> = {
 
 const DEFAULT_RESOURCE_LINKS: Record<"en" | "ne", UniversalSidebarResourceLink[]> = {
     en: [
-        { href: "/election-2026", label: "Election Hub" },
+        { href: "/coverage", label: "Coverage Platform" },
         { href: "/leaders", label: "Leader Profiles" },
         { href: "/articles", label: "Analysis" },
     ],
     ne: [
-        { href: "/election-2026", label: "चुनाव हब" },
+        { href: "/coverage", label: "कभरेज प्लेटफर्म" },
         { href: "/leaders", label: "नेता प्रोफाइल" },
         { href: "/articles", label: "विश्लेषण" },
     ],
@@ -162,7 +162,7 @@ export function UniversalSidebar({
             ? dataTags
             : snapshotStats.slice(0, 6).map((item) => item.label[locale]);
     const sidebarActionLabel = primaryActionLabel || (isNepali ? "विशेष पहुँच" : "Featured Access");
-    const sidebarActionHref = primaryActionHref || "/election-2026";
+    const sidebarActionHref = primaryActionHref || "/coverage";
     const navLinks = useMemo(
         () => (navigationLinks && navigationLinks.length > 0 ? navigationLinks : DEFAULT_NAVIGATION_LINKS),
         [navigationLinks]
@@ -475,7 +475,7 @@ export function UniversalSidebar({
                     >
                         <span className="inline-flex items-center gap-2">
                             <Sparkles className="h-3.5 w-3.5" />
-                            {isNepali ? "निर्वाचन हब" : "Election Hub"}
+                            {isNepali ? "कभरेज प्लेटफर्म" : "Coverage Platform"}
                         </span>
                         <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                     </Link>

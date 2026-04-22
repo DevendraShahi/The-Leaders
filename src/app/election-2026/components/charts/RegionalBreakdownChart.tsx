@@ -186,9 +186,7 @@ export function RegionalBreakdownChart({ data }: RegionalBreakdownChartProps) {
         return colors[index % colors.length];
     };
 
-    const chartRows: ChartRow[] = useMemo(
-        () =>
-            data.map((row) => {
+    const chartRows: ChartRow[] = data.map((row) => {
                 const seatGap = row.leadingPartySeats - row.runnerUpPartySeats;
                 const prGap = Number((row.leadingPrVoteShare - row.runnerUpPrVoteShare).toFixed(2));
 
@@ -202,9 +200,7 @@ export function RegionalBreakdownChart({ data }: RegionalBreakdownChartProps) {
                     runnerUpSeatShare:
                         row.totalSeats > 0 ? Number(((row.runnerUpPartySeats / row.totalSeats) * 100).toFixed(2)) : 0,
                 };
-            }),
-        [data, lang]
-    );
+    });
 
     useEffect(() => {
         if (!selectedProvince && chartRows.length > 0) {

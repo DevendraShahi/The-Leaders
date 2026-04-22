@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 export type LocalizedText = {
     en: string;
@@ -195,16 +196,16 @@ const loadManifestoDirectory = cache(async (): Promise<ManifestoDocument[]> => {
     });
 });
 
-export async function getPartyManifestos() {
+export const getPartyManifestos = unstable_cache(async () => {
     try {
         return await loadManifestoDirectory();
     } catch {
         return [];
     }
-}
+}, ['party-manifestos-list'], { tags: ['manifestos'] });
 
-export async function getPartyManifestoBySlug(slug: string) {
+export const getPartyManifestoBySlug = unstable_cache(async (slug: string) => {
     const decoded = safeDecode(slug);
     const docs = await getPartyManifestos();
     return docs.find((doc) => doc.slug === decoded) ?? null;
-}
+}, ['party-manifesto-by-slug'], { tags: ['manifestos'] });

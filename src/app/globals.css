@@ -521,14 +521,10 @@ body.lang-ne .font-editorial {
 
   .marquee-track {
     display: inline-flex;
+    align-items: center;
     gap: 3rem;
     min-width: max-content;
     padding-left: 2rem;
-    animation: marquee-slide 90s linear infinite;
-  }
-
-  .marquee-shell:hover .marquee-track {
-    animation-play-state: paused;
   }
 
   .marquee-chip {
@@ -576,19 +572,9 @@ body.lang-ne .font-editorial {
     background: linear-gradient(270deg, var(--background) 40%, transparent);
   }
 
-  @keyframes marquee-slide {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation-duration: 0s;
-      animation-play-state: paused;
+    .rfm-marquee {
+      animation-play-state: paused !important;
     }
   }
 
@@ -1455,19 +1441,21 @@ body.lang-ne .font-editorial {
    ============================================ */
 
 .accordion-gallery {
-  --accent: #B71C1C;
-  --accent-hover: #EF5350;
-  --bg: #07090d;
-  --card-bg: rgba(255, 255, 255, 0.04);
-  --card-bg-hover: rgba(255, 255, 255, 0.08);
-  --border: rgba(255, 255, 255, 0.08);
-  --text: #c5c7ce;
-  --text-muted: rgba(197, 199, 206, 0.6);
-  --text-light: #ffffff;
-  --gap: 1.25rem;
-  --speed: 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --accent:        #B71C1C;
+  --accent-hover:  #EF5350;
+  --gap:    1.25rem;
+  --speed:  0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --closed: 5rem;
-  --open: 18rem;
+  --open:   18rem;
+
+  /* ── Light-mode defaults ── */
+  --bg:            #f5f5f5;
+  --card-bg:       rgba(0, 0, 0, 0.04);
+  --card-bg-hover: rgba(0, 0, 0, 0.07);
+  --border:        rgba(0, 0, 0, 0.10);
+  --text:          #374151;
+  --text-muted:    rgba(55, 65, 81, 0.55);
+  --text-light:    #111827;
 
   background: var(--bg);
   color: var(--text);
@@ -1475,7 +1463,62 @@ body.lang-ne .font-editorial {
   position: relative;
 }
 
+/* ── Dark-mode overrides ── */
+.dark .accordion-gallery,
+:root[data-theme="dark"] .accordion-gallery {
+  --bg:            #07090d;
+  --card-bg:       rgba(255, 255, 255, 0.04);
+  --card-bg-hover: rgba(255, 255, 255, 0.08);
+  --border:        rgba(255, 255, 255, 0.08);
+  --text:          #c5c7ce;
+  --text-muted:    rgba(197, 199, 206, 0.60);
+  --text-light:    #ffffff;
+}
+
+/* ── Card: light-mode overrides for hard-coded rgba values ── */
+
+/* Hover border: subtle dark edge instead of white */
+.accordion-gallery .accordion-card:hover:not(.accordion-card-active) {
+  border-color: rgba(0, 0, 0, 0.18);
+}
+.dark .accordion-gallery .accordion-card:hover:not(.accordion-card-active),
+:root[data-theme="dark"] .accordion-gallery .accordion-card:hover:not(.accordion-card-active) {
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Clear-btn hover border */
+.accordion-gallery .accordion-clear-btn:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  color: var(--text-light);
+}
+.dark .accordion-gallery .accordion-clear-btn:hover,
+:root[data-theme="dark"] .accordion-gallery .accordion-clear-btn:hover {
+  border-color: rgba(255, 255, 255, 0.20);
+}
+
+/* Placeholder (leader without a photo) */
+.accordion-gallery .accordion-card-placeholder {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.03));
+}
+.accordion-gallery .accordion-card-placeholder span {
+  color: rgba(0, 0, 0, 0.12);
+}
+.dark .accordion-gallery .accordion-card-placeholder,
+:root[data-theme="dark"] .accordion-gallery .accordion-card-placeholder {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.05));
+}
+.dark .accordion-gallery .accordion-card-placeholder span,
+:root[data-theme="dark"] .accordion-gallery .accordion-card-placeholder span {
+  color: rgba(255, 255, 255, 0.15);
+}
+
+/* Vertical name label — always white since card sits on top of a photo */
+.accordion-gallery .accordion-card-name {
+  color: #ffffff;
+}
+
 /* Header */
+
 .accordion-header {
   padding: 3rem 2rem 2rem;
   border-bottom: 1px solid var(--border);
@@ -2036,7 +2079,7 @@ body.lang-ne .font-editorial {
 .accordion-dot {
   width: 1.25rem;
   height: 2px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.18);
   border: none;
   cursor: pointer;
   transition: all 0.25s ease;
@@ -2044,8 +2087,18 @@ body.lang-ne .font-editorial {
 }
 
 .accordion-dot:hover {
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(0, 0, 0, 0.38);
   width: 1.5rem;
+}
+
+.dark .accordion-dot,
+:root[data-theme="dark"] .accordion-dot {
+  background: rgba(255, 255, 255, 0.20);
+}
+
+.dark .accordion-dot:hover,
+:root[data-theme="dark"] .accordion-dot:hover {
+  background: rgba(255, 255, 255, 0.45);
 }
 
 .accordion-dot-active {
@@ -2185,7 +2238,7 @@ body.lang-ne .font-editorial {
   /* Stats — refined compact horizontal layout */
   .accordion-stats {
     padding: 0;
-    background: linear-gradient(180deg, rgba(15, 15, 20, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -2198,8 +2251,8 @@ body.lang-ne .font-editorial {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding: 0.6rem 0.75rem;
-    background: rgba(255, 255, 255, 0.02);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
   }
 
   .accordion-stats-content::-webkit-scrollbar {
@@ -2263,8 +2316,8 @@ body.lang-ne .font-editorial {
     display: flex;
     align-items: center;
     padding: 0.5rem 0.75rem;
-    background: rgba(255, 255, 255, 0.02);
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
   }
 
   .accordion-stats-content {

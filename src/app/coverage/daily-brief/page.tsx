@@ -6,7 +6,7 @@ import { constructMetadata } from "@/lib/metadata";
 export const metadata: Metadata = constructMetadata({
     title: "Election Daily Briefs",
     description: "Daily election briefings with concise updates, key developments, and verified insights.",
-    canonical: "/election-2026/daily-brief",
+    canonical: "/coverage/daily-brief",
     keywords: ["daily brief", "nepal election updates", "election news nepal"],
 });
 

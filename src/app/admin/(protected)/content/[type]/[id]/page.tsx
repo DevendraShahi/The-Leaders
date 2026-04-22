@@ -23,7 +23,7 @@ export default function EditorPage() {
     const [loading, setLoading] = useState(id !== 'new');
     const [error, setError] = useState<string | null>(null);
 
-    const validTypes = ['article', 'leader', 'history', 'brief', 'fact-check', 'election-article'];
+    const validTypes = ['article', 'leader', 'history', 'brief', 'fact-check', 'election-article', 'column-article'];
 
     useEffect(() => {
         // If no params yet, wait
@@ -71,7 +71,9 @@ export default function EditorPage() {
                                 ? 'fact-checks'
                                 : type === 'election-article'
                                     ? 'election-articles'
-                                    : type + 's';
+                                    : type === 'column-article'
+                                        ? 'column-articles'
+                                        : type + 's';
 
                 // Construct URL carefully
                 const url = `/api/admin/${apiType}/${id}`;
@@ -93,7 +95,9 @@ export default function EditorPage() {
                                         ? 'brief'
                                         : type === 'fact-check'
                                             ? 'factCheck'
-                                            : 'electionArticle';
+                                            : type === 'election-article'
+                                                ? 'electionArticle'
+                                                : 'columnArticle';
 
                     // apiResponse wraps in { success, data }, so we access data[key] directly
                     if (data.data && data.data[key]) {
@@ -111,7 +115,9 @@ export default function EditorPage() {
                                 ? 'briefs'
                                 : type === 'election-article'
                                     ? 'electionArticles'
-                                    : null;
+                                    : type === 'column-article'
+                                        ? 'columnArticles'
+                                        : null;
 
                         if (fallbackKey) {
                             const fallback = await fetchFallbackBySearch(apiType, fallbackKey, id);
@@ -186,6 +192,8 @@ export default function EditorPage() {
             return <ElectionContentForm key="fact-check-form" initialData={initialData} id={id} type="fact-check" />;
         case 'election-article':
             return <ElectionContentForm key="election-article-form" initialData={initialData} id={id} type="election-article" />;
+        case 'column-article':
+            return <ElectionContentForm key="column-article-form" initialData={initialData} id={id} type="column-article" />;
         default:
             return notFound();
     }

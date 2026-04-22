@@ -122,14 +122,10 @@ export function TabbedDemographics({ data }: TabbedDemographicsProps) {
         }));
     }, [data.voterRollByCycle, data.ageDistribution]);
 
-    const genderRows = useMemo<GenderRow[]>(
-        () =>
-            data.genderDistribution.map((row) => ({
+    const genderRows: GenderRow[] = data.genderDistribution.map((row) => ({
                 ...row,
                 localizedGender: localizeGender(row.gender),
-            })),
-        [data.genderDistribution, lang]
-    );
+    }));
 
     const latestCycle = voterCycles[voterCycles.length - 1] ?? null;
     const baseline2022 = voterCycles.find((row) =>

@@ -11,8 +11,8 @@ export type PublicPages = 'home' | 'about' | 'contact' | 'articles' | 'leaders' 
 export type ElectionPages = 'dashboard' | 'parties' | 'candidates' | 'dailyBrief' | 'factChecks' | 'map' | 'profiles';
 
 // Cached fetcher to avoid DB spam on every request
-// Revalidates every 60 seconds to balance performance and freshness
-export const revalidate = 60;
+// Revalidates globally when on-demand revalidation triggers
+// export const revalidate = 300;
 
 import { unstable_cache } from 'next/cache';
 
@@ -29,7 +29,7 @@ export const getSettings = unstable_cache(
         }
     },
     ['settings-cache'],
-    { revalidate: 60, tags: ['settings'] }
+    { tags: ['settings'] }
 );
 
 export async function checkMaintenance(

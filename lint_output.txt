@@ -1,0 +1,112 @@
+
+> the-leaders@1.8.0 lint
+> eslint
+
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/admin/(protected)/content/vote-counts/page.tsx
+  257:9  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+  263:9  warning  Unused eslint-disable directive (no problems were reported from 'react-hooks/exhaustive-deps')
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/api/revalidate/route.ts
+  38:13  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+  77:13  error  Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free  @typescript-eslint/ban-ts-comment
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/election-2026/components/charts/RegionalBreakdownChart.tsx
+  190:9  error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `localizeProvince`, but the source dependencies were [data, lang]. Inferred different dependency than source.
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/election-2026/components/charts/RegionalBreakdownChart.tsx:190:9
+  188 |
+  189 |     const chartRows: ChartRow[] = useMemo(
+> 190 |         () =>
+      |         ^^^^^
+> 191 |             data.map((row) => {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 192 |                 const seatGap = row.leadingPartySeats - row.runnerUpPartySeats;
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 204 |                 };
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 205 |             }),
+      | ^^^^^^^^^^^^^^^ Could not preserve existing manual memoization
+  206 |         [data, lang]
+  207 |     );
+  208 |  react-hooks/preserve-manual-memoization
+  190:9  error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `localizeProvince`, but the source dependencies were [data, lang]. Inferred different dependency than source.
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/election-2026/components/charts/RegionalBreakdownChart.tsx:190:9
+  188 |
+  189 |     const chartRows: ChartRow[] = useMemo(
+> 190 |         () =>
+      |         ^^^^^
+> 191 |             data.map((row) => {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 192 |                 const seatGap = row.leadingPartySeats - row.runnerUpPartySeats;
+      …
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 204 |                 };
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 205 |             }),
+      | ^^^^^^^^^^^^^^^ Could not preserve existing manual memoization
+  206 |         [data, lang]
+  207 |     );
+  208 |  react-hooks/preserve-manual-memoization
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/election-2026/components/charts/TabbedDemographics.tsx
+  126:9  error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `localizeGender`, but the source dependencies were [data.genderDistribution, lang]. Inferred different dependency than source.
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/election-2026/components/charts/TabbedDemographics.tsx:126:9
+  124 |
+  125 |     const genderRows = useMemo<GenderRow[]>(
+> 126 |         () =>
+      |         ^^^^^
+> 127 |             data.genderDistribution.map((row) => ({
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 128 |                 ...row,
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 129 |                 localizedGender: localizeGender(row.gender),
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 130 |             })),
+      | ^^^^^^^^^^^^^^^^ Could not preserve existing manual memoization
+  131 |         [data.genderDistribution, lang]
+  132 |     );
+  133 |  react-hooks/preserve-manual-memoization
+  126:9  error  Compilation Skipped: Existing memoization could not be preserved
+
+React Compiler has skipped optimizing this component because the existing manual memoization could not be preserved. The inferred dependencies did not match the manually specified dependencies, which could cause the value to change more or less frequently than expected. The inferred dependency was `localizeGender`, but the source dependencies were [data.genderDistribution, lang]. Inferred different dependency than source.
+
+/Users/devendrashahithakuri/Work/The-Leaders/src/app/election-2026/components/charts/TabbedDemographics.tsx:126:9
+  124 |
+  125 |     const genderRows = useMemo<GenderRow[]>(
+> 126 |         () =>
+      |         ^^^^^
+> 127 |             data.genderDistribution.map((row) => ({
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 128 |                 ...row,
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 129 |                 localizedGender: localizeGender(row.gender),
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> 130 |             })),
+      | ^^^^^^^^^^^^^^^^ Could not preserve existing manual memoization
+  131 |         [data.genderDistribution, lang]
+  132 |     );
+  133 |  react-hooks/preserve-manual-memoization
+
+/Users/devendrashahithakuri/Work/The-Leaders/test_script.js
+  1:1   error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  2:18  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+  3:16  error  A `require()` style import is forbidden  @typescript-eslint/no-require-imports
+
+✖ 11 problems (9 errors, 2 warnings)
+  0 errors and 2 warnings potentially fixable with the `--fix` option.
+
+npm notice
+npm notice New minor version of npm available! 11.6.0 -> 11.12.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+npm notice To update run: npm install -g npm@11.12.1
+npm notice

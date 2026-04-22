@@ -44,6 +44,22 @@ export interface IElectionArticle extends Document {
     views: number;
 }
 
+export interface IColumnArticle extends Document {
+    editor?: string;
+    title_en: string;
+    title_ne?: string;
+    excerpt_en: string;
+    excerpt_ne?: string;
+    content_en: string;
+    content_ne?: string;
+    slug: string;
+    tags: string[];
+    category?: string;
+    status: "draft" | "published" | "archived";
+    image?: string;
+    views: number;
+}
+
 // --- Schemas ---
 
 const DailyBriefSchema = new Schema<IDailyBrief>(
@@ -112,6 +128,29 @@ const ElectionArticleSchema = new Schema<IElectionArticle>(
     { timestamps: true }
 );
 
+const ColumnArticleSchema = new Schema<IColumnArticle>(
+    {
+        editor: { type: String },
+        title_en: { type: String, required: true },
+        title_ne: { type: String },
+        excerpt_en: { type: String, required: true },
+        excerpt_ne: { type: String },
+        content_en: { type: String, required: true },
+        content_ne: { type: String },
+        slug: { type: String, required: true, unique: true },
+        tags: [String],
+        category: { type: String },
+        status: {
+            type: String,
+            enum: ["draft", "published", "archived"],
+            default: "draft",
+        },
+        image: { type: String },
+        views: { type: Number, default: 0 },
+    },
+    { timestamps: true }
+);
+
 // --- Models ---
 
 const modelPathChecks: Record<string, string[]> = {
@@ -145,3 +184,4 @@ const getModel = <T extends Document>(name: string, schema: Schema<T>): Model<T>
 export const DailyBrief = getModel<IDailyBrief>("DailyBrief", DailyBriefSchema);
 export const FactCheck = getModel<IFactCheck>("FactCheck", FactCheckSchema);
 export const ElectionArticle = getModel<IElectionArticle>("ElectionArticle", ElectionArticleSchema);
+export const ColumnArticle = getModel<IColumnArticle>("ColumnArticle", ColumnArticleSchema);

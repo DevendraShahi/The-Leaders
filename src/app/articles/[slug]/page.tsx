@@ -11,6 +11,13 @@ interface PageProps {
     }>;
 }
 
+export async function generateStaticParams() {
+    const articles = await getArticles(50); // pre-build top 50 articles
+    return articles.map((a) => ({ slug: a.slug }));
+}
+
+// export const revalidate = false; // Page caches indefinitely until on-demand revalidation
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
     const article = await getArticleBySlug(slug);
