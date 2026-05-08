@@ -15,6 +15,8 @@ import { LanguageToggle } from '@/components/language-toggle';
 import { MarkdownPreview } from '@/components/admin/MarkdownPreview';
 import { Edit, Trash } from 'lucide-react';
 
+type ContentStatus = 'draft' | 'published' | 'archived';
+
 function ContentList() {
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -33,6 +35,7 @@ function ContentList() {
     const [dateTo, setDateTo] = useState('');
     const [statusFilter, setStatusFilter] = useState('');
     const [updatingStatusKeys, setUpdatingStatusKeys] = useState<Set<string>>(new Set());
+    const [bulkStatusUpdating, setBulkStatusUpdating] = useState(false);
     const [pendingDelete, setPendingDelete] = useState<{ id: string; type: string } | null>(null);
     const [pendingBulkDeleteRows, setPendingBulkDeleteRows] = useState<any[] | null>(null);
     const [previewItem, setPreviewItem] = useState<any | null>(null);
@@ -178,7 +181,7 @@ function ContentList() {
         setPendingDelete({ id, type: deleteType });
     };
 
-    const handleStatusChange = async (row: any, itemType: string, status: string) => {
+    const handleStatusChange = async (row: any, itemType: string, status: ContentStatus) => {
         if (!token) return;
         const routeType = getRouteType(itemType);
         const itemId = getBulkDeleteId(row, itemType);
@@ -258,6 +261,19 @@ function ContentList() {
         return mapping[deleteType] || deleteType;
     };
 
+    const getCurrentItemType = () => {
+        const sectionTypeMap: Record<string, string> = {
+            articles: 'article',
+            leaders: 'leader',
+            history: 'history',
+            briefs: 'brief',
+            'fact-checks': 'fact-check',
+            'election-articles': 'election-article',
+            'column-articles': 'column-article'
+        };
+        return sectionTypeMap[type] || type;
+    };
+
     const getBulkDeleteId = (row: any, deleteType: string): string => {
         if (deleteType === 'brief' || deleteType === 'fact-check' || deleteType === 'election-article' || deleteType === 'column-article') {
             if (row?.slug) return String(row.slug);
@@ -273,16 +289,7 @@ function ContentList() {
     const executeBulkDelete = async (rows: any[]) => {
         if (!token || rows.length === 0) return;
 
-        const sectionTypeMap: Record<string, string> = {
-            articles: 'article',
-            leaders: 'leader',
-            history: 'history',
-            briefs: 'brief',
-            'fact-checks': 'fact-check',
-            'election-articles': 'election-article',
-            'column-articles': 'column-article'
-        };
-        const itemType = sectionTypeMap[type] || type;
+        const itemType = getCurrentItemType();
         const routeType = getRouteType(itemType);
 
         try {
@@ -317,6 +324,72 @@ function ContentList() {
     const handleBulkDelete = async (rows: any[]) => {
         if (!token || rows.length === 0) return;
         setPendingBulkDeleteRows(rows);
+    };
+
+    const executeBulkStatusChange = async (rows: any[], status: ContentStatus) => {
+        if (!token || rows.length === 0) return;
+
+        const itemType = getCurrentItemType();
+        const routeType = getRouteType(itemType);
+        setBulkStatusUpdating(true);
+
+        try {
+            const results = await Promise.all(
+                rows.map(async (row) => {
+                    const itemId = getBulkDeleteId(row, itemType);
+                    if (!itemId) return { ok: false, itemId: '' };
+
+                    const res = await fetch(`/api/admin/${routeType}/${itemId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ status })
+                    });
+
+                    return { ok: res.ok, itemId };
+                })
+            );
+
+            const successIds = new Set(results.filter((result) => result.ok).map((result) => result.itemId));
+            const successCount = successIds.size;
+            const failureCount = results.length - successCount;
+
+            if (successCount > 0) {
+                const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+                toast.success(`${successCount} item(s) set to ${statusLabel}`);
+                setData((prev) =>
+                    prev.map((item) => {
+                        const candidateId = getBulkDeleteId(item, itemType);
+                        if (!successIds.has(candidateId)) return item;
+                        return {
+                            ...item,
+                            status,
+                            ...(itemType === 'brief' ? { isPublished: status === 'published' } : {})
+                        };
+                    })
+                );
+
+                if (previewItem && previewItemType && successIds.has(getBulkDeleteId(previewItem, previewItemType))) {
+                    setPreviewItem({
+                        ...previewItem,
+                        status,
+                        ...(previewItemType === 'brief' ? { isPublished: status === 'published' } : {})
+                    });
+                }
+            }
+            if (failureCount > 0) {
+                toast.error(`${failureCount} item(s) failed to update`);
+            }
+
+            fetchContent();
+        } catch (error) {
+            console.error(error);
+            toast.error('Error updating selected items');
+        } finally {
+            setBulkStatusUpdating(false);
+        }
     };
 
     const getColumns = () => {
@@ -483,7 +556,7 @@ function ContentList() {
                         className="inline-flex items-center justify-center gap-2 border border-border bg-background hover:bg-muted text-foreground px-4 py-2.5 transition-colors text-xs font-bold font-mono uppercase tracking-wider rounded-none h-10 w-full sm:w-auto"
                     >
                         <Upload className="h-3.5 w-3.5" />
-                        {language === 'ne' ? 'परप्लेक्सिटी इम्पोर्ट' : 'Import Perplexity'}
+                        Leaders Automation
                     </Link>
                 </div>
             </div>
@@ -709,7 +782,7 @@ function ContentList() {
                                         value={previewItem?.status === true ? 'published' : previewItem?.status === false ? 'draft' : previewItem?.status || 'draft'}
                                         onChange={(e) => {
                                             if (previewItem && previewItemType) {
-                                                handleStatusChange(previewItem, previewItemType, e.target.value);
+                                                handleStatusChange(previewItem, previewItemType, e.target.value as ContentStatus);
                                             }
                                         }}
                                         disabled={isStatusUpdating(previewItem, previewItemType || '')}
@@ -796,6 +869,8 @@ function ContentList() {
                                 columns={getColumns()}
                                 data={data}
                                 onDelete={handleBulkDelete}
+                                onStatusChange={executeBulkStatusChange}
+                                bulkActionDisabled={bulkStatusUpdating}
                                 totalRows={totalItems}
                                 currentPage={page}
                                 pageSize={pageSize}
