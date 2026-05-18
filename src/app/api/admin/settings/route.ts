@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db';
 import Settings from '@/models/Settings';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 export const dynamic = 'force-dynamic';
 
@@ -62,6 +63,7 @@ async function updateSettings(request: NextRequest, { user }: { user: any }) {
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('settings');
 
         return apiResponse({ settings });
 

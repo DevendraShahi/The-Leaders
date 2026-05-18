@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db';
 import Leader from '@/models/Leader';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 function parseDateRange(searchParams: URLSearchParams) {
     const from = searchParams.get('from');
@@ -114,6 +115,7 @@ async function createLeader(request: NextRequest, { user }: { user: any }) {
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('leader', leader.slug);
 
         return apiResponse({ leader }, 201);
 

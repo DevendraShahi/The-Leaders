@@ -4,6 +4,7 @@ import dbConnect from '@/lib/db';
 import Leader from '@/models/Leader';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 function safeDecode(value: string) {
     try {
@@ -112,6 +113,7 @@ async function updateLeader(request: NextRequest, { user, params }: { user: any,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('leader', leader.slug);
 
         return apiResponse({ leader });
 
@@ -155,6 +157,7 @@ async function deleteLeader(request: NextRequest, { user, params }: { user: any,
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('leader', leader.slug);
 
         return apiResponse({ message: 'Leader deleted successfully' });
 

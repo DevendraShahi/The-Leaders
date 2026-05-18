@@ -134,9 +134,7 @@ export function TrendingTopicsSection({ initialData }: TrendingTopicsSectionProp
     useEffect(() => {
         const loadTrends = async () => {
             try {
-                const response = await fetch("/api/election/trending-topics", {
-                    cache: "no-store",
-                });
+                const response = await fetch("/api/election/trending-topics");
                 if (!response.ok) return;
                 const payload = await response.json();
                 const freshTopics = payload?.data?.topics as TrendingTopic[] | undefined;
@@ -152,7 +150,7 @@ export function TrendingTopicsSection({ initialData }: TrendingTopicsSectionProp
         };
 
         loadTrends();
-        const timer = setInterval(loadTrends, 1000 * 60 * 15);
+        const timer = setInterval(loadTrends, 1000 * 60 * 60);
         return () => clearInterval(timer);
     }, []);
 

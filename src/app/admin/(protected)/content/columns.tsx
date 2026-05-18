@@ -135,15 +135,6 @@ export const articleColumns = (
             )
         },
         {
-            accessorKey: "views",
-            header: language === "ne" ? "भ्यु" : "Views",
-            cell: ({ row }) => (
-                <span className="font-mono text-xs text-muted-foreground tabular-nums">
-                    {row.original.views || 0}
-                </span>
-            )
-        },
-        {
             accessorKey: "createdAt",
             header: language === "ne" ? "मिति" : "Date",
             cell: ({ row }) => {

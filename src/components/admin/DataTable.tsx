@@ -12,7 +12,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import { Search, Trash } from "lucide-react"
+import { CheckCircle2, FileText, Search, Trash, Archive } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -22,6 +22,8 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
     searchKey?: string
     onDelete?: (rows: TData[]) => void
+    onStatusChange?: (rows: TData[], status: "draft" | "published" | "archived") => void
+    bulkActionDisabled?: boolean
     totalRows?: number
     currentPage?: number
     pageSize?: number
@@ -32,6 +34,8 @@ export function DataTable<TData, TValue>({
     data,
     searchKey,
     onDelete,
+    onStatusChange,
+    bulkActionDisabled = false,
     totalRows,
     currentPage = 1,
     pageSize = 10,
@@ -62,9 +66,15 @@ export function DataTable<TData, TValue>({
 
     // Safe check for bulk actions
     const selectedRows = table.getFilteredSelectedRowModel().rows;
+    const selectedOriginalRows = selectedRows.map(row => row.original);
     const totalAvailableRows = typeof totalRows === "number" ? totalRows : data.length;
     const pageStart = totalAvailableRows === 0 ? 0 : (currentPage - 1) * pageSize + 1;
     const pageEnd = Math.min(currentPage * pageSize, totalAvailableRows);
+    const runBulkStatusChange = (status: "draft" | "published" | "archived") => {
+        if (!onStatusChange || selectedOriginalRows.length === 0) return;
+        onStatusChange(selectedOriginalRows, status);
+        setRowSelection({});
+    };
 
     return (
         <div className="w-full space-y-4">
@@ -82,14 +92,48 @@ export function DataTable<TData, TValue>({
                 </div>
 
                 <div className="flex items-center gap-2">
+                    {selectedRows.length > 0 && onStatusChange && (
+                        <div className="flex flex-wrap items-center gap-2 animate-in fade-in">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-none font-mono uppercase text-xs h-10"
+                                disabled={bulkActionDisabled}
+                                onClick={() => runBulkStatusChange("published")}
+                            >
+                                <CheckCircle2 className="mr-2 h-3.5 w-3.5" />
+                                Published ({selectedRows.length})
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-none font-mono uppercase text-xs h-10"
+                                disabled={bulkActionDisabled}
+                                onClick={() => runBulkStatusChange("archived")}
+                            >
+                                <Archive className="mr-2 h-3.5 w-3.5" />
+                                Archived ({selectedRows.length})
+                            </Button>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                className="rounded-none font-mono uppercase text-xs h-10"
+                                disabled={bulkActionDisabled}
+                                onClick={() => runBulkStatusChange("draft")}
+                            >
+                                <FileText className="mr-2 h-3.5 w-3.5" />
+                                Draft ({selectedRows.length})
+                            </Button>
+                        </div>
+                    )}
                     {selectedRows.length > 0 && onDelete && (
                         <Button
                             variant="destructive"
                             size="sm"
                             className="rounded-none font-mono uppercase text-xs h-10 animate-in fade-in"
+                            disabled={bulkActionDisabled}
                             onClick={() => {
-                                const originalRows = selectedRows.map(row => row.original);
-                                onDelete(originalRows);
+                                onDelete(selectedOriginalRows);
                                 setRowSelection({});
                             }}
                         >

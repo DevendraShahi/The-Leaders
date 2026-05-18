@@ -1,14 +1,20 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Settings from '@/models/Settings';
+import { unstable_cache } from 'next/cache';
 
-// export const revalidate = false; // API caches indefinitely until on-demand revalidation
+const getCachedPublicSettings = unstable_cache(
+    async () => {
+        await dbConnect();
+        return Settings.findOne({}, 'tickerHeadlines siteName siteDescription socialLinks').lean();
+    },
+    ['public-settings'],
+    { tags: ['settings'] }
+);
 
 export async function GET() {
     try {
-        await dbConnect();
-
-        const settings = await Settings.findOne({}, 'tickerHeadlines siteName siteDescription socialLinks').lean();
+        const settings = await getCachedPublicSettings();
 
         return NextResponse.json({
             success: true,

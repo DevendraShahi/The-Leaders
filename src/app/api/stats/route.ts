@@ -3,9 +3,10 @@ import dbConnect from "@/lib/db";
 import Subscriber from "@/models/Subscriber";
 import Leader from "@/models/Leader";
 import Article from "@/models/Article";
+import { unstable_cache } from "next/cache";
 
-export async function GET() {
-    try {
+const getCachedStats = unstable_cache(
+    async () => {
         await dbConnect();
 
         const [
@@ -18,11 +19,19 @@ export async function GET() {
             Article.countDocuments({ status: "published" }),
         ]);
 
-        return NextResponse.json({
+        return {
             subscribers: subscriberCount,
             leaders: leaderCount,
             articles: articleCount,
-        });
+        };
+    },
+    ["public-stats"],
+    { revalidate: 21600, tags: ["stats"] }
+);
+
+export async function GET() {
+    try {
+        return NextResponse.json(await getCachedStats());
     } catch (error) {
         console.error("Stats API error:", error);
         return NextResponse.json(

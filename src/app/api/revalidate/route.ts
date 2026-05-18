@@ -35,8 +35,7 @@ export async function POST(request: NextRequest) {
         }
 
         if (tag) {
-            // @ts-expect-error - Next.js 16 types randomly require a second 'profile' argument not in standard docs
-            revalidateTag(tag);
+            revalidateTag(tag, "max");
         }
 
         return NextResponse.json({
@@ -74,8 +73,7 @@ export async function GET(request: NextRequest) {
             revalidatePath(path);
         }
         if (tag) {
-            // @ts-expect-error - Next.js 16 types randomly require a second 'profile' argument not in standard docs
-            revalidateTag(tag);
+            revalidateTag(tag, "max");
         }
 
         return NextResponse.json({

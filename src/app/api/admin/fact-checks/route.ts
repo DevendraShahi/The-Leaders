@@ -4,6 +4,7 @@ import { FactCheck } from '@/models/ElectionContent';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 import { slugify } from '@/lib/slug';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 function parseDateRange(searchParams: URLSearchParams) {
     const from = searchParams.get('from');
@@ -141,6 +142,7 @@ async function createFactCheck(request: NextRequest, { user }: { user: any }) {
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('fact-check', factCheck.slug);
 
         return apiResponse({ factCheck }, 201);
 

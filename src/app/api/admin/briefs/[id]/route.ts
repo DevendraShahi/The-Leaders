@@ -4,6 +4,7 @@ import dbConnect from '@/lib/db';
 import { DailyBrief } from '@/models/ElectionContent';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 function toLogText(value: unknown): string {
     if (typeof value === 'string') return value;
@@ -111,6 +112,7 @@ async function updateBrief(request: NextRequest, { params, user }: { params: Pro
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('daily-brief', brief.slug);
 
         return apiResponse({ brief });
     } catch (error) {
@@ -142,6 +144,7 @@ async function deleteBrief(request: NextRequest, { params, user }: { params: Pro
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('daily-brief', brief.slug);
 
         return apiResponse({ success: true });
     } catch (error) {

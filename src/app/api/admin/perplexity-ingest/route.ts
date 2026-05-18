@@ -5,6 +5,7 @@ import PerplexityIngestSnapshot from "@/models/PerplexityIngestSnapshot";
 import { DailyBrief, FactCheck, ElectionArticle } from "@/models/ElectionContent";
 import { withAuth } from "@/lib/middleware";
 import { slugify } from "@/lib/slug";
+import { invalidateManyPublicContent } from "@/lib/cache-invalidation";
 
 type ParserError = { path: string; message: string };
 type ParserWarning = { path: string; message: string };
@@ -634,6 +635,11 @@ async function ingestPerplexity(request: NextRequest, { user }: { user: any }) {
 
     const snapshot = await createSnapshot(parsed.data, user.userId);
     await ingestToDatabase(parsed.data);
+    invalidateManyPublicContent([
+        ...parsed.data.dailyBriefs.map((item) => ({ kind: "daily-brief" as const, slug: item.slug })),
+        ...parsed.data.factChecks.map((item) => ({ kind: "fact-check" as const, slug: item.slug })),
+        ...parsed.data.articles.map((item) => ({ kind: "election-article" as const, slug: item.slug })),
+    ]);
 
     await ActivityLog.create({
         adminId: user.userId,

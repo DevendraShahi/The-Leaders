@@ -12,7 +12,7 @@ import { constructMetadata } from "@/lib/metadata";
 import { getSettings } from "@/lib/maintenance-check";
 import { absoluteUrl } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const revalidate = 21600;
 
 const HOME_DEFAULT_DESCRIPTION =
   "LeadersNP (The Leaders) is Nepal's civic archive for political leaders, election analysis, fact checks, and democratic history.";

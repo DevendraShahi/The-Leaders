@@ -466,7 +466,7 @@ async function fetchNewsDataSignals(): Promise<ExternalSignal[]> {
         );
         const response = await fetchWithTimeout(
             `${NEWSDATA_BASE_URL}?apikey=${API_KEY}&q=${query}&country=np&language=en,ne&size=50`,
-            { next: { revalidate: 3600, tags: ['news-feed'] } }
+            { next: { revalidate: 21600, tags: ['news-feed'] } }
         );
         if (!response.ok) return [];
 
@@ -498,7 +498,7 @@ async function fetchRssSignals(): Promise<ExternalSignal[]> {
     const settled = await Promise.allSettled(
         VERIFIED_RSS_FEEDS.map(async (feed) => {
             const response = await fetchWithTimeout(feed.url, {
-                next: { revalidate: 3600, tags: ['news-feed'] },
+                next: { revalidate: 21600, tags: ['news-feed'] },
                 headers: {
                     "User-Agent": "TheLeadersBot/1.0 (+https://the-leadersnp.com)",
                     Accept: "application/rss+xml, application/atom+xml, application/xml, text/xml",
@@ -527,7 +527,7 @@ async function fetchXSignals(): Promise<ExternalSignal[]> {
             headers: {
                 Authorization: `Bearer ${X_BEARER_TOKEN}`,
             },
-            next: { revalidate: 3600, tags: ['news-feed'] },
+            next: { revalidate: 21600, tags: ['news-feed'] },
         });
         if (!response.ok) return [];
 
@@ -620,7 +620,7 @@ export async function fetchDistrictNews(district: string): Promise<DistrictNews>
         const query = encodeURIComponent(`${district} election Nepal`);
         const response = await fetchWithTimeout(
             `${NEWSDATA_BASE_URL}?apikey=${API_KEY}&q=${query}&country=np&language=en,ne`,
-            { next: { revalidate: 3600 } }
+            { next: { revalidate: 21600 } }
         );
         if (!response.ok) throw new Error("News API failed");
 

@@ -9,7 +9,7 @@ export const metadata: Metadata = constructMetadata({
     canonical: "/coverage/columns",
 });
 
-export const revalidate = 600;
+export const revalidate = 21600;
 
 export default async function ColumnsPage() {
     const articles = await getColumnArticles(30);

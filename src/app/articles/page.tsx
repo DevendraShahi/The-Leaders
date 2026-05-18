@@ -10,7 +10,7 @@ export const metadata: Metadata = constructMetadata({
     keywords: ["Nepal politics articles", "Nepal political analysis", "The Leaders articles"],
 });
 
-export const revalidate = 3600;
+export const revalidate = 21600;
 
 export default async function ArticlesPage() {
     // In a real app we might verify if limit is needed or pagination

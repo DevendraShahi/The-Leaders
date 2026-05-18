@@ -43,12 +43,11 @@ import CodePenCursor from "@/components/ui/code-pen-cursor";
 
 // ... existing imports
 
-import { headers } from "next/headers";
 import { getSettings } from "@/lib/maintenance-check";
 import MaintenanceGuard from "@/components/layout/MaintenanceGuard";
 import LayoutStructureWrapper from "@/components/layout/LayoutStructureWrapper";
 import { Toaster } from "@/components/ui/sonner";
-import ViewTracker from "@/components/analytics/ViewTracker";
+import UmamiScript from "@/components/analytics/UmamiScript";
 
 // ... existing imports
 
@@ -136,7 +135,7 @@ export default async function RootLayout({
                 {facebookDomainVerification ? (
                     <meta name="facebook-domain-verification" content={facebookDomainVerification} />
                 ) : null}
-                <script defer src="https://cloud.umami.is/script.js" data-website-id="0bb523e8-e03b-451a-9d6a-fea47d96e5f2"></script>
+                <UmamiScript />
             </head>
             <body
                 className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${lora.variable} ${knight.variable} antialiased bg-background text-foreground`}
@@ -158,7 +157,6 @@ export default async function RootLayout({
                 >
                     <LanguageProvider>
                         <GlobalLoadingProvider>
-                            <ViewTracker />
                             <MaintenanceGuard maintenanceSettings={maintenanceSettings}>
                                 <LayoutStructureWrapper socialLinks={socialLinks}>
                                     {children}

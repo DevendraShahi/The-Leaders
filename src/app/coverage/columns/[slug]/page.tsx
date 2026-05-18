@@ -30,7 +30,7 @@ export async function generateStaticParams() {
     }));
 }
 
-export const revalidate = 600;
+export const revalidate = 21600;
 
 export default async function ColumnDetailPage({
     params,

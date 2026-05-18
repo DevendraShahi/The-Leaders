@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db';
 import Article from '@/models/Article';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 // GET: Fetch single article
 async function getArticle(request: NextRequest, { params }: { params: any }) {
@@ -60,6 +61,7 @@ async function updateArticle(request: NextRequest, { user, params }: { user: any
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('article', article.slug);
 
         return apiResponse({ article });
 
@@ -99,6 +101,7 @@ async function deleteArticle(request: NextRequest, { user, params }: { user: any
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('article', article.slug);
 
         return apiResponse({ message: 'Article deleted successfully' });
 

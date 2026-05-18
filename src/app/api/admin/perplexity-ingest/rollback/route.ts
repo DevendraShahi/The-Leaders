@@ -4,6 +4,7 @@ import { withAuth } from "@/lib/middleware";
 import ActivityLog from "@/models/ActivityLog";
 import PerplexityIngestSnapshot from "@/models/PerplexityIngestSnapshot";
 import { DailyBrief, FactCheck, ElectionArticle } from "@/models/ElectionContent";
+import { invalidateManyPublicContent } from "@/lib/cache-invalidation";
 
 function stripId(doc: Record<string, any>) {
     const { _id, __v, createdAt, updatedAt, ...rest } = doc;
@@ -66,6 +67,12 @@ async function rollbackIngest(request: NextRequest, { user }: { user: any }) {
             await ElectionArticle.deleteOne({ slug });
         }
     }
+
+    invalidateManyPublicContent([
+        ...(snapshot.affected.dailyBriefSlugs || []).map((slug: string) => ({ kind: "daily-brief" as const, slug })),
+        ...(snapshot.affected.factCheckSlugs || []).map((slug: string) => ({ kind: "fact-check" as const, slug })),
+        ...(snapshot.affected.articleSlugs || []).map((slug: string) => ({ kind: "election-article" as const, slug })),
+    ]);
 
     await ActivityLog.create({
         adminId: user.userId,

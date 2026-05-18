@@ -5,6 +5,7 @@ import { FactCheck } from '@/models/ElectionContent';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 import { slugify } from '@/lib/slug';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 function safeDecode(value: string) {
     try {
@@ -115,6 +116,7 @@ async function updateFactCheck(request: NextRequest, { params, user }: { params:
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('fact-check', factCheck.slug);
 
         return apiResponse({ factCheck });
     } catch (error) {
@@ -142,6 +144,7 @@ async function deleteFactCheck(request: NextRequest, { params, user }: { params:
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('fact-check', factCheck.slug);
 
         return apiResponse({ success: true });
     } catch (error) {

@@ -27,7 +27,7 @@ export const metadata: Metadata = constructMetadata({
     ],
 });
 
-export const revalidate = 300;
+export const revalidate = 21600;
 
 export default async function CoveragePage() {
     const [briefs, columnArticles] = await Promise.all([

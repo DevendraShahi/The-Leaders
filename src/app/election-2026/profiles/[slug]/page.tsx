@@ -74,8 +74,7 @@ export async function generateMetadata({ params }: CandidateProfilePageProps): P
 }
 
 export async function generateStaticParams() {
-    const dataset = await getFPTPCandidateDataset();
-    return dataset.candidates.map((c) => ({ slug: getFPTPCandidateSlug(c) }));
+    return [];
 }
 
 // export const revalidate = false; // Page caches indefinitely until on-demand revalidation

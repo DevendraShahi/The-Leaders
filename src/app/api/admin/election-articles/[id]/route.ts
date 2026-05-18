@@ -4,6 +4,7 @@ import dbConnect from '@/lib/db';
 import { ElectionArticle } from '@/models/ElectionContent';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 // --- Helper Functions ---
 
@@ -145,6 +146,7 @@ async function updateElectionArticle(
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('election-article', article.slug);
 
         return apiResponse({ electionArticle: article });
     } catch (error) {
@@ -180,6 +182,7 @@ async function deleteElectionArticle(
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('election-article', article.slug);
 
         return apiResponse({ success: true });
     } catch (error) {

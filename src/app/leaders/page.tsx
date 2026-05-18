@@ -10,7 +10,7 @@ export const metadata: Metadata = constructMetadata({
     keywords: ["Nepal leaders gallery", "political leader profiles Nepal", "Nepal political history"],
 });
 
-export const revalidate = 3600;
+export const revalidate = 21600;
 
 export default async function LeadersPage() {
     const leaders = await getLeaders();

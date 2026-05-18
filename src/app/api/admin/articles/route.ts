@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db';
 import Article from '@/models/Article';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 function parseDateRange(searchParams: URLSearchParams) {
     const from = searchParams.get('from');
@@ -146,6 +147,7 @@ async function createArticle(request: NextRequest, { user }: { user: any }) {
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('article', article.slug);
 
         return apiResponse({ article }, 201);
 

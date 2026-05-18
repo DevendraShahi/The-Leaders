@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db';
 import History from '@/models/History';
 import ActivityLog from '@/models/ActivityLog';
 import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { invalidatePublicContent } from '@/lib/cache-invalidation';
 
 // GET: Fetch single history
 async function getHistory(request: NextRequest, { params }: { params: any }) {
@@ -59,6 +60,7 @@ async function updateHistory(request: NextRequest, { user, params }: { user: any
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('history');
 
         return apiResponse({ history });
 
@@ -90,6 +92,7 @@ async function deleteHistory(request: NextRequest, { user, params }: { user: any
             ipAddress: request.headers.get('x-forwarded-for') || 'unknown',
             userAgent: request.headers.get('user-agent') || 'unknown'
         });
+        invalidatePublicContent('history');
 
         return apiResponse({ message: 'History deleted successfully' });
 

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { fetchTrendingTopics } from "@/lib/api/news-service";
 
-export const revalidate = 900;
+export const revalidate = 21600;
 
 export async function GET() {
     try {

@@ -22,7 +22,7 @@ export const metadata: Metadata = constructMetadata({
     ],
 });
 
-export const revalidate = 3600;
+export const revalidate = 21600;
 
 export default async function ElectionDashboard() {
     const [briefs, factChecks, electionArticles, prData, fptpDataset] = await Promise.all([

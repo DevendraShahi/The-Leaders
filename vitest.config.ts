@@ -1,4 +1,5 @@
 import react from '@vitejs/plugin-react'
+import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
@@ -33,7 +34,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': '/Users/devendrashahithakuri/Documents/MyWork/Niti/the-leaders/src',
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 })
