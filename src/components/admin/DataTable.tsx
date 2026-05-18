@@ -21,8 +21,8 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     searchKey?: string
-    onDelete?: (rows: TData[]) => void
-    onStatusChange?: (rows: TData[], status: "draft" | "published" | "archived") => void
+    onDelete?: (rows: TData[]) => void | Promise<void>
+    onStatusChange?: (rows: TData[], status: "draft" | "published" | "archived") => void | Promise<void>
     bulkActionDisabled?: boolean
     totalRows?: number
     currentPage?: number
