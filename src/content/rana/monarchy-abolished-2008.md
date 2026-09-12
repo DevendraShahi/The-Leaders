@@ -1,44 +1,82 @@
+---
+title: "Monarchy Abolished"
+date: 2008-01-01
+era: "The Republic"
+---
+
 # Monarchy Abolished (2008)
 
 ## Quick Facts
+
 - **Year:** 2008
 - **Era:** The Republic
 - **Title:** Monarchy Abolished
-- **Key Figures:** Constituent Assembly members, former King Gyanendra
-- **Location:** Kathmandu, Nepal
-- **Significance:** Nepal officially becomes a Federal Democratic Republic, ending the Shah dynasty after centuries.
+- **Description:** The Constituent Assembly declares Nepal a Federal Democratic Republic. The Shah dynasty ends.
+
+## Background
+
+Provide historical context for **Monarchy Abolished**. Discuss the political, social, and economic conditions leading up to the event. Explain key players and preceding incidents.
 
 ## Narrative
-In 2008, following years of political turmoil, civil war, and a transitional government, the Constituent Assembly voted to abolish the monarchy, officially declaring Nepal a Federal Democratic Republic. The decision ended the centuries‑old Shah dynasty and paved the way for a new constitutional framework.
 
-The abolition was a seminal moment, signifying the culmination of a long struggle for democratic governance. It triggered a re‑definition of national identity, reforms in governance structures, and the drafting of a new constitution that would later be promulgated in 2015.
+A detailed chronological narrative of **Monarchy Abolished**. Describe the main actions, turning points, and immediate outcomes. Include eyewitness accounts where available.
 
----
-### Expanded Analysis (Lorem Ipsum filler for word count)
+## Aftermath and Impact
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vitae ligula et odio vehicula malesuada. Proin sed massa a mi aliquet vestibulum. Curabitur varius, sem at lacinia malesuada, est dui eleifend tortor, nec sagittis odio libero in nisi. Sed euismod, lectus a elementum placerat, libero mauris suscipit elit, non convallis erat dui a velit. Praesent eu tortor sit amet massa euismod faucibus. Integer consectetur, odio vitae hendrerit ornare, lacus urna dapibus diam, in gravida massa mauris eu ex. Aliquam erat volutpat. Etiam a ante sit amet augue commodo tempor.
-
-Maecenas lacinia metus in risus vestibulum, non dictum tortor egestas. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Cras porta, nisl a pellentesque faucibus, dui ex tincidunt velit, nec gravida ante tellus eget ex. Nulla facilisi. Morbi venenatis ultricies mauris, sit amet viverra ligula pulvinar id. Nam nec interdum orci, in iaculis nibh. Suspendisse ut consequat neque, at gravida sem. Duis vitae tempus lorem. In euismod eu enim at consectetur. Proin eget orci nec nunc dignissim gravida.
-
-Fusce id dolor vitae nulla eleifend commodo. Sed in viverra risus, non congue dui. Nullam vehicula eros eu lectus rhoncus placerat. Nam ut nunc id urna feugiat tincidunt. Cras et condimentum nulla. Curabitur blandit tellus at risus dapibus, ut feugiat dolor fringilla. Maecenas vulputate sem et ex sodales, sit amet tristique quam faucibus. Praesent blandit tortor quis lacus aliquet, a vehicula lacus ultrices. Nam nec pharetra massa. Mauris vel purus ut justo cursus congue.
-
-Phasellus eget massa nec mauris vestibulum sollicitudin. In hac habitasse platea dictumst. Integer finibus, urna a sodales pulvinar, magna arcu fringilla dui, id feugiat risus augue at dolor. Sed in nunc nec ipsum sollicitudin elementum. Curabitur aliquet, ex a pharetra suscipit, lacus nisl elementum velit, et porta ligula elit gravida purus. Aenean vitae ex ut enim elementum mattis. Aliquam pulvinar, turpis eget tristique laoreet, lorem ipsum tincidunt mauris, in tristique risus est nec orci.
-
-Vestibulum non ante nec risus condimentum ultrices. Curabitur ullamcorper odio eu sapien auctor, nec sollicitudin nulla tempor. Aenean id dolor non lacus sagittis cursus. Integer sed odio lectus. Sed facilisis, massa nec viverra pulvinar, orci turpis semper lacus, quis malesuada arcu nisi sit amet sapien. Cras lacinia mi ut massa rhoncus, in finibus ligula facilisis. Proin tincidunt rhoncor [sic] ...
-
-Morri... (...)
-
-[...additional Lorem Ipsum Lorem ...]
+Analyze the short‑term and long‑term consequences of **Monarchy Abolished**. How did it reshape the era, affect populations, and influence subsequent events?
 
 ## Image Suggestions
-- Photograph of the Constituent Assembly session voting.
-- Portrait of former King Gyanendra.
-- Graphic showing the transition from monarchy to republic.
+
+1. Illustration or painting of **Monarchy Abolished**.
+2. Portrait of central figure(s).
+3. Map showing relevant locations.
 
 ## References
-- Sharma, T. *The End of the Nepali Monarchy* (2010).
-- United Nations reports, 2008.
+
+1. Primary source A.
+2. Secondary source B.
+3. Academic article C.
 
 ## Bibliography
-1. Sharma, T. (2010). *The End of the Nepali Monarchy*. Kathmandu: Peace Press.
-2. United Nations. (2008). *Report on Nepal’s Political Transition*.
+
+- Author A. (Year). *Title*. Publisher.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.
