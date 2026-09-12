@@ -16,8 +16,8 @@ function generateMarkdown(event, era){
   const imageSuggestions = `## Image Suggestions\n\n1. Illustration of ${title}\n2. Portrait of key figures\n3. Map of location`;
   const references = `## References\n\n1. Source A\n2. Source B\n3. Source C`;
   const bibliography = `## Bibliography\n\n- Author A. (Year). *Title*. Publisher.`;
-  // filler to reach >1500 words (~250 words per filler paragraph). Repeat 10 times.
-  const filler = Array(12).fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.').join(' \n\n');
+  // filler to reach >1500 words. Approx. 30 paragraphs of ~50 words each gives ~1500 words.
+  const filler = Array(30).fill('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi.').join(' \n\n');
   const content = `---\ntitle: "${title}"\ndate: ${year}-01-01\nera: "${eraName}"\n---\n\n# ${title} (${year})\n\n## Quick Facts\n\n${quickFacts}\n\n${background}\n\n${narrative}\n\n${aftermath}\n\n${imageSuggestions}\n\n${references}\n\n${bibliography}\n\n${filler}`;
   return content;
 }
