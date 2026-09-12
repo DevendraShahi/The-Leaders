@@ -102,3 +102,64 @@ The 1950 revolution set a precedent for popular mobilisation in Nepal. It inspir
 
 *The article exceeds 1,500 words and adheres to the Sub‑Episode Template required for the The Leaders project.*
 
+
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 

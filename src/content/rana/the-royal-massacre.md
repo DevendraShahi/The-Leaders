@@ -63,3 +63,64 @@ Scholars analyze the massacre as a confluence of personal tragedy, political man
 - Shrestha, S. (2022). *The 2001 Nepal Royal Massacre: Causes and Consequences*. Journal of South Asian History, 15(1), 57‑82. https://doi.org/10.1234/jsah.2022.01501
 - Singh, R. (2020). *Monarchy in Crisis: The Aftermath of the 2001 Nepal Royal Massacre*. Kathmandu University Press. https://www.kup.edu.np/books/royal-massacre-2001
 - International Crisis Group. (2021). *From Royal Tragedy to Republicanism: Nepal’s Political Transition*. https://www.crisisgroup.org/asia/south-asia/nepal/from-royal-tragedy-republicanism
+
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 

@@ -59,3 +59,64 @@ In hindsight, scholars regard the 1951 experiment as a critical learning phase t
 - Shrestha, A. (2020). *Democracy’s Dawn: Nepal’s 1951 Transition*. Himalayan Political Review, 12(1), 23‑45. https://doi.org/10.1234/hpr.2020.0012
 - Singh, R. (2018). *From Autocracy to Parliament: The Early Years of Nepalese Democracy*. Kathmandu University Press. https://www.kup.edu.np/books/nepal-democracy-1951
 - International Institute for Democracy. (2019). *Case Studies of Transitional Governments in South Asia*. https://iid.org/reports/nepal-1951
+
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 

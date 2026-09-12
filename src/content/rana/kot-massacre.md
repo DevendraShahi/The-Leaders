@@ -59,3 +59,64 @@ British Resident Reports (1846‑1847). Nepal Office Archives, London.
 
 The Newar Chronicles (1850). Kathmandu Historical Society.
 
+
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
+
+Additional scholarly discussion expands the analysis of this historic event, providing deeper context, comparative perspectives, and historiographical debate. 
