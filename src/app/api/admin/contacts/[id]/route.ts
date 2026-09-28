@@ -1,17 +1,19 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { isValidObjectId } from "mongoose";
 import dbConnect from "@/lib/db";
 import Contact from "@/models/Contact";
+import { withPageAccess } from "@/lib/middleware";
 
-export async function DELETE(
-    req: Request,
-    { params }: { params: Promise<{ id: string }> }
+async function deleteContact(
+    _request: NextRequest,
+    { params }: { params: { id: string } }
 ) {
     try {
         await dbConnect();
 
-        const { id } = await params;
+        const { id } = params;
 
-        if (!id) {
+        if (!id || !isValidObjectId(id)) {
             return NextResponse.json(
                 { error: "Message ID required" },
                 { status: 400 }
@@ -36,3 +38,5 @@ export async function DELETE(
         );
     }
 }
+
+export const DELETE = withPageAccess("messages", deleteContact);

@@ -1,15 +1,16 @@
-import { ElectionLayoutClient } from "@/components/election/ElectionLayoutClient";
+import { ElectionClosed } from "@/components/election/ElectionClosed";
 
 export default function ElectionLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    // Maintenance is now handled globally in RootLayout via MaintenanceGuard
-
     return (
-        <ElectionLayoutClient>
-            {children}
-        </ElectionLayoutClient>
+        <>
+            <ElectionClosed />
+            <div hidden inert>
+                {children}
+            </div>
+        </>
     );
 }

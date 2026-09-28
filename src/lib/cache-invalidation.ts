@@ -22,13 +22,13 @@ const tagMap: Record<PublicContentKind, string[]> = {
 };
 
 const basePathMap: Record<PublicContentKind, string[]> = {
-    article: ["/", "/articles"],
-    leader: ["/", "/leaders"],
-    history: ["/history"],
-    "daily-brief": ["/coverage", "/coverage/daily-brief", "/election-2026", "/election-2026/daily-brief"],
-    "fact-check": ["/election-2026", "/election-2026/fact-checks"],
-    "election-article": ["/election-2026", "/election-2026/analyses"],
-    "column-article": ["/coverage", "/coverage/columns"],
+    article: ["/", "/articles", "/api/v1/home", "/api/v1/articles", "/api/v1/search"],
+    leader: ["/", "/leaders", "/api/v1/leaders", "/api/v1/search"],
+    history: ["/history", "/api/v1/history"],
+    "daily-brief": ["/coverage", "/coverage/daily-brief", "/election-2026", "/election-2026/daily-brief", "/api/v1/home", "/api/v1/briefs"],
+    "fact-check": ["/election-2026", "/election-2026/fact-checks", "/api/v1/home", "/api/v1/fact-checks"],
+    "election-article": ["/election-2026", "/election-2026/analyses", "/api/v1/articles"],
+    "column-article": ["/coverage", "/coverage/columns", "/api/v1/home", "/api/v1/articles"],
     settings: ["/", "/api/settings", "/api/maintenance/status"],
 };
 

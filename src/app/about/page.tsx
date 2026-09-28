@@ -291,9 +291,9 @@ export default function AboutPage() {
                                     {tString(aboutLocale.cta.buttonLeaders, language)}
                                 </Button>
                             </Link>
-                            <Link href="/election-2026">
+                            <Link href="/articles">
                                 <Button size="lg" variant="outline">
-                                    {tString(aboutLocale.cta.buttonElection, language)}
+                                    {language === "ne" ? "लेखहरू पढ्नुहोस्" : "Read articles"}
                                 </Button>
                             </Link>
                         </div>

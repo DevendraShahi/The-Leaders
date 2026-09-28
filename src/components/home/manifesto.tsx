@@ -3,10 +3,8 @@
 import { type ComponentType, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 import { gsap } from "gsap";
 import {
-    ArrowRight,
     BookOpenText,
     Radio,
     ShieldCheck,
@@ -15,6 +13,7 @@ import {
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
 import { trackHomeEvent } from "@/lib/home-analytics";
+import { Badge } from "@/components/ui/badge";
 
 type PillarId = "memory" | "integrity" | "future";
 
@@ -195,22 +194,22 @@ export function Manifesto() {
     }, [shouldReduceMotion]);
 
     return (
-        <section id="home-section-5" className="election-typography relative overflow-hidden border-y border-border/80 bg-background py-20 sm:py-24">
-            <div className="pointer-events-none absolute inset-0 bg-primary/6" />
-            <div className="pointer-events-none absolute left-[-8rem] top-8 h-64 w-64 rounded-full bg-primary/12 blur-3xl" />
-            <div className="pointer-events-none absolute bottom-[-8rem] right-[-7rem] h-72 w-72 rounded-full bg-primary/12 blur-3xl" />
+        <section id="home-section-5" className="election-typography relative overflow-hidden bg-secondary/30 py-20 sm:py-28">
+            <div className="pointer-events-none absolute inset-0 bg-primary/5" />
+            <div className="pointer-events-none absolute left-[-8rem] top-8 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
+            <div className="pointer-events-none absolute bottom-[-8rem] right-[-7rem] h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
 
             <div className="container relative z-10 mx-auto px-4">
-                <div className="grid gap-6 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-8">
+                <div className="grid gap-6 lg:grid-cols-[minmax(0,1.02fr)_minmax(0,0.98fr)] lg:gap-12">
                     <article className="relative overflow-hidden p-4 sm:p-6 lg:p-7">
-                        <div className="mb-7 flex flex-wrap items-center justify-between gap-3 pb-2">
-                            <div className="inline-flex items-center gap-2 bg-primary/12 px-3 py-1.5 shadow-[0_6px_18px_rgba(183,28,28,0.12)]">
-                                <Radio className="h-3.5 w-3.5 text-primary" />
-                                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-primary">
+                        <div className="mb-8 flex flex-wrap items-center justify-between gap-3 pb-2">
+                            <Badge variant="outline" className="inline-flex items-center gap-2 border-primary/20 bg-primary/5 px-3 py-1.5 text-primary shadow-sm hover:bg-primary/10">
+                                <Radio className="h-3.5 w-3.5" />
+                                <span className="font-mono text-[10px] uppercase tracking-[0.15em]">
                                     {language === "en" ? "Manifesto Experience" : "घोषणापत्र अनुभव"}
                                 </span>
-                            </div>
-                            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
+                            </Badge>
+                            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                                 {language === "en" ? "Side-by-Side Edition" : "साइड-बाइ-साइड संस्करण"}
                             </p>
                         </div>
@@ -218,7 +217,7 @@ export function Manifesto() {
                         <h2
                             className={`text-foreground ${isNepali
                                 ? "text-3xl font-semibold leading-[1.2] tracking-normal sm:text-[2.4rem] lg:text-[2.7rem]"
-                                : "font-editorial text-[2.02rem] leading-[1.04] tracking-[-0.018em] sm:text-[2.45rem] lg:text-[2.9rem]"
+                                : "font-editorial text-[2.02rem] leading-[1.04] tracking-tight sm:text-[2.45rem] lg:text-[2.9rem]"
                                 }`}
                         >
                             &ldquo;{tString(l.part1, language)}{" "}
@@ -227,7 +226,7 @@ export function Manifesto() {
                         </h2>
 
                         <p
-                            className={`mt-5 max-w-2xl text-foreground/78 ${isNepali
+                            className={`mt-6 max-w-2xl text-foreground/80 ${isNepali
                                 ? "text-[1rem] font-medium leading-[1.86] sm:text-[1.05rem]"
                                 : "text-[1rem] leading-[1.75] sm:text-[1.04rem]"
                                 }`}
@@ -237,8 +236,8 @@ export function Manifesto() {
                             {tString(l.part4, language)}
                         </p>
 
-                        <div className="mt-6 overflow-x-auto pb-1">
-                            <div className="flex min-w-max gap-2.5">
+                        <div className="mt-8 overflow-x-auto pb-1">
+                            <div className="flex min-w-max gap-3">
                                 {pillars.map((pillar) => {
                                     const PillarIcon = pillar.icon;
                                     const isActive = pillar.id === active.id;
@@ -247,20 +246,20 @@ export function Manifesto() {
                                             key={pillar.id}
                                             type="button"
                                             onClick={() => handleSelectPillar(pillar.id)}
-                                            className={`group relative inline-flex min-h-11 items-center gap-2 rounded-full px-4 py-2.5 transition-colors ${isActive
-                                                ? "text-primary shadow-[inset_0_0_0_1px_rgba(183,28,28,0.36),0_10px_30px_rgba(183,28,28,0.2)]"
-                                                : "bg-background/60 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.2)] hover:bg-background/80 hover:text-foreground"
+                                            className={`group relative inline-flex min-h-11 items-center gap-2 rounded-full border px-4 py-2.5 transition-all duration-300 ${isActive
+                                                ? "border-primary/40 text-primary bg-primary/5 shadow-sm"
+                                                : "border-border/20 bg-background/40 text-muted-foreground hover:bg-background/80 hover:text-foreground"
                                                 }`}
                                         >
                                             {isActive ? (
                                                 <motion.span
                                                     layoutId="manifesto-pillars-active"
-                                                    className="pointer-events-none absolute inset-0 rounded-full bg-primary/12"
+                                                    className="pointer-events-none absolute inset-0 rounded-full bg-primary/10"
                                                     transition={{ type: "spring", stiffness: 320, damping: 30 }}
                                                 />
                                             ) : null}
                                             <PillarIcon className="relative h-4 w-4" />
-                                            <span className="relative whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em]">
+                                            <span className="relative whitespace-nowrap font-mono text-[10px] font-bold uppercase tracking-[0.14em]">
                                                 {pillar.label[language]}
                                             </span>
                                         </button>
@@ -276,41 +275,33 @@ export function Manifesto() {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={shouldReduceMotion ? undefined : { opacity: 0, y: -8 }}
                                 transition={{ duration: 0.24 }}
-                                className="mt-4 p-4 sm:p-5"
+                                className="mt-6 p-4 sm:p-5 rounded-xl border border-border/10 bg-card/30"
                             >
-                                <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">
+                                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-primary">
                                     {language === "en" ? "Active Manifesto Premise" : "सक्रिय घोषणापत्र आधार"}
                                 </p>
                                 <h3
-                                    className={`mt-2 text-foreground ${isNepali
+                                    className={`mt-3 text-foreground ${isNepali
                                         ? "text-[1.3rem] font-semibold leading-[1.34] sm:text-[1.42rem]"
                                         : "font-editorial text-[1.6rem] leading-[1.1] tracking-tight sm:text-[1.78rem]"
                                         }`}
                                 >
                                     {active.title[language]}
                                 </h3>
-                                <p className="mt-2 text-[0.95rem] leading-7 text-muted-foreground">{active.detail[language]}</p>
+                                <p className="mt-3 text-[0.95rem] leading-7 text-muted-foreground">{active.detail[language]}</p>
                             </motion.div>
                         </AnimatePresence>
 
-                        <div className="mt-6 flex flex-wrap items-center gap-3">
-                            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                        <div className="mt-8 flex flex-wrap items-center gap-4">
+                            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
                                 {language === "en" ? "— The Leaders, 2026" : "— द लिडर्स, २०२६"}
                             </p>
-                            <Link
-                                href="/election-2026/manifesto"
-                                onClick={() => trackHomeEvent("home_manifesto_cta_click", { target: "manifesto-archive" })}
-                                className="group inline-flex min-h-11 items-center gap-2 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.2)] transition-colors hover:text-primary"
-                            >
-                                {language === "en" ? "Open Manifesto Library" : "घोषणापत्र पुस्तकालय खोल्नुहोस्"}
-                                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                            </Link>
                         </div>
                     </article>
 
-                    <article className="relative overflow-hidden p-4 sm:p-6">
+                    <article className="relative overflow-hidden p-4 sm:p-6 flex flex-col justify-center">
                         <div className="mb-4 flex items-center justify-end">
-                            <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary/90">
+                            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-primary/90">
                                 {language === "en" ? "Civic Signal Core" : "नागरिक सिग्नल कोर"}
                             </p>
                         </div>
@@ -319,8 +310,8 @@ export function Manifesto() {
                             ref={stageRef}
                             className="relative mx-auto aspect-square w-full max-w-[520px] [perspective:1200px]"
                         >
-                            <div className="relative h-full w-full overflow-hidden p-4 sm:p-6 [transform-style:preserve-3d]">
-                                <div className="pointer-events-none absolute inset-0 bg-primary/6" />
+                            <div className="relative h-full w-full overflow-hidden rounded-full border border-border/10 p-4 sm:p-6 [transform-style:preserve-3d] bg-background/20 shadow-sm">
+                                <div className="pointer-events-none absolute inset-0 bg-primary/5 rounded-full" />
 
                                 <div ref={starLayerRef} className="pointer-events-none absolute inset-0">
                                     {starSeeds.map((star) => (
@@ -340,20 +331,20 @@ export function Manifesto() {
 
                                 <div
                                     ref={glowRef}
-                                    className="pointer-events-none absolute left-1/2 top-1/2 h-[54%] w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/26 blur-3xl"
+                                    className="pointer-events-none absolute left-1/2 top-1/2 h-[54%] w-[54%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"
                                 />
 
                                 <div
                                     ref={ringOuterRef}
-                                    className="absolute inset-[9%] rounded-full border border-primary/28"
+                                    className="absolute inset-[9%] rounded-full border border-primary/20"
                                 />
                                 <div
                                     ref={ringInnerRef}
-                                    className="absolute inset-[21%] rounded-full border border-dashed border-primary/24"
+                                    className="absolute inset-[21%] rounded-full border border-dashed border-primary/20"
                                 />
 
                                 <svg
-                                    className="pointer-events-none absolute inset-[14%] h-[72%] w-[72%] text-primary/35"
+                                    className="pointer-events-none absolute inset-[14%] h-[72%] w-[72%] text-primary/30"
                                     viewBox="0 0 100 100"
                                     fill="none"
                                 >
@@ -371,9 +362,9 @@ export function Manifesto() {
                                                 key={pillar.id}
                                                 type="button"
                                                 onClick={() => handleSelectPillar(pillar.id)}
-                                                className={`absolute inline-flex min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full px-3 py-2 transition-colors ${isActive
-                                                    ? "bg-primary/16 text-primary shadow-[inset_0_0_0_1px_rgba(183,28,28,0.42),0_10px_26px_rgba(183,28,28,0.2)]"
-                                                    : "bg-background/75 text-muted-foreground shadow-[inset_0_0_0_1px_rgba(0,0,0,0.22)] hover:bg-background/90 hover:text-foreground"
+                                                className={`absolute inline-flex min-h-11 min-w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border transition-all duration-300 ${isActive
+                                                    ? "bg-primary/10 border-primary/40 text-primary shadow-sm scale-110"
+                                                    : "bg-background/80 border-border/20 text-muted-foreground hover:bg-background hover:text-foreground"
                                                     }`}
                                                 style={{ left: anchor.x, top: anchor.y }}
                                                 aria-label={pillar.label[language]}
@@ -387,8 +378,8 @@ export function Manifesto() {
                                 <div
                                     className="absolute left-1/2 top-1/2 h-[44%] w-[44%] -translate-x-1/2 -translate-y-1/2"
                                 >
-                                    <div className="absolute -inset-[3px] rounded-full border border-primary/55 p-[3px]">
-                                        <div className="relative h-full w-full overflow-hidden rounded-full bg-background shadow-[inset_0_0_0_1px_rgba(255,255,255,0.1)]">
+                                    <div className="absolute -inset-[3px] rounded-full border border-primary/30 p-[3px]">
+                                        <div className="relative h-full w-full overflow-hidden rounded-full bg-background border border-border/20 shadow-sm">
                                             <Image
                                                 src={logoSrc}
                                                 alt={language === "en" ? "The Leaders logo" : "द लिडर्स लोगो"}

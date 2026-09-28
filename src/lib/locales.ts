@@ -187,8 +187,8 @@ export const LOCALES = {
                 ne: "नेतृत्वदायी संवाद।\nअभिलेखमा जोडिनुहोस्।",
             },
             body: {
-                en: "Dive into our comprehensive archive of leaders, election data, and political insights.",
-                ne: "नेताहरू, चुनावी डेटा र राजनीतिक अन्तर्दृष्टिहरूको हाम्रो विस्तृत अभिलेखमा डुबुल्की मार्नुहोस्।",
+                en: "Dive into our archive of leaders, history, and the news.",
+                ne: "नेता, इतिहास र समाचारको हाम्रो अभिलेखमा डुबुल्की मार्नुहोस्।",
             },
             buttonLeaders: {
                 en: "Discover Leaders",

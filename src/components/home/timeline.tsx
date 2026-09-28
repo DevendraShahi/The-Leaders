@@ -8,6 +8,8 @@ import { ExternalLink, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 // Helper to handle potential bilingual data in the future
 const resolveContent = (content: any, language: "en" | "ne") => {
@@ -37,10 +39,9 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
     const displayedData = limit ? timelineData.slice(0, limit) : timelineData;
 
     return (
-        <section id="home-section-6" className="relative scroll-mt-20 overflow-hidden border-y border-border/80 bg-background py-14 sm:scroll-mt-24 sm:py-20">
-            <div className="pointer-events-none absolute inset-0 bg-primary/5" />
+        <section id="home-section-6" className="relative scroll-mt-20 overflow-hidden bg-background py-14 sm:scroll-mt-24 sm:py-24">
             {/* Header Area */}
-            <div className="container relative z-10 mx-auto mb-12 px-4 text-center sm:mb-14">
+            <div className="container relative z-10 mx-auto mb-12 px-4 text-center sm:mb-16">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -50,15 +51,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                     <span className="text-primary font-bold tracking-widest uppercase text-sm">
                         {tString(l.label, language)}
                     </span>
-                    <h2 className="section-title md:text-6xl">
-                        {/* We use tString but for styling we might want to split words if needed. 
-                            For now, using the full string from locales.ts which matches 'Nepal's Political Journey'.
-                            If specific color styling is needed, we can split manually or update locales. 
-                            The original had 'Political Journey' in primary color. 
-                            I'll use a simple split for now if it's English/Nepali structure predictable, 
-                            or just modify locales to have parts if I want to be strict.
-                            However, straightforward tString is safer for now. 
-                        */}
+                    <h2 className="section-title md:text-6xl lg:text-7xl">
                         {language === 'ne' ? (
                             <>
                                 नेपालको <span className="text-primary">राजनीतिक कालक्रम</span>
@@ -69,7 +62,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                             </>
                         )}
                     </h2>
-                    <p className="section-subtitle mx-auto max-w-2xl md:text-lg">
+                    <p className="section-subtitle mx-auto max-w-2xl text-lg text-muted-foreground">
                         {tString(l.description, language)}
                     </p>
                 </motion.div>
@@ -98,25 +91,23 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                         viewport={{ once: true }}
                         className="mt-9 pl-[var(--timeline-content-start)]"
                     >
-                        <Link
-                            href="/history"
-                            className="group relative block w-full cursor-pointer overflow-hidden border border-primary/20 bg-muted/20 px-5 py-5 transition-all duration-500 hover:border-primary/45 hover:bg-primary/5 sm:max-w-[700px] sm:px-6 sm:py-6"
-                        >
-                            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_85%_25%,rgba(183,28,28,0.12),transparent_55%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-                            <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
-                                <div className="min-w-0">
-                                    <span className="font-bebas text-[clamp(1.5rem,5.3vw,2.35rem)] uppercase leading-[1] tracking-[0.055em] text-foreground transition-colors duration-300 group-hover:text-primary">
-                                        {tString(l.viewAll, language)}
-                                    </span>
-                                    <p className="mt-2.5 max-w-[36ch] text-left text-[0.68rem] font-manrope uppercase leading-[1.4] tracking-[0.11em] text-muted-foreground sm:text-[0.72rem] sm:tracking-[0.14em]">
-                                        {tString(l.discoverHistory, language)}
-                                    </p>
-                                </div>
+                        <Link href="/history" className="block sm:max-w-[700px]">
+                            <Card className="group relative cursor-pointer overflow-hidden border border-border/20 bg-card p-6 transition-all duration-500 hover:border-primary/30 hover:bg-muted/50 sm:p-8">
+                                <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
+                                    <div className="min-w-0">
+                                        <span className="font-bebas text-[clamp(1.5rem,5.3vw,2.35rem)] uppercase leading-[1] tracking-wide text-foreground transition-colors duration-300 group-hover:text-primary">
+                                            {tString(l.viewAll, language)}
+                                        </span>
+                                        <p className="mt-2.5 max-w-[36ch] text-left font-mono text-[10px] uppercase leading-[1.4] tracking-[0.14em] text-muted-foreground font-bold">
+                                            {tString(l.discoverHistory, language)}
+                                        </p>
+                                    </div>
 
-                                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-primary/35 bg-primary/10 text-primary transition-all duration-300 group-hover:translate-x-1 group-hover:bg-primary group-hover:text-primary-foreground sm:h-11 sm:w-11">
-                                    <ArrowRight className="h-4 w-4" />
-                                </span>
-                            </div>
+                                    <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full border border-border/20 bg-background text-foreground transition-all duration-300 group-hover:border-primary/40 group-hover:bg-primary/5 group-hover:text-primary shadow-sm">
+                                        <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                                    </span>
+                                </div>
+                            </Card>
                         </Link>
                     </motion.div>
                 )}
@@ -152,7 +143,7 @@ function TimelineItem({
             layout
             className={cn(
                 "relative w-full overflow-visible transition-all duration-500 sm:overflow-hidden",
-                isOpen ? "bg-muted/10 py-6 sm:py-10" : "py-1 hover:bg-muted/5"
+                isOpen ? "bg-muted/30 py-6 sm:py-10 rounded-2xl" : "py-1 hover:bg-muted/10 rounded-2xl"
             )}
         >
             {/* Vertical Connection Node with horizontal connector */}
@@ -169,9 +160,9 @@ function TimelineItem({
                 style={{ originX: 0 }}
             >
                 <div className="relative h-full w-full">
-                    <div className="absolute inset-0 bg-border/80" />
+                    <div className="absolute inset-0 bg-border/20" />
                     <motion.div
-                        className="absolute inset-0 bg-primary/85"
+                        className="absolute inset-0 bg-primary/80"
                         animate={{
                             opacity: isOpen ? 1 : 0.28,
                             scaleX: isOpen ? 1 : 0.45,
@@ -201,22 +192,17 @@ function TimelineItem({
                             : "w-full max-w-4xl" // removed mx-auto to maintain perfect node alignment
                     )}
                 >
-                    <div className={cn(
-                        "relative overflow-hidden border bg-card text-card-foreground shadow-none transition-all duration-300",
+                    <Card className={cn(
+                        "relative overflow-hidden transition-all duration-300 border border-border/20",
                         isOpen
-                            ? "flex flex-col border-primary p-4 sm:p-6 lg:h-[420px]"
-                            : "hover:border-primary flex flex-col gap-4 p-4 text-center md:flex-row md:items-center md:text-left sm:gap-5 sm:p-7 lg:p-9"
+                            ? "flex flex-col border-primary/40 shadow-sm p-4 sm:p-6 lg:h-[420px]"
+                            : "hover:border-primary/40 hover:bg-card/80 hover:shadow-sm flex flex-col gap-4 p-4 text-center md:flex-row md:items-center md:text-left sm:gap-5 sm:p-7 lg:p-9"
                     )}>
                         <div className="flex-1 space-y-4">
                             <div className={cn("flex items-center gap-3", !isOpen && "justify-center md:justify-start")}>
-                                <span className={cn(
-                                    "px-3 py-1 text-xs font-bold uppercase tracking-widest border transition-colors",
-                                    isOpen
-                                        ? "bg-primary text-primary-foreground border-primary"
-                                        : "bg-transparent text-muted-foreground border-border group-hover:border-primary"
-                                )}>
+                                <Badge variant={isOpen ? "default" : "secondary"} className="font-mono text-[10px] uppercase tracking-[0.14em]">
                                     {resolveContent(series.period, language)}
-                                </span>
+                                </Badge>
                             </div>
 
                             <motion.h3
@@ -232,8 +218,8 @@ function TimelineItem({
                             <motion.p
                                 layout="position"
                                 className={cn(
-                                    "text-muted-foreground font-manrope leading-relaxed",
-                                    isOpen ? "text-[0.82rem] line-clamp-4 sm:text-sm" : "max-w-2xl text-[0.84rem] sm:text-[0.95rem]"
+                                    "text-muted-foreground text-sm leading-relaxed",
+                                    isOpen ? "line-clamp-4" : "max-w-2xl sm:text-[0.95rem]"
                                 )}
                             >
                                 {resolveContent(series.description, language)}
@@ -242,8 +228,8 @@ function TimelineItem({
 
                         {/* Action / Footer */}
                         <div className={cn(
-                            "mt-6 flex items-center gap-2 text-xs font-bold uppercase tracking-widest",
-                            isOpen ? "mt-auto pt-6 border-t border-border" : "justify-center md:justify-start"
+                            "mt-6 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.14em]",
+                            isOpen ? "mt-auto pt-6 border-t border-border/10" : "justify-center md:justify-start"
                         )}>
                             {isOpen ? (
                                 <div className="flex items-center gap-2 text-primary w-full">
@@ -253,10 +239,10 @@ function TimelineItem({
                                             href={`https://en.wikipedia.org/wiki/${series.wikipediaTopic}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="hover:underline flex items-center gap-1"
+                                            className="hover:underline flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors"
                                             onClick={(e) => e.stopPropagation()}
                                         >
-                                            Wiki <ExternalLink className="w-3 h-3" />
+                                            Wiki <ExternalLink className="w-3.5 h-3.5" />
                                         </a>
                                     )}
                                 </div>
@@ -266,9 +252,7 @@ function TimelineItem({
                                 </span>
                             )}
                         </div>
-                    </div>
-
-                    {/* Connector Line Removed as per request */}
+                    </Card>
                 </motion.div>
 
                 {/* 
@@ -285,14 +269,12 @@ function TimelineItem({
                             transition={{ duration: 0.4, delay: 0.1 }}
                             className="relative flex w-full flex-grow items-center overflow-hidden min-h-[250px] sm:min-h-[300px] lg:h-[420px]"
                         >
-                            {/* Horizontal Spine Line Removed as per request */}
-
                             {/* Scroll Container */}
                             <div
                                 ref={scrollContainerRef}
-                                className="flex h-full w-full snap-x snap-mandatory items-center space-x-4 overflow-x-auto overflow-y-hidden pl-0 pr-4 pt-0 sm:space-x-8 sm:pr-10 custom-scrollbar"
+                                className="flex h-full w-full snap-x snap-mandatory items-center space-x-4 overflow-x-auto overflow-y-hidden pl-0 pr-4 pt-0 sm:space-x-8 sm:pr-10 custom-scrollbar pb-4"
                             >
-                                {/* Start Node - Upgraded to match design */}
+                                {/* Start Node */}
                                 <div className="relative z-10 hidden h-5 w-5 flex-shrink-0 items-center justify-center sm:flex sm:h-6 sm:w-6">
                                     <StartNode />
                                 </div>
@@ -308,7 +290,7 @@ function TimelineItem({
                             </div>
 
                             {/* Right edge mask removed */}
-                            <div className="absolute right-0 top-0 h-full w-4 bg-background/85 pointer-events-none z-20" />
+                            <div className="absolute right-0 top-0 h-full w-4 pointer-events-none z-20" />
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -323,12 +305,10 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
             initial="idle"
             whileHover="active"
             viewport={{ once: true }}
-            className="group relative w-[72vw] max-w-[260px] flex-none snap-center sm:w-[280px]"
+            className="group relative w-[72vw] max-w-[280px] flex-none snap-center sm:w-[300px]"
         >
             {/* 
                 Animated Connection System 
-                Re-Centered: top-[calc(50%-24px)] for precise vertical alignment with spine.
-                Z-30 to sit ABOVE the card border.
             */}
             <div className="pointer-events-none absolute -left-[48px] top-1/2 z-30 hidden h-[48px] w-[48px] -translate-y-1/2 overflow-visible sm:block">
                 <ConnectionSystem />
@@ -338,40 +318,41 @@ function EpisodeCard({ episode, index, language }: { episode: TimelineEpisode; i
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative z-20 flex h-[238px] flex-col overflow-hidden border border-border bg-card text-card-foreground shadow-none transition-all duration-500 hover:border-primary/50 sm:h-[270px]"
             >
-                {/* Hover Glow Effect */}
-                <motion.div
-                    variants={{
-                        idle: { opacity: 0 },
-                        active: { opacity: 1 }
-                    }}
-                    className="absolute inset-0 bg-primary/5 pointer-events-none z-0"
-                />
-
-                {/* Year Header */}
-                <div className="relative z-10 flex items-center justify-between border-b border-border bg-muted/50 px-4 py-3 transition-colors duration-500 group-hover:bg-primary group-hover:text-primary-foreground sm:px-5">
-                    <span className="font-bebas text-xl tracking-[0.08em] sm:text-2xl sm:tracking-widest">
-                        {localizeTimelineDate(resolveContent(episode.year, language), language)}
-                    </span>
+                <Card className="relative z-20 flex h-[238px] flex-col overflow-hidden border border-border/20 transition-all duration-500 hover:border-primary/40 hover:shadow-md sm:h-[280px]">
+                    {/* Hover Glow Effect */}
                     <motion.div
                         variants={{
-                            idle: { rotate: 0 },
-                            active: { rotate: 180 }
+                            idle: { opacity: 0 },
+                            active: { opacity: 1 }
                         }}
-                        className="h-1.5 w-1.5 bg-current transition-all"
+                        className="absolute inset-0 bg-primary/5 pointer-events-none z-0 transition-opacity duration-300"
                     />
-                </div>
 
-                {/* Content */}
-                <div className="relative z-10 flex flex-1 flex-col p-4 sm:p-5">
-                    <h4 className="mb-3 line-clamp-2 font-bebas text-[1.55rem] uppercase leading-none tracking-[0.025em] transition-colors group-hover:text-primary sm:text-[1.85rem]">
-                        {resolveContent(episode.title, language)}
-                    </h4>
-                    <p className="line-clamp-4 text-[0.78rem] font-manrope leading-relaxed text-muted-foreground sm:text-[0.86rem]">
-                        {resolveContent(episode.description, language)}
-                    </p>
-                </div>
+                    {/* Year Header */}
+                    <div className="relative z-10 flex items-center justify-between border-b border-border/10 bg-muted/30 px-5 py-4 transition-colors duration-500 group-hover:bg-primary/10">
+                        <span className="font-bebas text-xl tracking-wide sm:text-2xl text-foreground group-hover:text-primary transition-colors">
+                            {localizeTimelineDate(resolveContent(episode.year, language), language)}
+                        </span>
+                        <motion.div
+                            variants={{
+                                idle: { rotate: 0 },
+                                active: { rotate: 180 }
+                            }}
+                            className="h-1.5 w-1.5 bg-foreground/30 transition-all group-hover:bg-primary"
+                        />
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative z-10 flex flex-1 flex-col p-5">
+                        <h4 className="mb-3 line-clamp-2 font-bebas text-[1.55rem] uppercase leading-none tracking-[0.025em] transition-colors group-hover:text-primary sm:text-[1.85rem]">
+                            {resolveContent(episode.title, language)}
+                        </h4>
+                        <p className="line-clamp-4 text-sm leading-relaxed text-muted-foreground">
+                            {resolveContent(episode.description, language)}
+                        </p>
+                    </div>
+                </Card>
             </motion.div>
         </motion.div>
     );

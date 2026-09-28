@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
 import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface Leader {
     _id?: string;
@@ -21,8 +22,7 @@ interface LeadersGridClientProps {
     leaders: Leader[];
 }
 
-const CARD_COLLAPSED_WIDTH = 104;
-const CARD_EXPANDED_WIDTH = 300;
+const CARD_COLLAPSED_WIDTH = 120;
 const CONTAINER_PADDING = 32;
 
 export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
@@ -32,7 +32,6 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
     const [expandedMobileCard, setExpandedMobileCard] = useState<number | null>(null);
     const [isMobileViewport, setIsMobileViewport] = useState(false);
     const [visibleCount, setVisibleCount] = useState<number | null>(null);
-    const railRef = useRef<HTMLDivElement | null>(null);
 
     const resolveContent = (content: { en?: string; ne?: string } | string | undefined | null): string => {
         if (!content) return "";
@@ -44,7 +43,6 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
 
     useEffect(() => {
         if (typeof window === "undefined") return;
-        
         const media = window.matchMedia("(max-width: 767px)");
         const sync = () => {
             const isMobile = media.matches;
@@ -58,25 +56,19 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
 
     useEffect(() => {
         if (typeof window === "undefined") return;
-        
         const calculateVisibleCount = () => {
             const viewportWidth = window.innerWidth;
-            
             if (viewportWidth < 768) {
                 setVisibleCount(3);
                 return;
             }
-            
             const availableWidth = viewportWidth - CONTAINER_PADDING;
-            const minCardWidth = CARD_COLLAPSED_WIDTH + 1;
+            const minCardWidth = CARD_COLLAPSED_WIDTH + 16; // width + gap
             const cardsThatFit = Math.floor(availableWidth / minCardWidth);
             const withBrowseCard = Math.max(0, cardsThatFit - 1);
-            
             setVisibleCount(Math.min(withBrowseCard, leaders.length));
         };
-        
         calculateVisibleCount();
-        
         window.addEventListener('resize', calculateVisibleCount);
         return () => window.removeEventListener('resize', calculateVisibleCount);
     }, [leaders.length]);
@@ -90,7 +82,6 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
 
     useEffect(() => {
         if (!isMobileViewport || expandedMobileCard === null) return;
-
         const onPointerDown = (event: PointerEvent) => {
             const target = event.target as HTMLElement | null;
             if (!target) return;
@@ -99,7 +90,6 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                 setExpandedMobileCard(null);
             }
         };
-
         document.addEventListener("pointerdown", onPointerDown);
         return () => document.removeEventListener("pointerdown", onPointerDown);
     }, [expandedMobileCard, isMobileViewport]);
@@ -107,11 +97,9 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
     if (!leaders || leaders.length === 0) return null;
 
     return (
-        <section id="home-section-3" className="relative overflow-hidden border-y border-border/80 bg-background py-20 sm:py-24 lg:py-24">
-            <div className="pointer-events-none absolute inset-0 bg-primary/5" />
-
-            <div className="container relative z-10 mx-auto mb-10 px-4 sm:mb-12 lg:mb-14">
-                <p className="home-kicker mb-4">{language === "en" ? "Profiles & Dossiers" : "प्रोफाइल र विवरण"}</p>
+        <section id="home-section-3" className="relative overflow-hidden bg-secondary py-20 sm:py-32">
+            <div className="container relative z-10 mx-auto mb-10 px-4 sm:mb-16">
+                <p className="home-kicker mb-4 text-primary font-bold">{language === "en" ? "Profiles & Dossiers" : "प्रोफाइल र विवरण"}</p>
 
                 <h2
                     className={cn(
@@ -128,11 +116,8 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
             </div>
 
             <div className="container mx-auto px-4">
-                <div
-                    ref={railRef}
-                    className="overflow-x-auto border border-border/80 bg-card/30 [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:bg-border/85 [&::-webkit-scrollbar-track]:bg-transparent"
-                >
-                    <div className="flex min-w-max">
+                <div className="overflow-x-auto pb-8 custom-scrollbar">
+                    <div className="flex min-w-max gap-4">
                         {displayedLeaders.map((leader, index) => {
                             const leaderName = resolveContent(leader.name);
                             const leaderPosition = resolveContent(leader.position);
@@ -142,7 +127,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                             const isExpanded = isMobileViewport && expandedMobileCard === index;
 
                             return (
-                                <article
+                                <Card
                                     key={leader._id || index}
                                     data-leader-card="true"
                                     onClick={(event) => {
@@ -158,16 +143,16 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                         });
                                     }}
                                     className={cn(
-                                        "group/card relative h-[540px] min-w-[104px] basis-[104px] shrink-0 overflow-hidden border-r border-border/70 bg-card/80 transition-[flex-basis,background-color] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:basis-[300px] hover:bg-card focus-visible:basis-[300px] focus-visible:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-                                        isExpanded && "basis-[300px] bg-card"
+                                        "group/card relative h-[540px] min-w-[120px] basis-[120px] shrink-0 overflow-hidden bg-card border border-border/20 transition-[flex-basis] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:basis-[320px] focus-visible:basis-[320px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 cursor-pointer",
+                                        isExpanded && "basis-[320px]"
                                     )}
                                 >
                                     <div
                                         className={cn(
                                             "absolute inset-0 transition-[transform,filter,opacity] duration-700 ease-out opacity-70 grayscale saturate-50 brightness-[0.82] contrast-110",
-                                            "group-hover/card:scale-[1.04] group-hover/card:opacity-100 group-hover/card:grayscale-0 group-hover/card:saturate-100 group-hover/card:brightness-100 group-hover/card:contrast-100",
-                                            "group-focus-visible/card:scale-[1.04] group-focus-visible/card:opacity-100 group-focus-visible/card:grayscale-0 group-focus-visible/card:saturate-100 group-focus-visible/card:brightness-100 group-focus-visible/card:contrast-100",
-                                            isExpanded && "scale-[1.04] grayscale-0 opacity-100 saturate-100 brightness-100 contrast-100"
+                                            "group-hover/card:scale-[1.02] group-hover/card:opacity-100 group-hover/card:grayscale-0 group-hover/card:saturate-100 group-hover/card:brightness-100 group-hover/card:contrast-100",
+                                            "group-focus-visible/card:scale-[1.02] group-focus-visible/card:opacity-100 group-focus-visible/card:grayscale-0 group-focus-visible/card:saturate-100 group-focus-visible/card:brightness-100 group-focus-visible/card:contrast-100",
+                                            isExpanded && "scale-[1.02] grayscale-0 opacity-100 saturate-100 brightness-100 contrast-100"
                                         )}
                                     >
                                         <Image
@@ -175,7 +160,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                             alt={leaderName || fallbackName}
                                             fill
                                             className="object-cover object-top"
-                                            sizes="(max-width: 768px) 75vw, 300px"
+                                            sizes="(max-width: 768px) 75vw, 320px"
                                             quality={95}
                                         />
                                     </div>
@@ -183,14 +168,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                     <div className="pointer-events-none absolute inset-0">
                                         <div
                                             className={cn(
-                                                "absolute inset-0 home-image-overlay-strong opacity-0 transition-opacity duration-500",
-                                                "group-hover/card:opacity-100 group-focus-visible/card:opacity-100",
-                                                isExpanded && "opacity-100"
-                                            )}
-                                        />
-                                        <div
-                                            className={cn(
-                                                "absolute inset-0 bg-[radial-gradient(circle_at_72%_18%,rgba(183,28,28,0.24),transparent_56%)] opacity-0 transition-opacity duration-500",
+                                                "absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent opacity-0 transition-opacity duration-500",
                                                 "group-hover/card:opacity-100 group-focus-visible/card:opacity-100",
                                                 isExpanded && "opacity-100"
                                             )}
@@ -205,7 +183,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                     >
                                         <span
                                             className={cn(
-                                                "font-editorial text-2xl text-foreground/35 [writing-mode:vertical-rl] rotate-180",
+                                                "font-editorial text-2xl text-foreground/40 [writing-mode:vertical-rl] rotate-180 drop-shadow-md",
                                                 isNepali ? "tracking-[0.08em]" : "tracking-[0.18em]"
                                             )}
                                         >
@@ -213,31 +191,31 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                         </span>
                                     </div>
 
-                                    <div
+                                    <CardContent
                                         className={cn(
-                                            "absolute inset-x-0 bottom-0 translate-y-8 p-5 opacity-0 transition-all duration-500 ease-out",
+                                            "absolute inset-x-0 bottom-0 translate-y-8 p-6 opacity-0 transition-all duration-500 ease-out",
                                             "pointer-events-none group-hover/card:pointer-events-auto group-focus-visible/card:pointer-events-auto",
                                             "group-hover/card:translate-y-0 group-hover/card:opacity-100",
                                             "group-focus-visible/card:translate-y-0 group-focus-visible/card:opacity-100",
                                             isExpanded && "pointer-events-auto translate-y-0 opacity-100"
                                         )}
                                     >
-                                        <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-primary">
+                                        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary font-bold">
                                             {leaderPosition}
                                         </p>
                                         <h3
                                             className={cn(
-                                                "mt-2 text-foreground drop-shadow-[0_1px_6px_rgba(183,28,28,0.12)]",
+                                                "mt-2 text-foreground",
                                                 isNepali
                                                     ? "text-[2rem] font-semibold leading-[1.14]"
-                                                    : "font-editorial text-[2.2rem] leading-[0.93] tracking-[-0.01em]"
+                                                    : "font-editorial text-[2.2rem] leading-[1] tracking-tight"
                                             )}
                                         >
                                             {leaderName || fallbackName}
                                         </h3>
                                         {leaderDescription ? (
-                                            <div className="mt-3 border-l border-primary/50 pl-4">
-                                                <p className="line-clamp-3 text-[11px] leading-relaxed text-muted-foreground">
+                                            <div className="mt-4 border-l-2 border-primary/20 pl-4">
+                                                <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
                                                     {leaderDescription}
                                                 </p>
                                             </div>
@@ -245,54 +223,54 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                         <Link
                                             href={`/leaders/${leader.slug}`}
                                             onClick={(event) => event.stopPropagation()}
-                                            className="mt-5 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-primary transition-colors hover:text-primary/80"
+                                            className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary font-bold"
                                         >
                                             {tString(l.readProfile, language)}
-                                            <ArrowUpRight className="h-3.5 w-3.5" />
+                                            <ArrowUpRight className="h-4 w-4" />
                                         </Link>
-                                    </div>
-                                </article>
+                                    </CardContent>
+                                </Card>
                             );
                         })}
 
                         {showBrowseCard && (
                             <Link
-                            href="/leaders"
-                            aria-label={tString(l.viewAll, language)}
-                            className="group/rail relative flex h-[540px] min-w-[104px] basis-[104px] shrink-0 items-center justify-center bg-card/80 transition-[flex-basis,background-color] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:basis-[260px] hover:bg-card focus-visible:basis-[260px] focus-visible:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
-                        >
-                            <div className="absolute inset-0 bg-primary/10 opacity-0 transition-opacity duration-500 group-hover/rail:opacity-100 group-focus-visible/rail:opacity-100" />
-                            <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-4 px-4 text-center">
-                                <div className="flex h-12 w-12 items-center justify-center border border-border/70 bg-background/85 transition-all duration-500 group-hover/rail:border-primary/60 group-hover/rail:bg-primary/5 group-focus-visible/rail:border-primary/60 group-focus-visible/rail:bg-primary/5">
-                                    <ArrowRight className="h-4 w-4 text-foreground/70 transition-all duration-300 group-hover/rail:translate-x-1 group-hover/rail:text-primary group-focus-visible/rail:translate-x-1 group-focus-visible/rail:text-primary" />
-                                </div>
+                                href="/leaders"
+                                aria-label={tString(l.viewAll, language)}
+                            >
+                                <Card className="group/rail relative flex h-[540px] min-w-[120px] basis-[120px] shrink-0 items-center justify-center bg-card border border-border/20 transition-[flex-basis,background-color] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] hover:basis-[280px] hover:bg-muted focus-visible:basis-[280px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 cursor-pointer">
+                                    <div className="relative z-10 flex h-full w-full flex-col items-center justify-center gap-4 px-4 text-center">
+                                        <div className="flex h-14 w-14 items-center justify-center rounded-full bg-background border border-border/20 transition-all duration-500 group-hover/rail:border-primary/40 group-hover/rail:bg-primary/5 group-focus-visible/rail:border-primary/40 shadow-sm">
+                                            <ArrowRight className="h-5 w-5 text-foreground/70 transition-all duration-300 group-hover/rail:translate-x-1 group-hover/rail:text-primary group-focus-visible/rail:translate-x-1" />
+                                        </div>
 
-                                <div className="absolute bottom-16 hidden opacity-0 transition-opacity duration-500 group-hover/rail:opacity-100 group-focus-visible/rail:opacity-100 lg:block">
-                                    <h4
-                                        className={cn(
-                                            "whitespace-nowrap font-editorial text-3xl text-foreground/85",
-                                            isNepali ? "tracking-normal" : "uppercase tracking-tight"
-                                        )}
-                                    >
-                                        {tString(l.viewAll, language)}
-                                    </h4>
-                                    <p className="mt-1 whitespace-nowrap font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
-                                        {isNepali ? "पूर्ण डाटाबेस" : "Full database"}
-                                    </p>
-                                </div>
+                                        <div className="absolute bottom-16 hidden opacity-0 transition-opacity duration-500 group-hover/rail:opacity-100 group-focus-visible/rail:opacity-100 lg:block">
+                                            <h4
+                                                className={cn(
+                                                    "whitespace-nowrap font-editorial text-3xl text-foreground",
+                                                    isNepali ? "tracking-normal" : "uppercase tracking-tight"
+                                                )}
+                                            >
+                                                {tString(l.viewAll, language)}
+                                            </h4>
+                                            <p className="mt-2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-bold">
+                                                {isNepali ? "पूर्ण डाटाबेस" : "Full database"}
+                                            </p>
+                                        </div>
 
-                                <div className="transition-opacity duration-500 group-hover/rail:opacity-0 group-focus-visible/rail:opacity-0">
-                                    <span
-                                        className={cn(
-                                            "font-editorial text-2xl text-foreground/35 [writing-mode:vertical-rl] rotate-180",
-                                            isNepali ? "tracking-[0.1em]" : "tracking-[0.2em]"
-                                        )}
-                                    >
-                                        {tString(l.viewAll, language)}
-                                    </span>
-                                </div>
-                            </div>
-                        </Link>
+                                        <div className="transition-opacity duration-500 group-hover/rail:opacity-0 group-focus-visible/rail:opacity-0">
+                                            <span
+                                                className={cn(
+                                                    "font-editorial text-2xl text-foreground/40 [writing-mode:vertical-rl] rotate-180 drop-shadow-sm",
+                                                    isNepali ? "tracking-[0.1em]" : "tracking-[0.2em]"
+                                                )}
+                                            >
+                                                {tString(l.viewAll, language)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </Card>
+                            </Link>
                         )}
                     </div>
                 </div>

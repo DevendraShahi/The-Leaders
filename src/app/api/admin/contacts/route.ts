@@ -1,8 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/db";
 import Contact from "@/models/Contact";
+import { withPageAccess } from "@/lib/middleware";
 
-export async function GET() {
+async function getContacts(_request: NextRequest) {
     try {
         await dbConnect();
 
@@ -19,3 +20,5 @@ export async function GET() {
         );
     }
 }
+
+export const GET = withPageAccess("messages", getContacts);

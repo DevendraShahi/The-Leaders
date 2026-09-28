@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-fixed-variant": "#930010", "outline-variant": "#e3bebb", "background": "#fcf9f8", "on-primary-fixed": "#410004", "tertiary-fixed-dim": "#ffb3ac", "error": "#ba1a1a", "outline": "#8f706d", "on-background": "#1c1b1b", "on-secondary-fixed": "#410004", "primary-fixed": "#ffdad7", "on-error-container": "#93000a", "on-primary": "#ffffff", "surface-container-low": "#f6f3f2", "on-error": "#ffffff", "primary-container": "#b62025", "on-tertiary": "#ffffff", "surface-variant": "#e5e2e1", "secondary-fixed": "#ffdad7", "on-secondary-fixed-variant": "#8a1a1d", "on-secondary-container": "#6d000c", "secondary": "#ab3332", "error-container": "#ffdad6", "tertiary-fixed": "#ffdad6", "on-tertiary-container": "#ffccc6", "inverse-surface": "#313030", "on-secondary": "#ffffff", "surface": "#fcf9f8", "tertiary-container": "#bb141d", "on-primary-container": "#ffcbc7", "primary": "#920012", "surface-container-highest": "#e5e2e1", "secondary-container": "#fc6e68", "inverse-primary": "#ffb3ad", "tertiary": "#920010", "surface-tint": "#b72125", "on-tertiary-fixed": "#410003", "surface-container-high": "#ebe7e7", "on-surface-variant": "#5a403e", "inverse-on-surface": "#f3f0ef", "secondary-fixed-dim": "#ffb3ae", "primary-fixed-dim": "#ffb3ad", "surface-container-lowest": "#ffffff", "surface-dim": "#dcd9d9", "on-primary-fixed-variant": "#930012", "on-surface": "#1c1b1b", "surface-container": "#f0edec", "surface-bright": "#fcf9f8" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "margin-mobile": "1rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter-mobile": "1rem", "gutter": "1.5rem", "margin": "2rem" }, "fontFamily": { "label-meta": ["Inter"], "headline-secondary": ["Merriweather"], "summary-text": ["Inter"], "caption": ["Inter"], "label-prominent": ["Inter"], "display-masthead-mobile": ["Merriweather"], "headline-lead": ["Merriweather"], "display-masthead": ["Merriweather"], "headline-lead-mobile": ["Merriweather"], "headline-tertiary": ["Merriweather"], "headline-primary": ["Merriweather"], "article-body-lead": ["Merriweather"], "article-body": ["Merriweather"] }, "fontSize": { "label-meta": ["12px", {"lineHeight": "16px", "fontWeight": "500"}], "headline-secondary": ["20px", {"lineHeight": "28px", "fontWeight": "700"}], "summary-text": ["15px", {"lineHeight": "22px", "fontWeight": "400"}], "caption": ["13px", {"lineHeight": "18px", "fontWeight": "400"}], "label-prominent": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}], "display-masthead-mobile": ["26px", {"lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "900"}], "headline-lead": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "display-masthead": ["40px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "900"}], "headline-lead-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "headline-tertiary": ["17px", {"lineHeight": "24px", "fontWeight": "700"}], "headline-primary": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "article-body-lead": ["20px", {"lineHeight": "34px", "fontWeight": "300"}], "article-body": ["18px", {"lineHeight": "30px", "fontWeight": "300"}] } } } };</script><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="h-14 flex items-center justify-between px-margin-mobile"><div class="flex items-center gap-space-xs"><button aria-label="Go back" class="w-11 h-11 -ml-2 flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><span class="font-headline-tertiary text-headline-tertiary text-on-surface tracking-tight truncate max-w-[210px]">Article Detail</span></div><div class="flex items-center gap-space-xs"><button aria-label="Share article" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">share</span></button><button aria-label="Bookmark article" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">bookmark_border</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover ml-1 shadow-[0_1px_4px_rgba(0,0,0,0.08)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD36nVMJAMBI4fA8d7xj2CvSaXOUrB8mbSCaiBP9My6bbtg4fNbMZlEOib9BFncnRcgpj5QJ2AKOMmsrjPAfs5j9XrM_QKEQIf6fix7fa8mPA3eqwnvwq0wXJfmtbxJWsUYWWT8QoqgIrtDd9WnS0D4MzuNNBiO7uHXBCLKZJLMxpBQa44qsuwzhVvgmt_7zUCs4LhzDGqBpDDvxd0Nm0HxjgjxexS0QHsLvB3wdlJ9dR-83CGeWkrUgA"/></div></div></header><main class="flex-1 flex flex-col relative w-full pt-14 pb-safe bg-background"><div class="flex flex-col w-full">
+<!-- Reading Progress Bar (Fixed below shell header) -->
+<div class="fixed top-14 left-0 w-full h-[2px] bg-surface-container z-40">
+<div class="h-full bg-primary w-[35%] transition-all duration-150" id="read-progress"></div>
+</div>
+<!-- Editorial Top Toolbar & Section Line -->
+<div class="w-full bg-surface px-margin-mobile pt-3 pb-2 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-prominent text-label-prominent text-primary tracking-widest uppercase">POLITICS</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">SPECIAL REPORT</span>
+</div>
+<div class="flex items-center gap-1">
+<button aria-label="Adjust font size" class="px-2 py-1 rounded bg-surface-container-low text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-0.5" id="btn-text-size" type="button">
+<span class="font-label-prominent text-label-prominent text-on-surface">AA</span>
+</button>
+<button aria-label="Toggle Nepali edition" class="px-2 py-1 rounded bg-surface-container-low text-primary hover:bg-surface-container-high transition-colors flex items-center" id="btn-lang-toggle" type="button">
+<span class="font-label-meta text-label-meta font-bold">नेपाली</span>
+</button>
+</div>
+</div>
+<!-- Main Article Scrollable Container -->
+<article class="w-full px-margin-mobile pt-4 pb-20 max-w-xl mx-auto flex flex-col">
+<!-- Kicker -->
+<div class="flex items-center gap-2 mb-2">
+<span class="font-label-prominent text-label-prominent text-primary tracking-wider uppercase">POLITICS &amp; GOVERNANCE</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">PARLIAMENTARY DISPATCH</span>
+</div>
+<!-- Dominant Headline -->
+<h1 class="font-headline-lead-mobile text-headline-lead-mobile text-on-surface font-bold tracking-tight mb-3">
+      Nepal Parliament Approves Landmark Hydropower Transmission Accord Following All-Party Consensus
+    </h1>
+<!-- Standfirst / Editorial Deck -->
+<p class="font-summary-text text-summary-text text-on-surface-variant font-normal leading-relaxed mb-4">
+      The cross-border infrastructure bill establishes a statutory framework for private capital in high-voltage lines, addressing a decade of regulatory deadlock across river corridors.
+    </p>
+<!-- Byline & Metadata Block -->
+<div class="bg-surface-container-low p-3 rounded-lg mb-5 flex flex-col gap-2 shadow-sm">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-label-prominent text-label-prominent font-bold flex-shrink-0">
+            AS
+          </div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-meta text-label-meta text-on-surface font-semibold truncate">By Anil Shrestha</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">Chief Political Correspondent</span>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-lowest px-2 py-1 rounded shadow-sm flex-shrink-0">
+<span class="material-symbols-outlined text-[15px] text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-caption text-caption text-on-surface font-medium text-[11px]">Peer Reviewed</span>
+</div>
+</div>
+<div class="flex flex-wrap items-center gap-x-2 gap-y-1 font-caption text-caption text-on-surface-variant pt-1">
+<span>26 September 2026</span>
+<span>•</span>
+<span>Updated 11:20 AM NPT</span>
+<span>•</span>
+<span class="flex items-center gap-1 font-medium text-on-surface">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+          7 min read
+        </span>
+</div>
+<!-- Verified Editorial Trust notice -->
+<div class="bg-surface-container-lowest/80 p-2 rounded flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-outline flex-shrink-0">shield</span>
+<span class="font-caption text-caption text-on-surface-variant text-[11px] leading-tight">
+          Reviewed by The Leaders Editorial Board. Complies with the Press Council code for high-impact legislative reporting.
+        </span>
+</div>
+</div>
+<!-- Hero Editorial Photograph (16:9 ratio) -->
+<figure class="w-full mb-6 flex flex-col gap-1.5">
+<div class="w-full aspect-[16/9] rounded-lg overflow-hidden relative shadow-sm bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Dignified high-angle documentary photo of the Nepal Federal Parliament in Kathmandu. Members of Parliament seated in semi-circular tiered seating wearing traditional Nepali Dhaka topi and formal Daura Suruwal alongside tailored blazers. Soft diffuse chamber illumination casting natural warm paper-like lighting, capturing serious debate and historic parliamentary consensus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBo-Ya-tvVSl8Yby5ZWmN_ZS0o39Xy_TUovT-N_Q3gCQRHEfi3N8PV9D3oWYY1F4TSe5pbQwgU1SL0dTwelt1Zkl4UneexQ8mtd_m-QXgo4bBwEcRavfhFKSs8LRCe06ZRjn4kiB7FnGcJyM_pGL-HyHNH_i9yVX1ZkJUJeykseMX05c-t4hzpEUSbkA2OwX3pFi7ORSqbOYZ8Mr3J9-mHyqcrryP_otPvHXfBS_QKi4o4TQL4NCWiKjw"/>
+<div class="absolute bottom-2 left-2 bg-on-background/80 text-background px-2 py-0.5 rounded text-[11px] font-label-meta">
+          Singha Durbar Chamber
+        </div>
+</div>
+<figcaption class="px-0.5 flex flex-col gap-0.5">
+<p class="font-caption text-caption text-on-surface-variant">
+          Lawmakers voting on the regulatory clauses of the transmission framework on Friday evening in Kathmandu.
+        </p>
+<span class="font-caption text-caption text-outline text-[11px]">
+          Photo: The Leaders / Pradeep Shakya
+        </span>
+</figcaption>
+</figure>
+<!-- Bilingual Reader Prompt -->
+<div class="mb-6 p-3 rounded-lg bg-surface-container flex items-center justify-between gap-3 shadow-sm">
+<div class="flex items-center gap-2.5 min-w-0">
+<span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0">translate</span>
+<div class="flex flex-col min-w-0">
+<span class="font-label-meta text-label-meta font-bold text-on-surface truncate">नेपालीमा पनि पढ्नुहोस्</span>
+<span class="font-caption text-caption text-on-surface-variant truncate">यो लेख नेपाली भाषामा उपलब्ध छ</span>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded bg-primary text-on-primary font-label-prominent text-label-prominent tracking-wider text-[11px] uppercase flex-shrink-0 active:scale-95 transition-transform" type="button">
+        स्विच गर्नुहोस्
+      </button>
+</div>
+<!-- Article Long-form Body Text -->
+<div class="flex flex-col gap-5 text-on-surface leading-loose" id="article-body-content">
+<!-- Lead Paragraph with Drop Cap -->
+<p class="font-article-body text-article-body text-on-surface first-letter:float-left first-letter:text-[54px] first-letter:leading-[46px] first-letter:font-serif first-letter:font-bold first-letter:pr-2.5 first-letter:text-primary">
+        KATHMANDU — In what legislative leaders are calling a generational breakthrough for the Himalayan nation’s economic autonomy, Nepal’s House of Representatives on Friday evening passed the Comprehensive Hydropower Transmission and Interconnection Act with unanimous cross-bench endorsement.
+      </p>
+<p class="font-article-body text-article-body text-on-surface">
+        The legislation ends a decadelong impasse that has stranded hundreds of megawatts across glacial river valleys. By formally carving out open-access rights for transmission lines, the new statutory architecture allows domestic independent power producers and international consortiums to build high-capacity lines directly connected to the regional synchronous grid.
+      </p>
+<!-- Editorial Pull Quote -->
+<aside class="my-3 py-4 pl-4 bg-surface-container-low rounded-r-lg relative overflow-hidden shadow-sm">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary"></div>
+<blockquote class="font-headline-secondary text-headline-secondary italic text-on-surface mb-2 font-serif leading-snug">
+          “This agreement shifts Nepal from seasonal exporter to an integrated regional energy partner across South Asia.”
+        </blockquote>
+<cite class="font-label-meta text-label-meta text-primary font-semibold not-italic block uppercase tracking-wider">
+          — Spokesperson, Ministry of Energy &amp; Water Resources
+        </cite>
+</aside>
+<p class="font-article-body text-article-body text-on-surface">
+        Finance and energy analysts have long warned that while generation capacity expanded at double-digit annual rates, evacuation capability remained critically constrained. Under the existing public monopolistic mechanism, high-voltage lines faced perennial delays stemming from land compensation disputes, right-of-way litigation, and forest clearance permits.
+      </p>
+<!-- Key Provisions Inset -->
+<section class="my-4 p-4 rounded-lg bg-surface-container shadow-sm flex flex-col gap-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">account_tree</span>
+<h2 class="font-headline-tertiary text-headline-tertiary text-on-surface font-bold">
+            Key Provisions of the Transmission Framework
+          </h2>
+</div>
+<ul class="flex flex-col gap-2.5 pl-1 font-summary-text text-summary-text text-on-surface">
+<li class="flex items-start gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
+<span><strong>Open Access Mandate:</strong> Guaranteed non-discriminatory transmission wheeling tariffs administered by an independent regulatory commission.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
+<span><strong>Fast-track Right-of-Way:</strong> Statutory 90-day time cap for state compensation valuation along designated 400kV arterial trunks.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></span>
+<span><strong>Trilateral Trade Facilitation:</strong> Explicit regulatory protocols allowing cross-border wheeling through Indian grids into Bangladesh.</span>
+</li>
+</ul>
+</section>
+<p class="font-article-body text-article-body text-on-surface">
+        Diplomatic observers noted that the timing aligns closely with upcoming bilateral meetings in New Delhi and Dhaka, where long-term power purchase agreements are scheduled for ministerial ratification. By enshrining public-private partnerships into constitutional commercial law, the administration has sought to assure foreign institutional lenders that contractual obligations will outlast electoral cycles.
+      </p>
+<!-- Mid-article contextual figure -->
+<div class="my-2 p-3 rounded-lg bg-surface-container-low shadow-sm flex items-center gap-3">
+<div class="w-16 h-16 rounded bg-primary-container text-on-primary-container flex flex-col items-center justify-center flex-shrink-0">
+<span class="font-headline-secondary text-headline-secondary font-bold leading-none">400</span>
+<span class="text-[10px] uppercase font-label-meta tracking-tighter">Kilovolts</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-meta text-label-meta font-bold text-on-surface">Butwal-Gorakhpur Second Circuit</span>
+<p class="font-caption text-caption text-on-surface-variant leading-tight">
+            Designated as the inaugural project to execute operations under the freshly ratified statutory provisions.
+          </p>
+</div>
+</div>
+<p class="font-article-body text-article-body text-on-surface">
+        The debate on the floor reflected rare nonpartisan consensus, with opposition frontbenchers emphasizing environmental stewardship alongside commercial viability. Minor revisions proposed during the morning parliamentary caucus were seamlessly integrated into the final statute before the gavel fell at 6:45 PM.
+      </p>
+</div>
+<!-- Article Footer: Sources & Methodology -->
+<div class="mt-8 pt-4 bg-surface-container-low p-4 rounded-lg flex flex-col gap-3 shadow-sm">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-[18px] text-outline">description</span>
+<span class="font-label-prominent text-label-prominent uppercase tracking-wider text-[11px]">Sources &amp; Referenced Documents</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant leading-relaxed">
+        Parliamentary Gazette Vol. 48, Session 3; Ministry of Energy, Water Resources and Irrigation Strategic Whitepaper (2025); Official Nepal Electricity Authority Grid Wheeling Records.
+      </p>
+<!-- Tags -->
+<div class="flex flex-wrap gap-1.5 pt-2">
+<span class="px-2.5 py-1 rounded-full bg-surface text-on-surface-variant font-label-meta text-label-meta text-[11px] shadow-sm">#NepalParliament</span>
+<span class="px-2.5 py-1 rounded-full bg-surface text-on-surface-variant font-label-meta text-label-meta text-[11px] shadow-sm">#Hydropower</span>
+<span class="px-2.5 py-1 rounded-full bg-surface text-on-surface-variant font-label-meta text-label-meta text-[11px] shadow-sm">#EnergyDiplomacy</span>
+<span class="px-2.5 py-1 rounded-full bg-surface text-on-surface-variant font-label-meta text-label-meta text-[11px] shadow-sm">#SouthAsiaTrade</span>
+</div>
+</div>
+<!-- Author Bio Card -->
+<div class="mt-4 p-4 rounded-lg bg-surface-container flex items-center gap-3 shadow-sm">
+<img class="w-12 h-12 rounded-full object-cover flex-shrink-0" data-alt="Close up professional portrait of Anil Shrestha, a senior Nepali male journalist in his forties with wire-frame spectacles, looking thoughtfully into the camera against a library background with warm ambient light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWKOs8o8d1RXIASvS7ucuapZPchIU5VN56G1RFP-9j8blU6FqHRxo8Fal1EM0UDdx9BEcLGBWL-OV_CQ0vH16PgwnWKDfoLM-7ucw8y3chXzB_ntzqCdXsfSydBCxE58p64e9t3vFPUzo2SWoWh5vEgWjYHG39b7bRlEpRHC01aP2h80qT2CFxgnCWoZt_P6CwGCV-Mo0qjoip3AaQQi9F-7rfcfGThTVsyBo0oa13_kDZR2uReztt3Q"/>
+<div class="flex flex-col min-w-0">
+<span class="font-headline-tertiary text-headline-tertiary text-on-surface leading-tight">Anil Shrestha</span>
+<p class="font-caption text-caption text-on-surface-variant line-clamp-2">
+          Covers executive politics, legislative reform, and cross-border infrastructure finance from Kathmandu.
+        </p>
+</div>
+</div>
+</article>
+<!-- Sticky Bottom Reading Micro-Toolbar -->
+<div class="fixed bottom-0 left-0 w-full bg-surface/95 backdrop-blur-md px-margin-mobile py-2.5 pb-safe shadow-[0_-2px_12px_rgba(0,0,0,0.06)] z-40">
+<div class="max-w-xl mx-auto flex items-center justify-between">
+<!-- Audio Listen trigger -->
+<button class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors active:scale-95" id="btn-audio-listen" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+<span class="font-label-meta text-label-meta font-medium text-[11px]">Listen (1.0x)</span>
+</button>
+<div class="flex items-center gap-1">
+<button aria-label="Bookmark this article" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">bookmark_border</span>
+</button>
+<button aria-label="Share article" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</button>
+<button aria-label="Toggle commentary section" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors relative" type="button">
+<span class="material-symbols-outlined text-[20px]">mode_comment</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary"></span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<script>
+  // Dynamic reading progress tracking
+  window.addEventListener('scroll', function() {
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (totalHeight > 0) {
+      const progress = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
+      const progressBar = document.getElementById('read-progress');
+      if (progressBar) {
+        progressBar.style.width = progress + '%';
+      }
+    }
+  }, { passive: true });
+
+  // Text size toggle micro-interaction
+  const textSizeBtn = document.getElementById('btn-text-size');
+  const bodyContent = document.getElementById('article-body-content');
+  let isLarge = false;
+
+  if (textSizeBtn && bodyContent) {
+    textSizeBtn.addEventListener('click', function() {
+      isLarge = !isLarge;
+      if (isLarge) {
+        bodyContent.classList.add('text-[20px]', 'leading-[34px]');
+        bodyContent.classList.remove('text-article-body');
+        textSizeBtn.classList.add('bg-primary', 'text-on-primary');
+      } else {
+        bodyContent.classList.remove('text-[20px]', 'leading-[34px]');
+        bodyContent.classList.add('text-article-body');
+        textSizeBtn.classList.remove('bg-primary', 'text-on-primary');
+      }
+    });
+  }
+
+  // Audio button state micro-interaction
+  const audioBtn = document.getElementById('btn-audio-listen');
+  let isPlaying = false;
+  if (audioBtn) {
+    audioBtn.addEventListener('click', function() {
+      isPlaying = !isPlaying;
+      const icon = audioBtn.querySelector('.material-symbols-outlined');
+      const text = audioBtn.querySelector('span:nth-child(2)');
+      if (isPlaying) {
+        if (icon) icon.textContent = 'pause_circle';
+        if (text) text.textContent = 'Playing (7:14)';
+        audioBtn.classList.add('bg-primary', 'text-on-primary');
+      } else {
+        if (icon) icon.textContent = 'play_circle';
+        if (text) text.textContent = 'Listen (1.0x)';
+        audioBtn.classList.remove('bg-primary', 'text-on-primary');
+      }
+    });
+  }
+</script></main></body></html>

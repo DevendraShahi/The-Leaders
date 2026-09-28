@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Project-specific ignores:
     "scripts/**",
+    "mobile/**",
   ]),
   {
     rules: {

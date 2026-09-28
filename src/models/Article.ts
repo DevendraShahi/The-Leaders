@@ -43,6 +43,10 @@ export interface IArticle {
     // SEO
     seoTitle?: { en: string; ne: string };
     seoDescription?: { en: string; ne: string };
+
+    // Fact Checking & Provenance
+    isFactCheck?: boolean;
+    provenance?: { claim: string; sourceUrl: string }[];
 }
 
 const ArticleSchema = new Schema<IArticle>(
@@ -98,6 +102,13 @@ const ArticleSchema = new Schema<IArticle>(
             en: { type: String },
             ne: { type: String },
         },
+
+        // Fact Checking & Provenance
+        isFactCheck: { type: Boolean, default: false },
+        provenance: [{
+            claim: { type: String },
+            sourceUrl: { type: String }
+        }],
     },
     { timestamps: true }
 );

@@ -291,7 +291,7 @@ export function ElectionSpecial({
                     </div>
 
                     <Link href="/election-2026" className="w-full lg:w-auto">
-                        <Button size="lg" className="w-full bg-primary px-7 font-mono text-[11px] uppercase tracking-[0.13em] text-white hover:bg-primary/90 lg:w-auto">
+                        <Button size="lg" className="w-full font-mono text-[11px] uppercase tracking-[0.13em] shadow-md lg:w-auto">
                             {language === "en" ? "Open Election Hub" : "निर्वाचन हब खोल्नुहोस्"}
                             <ArrowRight className="h-4 w-4" />
                         </Button>
@@ -488,7 +488,7 @@ export function ElectionSpecial({
                                 )}
 
                                 <Link href={active.href} className="mt-5 inline-flex">
-                                    <Button variant="outline" className="border-primary/50 bg-transparent font-mono text-[11px] uppercase tracking-[0.12em] text-primary hover:bg-primary/10 hover:text-primary">
+                                    <Button variant="outline" className="font-mono text-[11px] uppercase tracking-[0.12em]">
                                         {active.cta[language]}
                                         <ArrowRight className="h-4 w-4" />
                                     </Button>
@@ -582,12 +582,13 @@ export function ElectionSpecial({
                             {snapshotHiddenCount > 0 ? (
                                 <Button
                                     variant="outline"
+                                    size="sm"
                                     onClick={() =>
                                         setVisibleSnapshotGridCount((current) =>
                                             Math.min(current + SNAPSHOT_GRID_STEP, snapshotGridAll.length)
                                         )
                                     }
-                                    className="h-9 border-primary/40 bg-background/60 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-primary hover:bg-primary/10 hover:text-primary"
+                                    className="font-mono text-[10px] uppercase tracking-[0.12em]"
                                 >
                                     {language === "en"
                                         ? `Load More +${Math.min(SNAPSHOT_GRID_STEP, snapshotHiddenCount)}`
@@ -598,8 +599,9 @@ export function ElectionSpecial({
                             {visibleSnapshotGridCount > SNAPSHOT_GRID_INITIAL_COUNT ? (
                                 <Button
                                     variant="ghost"
+                                    size="sm"
                                     onClick={() => setVisibleSnapshotGridCount(SNAPSHOT_GRID_INITIAL_COUNT)}
-                                    className="h-9 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-muted-foreground hover:bg-background/70 hover:text-foreground"
+                                    className="font-mono text-[10px] uppercase tracking-[0.12em]"
                                 >
                                     {language === "en" ? "Show Less" : "कम देखाउनुहोस्"}
                                 </Button>
@@ -608,7 +610,8 @@ export function ElectionSpecial({
                             <Link href="/election-2026/snapshot">
                                 <Button
                                     variant="ghost"
-                                    className="h-9 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-primary hover:bg-primary/10 hover:text-primary"
+                                    size="sm"
+                                    className="font-mono text-[10px] uppercase tracking-[0.12em]"
                                 >
                                     {language === "en" ? "View All Data" : "सबै डेटा हेर्नुहोस्"}
                                     <ArrowRight className="h-3.5 w-3.5" />

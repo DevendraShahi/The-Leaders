@@ -11,40 +11,26 @@ import {
 } from "@/components/common/universal-sidebar";
 
 const HOME_SECTION_LINKS: UniversalSidebarLink[] = [
-    { href: "#home-section-1", label: { en: "Countdown & Election Date", ne: "काउन्टडाउन र निर्वाचन मिति" } },
-    { href: "#home-section-2", label: { en: "Snapshot, Briefs & Fact Checks", ne: "स्न्यापशट, ब्रिफ र तथ्य-जाँच" } },
-    { href: "#home-section-3", label: { en: "Leader Profiles", ne: "नेता प्रोफाइलहरू" } },
-    { href: "#home-section-4", label: { en: "Latest Coverage", ne: "ताजा समाचार कवरेज" } },
-    { href: "#home-section-5", label: { en: "Manifesto Explorer", ne: "घोषणापत्र एक्सप्लोरर" } },
-    { href: "#home-section-6", label: { en: "Historical Timeline", ne: "ऐतिहासिक समयरेखा" } },
+    { href: "/leaders", label: { en: "Leaders", ne: "नेताहरू" } },
+    { href: "/articles", label: { en: "Articles", ne: "लेखहरू" } },
+    { href: "/coverage", label: { en: "Coverage", ne: "कभरेज" } },
+    { href: "/history", label: { en: "History", ne: "इतिहास" } },
 ];
 
 const GLOBAL_PAGE_LINKS: UniversalSidebarLink[] = [
     { href: "/", label: { en: "Home", ne: "गृहपृष्ठ" } },
     { href: "/leaders", label: { en: "Leaders", ne: "नेताहरू" } },
     { href: "/history", label: { en: "History", ne: "इतिहास" } },
-    { href: "/election-2026", label: { en: "Election 2026", ne: "निर्वाचन २०२६" } },
     { href: "/articles", label: { en: "Articles", ne: "लेखहरू" } },
+    { href: "/coverage", label: { en: "Coverage", ne: "कभरेज" } },
     { href: "/about", label: { en: "About Us", ne: "हाम्रा बारेमा" } },
     { href: "/contact", label: { en: "Contact", ne: "सम्पर्क" } },
 ];
 
-const ELECTION_PAGE_LINKS: UniversalSidebarLink[] = [
-    { href: "/election-2026", label: { en: "Election Dashboard", ne: "निर्वाचन ड्यासबोर्ड" } },
-    { href: "/election-2026/snapshot", label: { en: "Snapshot Data", ne: "स्न्यापशट डेटा" } },
-    { href: "/election-2026/daily-brief", label: { en: "Daily Brief", ne: "दैनिक ब्रिफ" } },
-    { href: "/election-2026/fact-checks", label: { en: "Fact Checks", ne: "तथ्य-जाँच" } },
-    { href: "/election-2026/analyses", label: { en: "Analyses", ne: "विश्लेषण" } },
-    { href: "/election-2026/profiles", label: { en: "Profiles", ne: "प्रोफाइलहरू" } },
-    { href: "/election-2026/parties", label: { en: "Parties", ne: "पार्टीहरू" } },
-    { href: "/election-2026/pr-candidates", label: { en: "PR Candidates", ne: "समानुपातिक उम्मेदवार" } },
-    { href: "/election-2026/timeline", label: { en: "Timeline", ne: "समयरेखा" } },
-];
-
 const DEFAULT_RESOURCE_LINKS: UniversalSidebarResourceLink[] = [
-    { href: "/election-2026", label: { en: "Election Hub", ne: "निर्वाचन हब" } },
+    { href: "/coverage", label: { en: "Coverage", ne: "कभरेज" } },
     { href: "/leaders", label: { en: "Leader Profiles", ne: "नेता प्रोफाइल" } },
-    { href: "/articles", label: { en: "Analysis", ne: "विश्लेषण" } },
+    { href: "/articles", label: { en: "Articles", ne: "लेखहरू" } },
 ];
 
 export default function LayoutStructureWrapper({
@@ -58,13 +44,11 @@ export default function LayoutStructureWrapper({
     const isAdminRoute = pathname?.startsWith("/admin") || pathname?.startsWith("/api/admin") || pathname?.startsWith("/api/auth");
     const isSidebarEnabled = false;
     const isHomePage = pathname === "/";
-    const isElectionRoute = pathname?.startsWith("/election-2026");
 
     const sidebarLinks = useMemo(() => {
         if (isHomePage) return HOME_SECTION_LINKS;
-        if (isElectionRoute) return ELECTION_PAGE_LINKS;
         return GLOBAL_PAGE_LINKS;
-    }, [isElectionRoute, isHomePage]);
+    }, [isHomePage]);
 
     const activeSidebarHref = useMemo(() => {
         if (!pathname || isHomePage) return undefined;

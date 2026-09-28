@@ -33,6 +33,9 @@ export interface IElectionDistrict extends Document {
     status: "pending" | "voting" | "counting" | "declared";
     winner?: mongoose.Types.ObjectId; // Reference to Candidate or Party
     leadingParty?: mongoose.Types.ObjectId;
+    verificationStatus: 'official' | 'projected' | 'estimate' | 'unverified-legacy';
+    source?: { url: string; organization: string };
+    lastVerifiedAt?: Date;
 }
 
 // --- Schemas ---
@@ -82,6 +85,16 @@ const ElectionDistrictSchema = new Schema<IElectionDistrict>(
         },
         winner: { type: Schema.Types.ObjectId, ref: "ElectionParty" }, // Simplified to Party for map highlighting
         leadingParty: { type: Schema.Types.ObjectId, ref: "ElectionParty" },
+        verificationStatus: {
+            type: String,
+            enum: ['official', 'projected', 'estimate', 'unverified-legacy'],
+            default: 'unverified-legacy',
+        },
+        source: {
+            url: String,
+            organization: String,
+        },
+        lastVerifiedAt: Date,
     },
     { timestamps: true }
 );

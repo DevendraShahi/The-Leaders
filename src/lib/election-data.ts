@@ -169,20 +169,26 @@ export const getElectionData = cache(async (): Promise<ElectionData> => {
     }
 });
 
-export const getDailyBriefs = unstable_cache(async () => {
+export const getDailyBriefs = unstable_cache(async (page: number = 1, limit: number = 0) => {
     try {
         const { default: dbConnect } = await import("@/lib/db");
         const { DailyBrief } = await import("@/models/ElectionContent");
 
         await dbConnect();
-        const briefs = await DailyBrief.find({
+        
+        let query = DailyBrief.find({
             $or: [
                 { status: "published" },
                 { $and: [{ status: { $exists: false } }, { isPublished: true }] },
             ],
-        })
-            .sort({ date: -1 })
-            .lean();
+            slug: { $exists: true, $ne: "" }
+        }).sort({ date: -1 });
+
+        if (limit > 0) {
+            query = query.skip((page - 1) * limit).limit(limit);
+        }
+
+        const briefs = await query.lean();
 
         return briefs.map((brief: any) => ({
             title: (brief.title ?? "") as LocalizedValue,
@@ -200,22 +206,81 @@ export const getDailyBriefs = unstable_cache(async () => {
         const data = await getElectionData();
         return data.dailyBriefs || [];
     }
-}, ['daily-briefs'], { tags: ['daily-briefs', 'election-data'] });
+}, ['daily-briefs-paginated'], { tags: ['daily-briefs', 'election-data'] });
 
-export const getFactChecks = unstable_cache(async () => {
+export const countDailyBriefs = unstable_cache(async () => {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { DailyBrief } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        return await DailyBrief.countDocuments({
+            $or: [
+                { status: "published" },
+                { $and: [{ status: { $exists: false } }, { isPublished: true }] },
+            ],
+            slug: { $exists: true, $ne: "" }
+        });
+    } catch {
+        return 0;
+    }
+}, ['daily-briefs-count'], { tags: ['daily-briefs', 'election-data'] });
+
+export const getDailyBriefBySlug = unstable_cache(async (slug: string) => {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { DailyBrief } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        
+        const brief = await DailyBrief.findOne({
+            slug,
+            $or: [
+                { status: "published" },
+                { $and: [{ status: { $exists: false } }, { isPublished: true }] },
+            ],
+        }).lean();
+
+        if (!brief) return null;
+
+        return {
+            title: (brief.title ?? "") as LocalizedValue,
+            slug: brief.slug,
+            date: brief.date instanceof Date ? brief.date.toISOString() : String(brief.date),
+            summary: (brief.summary ?? "") as LocalizedValue,
+            content: (brief.content ?? "") as LocalizedValue,
+            tags: brief.tags || [],
+            isPublished: !!brief.isPublished,
+            status: brief.status || (brief.isPublished ? "published" : "draft"),
+            image: brief.image || "",
+        } as DailyBriefDTO;
+    } catch (error) {
+        console.error("Failed to load daily brief by slug from database:", error);
+        const data = await getElectionData();
+        return (data.dailyBriefs || []).find((b) => b.slug === slug && b.status !== "draft") || null;
+    }
+}, ['daily-brief-by-slug'], { tags: ['daily-briefs', 'election-data'] });
+
+export const getFactChecks = unstable_cache(async (page: number = 1, limit: number = 0) => {
     try {
         const { default: dbConnect } = await import("@/lib/db");
         const { FactCheck } = await import("@/models/ElectionContent");
 
         await dbConnect();
-        const checks = await FactCheck.find({
+        
+        let query = FactCheck.find({
             $or: [
                 { status: "published" },
-                { status: { $exists: false } }, // Backward compatibility for legacy records
+                { status: { $exists: false } },
             ],
-        })
-            .sort({ date: -1 })
-            .lean();
+            slug: { $exists: true, $ne: "" }
+        }).sort({ date: -1 });
+
+        if (limit > 0) {
+            query = query.skip((page - 1) * limit).limit(limit);
+        }
+
+        const checks = await query.lean();
 
         return checks.map((fc: any) => ({
             id: fc._id?.toString?.() || fc._id,
@@ -234,7 +299,61 @@ export const getFactChecks = unstable_cache(async () => {
         const data = await getElectionData();
         return data.factChecks || [];
     }
-}, ['fact-checks'], { tags: ['fact-checks', 'election-data'] });
+}, ['fact-checks-paginated'], { tags: ['fact-checks', 'election-data'] });
+
+export const countFactChecks = unstable_cache(async () => {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { FactCheck } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        return await FactCheck.countDocuments({
+            $or: [
+                { status: "published" },
+                { status: { $exists: false } },
+            ],
+            slug: { $exists: true, $ne: "" }
+        });
+    } catch {
+        return 0;
+    }
+}, ['fact-checks-count'], { tags: ['fact-checks', 'election-data'] });
+
+export const getFactCheckBySlug = unstable_cache(async (slug: string) => {
+    try {
+        const { default: dbConnect } = await import("@/lib/db");
+        const { FactCheck } = await import("@/models/ElectionContent");
+
+        await dbConnect();
+        
+        const check = await FactCheck.findOne({
+            slug,
+            $or: [
+                { status: "published" },
+                { status: { $exists: false } },
+            ],
+        }).lean();
+
+        if (!check) return null;
+
+        return {
+            id: check._id?.toString?.() || check._id,
+            slug: check.slug || slugify(resolveLocalizedString(check.claim), 60),
+            claim: (check.claim ?? "") as LocalizedValue,
+            claimBy: (check.claimBy ?? "") as LocalizedValue,
+            verdict: check.verdict,
+            analysis: (check.analysis ?? "") as LocalizedValue,
+            sources: check.sources || [],
+            date: check.date instanceof Date ? check.date.toISOString() : String(check.date),
+            status: check.status || "published",
+            image: check.image || "",
+        } as FactCheckDTO;
+    } catch (error) {
+        console.error("Failed to load fact check by slug from database:", error);
+        const data = await getElectionData();
+        return (data.factChecks || []).find((fc) => fc.slug === slug && fc.status !== "draft") || null;
+    }
+}, ['fact-check-by-slug'], { tags: ['fact-checks', 'election-data'] });
 
 export async function getParties() {
     const data = await getElectionData();

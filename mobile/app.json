@@ -1,0 +1,59 @@
+{
+  "expo": {
+    "name": "The Leaders",
+    "slug": "the-leaders",
+    "scheme": "theleaders",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/logo-Rbg.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.theleaders.app"
+    },
+    "android": {
+      "package": "com.theleaders.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#B71C1C",
+        "foregroundImage": "./assets/logo-Rbg.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#B71C1C",
+          "image": "./assets/logo-Rbg.png",
+          "imageWidth": 280,
+          "resizeMode": "contain",
+          "dark": {
+            "backgroundColor": "#B71C1C",
+            "image": "./assets/logo-Rbg.png"
+          }
+        }
+      ],
+      "expo-router",
+      "expo-font",
+      "expo-sqlite",
+      "expo-audio",
+      "expo-sharing",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow The Leaders to access photos so you can create news posts.",
+          "cameraPermission": "Allow The Leaders to use the camera so you can create news posts.",
+          "microphonePermission": false
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

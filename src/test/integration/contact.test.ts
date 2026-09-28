@@ -11,6 +11,11 @@ vi.mock('@/models/Contact', () => ({
     },
 }))
 
+vi.mock('@/lib/rate-limit', () => ({
+    enforceRateLimit: vi.fn().mockReturnValue({ limited: false }),
+    getClientIp: vi.fn().mockReturnValue('127.0.0.1'),
+}))
+
 const createMockRequest = (options: {
     method?: string
     body?: any

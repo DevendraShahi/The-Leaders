@@ -57,6 +57,8 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
             ease: "sine.inOut",
         });
 
+        const letterTweens: gsap.core.Tween[] = [];
+
         // Setup initial ambient animation on the WRAPPERS (outer)
         // This ensures ambient motion is independent of magnetic motion (inner)
         letters.forEach((wrapper, index) => {
@@ -66,7 +68,7 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
                 scale: 1,
             });
 
-            gsap.to(wrapper, {
+            const tween = gsap.to(wrapper, {
                 y: isNepali ? Math.sin(index) * 1.6 : Math.sin(index) * 2.6,
                 rotationZ: isNepali ? 0 : Math.sin(index * 1.3) * 0.7,
                 duration: 4.2 + (index % 4) * 0.25,
@@ -76,6 +78,7 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
                 delay: index * 0.04,
                 force3D: true,
             });
+            letterTweens.push(tween);
 
             if (isNepali) {
                 gsap.fromTo(
@@ -123,6 +126,17 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
                 );
             }
         });
+
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                shimmerTl.play();
+                letterTweens.forEach(t => t.play());
+            } else {
+                shimmerTl.pause();
+                letterTweens.forEach(t => t.pause());
+            }
+        });
+        observer.observe(container);
 
         const updateLetterPositions = () => {
             const rect = container.getBoundingClientRect();
@@ -242,6 +256,7 @@ export function AnimatedLogoText({ text, className = "", language = "en" }: Anim
             gsap.killTweensOf(container);
             gsap.killTweensOf(blob);
             shimmerTl.kill();
+            observer.disconnect();
         };
     }, [isNepali]);
 

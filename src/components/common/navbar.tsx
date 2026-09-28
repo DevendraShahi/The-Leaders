@@ -23,7 +23,6 @@ const links = [
         labelEn: "Coverage",
         labelNe: "कभरेज",
     },
-    { href: "/about", labelEn: "About Us", labelNe: "हाम्रा बारेमा" },
 ];
 
 export function Navbar() {

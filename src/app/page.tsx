@@ -5,9 +5,10 @@ import { LeadersGrid } from "@/components/home/LeadersGrid";
 import { Timeline } from "@/components/home/timeline";
 import { Manifesto } from "@/components/home/manifesto";
 import { NewsSection } from "@/components/home/news-section";
+import { HomeTasks } from "@/components/home/HomeTasks";
 import { HomeScrollEffects } from "@/components/home/HomeScrollEffects";
 import { getArticles } from "@/lib/data";
-import { getDailyBriefs, getElectionArticles, getFactChecks } from "@/lib/election-data";
+
 import { constructMetadata } from "@/lib/metadata";
 import { getSettings } from "@/lib/maintenance-check";
 import { absoluteUrl } from "@/lib/seo";
@@ -15,7 +16,7 @@ import { absoluteUrl } from "@/lib/seo";
 export const revalidate = 21600;
 
 const HOME_DEFAULT_DESCRIPTION =
-  "LeadersNP (The Leaders) is Nepal's civic archive for political leaders, election analysis, fact checks, and democratic history.";
+  "The Leaders is Nepal’s archive of political leaders, democratic history, and the news.";
 
 function withLeadersNPAliasInTitle(text: string, fallback: string): string {
   const value = (text || fallback).trim();
@@ -48,9 +49,9 @@ export async function generateMetadata(): Promise<Metadata> {
       "leaders np",
       "The Leaders Nepal",
       "Nepal political leaders",
-      "Nepal election 2026",
+      "Nepal news",
       "Nepal democracy archive",
-      "Nepal fact check",
+      "Nepal history",
     ])
   );
 
@@ -66,11 +67,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   const articles = await getArticles(3);
-  const [dailyBriefs, factChecks, electionArticles] = await Promise.all([
-    getDailyBriefs(),
-    getFactChecks(),
-    getElectionArticles(6),
-  ]);
   const homePageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
@@ -84,7 +80,7 @@ export default async function Home() {
     },
     about: [
       { "@type": "Thing", name: "Nepal Politics" },
-      { "@type": "Thing", name: "Nepal Election 2026" },
+      { "@type": "Thing", name: "Nepal News" },
       { "@type": "Thing", name: "Political Leadership in Nepal" },
     ],
     publisher: {
@@ -103,6 +99,7 @@ export default async function Home() {
       <HeroMarquee />
       <HomeScrollEffects>
         <Hero />
+        <HomeTasks />
         <LeadersGrid />
         <NewsSection articles={articles} />
         <Manifesto />

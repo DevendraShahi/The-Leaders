@@ -6,6 +6,8 @@ import { uploadImage, MediaCategory } from '@/lib/cloudinary';
 import { withAuth, apiResponse, apiError } from '@/lib/middleware';
 import { optimizeImageForUpload } from '@/lib/image';
 
+const MAX_UPLOAD_BYTES = 12 * 1024 * 1024;
+
 async function uploadMedia(request: NextRequest, { user }: { user: any }) {
     try {
         await dbConnect();
@@ -19,6 +21,10 @@ async function uploadMedia(request: NextRequest, { user }: { user: any }) {
 
         if (!file) {
             return apiError('No file provided', 400);
+        }
+
+        if (file.size < 1 || file.size > MAX_UPLOAD_BYTES) {
+            return apiError('Image must be between 1 byte and 12 MB', 413);
         }
 
         // Convert file to array buffer for upload

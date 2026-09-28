@@ -1,12 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import dbConnect from '@/lib/db';
 import Admin from '@/models/Admin';
 import ActivityLog from '@/models/ActivityLog';
 import { verifyPassword, generateToken } from '@/lib/auth';
 import { apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { enforceRateLimit, getClientIp } from '@/lib/rate-limit';
+
+const loginSchema = z.object({
+    email: z.string().trim().email().max(254).transform((value) => value.toLowerCase()),
+    password: z.string().min(1).max(256),
+}).strict();
+
+function tooManyAttempts(retryAfterSeconds: number) {
+    return NextResponse.json(
+        { success: false, error: 'Too many login attempts. Please try again later.' },
+        { status: 429, headers: { 'Retry-After': String(retryAfterSeconds) } }
+    );
+}
 
 export async function POST(request: NextRequest) {
     try {
+        const clientIp = getClientIp(request);
+        const ipLimit = enforceRateLimit(`admin-login:ip:${clientIp}`, 12, 15 * 60 * 1000);
+        if (ipLimit.limited) return tooManyAttempts(ipLimit.retryAfterSeconds || 900);
+
         await dbConnect();
 
         // 1. Parse request body
@@ -15,12 +33,14 @@ export async function POST(request: NextRequest) {
             return apiError(bodyParse.error || 'Invalid request', 400);
         }
 
-        const { email, password } = bodyParse.data as any;
-
-        // 2. Validate fields
-        if (!email || !password) {
-            return apiError('Email and password are required', 400);
+        const parsed = loginSchema.safeParse(bodyParse.data);
+        if (!parsed.success) {
+            return apiError('Invalid email or password', 400);
         }
+        const { email, password } = parsed.data;
+
+        const accountLimit = enforceRateLimit(`admin-login:account:${email}`, 8, 15 * 60 * 1000);
+        if (accountLimit.limited) return tooManyAttempts(accountLimit.retryAfterSeconds || 900);
 
         // 3. Find admin
         const admin = await Admin.findOne({ email }).select('+passwordHash');

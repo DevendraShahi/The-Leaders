@@ -106,8 +106,8 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
     const logoRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
     const linesRef = useRef<HTMLDivElement>(null);
+    const progressRef = useRef<HTMLDivElement>(null);
     const [statusIndex, setStatusIndex] = useState(0);
-    const [progress, setProgress] = useState(0);
     const [showConsent, setShowConsent] = useState(false);
     const [showPolicy, setShowPolicy] = useState(false);
     const [selectedLanguage, setSelectedLanguage] = useState<LanguageCode>("en");
@@ -138,19 +138,16 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
         setIsFinalizing(true);
 
         // Animate progress to 100%
-        const interval = setInterval(() => {
-            setProgress((prev) => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    // Call onComplete after animation finishes
-                    if (onComplete) {
-                        setTimeout(onComplete, 300);
-                    }
-                    return 100;
+        gsap.to(progressRef.current, {
+            width: "100%",
+            duration: 0.3,
+            ease: "power1.out",
+            onComplete: () => {
+                if (onComplete) {
+                    setTimeout(onComplete, 300);
                 }
-                return prev + 5;
-            });
-        }, 30);
+            }
+        });
     };
 
     useEffect(() => {
@@ -217,7 +214,6 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
 
         // Status text progression - only if consent is not needed
         let statusInterval: NodeJS.Timeout | null = null;
-        let progressInterval: NodeJS.Timeout | null = null;
 
         if (!showConsent) {
             let currentIndex = 0;
@@ -226,30 +222,29 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
                 setStatusIndex(currentIndex);
             }, 250); // Speed up text cycle (was 400ms)
 
-            // Progress bar animation
-            progressInterval = setInterval(() => {
-                setProgress((prev) => {
-                    // If we need consent, stop at 90%
-                    if (showConsent && prev >= 90) {
-                        return 90;
+            // Progress bar animation using GSAP
+            gsap.to(progressRef.current, {
+                width: "100%",
+                duration: 1.25, // equivalent to old interval logic: 100/4 * 20 = 500ms, slowing slightly for smoothness
+                ease: "none",
+                onComplete: () => {
+                    if (onComplete) {
+                        setTimeout(onComplete, 200);
                     }
-
-                    if (prev >= 100) {
-                        if (progressInterval) clearInterval(progressInterval);
-                        if (!showConsent && onComplete) {
-                            setTimeout(onComplete, 200); // Reduce completion delay (was 500ms)
-                        }
-                        return 100;
-                    }
-                    return prev + 4; // Double speed (was +2)
-                });
-            }, 20); // Faster tick (was 30ms)
+                }
+            });
+        } else {
+            // Stop at 90% if consent is needed
+            gsap.to(progressRef.current, {
+                width: "90%",
+                duration: 1.0,
+                ease: "power2.out"
+            });
         }
 
         return () => {
             ctx.revert();
             if (statusInterval) clearInterval(statusInterval);
-            if (progressInterval) clearInterval(progressInterval);
         };
     }, [showConsent, copy.statusSequence.length]);
 
@@ -318,8 +313,8 @@ export function PremiumLoader({ onComplete }: PremiumLoaderProps) {
 
                     <div className="w-64 md:w-80 h-1 bg-border/50 rounded-full overflow-hidden">
                         <div
-                            className="h-full bg-gradient-to-r from-primary/50 via-primary to-primary/50 transition-all duration-300 ease-out shadow-lg shadow-primary/20"
-                            style={{ width: `${progress}%` }}
+                            ref={progressRef}
+                            className="h-full w-0 bg-gradient-to-r from-primary/50 via-primary to-primary/50 shadow-lg shadow-primary/20"
                         />
                     </div>
 

@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyToken, extractTokenFromHeader, JWTPayload } from './auth';
+import dbConnect from './db';
+import Admin, { type IPermissions } from '@/models/Admin';
+import { ensurePermissionShape } from './rbac';
 
 export interface AuthenticatedRequest extends NextRequest {
     user?: JWTPayload;
@@ -15,7 +18,7 @@ export async function authenticateRequest(request: NextRequest): Promise<{
     error?: string;
 }> {
     const authHeader = request.headers.get('Authorization');
-    const token = extractTokenFromHeader(authHeader);
+    const token = extractTokenFromHeader(authHeader) || request.cookies.get('auth-token')?.value || null;
 
     if (!token) {
         return {
@@ -24,19 +27,42 @@ export async function authenticateRequest(request: NextRequest): Promise<{
         };
     }
 
-    const user = verifyToken(token);
+    const tokenUser = verifyToken(token);
 
-    if (!user) {
+    if (!tokenUser) {
         return {
             authenticated: false,
             error: 'Invalid or expired token',
         };
     }
 
-    return {
-        authenticated: true,
-        user,
-    };
+    try {
+        await dbConnect();
+        const admin = await Admin.findById(tokenUser.userId).lean();
+
+        if (!admin || !admin.isActive) {
+            return {
+                authenticated: false,
+                error: 'Admin account not found or inactive',
+            };
+        }
+
+        return {
+            authenticated: true,
+            user: {
+                userId: String(admin._id),
+                email: admin.email,
+                role: admin.role,
+                permissions: ensurePermissionShape(admin.role, admin.permissions),
+            },
+        };
+    } catch (error) {
+        console.error('Failed to validate admin session:', error);
+        return {
+            authenticated: false,
+            error: 'Authentication service unavailable',
+        };
+    }
 }
 
 /**
@@ -61,6 +87,42 @@ export function withAuth(
 
         return handler(request, { user: authResult.user, params: resolvedParams });
     };
+}
+
+export function withPermission(
+    resource: keyof IPermissions,
+    action: string,
+    handler: (request: NextRequest, context: { user: JWTPayload; params: any }) => Promise<NextResponse>
+) {
+    return withAuth(async (request, context) => {
+        const permissions = context.user.permissions as IPermissions | undefined;
+        const allowed = context.user.role === 'superadmin' || Boolean(
+            permissions?.[resource] &&
+            (permissions[resource] as Record<string, boolean>)[action]
+        );
+
+        if (!allowed) {
+            return apiError('Insufficient permissions for this resource', 403);
+        }
+
+        return handler(request, context);
+    });
+}
+
+export function withPageAccess(
+    page: keyof IPermissions['pageAccess'],
+    handler: (request: NextRequest, context: { user: JWTPayload; params: any }) => Promise<NextResponse>
+) {
+    return withAuth(async (request, context) => {
+        const permissions = context.user.permissions as IPermissions | undefined;
+        const allowed = context.user.role === 'superadmin' || permissions?.pageAccess?.[page] === true;
+
+        if (!allowed) {
+            return apiError('Insufficient permissions for this resource', 403);
+        }
+
+        return handler(request, context);
+    });
 }
 
 /**

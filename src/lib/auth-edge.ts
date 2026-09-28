@@ -4,17 +4,17 @@
  */
 
 import { jwtVerify, SignJWT } from 'jose';
-import { JWTPayload } from './auth';
+import type { JWTPayload } from './auth';
+import { getJwtSecret } from './auth-config';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
-const secret = new TextEncoder().encode(JWT_SECRET);
+const encodedSecret = () => new TextEncoder().encode(getJwtSecret());
 
 /**
  * Verify JWT token (Edge-compatible)
  */
 export async function verifyTokenEdge(token: string): Promise<JWTPayload | null> {
     try {
-        const { payload } = await jwtVerify(token, secret);
+        const { payload } = await jwtVerify(token, encodedSecret());
 
         return {
             userId: payload.userId as string,
@@ -42,7 +42,7 @@ export async function generateTokenEdge(payload: JWTPayload): Promise<string> {
             .setProtectedHeader({ alg: 'HS256' })
             .setIssuedAt()
             .setExpirationTime('24h')
-            .sign(secret);
+            .sign(encodedSecret());
 
         return token;
     } catch (error) {

@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { randomBytes } from 'node:crypto';
+import { getJwtSecret } from './auth-config';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key';
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '24h'; // Changed to 24 hours for security
 
 export interface JWTPayload {
@@ -37,7 +38,7 @@ export async function verifyPassword(password: string, hashedPassword: string): 
  * @returns JWT token string
  */
 export function generateToken(payload: JWTPayload): string {
-    return jwt.sign(payload, JWT_SECRET, {
+    return jwt.sign(payload, getJwtSecret(), {
         expiresIn: JWT_EXPIRES_IN as jwt.SignOptions['expiresIn'],
     });
 }
@@ -49,7 +50,7 @@ export function generateToken(payload: JWTPayload): string {
  */
 export function verifyToken(token: string): JWTPayload | null {
     try {
-        const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
+        const decoded = jwt.verify(token, getJwtSecret()) as JWTPayload;
         return decoded;
     } catch (error) {
         console.error('Token verification failed:', error);
@@ -74,5 +75,5 @@ export function extractTokenFromHeader(authHeader: string | null): string | null
  * @returns Random token string
  */
 export function generateSecureToken(): string {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return randomBytes(32).toString('hex');
 }

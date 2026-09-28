@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import type { IArticle } from "@/models/Article";
 import { cn } from "@/lib/utils";
 
@@ -325,9 +325,14 @@ const ReaderWaveToggle = forwardRef<HTMLButtonElement, ReaderWaveToggleProps>(fu
             waves.forEach(drawWave);
         };
 
+        let isVisible = true;
+        let observer: IntersectionObserver | null = null;
+
         const loop = () => {
-            time -= 0.007;
-            draw();
+            if (isVisible) {
+                time -= 0.007;
+                draw();
+            }
             raf = window.requestAnimationFrame(loop);
         };
 
@@ -346,11 +351,22 @@ const ReaderWaveToggle = forwardRef<HTMLButtonElement, ReaderWaveToggleProps>(fu
             };
         }
 
+        observer = new IntersectionObserver(
+            (entries) => {
+                isVisible = entries[0].isIntersecting;
+            },
+            { threshold: 0 }
+        );
+        observer.observe(canvas);
+
         raf = window.requestAnimationFrame(loop);
 
         return () => {
             window.cancelAnimationFrame(raf);
             window.removeEventListener("resize", handleResize);
+            if (observer) {
+                observer.disconnect();
+            }
         };
     }, [shouldReduceMotion]);
 
@@ -947,7 +963,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                             <div className="grid gap-2 md:grid-cols-[1fr_auto_1fr] md:items-center">
                                 <Link
                                     href="/articles"
-                                    className="justify-self-start inline-flex min-h-10 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
+                                    className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-self-start gap-2 font-mono text-[10px] uppercase tracking-[0.12em]")}
                                 >
                                     <ArrowLeft className="h-4 w-4" />
                                     {language === "en" ? "Back to Articles" : "लेख सूचीमा फर्कनुहोस्"}
@@ -1011,10 +1027,12 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                 </div>
 
                                 <div className="mt-8 flex flex-wrap justify-center gap-4">
-                                    <button
+                                    <Button
                                         type="button"
+                                        variant="outline"
+                                        size="lg"
                                         onClick={shareCurrentLink}
-                                        className="inline-flex min-h-12 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
+                                        className="gap-2 font-mono text-xs uppercase tracking-[0.14em]"
                                     >
                                         <Share2 className="h-4 w-4" />
                                         {shared
@@ -1024,11 +1042,13 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                             : language === "en"
                                                 ? "Share"
                                                 : "सेयर"}
-                                    </button>
-                                    <button
+                                    </Button>
+                                    <Button
                                         type="button"
+                                        variant="outline"
+                                        size="lg"
                                         onClick={copyCurrentLink}
-                                        className="inline-flex min-h-12 items-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper-soft)] px-5 py-2.5 font-mono text-xs uppercase tracking-[0.14em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
+                                        className="gap-2 font-mono text-xs uppercase tracking-[0.14em]"
                                     >
                                         <Link2 className="h-4 w-4" />
                                         {copied
@@ -1038,7 +1058,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                             : language === "en"
                                                 ? "Copy Link"
                                                 : "लिङ्क कपी"}
-                                    </button>
+                                    </Button>
                                 </div>
                             </article>
                         </section>
@@ -1138,7 +1158,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                         </div>
                                         <Link
                                             href="/articles"
-                                            className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 border border-[var(--np-rule)] bg-[var(--np-paper)] px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[var(--np-ink)] transition-colors hover:border-[var(--np-accent)] hover:text-[var(--np-accent)]"
+                                            className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mt-4 w-full gap-2 font-mono text-[10px] uppercase tracking-[0.14em]")}
                                         >
                                             {language === "en" ? "Browse All Articles" : "सबै लेख हेर्नुहोस्"}
                                             <ArrowRight className="h-4 w-4" />

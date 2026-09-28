@@ -421,7 +421,7 @@ export default function ElectionCountdown({
                                             {content.leadDescription}
                                         </p>
                                         <div className="mt-8 flex flex-wrap gap-3">
-                                            <Button asChild size="lg" className="px-6 font-sans text-sm">
+                                            <Button asChild size="lg" className="font-sans text-sm shadow-md">
                                                 <Link href="/election-2026">
                                                     {content.leadActions.leaders}
                                                     <ArrowRight className="h-4 w-4" />
@@ -430,10 +430,10 @@ export default function ElectionCountdown({
                                             <Button
                                                 asChild
                                                 size="lg"
-                                                variant="outline"
-                                                className="border-white/45 bg-black/24 px-6 font-sans text-sm text-white hover:border-white/75 hover:bg-black/38 hover:text-white"
+                                                variant="secondary"
+                                                className="font-sans text-sm shadow-sm"
                                             >
-                                                <Link href="http://localhost:3000/election-2026/profiles">{content.leadActions.read}</Link>
+                                                <Link href="/election-2026/profiles">{content.leadActions.read}</Link>
                                             </Button>
                                         </div>
                                     </div>
@@ -596,7 +596,7 @@ export default function ElectionCountdown({
                                         asChild
                                         size="lg"
                                         variant="outline"
-                                        className="mt-7 w-full border-border/80 bg-card/70 font-sans text-sm text-foreground hover:border-primary/55 hover:bg-primary/10 hover:text-primary"
+                                        className="mt-7 w-full font-sans text-sm shadow-sm"
                                     >
                                         <Link href="/election-2026">
                                             {content.countCta}

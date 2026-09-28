@@ -335,11 +335,17 @@ function resolveLocalPath(input: string): string {
     return path.resolve(value);
 }
 
-async function loadSourcePayload(source: string): Promise<SourcePayload> {
+async function loadSourcePayload(source: string, payloadCache: Map<string, SourcePayload>): Promise<SourcePayload> {
     const sourceValue = String(source || "").trim();
     if (!sourceValue) {
         throw new Error("Source is empty");
     }
+
+    if (payloadCache.has(sourceValue)) {
+        return payloadCache.get(sourceValue)!;
+    }
+
+    let result: SourcePayload;
 
     if (isHttpUrl(sourceValue)) {
         const response = await fetch(sourceValue, {
@@ -351,23 +357,26 @@ async function loadSourcePayload(source: string): Promise<SourcePayload> {
         }
         const text = await response.text();
         const parsed = parseMaybeJson(text);
-        return {
+        result = {
             payload: parsed.parsed ? parsed.value : text,
             sourceType: "url",
         };
+    } else {
+        if (!isLikelyLocalPath(sourceValue)) {
+            throw new Error(`Unsupported source format: ${sourceValue}`);
+        }
+
+        const filePath = resolveLocalPath(sourceValue);
+        const text = await fs.readFile(filePath, "utf8");
+        const parsed = parseMaybeJson(text);
+        result = {
+            payload: parsed.parsed ? parsed.value : text,
+            sourceType: "file",
+        };
     }
 
-    if (!isLikelyLocalPath(sourceValue)) {
-        throw new Error(`Unsupported source format: ${sourceValue}`);
-    }
-
-    const filePath = resolveLocalPath(sourceValue);
-    const text = await fs.readFile(filePath, "utf8");
-    const parsed = parseMaybeJson(text);
-    return {
-        payload: parsed.parsed ? parsed.value : text,
-        sourceType: "file",
-    };
+    payloadCache.set(sourceValue, result);
+    return result;
 }
 
 function toGithubRawUrl(url: URL): string {
@@ -651,74 +660,115 @@ export async function resolveRowsFromSources(
     const maxDiscoveryDepth = Math.max(0, Number(options.maxDiscoveryDepth ?? 2));
     const maxSources = Math.max(1, Number(options.maxSources ?? 40));
     const maxRows = Math.max(1, Number(options.maxRows ?? 120000));
+    const concurrency = 5;
 
     const initialSources = parseSourceList(sourcesInput);
     const queue: Array<{ source: string; depth: number }> = initialSources.map((source) => ({
         source,
         depth: 0,
     }));
+    
     const queued = new Set(initialSources);
     const visited = new Set<string>();
     const rows: Array<Record<string, unknown>> = [];
     const rowSignatures = new Set<string>();
     const pulls: ElectionResultPullTrace[] = [];
+    const payloadCache = new Map<string, SourcePayload>();
 
-    while (queue.length > 0 && visited.size < maxSources && rows.length < maxRows) {
-        const current = queue.shift();
-        if (!current) break;
+    await new Promise<void>((resolve) => {
+        let running = 0;
 
-        const source = current.source.trim();
-        if (!source || visited.has(source)) {
-            continue;
-        }
-
-        visited.add(source);
-
-        try {
-            const { payload, sourceType } = await loadSourcePayload(source);
-            const sourceRows = extractRowsFromPayload(payload);
-            const discoveredUrls =
-                current.depth < maxDiscoveryDepth
-                    ? extractDiscoveryUrlsFromPayload(payload, { source })
-                    : [];
-
-            for (const row of sourceRows) {
-                if (rows.length >= maxRows) break;
-                const signature = buildRowSignature(row);
-                if (!signature || rowSignatures.has(signature)) {
-                    continue;
-                }
-                rowSignatures.add(signature);
-                rows.push(row);
+        const processNext = async () => {
+            if (queue.length === 0 && running === 0) {
+                resolve();
+                return;
             }
 
-            pulls.push({
-                source,
-                sourceType,
-                depth: current.depth,
-                rowCount: sourceRows.length,
-                discoveredUrls: discoveredUrls.slice(0, 50),
-            });
+            if (
+                queue.length === 0 ||
+                running >= concurrency ||
+                visited.size >= maxSources ||
+                rows.length >= maxRows
+            ) {
+                if (running === 0) resolve();
+                return;
+            }
 
-            if (current.depth < maxDiscoveryDepth) {
-                for (const url of discoveredUrls) {
-                    if (!queued.has(url) && !visited.has(url)) {
-                        queue.push({ source: url, depth: current.depth + 1 });
-                        queued.add(url);
+            const current = queue.shift();
+            if (!current) {
+                if (running === 0) resolve();
+                return;
+            }
+
+            const source = current.source.trim();
+            if (!source || visited.has(source)) {
+                processNext();
+                return;
+            }
+
+            visited.add(source);
+            running++;
+
+            try {
+                const { payload, sourceType } = await loadSourcePayload(source, payloadCache);
+                const sourceRows = extractRowsFromPayload(payload);
+                const discoveredUrls =
+                    current.depth < maxDiscoveryDepth
+                        ? extractDiscoveryUrlsFromPayload(payload, { source })
+                        : [];
+
+                for (const row of sourceRows) {
+                    if (rows.length >= maxRows) break;
+                    const signature = buildRowSignature(row);
+                    if (!signature || rowSignatures.has(signature)) {
+                        continue;
+                    }
+                    rowSignatures.add(signature);
+                    rows.push(row);
+                }
+
+                pulls.push({
+                    source,
+                    sourceType,
+                    depth: current.depth,
+                    rowCount: sourceRows.length,
+                    discoveredUrls: discoveredUrls.slice(0, 50),
+                });
+
+                if (current.depth < maxDiscoveryDepth) {
+                    for (const url of discoveredUrls) {
+                        if (!queued.has(url) && !visited.has(url)) {
+                            queue.push({ source: url, depth: current.depth + 1 });
+                            queued.add(url);
+                        }
                     }
                 }
+            } catch (error) {
+                pulls.push({
+                    source,
+                    sourceType: getSourceType(source),
+                    depth: current.depth,
+                    rowCount: 0,
+                    discoveredUrls: [],
+                    error: error instanceof Error ? error.message : "Unknown source resolution error",
+                });
+            } finally {
+                running--;
+                // Fire off next tasks
+                while (running < concurrency && queue.length > 0 && visited.size < maxSources && rows.length < maxRows) {
+                    processNext();
+                }
+                if (running === 0 && queue.length === 0) {
+                    resolve();
+                }
             }
-        } catch (error) {
-            pulls.push({
-                source,
-                sourceType: getSourceType(source),
-                depth: current.depth,
-                rowCount: 0,
-                discoveredUrls: [],
-                error: error instanceof Error ? error.message : "Unknown source resolution error",
-            });
+        };
+
+        // Kick off initial workers
+        for (let i = 0; i < concurrency; i++) {
+            processNext();
         }
-    }
+    });
 
     const discoveredSources = Array.from(
         new Set(

@@ -7,6 +7,7 @@ import { IArticle } from "@/models/Article";
 import { LOCALES, tString } from "@/lib/locales";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface NewsSectionProps {
     articles: IArticle[];
@@ -21,55 +22,41 @@ export function NewsSection({ articles }: NewsSectionProps) {
     }
 
     return (
-        <section id="home-section-4" className="relative overflow-hidden border-y border-border/80 bg-background py-20">
-            <div
-                className="pointer-events-none absolute inset-0 opacity-[0.02]"
-                style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-                }}
-            />
-            <div className="pointer-events-none absolute inset-0 bg-primary/5" />
-
+        <section id="home-section-4" className="relative overflow-hidden bg-background py-20 sm:py-32">
             <div className="container relative mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: "-60px" }}
                     transition={{ duration: 0.5 }}
-                    className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between"
+                    className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between"
                 >
-                    <div>
-                        <p className="home-kicker mb-4">{tString(locale.badge, language)}</p>
-                        <h2 className="section-title mb-2 md:text-6xl">
+                    <div className="max-w-3xl">
+                        <p className="home-kicker mb-4 text-primary font-bold">{tString(locale.badge, language)}</p>
+                        <h2 className="section-title mb-4 md:text-6xl lg:text-7xl">
                             {tString(locale.headingMain, language)}{" "}
                             <span className="text-primary">{tString(locale.headingAccent, language)}</span>
                         </h2>
-                        <p className="section-subtitle mt-2 max-w-2xl">{tString(locale.subtitle, language)}</p>
+                        <p className="section-subtitle mt-2 max-w-2xl text-lg text-muted-foreground">{tString(locale.subtitle, language)}</p>
                     </div>
 
-                    <Link
-                        href="/articles"
-                        className="group hidden shrink-0 items-center gap-2 border border-border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition-colors hover:border-primary/60 hover:text-primary sm:inline-flex"
-                    >
-                        {language === "en" ? "All Analysis" : "सबै विश्लेषण"}
-                        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                    </Link>
+                    <Button asChild variant="outline" className="hidden sm:inline-flex group shadow-sm">
+                        <Link href="/articles">
+                            {language === "en" ? "All Analysis" : "सबै विश्लेषण"}
+                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                    </Button>
                 </motion.div>
-
-                <div className="mb-10 h-px bg-border/80" />
 
                 <ArticleGrid articles={articles} />
 
-                <div className="mt-10 h-px bg-border/80" />
-
-                <div className="mt-10 text-center sm:hidden">
-                    <Link
-                        href="/articles"
-                        className="group inline-flex items-center gap-2 border border-border px-6 py-3 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground transition-all hover:border-primary/60 hover:text-foreground"
-                    >
-                        {language === "en" ? "All Analysis" : "सबै विश्लेषण"}
-                        <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
-                    </Link>
+                <div className="mt-12 text-center sm:hidden">
+                    <Button asChild variant="outline" size="lg" className="w-full group shadow-sm">
+                        <Link href="/articles">
+                            {language === "en" ? "All Analysis" : "सबै विश्लेषण"}
+                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Link>
+                    </Button>
                 </div>
             </div>
         </section>

@@ -11,30 +11,35 @@ type OptimizationResult = {
 
 const MAX_EDGE = 4096;
 const MIN_OPTIMIZE_BYTES = 1024 * 1024;
-
-function shouldSkipOptimization(mimeType?: string) {
-    if (!mimeType) return true;
-    if (mimeType === "image/svg+xml") return true;
-    return false;
-}
+const ALLOWED_FORMATS = new Set(["jpeg", "png", "webp"]);
+const MIME_BY_FORMAT: Record<string, string> = {
+    jpeg: "image/jpeg",
+    png: "image/png",
+    webp: "image/webp",
+};
 
 export async function optimizeImageForUpload(buffer: Buffer, mimeType?: string): Promise<OptimizationResult> {
-    if (shouldSkipOptimization(mimeType)) {
-        return { buffer, mimeType, optimized: false };
-    }
-
-    const image = sharp(buffer, { failOnError: false }).rotate();
+    const image = sharp(buffer, { failOnError: true }).rotate();
     const metadata = await image.metadata();
     const width = metadata.width || 0;
     const height = metadata.height || 0;
-    const format = metadata.format || (mimeType ? mimeType.split("/")[1] : undefined);
+    const format = metadata.format;
+
+    if (!format || !ALLOWED_FORMATS.has(format) || width < 1 || height < 1) {
+        throw new Error("Unsupported or invalid image");
+    }
+
+    const detectedMimeType = MIME_BY_FORMAT[format];
+    if (mimeType && mimeType !== detectedMimeType && !(format === "jpeg" && mimeType === "image/jpg")) {
+        throw new Error("Image content does not match its declared type");
+    }
 
     const maxEdge = Math.max(width, height);
     const shouldResize = maxEdge > MAX_EDGE;
     const shouldOptimize = buffer.byteLength >= MIN_OPTIMIZE_BYTES || shouldResize;
 
     if (!shouldOptimize) {
-        return { buffer, mimeType, format, width, height, optimized: false };
+        return { buffer, mimeType: detectedMimeType, format, width, height, optimized: false };
     }
 
     let pipeline = image;

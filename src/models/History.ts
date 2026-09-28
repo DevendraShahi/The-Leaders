@@ -20,6 +20,7 @@ export interface IHistory {
     views: number;
 
     lastModifiedBy?: mongoose.Types.ObjectId;
+    sources?: { text: string; url: string }[];
 }
 
 const HistorySchema = new Schema<IHistory>(
@@ -45,6 +46,10 @@ const HistorySchema = new Schema<IHistory>(
         views: { type: Number, default: 0 },
 
         lastModifiedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
+        sources: [{
+            text: { type: String },
+            url: { type: String }
+        }]
     },
     { timestamps: true }
 );

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_stack" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-tertiary-fixed-variant": "#930010", "outline-variant": "#e3bebb", "background": "#fcf9f8", "on-primary-fixed": "#410004", "tertiary-fixed-dim": "#ffb3ac", "error": "#ba1a1a", "outline": "#8f706d", "on-background": "#1c1b1b", "on-secondary-fixed": "#410004", "primary-fixed": "#ffdad7", "on-error-container": "#93000a", "on-primary": "#ffffff", "surface-container-low": "#f6f3f2", "on-error": "#ffffff", "primary-container": "#b62025", "on-tertiary": "#ffffff", "surface-variant": "#e5e2e1", "secondary-fixed": "#ffdad7", "on-secondary-fixed-variant": "#8a1a1d", "on-secondary-container": "#6d000c", "secondary": "#ab3332", "error-container": "#ffdad6", "tertiary-fixed": "#ffdad6", "on-tertiary-container": "#ffccc6", "inverse-surface": "#313030", "on-secondary": "#ffffff", "surface": "#fcf9f8", "tertiary-container": "#bb141d", "on-primary-container": "#ffcbc7", "primary": "#920012", "surface-container-highest": "#e5e2e1", "secondary-container": "#fc6e68", "inverse-primary": "#ffb3ad", "tertiary": "#920010", "surface-tint": "#b72125", "on-tertiary-fixed": "#410003", "surface-container-high": "#ebe7e7", "on-surface-variant": "#5a403e", "inverse-on-surface": "#f3f0ef", "secondary-fixed-dim": "#ffb3ae", "primary-fixed-dim": "#ffb3ad", "surface-container-lowest": "#ffffff", "surface-dim": "#dcd9d9", "on-primary-fixed-variant": "#930012", "on-surface": "#1c1b1b", "surface-container": "#f0edec", "surface-bright": "#fcf9f8" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-md": "1rem", "space-lg": "1.5rem", "space-xl": "2.5rem", "margin-mobile": "1rem", "space-xs": "0.25rem", "space-sm": "0.5rem", "gutter-mobile": "1rem", "gutter": "1.5rem", "margin": "2rem" }, "fontFamily": { "label-meta": ["Inter"], "headline-secondary": ["Merriweather"], "summary-text": ["Inter"], "caption": ["Inter"], "label-prominent": ["Inter"], "display-masthead-mobile": ["Merriweather"], "headline-lead": ["Merriweather"], "display-masthead": ["Merriweather"], "headline-lead-mobile": ["Merriweather"], "headline-tertiary": ["Merriweather"], "headline-primary": ["Merriweather"], "article-body-lead": ["Merriweather"], "article-body": ["Merriweather"] }, "fontSize": { "label-meta": ["12px", {"lineHeight": "16px", "fontWeight": "500"}], "headline-secondary": ["20px", {"lineHeight": "28px", "fontWeight": "700"}], "summary-text": ["15px", {"lineHeight": "22px", "fontWeight": "400"}], "caption": ["13px", {"lineHeight": "18px", "fontWeight": "400"}], "label-prominent": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "700"}], "display-masthead-mobile": ["26px", {"lineHeight": "30px", "letterSpacing": "-0.01em", "fontWeight": "900"}], "headline-lead": ["34px", {"lineHeight": "44px", "letterSpacing": "-0.015em", "fontWeight": "700"}], "display-masthead": ["40px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "900"}], "headline-lead-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "headline-tertiary": ["17px", {"lineHeight": "24px", "fontWeight": "700"}], "headline-primary": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}], "article-body-lead": ["20px", {"lineHeight": "34px", "fontWeight": "300"}], "article-body": ["18px", {"lineHeight": "30px", "fontWeight": "300"}] } } } };</script><style>@layer base{html,body{width:100%;margin:0;padding:0;min-height:100%;}body{overscroll-behavior-y:none;-webkit-tap-highlight-color:transparent;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-background text-on-surface antialiased flex flex-col min-h-screen selection:bg-primary-fixed selection:text-on-primary-fixed"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.03)]"><div class="h-14 flex items-center justify-between px-margin-mobile"><div class="flex items-center gap-space-xs"><button aria-label="Go back" class="w-11 h-11 -ml-2 flex items-center justify-center text-on-surface hover:text-primary transition-colors" onclick="history.back()" type="button"><span class="material-symbols-outlined text-[22px]">arrow_back</span></button><span class="font-headline-tertiary text-headline-tertiary text-on-surface tracking-tight truncate max-w-[210px]">Article Detail</span></div><div class="flex items-center gap-space-xs"><button aria-label="Share article" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">share</span></button><button aria-label="Bookmark article" class="w-11 h-11 flex items-center justify-center text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[20px]">bookmark_border</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover ml-1 shadow-[0_1px_4px_rgba(0,0,0,0.08)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD36nVMJAMBI4fA8d7xj2CvSaXOUrB8mbSCaiBP9My6bbtg4fNbMZlEOib9BFncnRcgpj5QJ2AKOMmsrjPAfs5j9XrM_QKEQIf6fix7fa8mPA3eqwnvwq0wXJfmtbxJWsUYWWT8QoqgIrtDd9WnS0D4MzuNNBiO7uHXBCLKZJLMxpBQa44qsuwzhVvgmt_7zUCs4LhzDGqBpDDvxd0Nm0HxjgjxexS0QHsLvB3wdlJ9dR-83CGeWkrUgA"/></div></div></header><main class="flex-1 flex flex-col relative w-full pt-14 pb-safe bg-background"><div class="flex flex-col w-full">
+<div class="px-margin-mobile pt-space-md pb-space-lg bg-surface-container-lowest shadow-sm">
+<div class="flex items-baseline justify-between">
+<h1 class="font-headline-primary text-headline-primary text-on-surface tracking-tight">
+        Settings &amp; Preferences
+      </h1>
+<span class="font-label-meta text-label-meta text-primary font-semibold tracking-wider uppercase">
+        सेटिंग्स
+      </span>
+</div>
+<div class="flex items-center gap-space-sm mt-space-xs text-on-surface-variant font-label-meta text-label-meta">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Edition 142 • Kathmandu Dispatches</span>
+<span class="text-outline">•</span>
+<span class="text-on-surface-variant font-medium">B.S. 2081 Jestha</span>
+</div>
+</div>
+<div class="p-margin-mobile flex flex-col gap-space-lg">
+<!-- 1. LANGUAGE & REGION -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md bg-surface-container-low px-space-sm py-space-xs rounded-lg">
+<span class="font-label-prominent text-label-prominent text-on-surface tracking-wider uppercase">
+          1. Language &amp; Region
+        </span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">भाषा र क्षेत्र</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- Segmented Toggle -->
+<div>
+<label class="block font-label-prominent text-label-prominent text-on-surface mb-space-xs">
+            PRIMARY APP LANGUAGE
+          </label>
+<div class="grid grid-cols-2 p-1 bg-surface-container rounded-lg gap-1">
+<button class="py-space-xs text-center font-label-prominent text-label-prominent rounded-DEFAULT bg-primary text-on-primary transition-all" type="button">
+              English
+            </button>
+<button class="py-space-xs text-center font-label-prominent text-label-prominent rounded-DEFAULT text-on-surface hover:text-primary transition-all" type="button">
+              नेपाली (Devanagari)
+            </button>
+</div>
+</div>
+<!-- Bilingual headlines toggle -->
+<div class="flex items-start justify-between gap-space-md pt-space-xs">
+<div class="flex-1 min-w-0">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">Bilingual headlines</p>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">
+              Displays both English and Nepali titles on major investigative pieces.
+            </p>
+</div>
+<button aria-checked="true" class="w-12 h-6 bg-primary rounded-full relative transition-colors focus:outline-none flex-shrink-0 self-center" role="switch" type="button">
+<span class="w-5 h-5 bg-on-primary rounded-full absolute right-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<!-- Edition Selector -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex items-center justify-between">
+<div>
+<span class="block font-label-meta text-label-meta text-on-surface-variant uppercase">Regional Desk</span>
+<span class="font-headline-tertiary text-headline-tertiary text-on-surface">Kathmandu (National &amp; Bagmati)</span>
+</div>
+<button class="px-space-sm py-1 bg-surface text-primary rounded-DEFAULT font-label-meta text-label-meta font-semibold shadow-xs hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors" type="button">
+            Switch
+          </button>
+</div>
+</div>
+</section>
+<!-- 2. READING & TYPOGRAPHY -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md bg-surface-container-low px-space-sm py-space-xs rounded-lg">
+<span class="font-label-prominent text-label-prominent text-on-surface tracking-wider uppercase">
+          2. Reading &amp; Typography
+        </span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">पठन अनुभव</span>
+</div>
+<!-- Live Quote Preview Bento Unit -->
+<div class="p-space-md bg-surface-container-low rounded-lg mb-space-md">
+<div class="flex items-center justify-between text-on-surface-variant font-label-meta text-label-meta mb-space-xs">
+<span>SPECIMEN PREVIEW</span>
+<span class="text-primary font-semibold">18px Editorial</span>
+</div>
+<blockquote class="font-article-body text-article-body text-on-surface leading-snug italic pl-space-sm bg-surface p-space-sm rounded-DEFAULT shadow-xs">
+          “Diplomatic accords cannot reset with every ministerial change in Singha Durbar.”
+        </blockquote>
+<p class="font-caption text-caption text-on-surface-variant mt-space-xs text-right">
+          — Analytical Review, Desk Bureau
+        </p>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- Font Size Stepper -->
+<div>
+<div class="flex justify-between font-label-prominent text-label-prominent text-on-surface-variant mb-space-xs">
+<span>FONT SIZE</span>
+<span class="text-on-surface font-semibold">Default (18px)</span>
+</div>
+<div class="grid grid-cols-4 gap-1 p-1 bg-surface-container rounded-lg">
+<button class="py-1 text-center font-label-meta text-label-meta text-on-surface-variant rounded-DEFAULT hover:text-on-surface" type="button">Small</button>
+<button class="py-1 text-center font-label-meta text-label-meta bg-primary text-on-primary font-bold rounded-DEFAULT" type="button">18px</button>
+<button class="py-1 text-center font-label-meta text-label-meta text-on-surface-variant rounded-DEFAULT hover:text-on-surface" type="button">Large</button>
+<button class="py-1 text-center font-label-meta text-label-meta text-on-surface-variant rounded-DEFAULT hover:text-on-surface" type="button">X-Large</button>
+</div>
+</div>
+<!-- Typeface choice -->
+<div>
+<label class="block font-label-prominent text-label-prominent text-on-surface mb-space-xs">
+            BODY TYPEFACE
+          </label>
+<div class="grid grid-cols-2 gap-2">
+<button class="p-space-sm text-left bg-surface-container-high rounded-lg text-on-surface" type="button">
+<span class="block font-headline-tertiary text-headline-tertiary">Editorial Serif</span>
+<span class="block font-caption text-caption text-on-surface-variant">Merriweather Pro</span>
+</button>
+<button class="p-space-sm text-left bg-surface-container-low rounded-lg text-on-surface hover:bg-surface-container transition-colors" type="button">
+<span class="block font-summary-text text-summary-text font-bold">Modern Sans</span>
+<span class="block font-caption text-caption text-on-surface-variant">Inter Neutral</span>
+</button>
+</div>
+</div>
+<!-- Reading switches -->
+<div class="flex items-center justify-between pt-space-xs">
+<div class="pr-space-sm">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">Reading progress bar</p>
+<p class="font-caption text-caption text-on-surface-variant">Subtle indicator under top navigation</p>
+</div>
+<button aria-checked="true" class="w-12 h-6 bg-primary rounded-full relative transition-colors focus:outline-none flex-shrink-0" role="switch" type="button">
+<span class="w-5 h-5 bg-on-primary rounded-full absolute right-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="pr-space-sm">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">Auto-play audio briefs</p>
+<p class="font-caption text-caption text-on-surface-variant">Stream correspondent summaries automatically</p>
+</div>
+<button aria-checked="false" class="w-12 h-6 bg-surface-container-highest rounded-full relative transition-colors focus:outline-none flex-shrink-0" role="switch" type="button">
+<span class="w-5 h-5 bg-outline-variant rounded-full absolute left-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- 3. APPEARANCE & THEME -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md bg-surface-container-low px-space-sm py-space-xs rounded-lg">
+<span class="font-label-prominent text-label-prominent text-on-surface tracking-wider uppercase">
+          3. Appearance &amp; Canvas
+        </span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">स्वरूप</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<div>
+<label class="block font-label-prominent text-label-prominent text-on-surface mb-space-xs">
+            CANVAS THEME
+          </label>
+<div class="grid grid-cols-3 p-1 bg-surface-container rounded-lg gap-1">
+<button class="py-2 flex flex-col items-center justify-center rounded-DEFAULT bg-primary text-on-primary shadow-xs" type="button">
+<span class="material-symbols-outlined text-[18px]">light_mode</span>
+<span class="font-label-meta text-label-meta mt-1">Paper</span>
+</button>
+<button class="py-2 flex flex-col items-center justify-center rounded-DEFAULT text-on-surface hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[18px]">dark_mode</span>
+<span class="font-label-meta text-label-meta mt-1">Ink Night</span>
+</button>
+<button class="py-2 flex flex-col items-center justify-center rounded-DEFAULT text-on-surface hover:text-primary" type="button">
+<span class="material-symbols-outlined text-[18px]">settings_brightness</span>
+<span class="font-label-meta text-label-meta mt-1">System</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div>
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">Warm paper hue</p>
+<p class="font-caption text-caption text-on-surface-variant">Reduces blue light during late evening reading</p>
+</div>
+<button aria-checked="true" class="w-12 h-6 bg-primary rounded-full relative transition-colors focus:outline-none flex-shrink-0" role="switch" type="button">
+<span class="w-5 h-5 bg-on-primary rounded-full absolute right-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- 4. NOTIFICATIONS & ALERTS -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md bg-surface-container-low px-space-sm py-space-xs rounded-lg">
+<span class="font-label-prominent text-label-prominent text-on-surface tracking-wider uppercase">
+          4. Notifications &amp; Alerts
+        </span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">सूचनाहरू</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="font-headline-tertiary text-headline-tertiary text-on-surface">Breaking dispatches</span>
+<span class="px-1.5 py-0.5 bg-primary-container text-on-primary rounded font-label-meta text-[10px] uppercase font-bold">Priority</span>
+</div>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">
+              Urgent national alerts only (avg. 1–2 per day).
+            </p>
+</div>
+<button aria-checked="true" class="w-12 h-6 bg-primary rounded-full relative transition-colors focus:outline-none flex-shrink-0 self-center" role="switch" type="button">
+<span class="w-5 h-5 bg-on-primary rounded-full absolute right-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex-1">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">The Daily Brief</p>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">Morning compilation of essential policy news</p>
+<div class="inline-flex items-center gap-1 mt-1 text-primary font-label-meta text-label-meta font-semibold">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+<span>06:00 AM NPT (Nepal Standard Time)</span>
+</div>
+</div>
+<button aria-checked="true" class="w-12 h-6 bg-primary rounded-full relative transition-colors focus:outline-none flex-shrink-0 self-center" role="switch" type="button">
+<span class="w-5 h-5 bg-on-primary rounded-full absolute right-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<!-- Followed topics pill list -->
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-prominent text-label-prominent text-on-surface">TOPICS &amp; COLUMNISTS</span>
+<button class="text-primary font-label-meta text-label-meta font-bold hover:underline" type="button">
+              Manage (4) →
+            </button>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="px-2 py-0.5 bg-surface text-on-surface rounded-DEFAULT font-label-meta text-label-meta shadow-xs">
+              Politics
+            </span>
+<span class="px-2 py-0.5 bg-surface text-on-surface rounded-DEFAULT font-label-meta text-label-meta shadow-xs">
+              Energy &amp; Hydropower
+            </span>
+<span class="px-2 py-0.5 bg-surface text-on-surface rounded-DEFAULT font-label-meta text-label-meta shadow-xs">
+              Nepal Rastra Bank
+            </span>
+<span class="px-2 py-0.5 bg-surface text-on-surface rounded-DEFAULT font-label-meta text-label-meta shadow-xs">
+              Swarnim Bhattarai
+            </span>
+</div>
+</div>
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex-1">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">Evening editorial round-up</p>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">Curated perspectives at sunset (18:30 NPT)</p>
+</div>
+<button aria-checked="false" class="w-12 h-6 bg-surface-container-highest rounded-full relative transition-colors focus:outline-none flex-shrink-0 self-center" role="switch" type="button">
+<span class="w-5 h-5 bg-outline-variant rounded-full absolute left-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+</div>
+</section>
+<!-- 5. OFFLINE & STORAGE -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md bg-surface-container-low px-space-sm py-space-xs rounded-lg">
+<span class="font-label-prominent text-label-prominent text-on-surface tracking-wider uppercase">
+          5. Offline &amp; Cache Storage
+        </span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">अफलाइन र भण्डारण</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<div class="flex items-start justify-between gap-space-md">
+<div class="flex-1">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface">Auto-download on Wi-Fi</p>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">
+              Downloads unread Top Stories and Daily Brief for commute reading.
+            </p>
+</div>
+<button aria-checked="true" class="w-12 h-6 bg-primary rounded-full relative transition-colors focus:outline-none flex-shrink-0 self-center" role="switch" type="button">
+<span class="w-5 h-5 bg-on-primary rounded-full absolute right-0.5 top-0.5 shadow-sm transform transition-transform"></span>
+</button>
+</div>
+<div class="p-space-sm bg-surface-container-low rounded-lg">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-meta text-label-meta text-on-surface-variant">STORAGE ALLOCATION</span>
+<span class="font-label-meta text-label-meta text-on-surface font-semibold">18 MB / 250 MB</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 7.2%"></div>
+</div>
+<div class="flex justify-between items-center mt-space-sm pt-1">
+<span class="font-caption text-caption text-on-surface-variant">High-res dispatches cache</span>
+<button class="font-label-meta text-label-meta text-primary font-bold hover:underline" type="button">
+              Clear Offline Cache
+            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. EDITORIAL INTEGRITY & ABOUT -->
+<section class="flex flex-col bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between pb-space-sm mb-space-md bg-surface-container-low px-space-sm py-space-xs rounded-lg">
+<span class="font-label-prominent text-label-prominent text-on-surface tracking-wider uppercase">
+          6. Editorial Integrity
+        </span>
+<span class="font-label-meta text-label-meta text-on-surface-variant">सम्पादकीय प्रतिबद्धता</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<button class="flex items-center justify-between py-space-sm px-1 text-left hover:bg-surface-container-low rounded-lg transition-colors" type="button">
+<div class="flex flex-col">
+<span class="font-headline-tertiary text-headline-tertiary text-on-surface">The Leaders Editorial Charter</span>
+<span class="font-caption text-caption text-on-surface-variant">Code of Ethics &amp; Independent Fact-Checking</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">chevron_right</span>
+</button>
+<button class="flex items-center justify-between py-space-sm px-1 text-left hover:bg-surface-container-low rounded-lg transition-colors" type="button">
+<div class="flex flex-col">
+<span class="font-headline-tertiary text-headline-tertiary text-on-surface">Press Council Compliance</span>
+<span class="font-caption text-caption text-on-surface-variant">Annual Transparency Report (2024)</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">chevron_right</span>
+</button>
+<button class="flex items-center justify-between py-space-sm px-1 text-left hover:bg-surface-container-low rounded-lg transition-colors" type="button">
+<div class="flex flex-col">
+<span class="font-headline-tertiary text-headline-tertiary text-on-surface">Newsroom Corrections Bureau</span>
+<span class="font-caption text-caption text-primary">corrections@theleadersnp.com</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[20px]">open_in_new</span>
+</button>
+</div>
+<!-- App Meta / Version Info -->
+<div class="mt-space-md pt-space-md bg-surface-container-low p-space-sm rounded-lg flex flex-col items-center text-center">
+<p class="font-headline-tertiary text-headline-tertiary text-on-surface font-bold tracking-tight">THE LEADERS</p>
+<p class="font-caption text-caption text-on-surface-variant mt-0.5">
+          Version 2.4.1 (Build 890) • Kathmandu Digital Desk
+        </p>
+<div class="flex items-center gap-space-md mt-space-md">
+<button class="font-label-meta text-label-meta text-on-surface-variant hover:text-primary transition-colors" type="button">
+            Privacy Policy
+          </button>
+<span class="text-outline">•</span>
+<button class="font-label-meta text-label-meta text-on-surface-variant hover:text-primary transition-colors" type="button">
+            Terms of Journalistic Service
+          </button>
+</div>
+</div>
+<!-- Sign Out / Restore -->
+<div class="mt-space-md pt-space-xs flex gap-space-sm">
+<button class="flex-1 py-space-sm bg-surface-container text-on-surface font-label-meta text-label-meta font-bold rounded-DEFAULT hover:bg-surface-container-high transition-colors" type="button">
+          Restore Purchases
+        </button>
+<button class="flex-1 py-space-sm bg-error-container text-on-error-container font-label-meta text-label-meta font-bold rounded-DEFAULT hover:opacity-90 transition-opacity" type="button">
+          Sign Out
+        </button>
+</div>
+</section>
+</div>
+</div></main></body></html>

@@ -53,19 +53,19 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                                     href: "/history",
                                 },
                                 {
-                                    nameEn: "Election 2026",
-                                    nameNe: "निर्वाचन २०२६",
-                                    href: "/election-2026",
+                                    nameEn: "Articles",
+                                    nameNe: "लेखहरू",
+                                    href: "/articles",
                                 },
                                 {
-                                    nameEn: "Parties",
-                                    nameNe: "पार्टीहरू",
-                                    href: "/election-2026/parties",
+                                    nameEn: "Coverage",
+                                    nameNe: "कभरेज",
+                                    href: "/coverage",
                                 },
                                 {
-                                    nameEn: "Timeline",
-                                    nameNe: "समयरेखा",
-                                    href: "/history",
+                                    nameEn: "About Us",
+                                    nameNe: "हाम्रा बारेमा",
+                                    href: "/about",
                                 },
                             ].map((item) => (
                                 <li key={item.nameEn}>

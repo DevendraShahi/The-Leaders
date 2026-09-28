@@ -65,6 +65,13 @@ export interface ILeader {
     // Metrics
     views: number;
     lastModifiedBy?: mongoose.Types.ObjectId;
+
+    // Provenance
+    dataSources?: {
+        title: string;
+        url: string;
+        verifiedDate?: Date;
+    }[];
 }
 
 
@@ -134,6 +141,13 @@ const LeaderSchema = new Schema<ILeader>(
         // Metrics
         views: { type: Number, default: 0 },
         lastModifiedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
+
+        // Provenance
+        dataSources: [{
+            title: { type: String },
+            url: { type: String },
+            verifiedDate: { type: Date }
+        }]
     },
     { timestamps: true }
 );

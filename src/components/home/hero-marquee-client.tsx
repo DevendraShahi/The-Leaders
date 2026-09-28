@@ -3,6 +3,7 @@ import Link from "next/link";
 import Marquee from "react-fast-marquee";
 import { useLanguage } from "@/components/providers/language-provider";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 
 export type MarqueeItem = {
     type: 'article' | 'leader';
@@ -32,14 +33,13 @@ export function HeroMarqueeClient({ items }: { items: MarqueeItem[] }) {
                             key={`${item.link}-${idx}`}
                             href={item.link}
                             role="listitem"
-                            className="marquee-chip group rounded-none px-6"
+                            className="group flex items-center gap-3 px-6 py-1 transition-transform duration-200 hover:-translate-y-0.5"
                         >
-                            <span
+                            <Badge
+                                variant={item.type === "leader" ? "default" : "secondary"}
                                 className={cn(
-                                    "marquee-pill rounded-none",
-                                    item.type === "leader"
-                                        ? "bg-primary/10 text-primary border border-primary/20"
-                                        : "bg-muted text-muted-foreground border border-border"
+                                    "font-mono text-[10px] uppercase tracking-[0.14em]",
+                                    item.type === "leader" ? "bg-primary/10 text-primary hover:bg-primary/20 border-primary/20" : "hover:bg-muted/80"
                                 )}
                             >
                                 {language === "ne"
@@ -49,8 +49,8 @@ export function HeroMarqueeClient({ items }: { items: MarqueeItem[] }) {
                                     : item.type === "leader"
                                         ? "Leader"
                                         : "Article"}
-                            </span>
-                            <span className="text-sm font-medium leading-tight select-none">
+                            </Badge>
+                            <span className="text-sm font-medium leading-tight select-none text-foreground transition-colors group-hover:text-primary">
                                 {language === "ne"
                                     ? item.titleNe || item.titleEn
                                     : item.titleEn}
