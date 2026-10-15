@@ -29,7 +29,7 @@ export function HeroMarqueeClient({ items }: { items: MarqueeItem[] }) {
             >
                 <div className="marquee-track" role="list">
                     {items.map((item, idx) => (
-                        <Link
+                        <Link prefetch={false}
                             key={`${item.link}-${idx}`}
                             href={item.link}
                             role="listitem"

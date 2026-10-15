@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
 import { IAdmin } from '@/models/Admin';
 import { hasPermission } from '@/lib/rbac';
 import dbConnect from '@/lib/db';
-import Admin from '@/models/Admin';
 import AuditLog from '@/models/AuditLog';
+import { getWebsiteAdmin } from '@/lib/website-auth';
 
 /**
  * Higher-order function to protect API routes with authentication
@@ -13,43 +12,15 @@ import AuditLog from '@/models/AuditLog';
 export function withAuth(
     handler: (request: NextRequest, context: { admin: IAdmin; params?: any }) => Promise<NextResponse>
 ) {
-    return async (request: NextRequest, { params }: { params?: any } = {}) => {
+    return async (request: NextRequest, context: any = {}) => {
+        const { params } = context;
         try {
             const resolvedParams = params && typeof params?.then === 'function'
                 ? await params
                 : params;
-            // Extract token from cookie
-            const token = request.cookies.get('auth-token')?.value;
-
-            if (!token) {
-                return NextResponse.json(
-                    { error: 'Authentication required' },
-                    { status: 401 }
-                );
-            }
-
-            // Verify token
-            const payload = verifyToken(token);
-            if (!payload) {
-                return NextResponse.json(
-                    { error: 'Invalid or expired token' },
-                    { status: 401 }
-                );
-            }
-
-            // Fetch full admin data from database
-            await dbConnect();
-            const admin = await Admin.findById(payload.userId).lean();
-
-            if (!admin || !admin.isActive) {
-                return NextResponse.json(
-                    { error: 'Admin account not found or inactive' },
-                    { status: 401 }
-                );
-            }
-
-            // Pass admin to handler
-            return handler(request, { admin: admin as IAdmin, params: resolvedParams });
+            const admin = await getWebsiteAdmin(request);
+            if (!admin) return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
+            return handler(request, { admin, params: resolvedParams });
         } catch (error) {
             console.error('Auth middleware error:', error);
             return NextResponse.json(

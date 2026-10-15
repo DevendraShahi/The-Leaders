@@ -1,3 +1,4 @@
+import { savedArticleSchema } from "./saved-schema";
 import type { SavedArticle } from "./saved";
 
 const STORAGE_KEY = "the-leaders:saved-articles:v1";
@@ -7,7 +8,7 @@ function readAll(): SavedArticle[] {
 
     try {
         const value: unknown = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "[]");
-        return Array.isArray(value) ? value as SavedArticle[] : [];
+        return Array.isArray(value) ? value.flatMap(item => { const result = savedArticleSchema.safeParse(item); return result.success ? [result.data] : []; }) : [];
     } catch {
         return [];
     }

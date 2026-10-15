@@ -1,13 +1,10 @@
-import { Pressable, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import { layout, radius, spacing } from "@/theme/tokens";
 import { Image } from "expo-image";
 import { Bookmark } from "lucide-react-native";
 import { AppText } from "./primitives/AppText";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/language";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
-
 import { useColors } from "@/theme/Theme";
 
 export function StoryCard({
@@ -16,6 +13,7 @@ export function StoryCard({
     summary,
     meta,
     image,
+    variant = "standard",
     recyclingKey,
     saved = false,
     bookmarkLabel,
@@ -27,6 +25,7 @@ export function StoryCard({
     summary?: string;
     meta?: string;
     image?: string;
+    variant?: "standard" | "lead";
     recyclingKey?: string;
     saved?: boolean;
     bookmarkLabel?: string;
@@ -36,63 +35,62 @@ export function StoryCard({
     const { language } = useLanguage();
     const colors = useColors();
     const isNe = language === "ne";
+    const isLead = variant === "lead";
 
-    const scale = useSharedValue(1);
-    const style = useAnimatedStyle(() => ({ transform: [{ scale: scale.value }] }));
 
     return (
-        <View className="mx-5">
-            <AnimatedPressable
-                style={style}
-                onPressIn={() => { scale.value = withSpring(0.975, { damping: 20, stiffness: 300 }); }}
-                onPressOut={() => { scale.value = withSpring(1, { damping: 20, stiffness: 300 }); }}
+        <View style={{ marginHorizontal: spacing.gutter }}>
+            <Pressable
+                style={styles.story}
                 onPress={onPress}
                 accessibilityRole="button"
+                accessibilityLabel={title}
             >
                 {image ? (
-                    <View className="overflow-hidden rounded-lg bg-surface-secondary">
+                    <View className="overflow-hidden rounded-sm bg-surface-secondary">
                         <Image
                             source={{ uri: image }}
                             recyclingKey={recyclingKey || image}
                             contentFit="cover"
-                            className="aspect-video w-full"
+                            className="w-full"
+                            style={{ width: "100%", aspectRatio: layout.leadImageRatio, borderRadius: radius.sm }}
                         />
                     </View>
                 ) : null}
 
                 {kicker ? (
-                    <View className="mt-3 flex-row items-center gap-1.5">
-                        <View className="h-1.5 w-1.5 rounded-full bg-primary" />
-                        <AppText variant="overline" colorToken="primary">
+                    <View style={{ marginTop: spacing.md }}>
+                        <AppText variant="overline" colorToken="brandRed">
                             {kicker}
                         </AppText>
                     </View>
                 ) : null}
 
                 <AppText
-                    variant={isNe ? "heading1" : "heading2"}
-                    weight="bold"
-                    style={{ marginTop: 4 }}
+                    variant={isLead ? "leadTitle" : isNe ? "heading1" : "heading2"}
+                    weight="semibold"
+                    style={{ marginTop: spacing.sm }}
                 >
                     {title}
                 </AppText>
 
                 {summary ? (
                     <AppText
-                        variant="body"
+                        variant="bodySmall"
                         colorToken="textSecondary"
-                        style={{ marginTop: 8 }}
+                        numberOfLines={2}
+                        style={{ marginTop: spacing.sm }}
                     >
                         {summary}
                     </AppText>
                 ) : null}
-            </AnimatedPressable>
+            </Pressable>
 
             {meta || onBookmark ? (
-                <View className="mt-1 flex-row items-center justify-between gap-3">
-                    <Pressable accessibilityRole="button" onPress={onPress} className="min-h-11 min-w-0 flex-1 justify-center">
+                <View style={styles.footer}>
+                    <Pressable accessibilityRole="button" accessibilityLabel={title} onPress={onPress} style={styles.metadata}>
                         {meta ? (
-                            <AppText variant="caption" colorToken="textTertiary" numberOfLines={1}>
+                            <AppText variant="meta" colorToken="textTertiary" numberOfLines={2}>
                                 {meta}
                             </AppText>
                         ) : null}
@@ -103,10 +101,10 @@ export function StoryCard({
                             size="icon"
                             accessibilityLabel={bookmarkLabel}
                             onPress={onBookmark}
-                            className="h-11 w-11 rounded-lg"
+                            className="h-touch w-touch"
                         >
                             <Bookmark
-                                size={16}
+                                size={layout.iconSmall}
                                 color={saved ? colors.brandRed : colors.textSecondary}
                                 fill={saved ? colors.brandRed : "transparent"}
                             />
@@ -117,3 +115,9 @@ export function StoryCard({
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    story: { width: "100%" },
+    footer: { marginTop: spacing.xs, flexDirection: "row", alignItems: "center", gap: spacing.sm },
+    metadata: { flex: 1, minWidth: 0, minHeight: layout.touchTarget, justifyContent: "center" },
+});

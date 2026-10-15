@@ -3,9 +3,9 @@
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
 import { Separator } from "@/components/ui/separator";
-import { DailyBriefGrid } from "@/components/election/daily-brief/DailyBriefGrid";
-import { DailyBriefStack } from "@/components/election/daily-brief/DailyBriefStack";
-import { DailyBriefTimelineV2 } from "@/components/election/daily-brief/DailyBriefTimelineV2";
+import { DailyBriefGrid } from "@/components/daily/DailyBriefGrid";
+import { DailyBriefStack } from "@/components/daily/DailyBriefStack";
+import { DailyBriefTimelineV2 } from "@/components/daily/DailyBriefTimelineV2";
 
 interface DailyBriefClientProps {
     briefs: any[];

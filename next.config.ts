@@ -6,10 +6,23 @@ const nextConfig: NextConfig = {
   // Production optimization
   compress: true,
 
+  async rewrites() {
+    return { beforeFiles: [
+      '/election-2026/:path*', '/history/:path*', '/coverage/columns/:path*',
+      '/api/election/:path*', '/api/v1/fact-checks/:path*', '/api/v1/candidates/:path*',
+      '/api/v1/parties/:path*', '/api/v1/manifestos/:path*', '/api/v1/snapshot/:path*', '/api/v1/history/:path*',
+      '/api/admin/perplexity-ingest/:path*', '/api/admin/content-import/:path*', '/api/admin/election-results/:path*',
+      '/api/admin/election-vote-counts/:path*', '/api/admin/election-articles/:path*', '/api/admin/fact-checks/:path*',
+      '/api/admin/history/:path*', '/api/admin/column-articles/:path*', '/api/admin/social-sources/:path*',
+      '/api/admin/social-posts/:path*', '/api/v1/auth/studio-attention/:path*', '/api/seed', '/api/auth/debug', '/api/special-days', '/api/admin/access-requests/:path*',
+    ].map(source => ({source,destination:'/api/retired'})) };
+  },
+
   // Image optimization
   images: {
-    formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    formats: ['image/webp'],
+    minimumCacheTTL: 86400,
+    deviceSizes: [640, 828, 1080, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {

@@ -6,7 +6,6 @@ import { useAuth } from '@/components/admin/AuthProvider';
 import ArticleForm from '@/components/admin/forms/ArticleForm';
 import ElectionContentForm from '@/components/admin/forms/ElectionContentForm';
 import LeaderForm from '@/components/admin/forms/LeaderForm';
-import HistoryForm from '@/components/admin/forms/HistoryForm';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -17,13 +16,13 @@ export default function EditorPage() {
     const type = params?.type as string;
     const id = params?.id as string;
 
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const [initialData, setInitialData] = useState<any>(null);
     const [loading, setLoading] = useState(id !== 'new');
     const [error, setError] = useState<string | null>(null);
 
-    const validTypes = ['article', 'leader', 'history', 'brief', 'fact-check', 'election-article', 'column-article'];
+    const validTypes = ['article', 'leader', 'brief'];
 
     useEffect(() => {
         // If no params yet, wait
@@ -44,7 +43,7 @@ export default function EditorPage() {
 
         const fetchFallbackBySearch = async (apiType: string, key: string, searchValue: string) => {
             const res = await fetch(`/api/admin/${apiType}?page=1&limit=50&search=${encodeURIComponent(searchValue)}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {  }
             });
             if (!res.ok) return null;
             const data = await res.json();
@@ -56,7 +55,7 @@ export default function EditorPage() {
         };
 
         const fetchData = async () => {
-            if (!token || id === 'new') {
+            if (!isAuthenticated || id === 'new') {
                 setLoading(false);
                 return;
             }
@@ -79,7 +78,7 @@ export default function EditorPage() {
                 const url = `/api/admin/${apiType}/${id}`;
 
                 const res = await fetch(url, {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {  }
                 });
 
                 if (res.ok) {
@@ -141,7 +140,7 @@ export default function EditorPage() {
         };
 
         fetchData();
-    }, [type, id, token]);
+    }, [type, id, isAuthenticated]);
 
     // Render Logic with safe guards
     if (!type || !id) {
@@ -184,16 +183,8 @@ export default function EditorPage() {
             return <ArticleForm key="article-form" initialData={initialData} id={id} />;
         case 'leader':
             return <LeaderForm key="leader-form" initialData={initialData} id={id} />;
-        case 'history':
-            return <HistoryForm key="history-form" initialData={initialData} id={id} />;
         case 'brief':
             return <ElectionContentForm key="brief-form" initialData={initialData} id={id} type="brief" />;
-        case 'fact-check':
-            return <ElectionContentForm key="fact-check-form" initialData={initialData} id={id} type="fact-check" />;
-        case 'election-article':
-            return <ElectionContentForm key="election-article-form" initialData={initialData} id={id} type="election-article" />;
-        case 'column-article':
-            return <ElectionContentForm key="column-article-form" initialData={initialData} id={id} type="column-article" />;
         default:
             return notFound();
     }

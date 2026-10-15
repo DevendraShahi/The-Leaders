@@ -1,18 +1,16 @@
-import { useState, useRef } from "react";
-import { View, FlatList, Pressable, Dimensions } from "react-native";
+import { View, FlatList, Pressable, ScrollView, useWindowDimensions } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import * as WebBrowser from "expo-web-browser";
-import { AppText } from "@/ui/AppText";
+import { AppText } from "@/ui/primitives/AppText";
 import { useColors } from "@/theme/Theme";
 import { pick, useLanguage } from "@/i18n/language";
-import { ui } from "@/i18n/copy";
-import { spacing } from "@/theme/tokens";
+import { spacing, radius, layout } from "@/theme/tokens";
 import type { BriefDetail } from "@/api/client";
 import { MarkdownBody } from "@/ui/MarkdownBody";
 import { useAppStore } from "@/state/useAppStore";
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+
 
 type Story = {
     id: string;
@@ -56,27 +54,9 @@ function parseStories(markdown: string): Story[] {
     return stories;
 }
 
-const MONTHS = {
-    en: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-    ne: ["जनवरी", "फेब्रुअरी", "मार्च", "अप्रिल", "मे", "जुन", "जुलाई", "अगस्ट", "सेप्टेम्बर", "अक्टोबर", "नोभेम्बर", "डिसेम्बर"],
-} as const;
-
-function formatBriefDate(iso: string, language: "en" | "ne") {
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return { dayName: "", dayNum: "", month: "" };
-    
-    const dayNamesEn = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-    const dayNamesNe = ["आइतबार", "सोमबार", "मंगलबार", "बुधबार", "बिहिबार", "शुक्रबार", "शनिबार"];
-    
-    return {
-        dayName: language === "ne" ? dayNamesNe[date.getDay()] : dayNamesEn[date.getDay()],
-        dayNum: date.getDate().toString(),
-        month: MONTHS[language][date.getMonth()]
-    };
-}
-
 export function BriefReader({ brief }: { brief: BriefDetail }) {
     const colors = useColors();
+    const { height: SCREEN_HEIGHT } = useWindowDimensions();
     const insets = useSafeAreaInsets();
     const { language } = useLanguage();
     const scale = useAppStore(state => state.readerScale);
@@ -93,7 +73,8 @@ export function BriefReader({ brief }: { brief: BriefDetail }) {
         }];
     }
 
-    const dateInfo = formatBriefDate(brief.date, language);
+    const date = new Date(brief.date);
+    const dateLabel = Number.isFinite(date.getTime()) ? new Intl.DateTimeFormat(language === "ne" ? "ne-NP" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kathmandu" }).format(date) : "";
     
     // Add cover slide at index 0
     const slides = ["cover", ...stories];
@@ -101,21 +82,21 @@ export function BriefReader({ brief }: { brief: BriefDetail }) {
     const renderSlide = ({ item, index }: { item: string | Story, index: number }) => {
         if (item === "cover") {
             return (
-                <View style={{ height: SCREEN_HEIGHT, width: "100%", paddingHorizontal: 20, paddingVertical: 24, justifyContent: "center", backgroundColor: colors.background }}>
-                    <AppText variant="meta" style={{ color: colors.brandRed, letterSpacing: 2, marginBottom: spacing.xl }}>
+                <View style={{ height: SCREEN_HEIGHT, width: "100%", paddingHorizontal: spacing.gutter, paddingVertical: 24, justifyContent: "center", backgroundColor: colors.background }}>
+                    <AppText variant="overline" style={{ color: colors.brandRed, marginBottom: spacing.xl, textTransform: "uppercase" }}>
                         {language === "en" ? "THE DAILY BRIEF" : "दैनिक ब्रिफिङ"}
                     </AppText>
                     
-                    <AppText variant="body" style={{ color: colors.textPrimary, fontFamily: language === "ne" ? "Hind_600SemiBold" : "Manrope_600SemiBold", fontSize: 42, lineHeight: 48 }}>
-                        {dateInfo.dayName}
+                    <AppText variant="display" style={{ color: colors.textPrimary }}>
+                        {pick(brief.title, language)}
                     </AppText>
-                    <AppText variant="body" style={{ color: colors.textSecondary, fontFamily: language === "ne" ? "Hind_400Regular" : "Manrope_400Regular", fontSize: 32, lineHeight: 40, marginTop: spacing.xs }}>
-                        {`${dateInfo.dayNum} ${dateInfo.month}`}
+                    <AppText variant="heading1" style={{ color: colors.textSecondary, marginTop: spacing.xs }}>
+                        {dateLabel}
                     </AppText>
                     
                     <View style={{ marginTop: spacing["4xl"], paddingTop: spacing.xl, borderTopWidth: 2, borderTopColor: colors.border }}>
-                        <AppText variant="meta" style={{ color: colors.textPrimary, fontSize: 16 }}>
-                            {language === "en" ? `${stories.length} stories you should know today` : `आज थाहा पाउनुपर्ने ${stories.length} कुराहरू`}
+                        <AppText variant="bodySmall" weight="semibold" style={{ color: colors.textPrimary }}>
+                            {language === "en" ? `${stories.length} stories in this brief` : `यस ब्रिफिङमा ${stories.length} सामग्री`}
                         </AppText>
                     </View>
                     
@@ -130,17 +111,17 @@ export function BriefReader({ brief }: { brief: BriefDetail }) {
         
         const story = item as Story;
         return (
-            <View style={{ height: SCREEN_HEIGHT, width: "100%", paddingHorizontal: 20, paddingTop: insets.top + 32, paddingBottom: 24, backgroundColor: colors.background }}>
+            <View style={{ height: SCREEN_HEIGHT, width: "100%", paddingHorizontal: spacing.gutter, paddingTop: insets.top + 32, paddingBottom: spacing.xl, backgroundColor: colors.background }}>
                 <View style={{ flexDirection: "row", alignItems: "flex-start", marginBottom: spacing.xl }}>
-                    <AppText variant="body" style={{ color: colors.brandRed, fontFamily: "BebasNeue_400Regular", fontSize: 48, lineHeight: 48, marginRight: spacing.md, marginTop: -4 }}>
+                    <AppText variant="display" style={{ color: colors.brandRed, marginRight: spacing.md, marginTop: -4, fontVariant: ["tabular-nums"] }}>
                         {String(index).padStart(2, '0')}
                     </AppText>
-                    <AppText variant="body" style={{ flex: 1, color: colors.textPrimary, fontFamily: language === "ne" ? "Hind_600SemiBold" : "Manrope_600SemiBold", fontSize: 24, lineHeight: 32 }}>
+                    <AppText variant="heading1" style={{ flex: 1, color: colors.textPrimary }}>
                         {story.headline}
                     </AppText>
                 </View>
                 
-                <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: spacing.xl }}>
                     <MarkdownBody source={story.body} scale={scale} leading="loose" editorial />
                     
                     {story.link && (
@@ -158,15 +139,15 @@ export function BriefReader({ brief }: { brief: BriefDetail }) {
                                 paddingHorizontal: spacing.lg, 
                                 backgroundColor: colors.surfaceSecondary, 
                                 alignSelf: "flex-start", 
-                                borderRadius: 8 
+                                borderRadius: radius.md
                             }}
                         >
-                            <AppText variant="meta" style={{ color: colors.textPrimary, fontFamily: language === "ne" ? "Hind_600SemiBold" : "Manrope_600SemiBold" }}>
+                            <AppText variant="label" style={{ color: colors.textPrimary }}>
                                 {language === "en" ? "Read full story →" : "पूरा खबर पढ्नुहोस् →"}
                             </AppText>
                         </Pressable>
                     )}
-                </View>
+                </ScrollView>
             </View>
         );
     };
@@ -174,11 +155,13 @@ export function BriefReader({ brief }: { brief: BriefDetail }) {
     return (
         <View style={{ flex: 1, backgroundColor: colors.background }}>
             <Pressable 
+                accessibilityRole="button"
+                accessibilityLabel={language === "ne" ? "ब्रिफिङ बन्द गर्नुहोस्" : "Close brief"}
                 onPress={() => router.canGoBack() ? router.back() : router.replace("/(tabs)")} 
-                style={{ position: "absolute", top: insets.top + 10, left: 20, zIndex: 10, width: 40, height: 40, justifyContent: "center", alignItems: "center", backgroundColor: colors.surfaceSecondary, borderRadius: 20 }}
+                style={{ position: "absolute", top: insets.top + 10, left: 20, zIndex: 10, width: layout.touchTarget, height: layout.touchTarget, justifyContent: "center", alignItems: "center", backgroundColor: colors.surfaceSecondary, borderRadius: 20 }}
 
             >
-                <AppText variant="meta" style={{ color: colors.textPrimary, fontSize: 18 }}>✕</AppText>
+                <AppText variant="uiTitle" style={{ color: colors.textPrimary }}>✕</AppText>
             </Pressable>
             
             <FlatList

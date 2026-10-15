@@ -1,7 +1,7 @@
 import { Pressable, type PressableProps, View } from "react-native";
 import { AppText } from "./AppText";
 import { useColors } from "@/theme/Theme";
-import { spacing, radius } from "@/theme/tokens";
+import { spacing, radius, layout } from "@/theme/tokens";
 
 export type AppButtonProps = PressableProps & {
     label: string;
@@ -20,11 +20,12 @@ export function AppButton({
     const colorToken = variant === "secondary" ? "textPrimary" : "textInverse";
 
     return (
-        <View style={{ borderRadius: radius.full, overflow: "hidden" }}>
+        <View style={{ borderRadius: radius.md, overflow: "hidden" }}>
             <Pressable
                 android_ripple={{ color: colors.pressedOverlay, borderless: false }} // Classic Android ripple
                 style={[
                     {
+                        minHeight: layout.controlHeight,
                         backgroundColor: colors[bgToken],
                         paddingVertical: spacing.md,
                         paddingHorizontal: spacing.lg,

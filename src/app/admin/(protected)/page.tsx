@@ -8,17 +8,16 @@ import { useAuth } from "@/components/admin/AuthProvider";
 import StatsCard from "@/components/admin/StatsCard";
 
 export default function AdminDashboard() {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [stats, setStats] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
-            if (!token) return;
+            if (!isAuthenticated) return;
             try {
                 const res = await fetch("/api/admin/stats", {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
+                    headers: {  } });
                 if (res.ok) {
                     const data = await res.json();
                     setStats(data.data);
@@ -31,7 +30,7 @@ export default function AdminDashboard() {
         };
 
         fetchStats();
-    }, [token]);
+    }, [isAuthenticated]);
 
     if (loading) {
         return <div className="p-8 font-mono text-xs uppercase animate-pulse">Loading dashboard...</div>;
@@ -60,7 +59,6 @@ export default function AdminDashboard() {
                 <StatsCard title="Total Articles" value={stats?.counts?.articles || 0} icon={<FileText className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newArticlesIn30Days ? `+${stats.growth.newArticlesIn30Days}` : undefined} />
                 <StatsCard title="Published Articles" value={stats?.counts?.articlesPublished || 0} icon={<CheckCircle2 className="h-6 w-6" />} />
                 <StatsCard title="Leaders Profiles" value={stats?.counts?.leaders || 0} icon={<Users className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newLeadersIn30Days ? `+${stats.growth.newLeadersIn30Days}` : undefined} />
-                <StatsCard title="History Events" value={stats?.counts?.history || 0} icon={<History className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newHistoryIn30Days ? `+${stats.growth.newHistoryIn30Days}` : undefined} />
                 <StatsCard title="Media Assets" value={stats?.counts?.media || 0} icon={<ImageIcon className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newMediaIn30Days ? `+${stats.growth.newMediaIn30Days}` : undefined} />
                 <StatsCard title="Recent Activity" value={activityCount} icon={<Activity className="h-6 w-6" />} />
             </div>
@@ -82,8 +80,6 @@ export default function AdminDashboard() {
                         {[
                             { label: "Articles", data: stats?.pipeline?.articles },
                             { label: "Daily Briefs", data: stats?.pipeline?.dailyBriefs },
-                            { label: "Fact Checks", data: stats?.pipeline?.factChecks },
-                            { label: "Election Articles", data: stats?.pipeline?.electionArticles },
                         ].map((row) => (
                             <div key={row.label} className="border border-border p-3">
                                 <p className="text-foreground mb-2">{row.label}</p>

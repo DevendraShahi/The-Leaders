@@ -19,6 +19,8 @@ export const articleCardSchema = z.object({
     source: z.enum(["article", "column", "analysis"]),
     title: bilingualSchema,
     excerpt: bilingualSchema,
+    availableLanguages: z.array(z.enum(["en", "ne"])).optional(),
+    readingMinutes: z.object({ en: z.number().int().nonnegative(), ne: z.number().int().nonnegative() }).optional(),
     author: bilingualSchema,
     category: bilingualSchema,
     image: z.string(),

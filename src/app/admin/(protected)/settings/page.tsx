@@ -9,7 +9,7 @@ import { Save, Loader2, Globe, Mail, Facebook, Twitter, Instagram, Linkedin, Mes
 import Link from 'next/link';
 
 export default function SettingsPage() {
-    const { token, user } = useAuth();
+    const { isAuthenticated, user } = useAuth();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
 
@@ -33,10 +33,10 @@ export default function SettingsPage() {
 
     useEffect(() => {
         const fetchSettings = async () => {
-            if (!token) return;
+            if (!isAuthenticated) return;
             try {
                 const res = await fetch('/api/admin/settings', {
-                    headers: { 'Authorization': `Bearer ${token}` },
+                    headers: {  },
                     cache: 'no-store'
                 });
                 const data = await res.json();
@@ -81,7 +81,7 @@ export default function SettingsPage() {
         };
 
         fetchSettings();
-    }, [token]);
+    }, [isAuthenticated]);
 
     const handleChange = (field: string, value: any, lang?: 'en' | 'ne') => {
         setFormData(prev => {
@@ -114,7 +114,7 @@ export default function SettingsPage() {
         try {
             // First fetch current settings to preserve maintenance config which is not in this form
             const currentRes = await fetch('/api/admin/settings', {
-                headers: { 'Authorization': `Bearer ${token}` },
+                headers: {  },
                 cache: 'no-store'
             });
             const currentData = await currentRes.json();
@@ -145,9 +145,7 @@ export default function SettingsPage() {
             const res = await fetch('/api/admin/settings', {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                    'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 

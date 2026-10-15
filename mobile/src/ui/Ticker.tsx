@@ -1,6 +1,6 @@
+import { spacing } from "@/theme/tokens";
 import { useEffect, useState } from "react";
-import { View } from "react-native";
-import { AccessibilityInfo } from "react-native";
+import { AccessibilityInfo, View } from "react-native";
 import { AppText } from "@/ui/AppText";
 import { useColors } from "@/theme/Theme";
 
@@ -24,7 +24,7 @@ export function Ticker({ lines }: { lines: string[] }) {
     if (!lines.length) return null;
 
     return (
-        <View style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, paddingVertical: 12, paddingHorizontal: 20, marginBottom: 8 }}>
+        <View style={{ borderTopWidth: 1, borderBottomWidth: 1, borderColor: colors.border, paddingVertical: spacing.md, paddingHorizontal: spacing.gutter, marginBottom: 8 }}>
             <AppText variant="meta" style={{ color: colors.foreground }} numberOfLines={2}>
                 {lines[index] || lines[0]}
             </AppText>

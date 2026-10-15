@@ -2,11 +2,8 @@ import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
 import { HeroMarquee } from "@/components/home/hero-marquee";
 import { LeadersGrid } from "@/components/home/LeadersGrid";
-import { Timeline } from "@/components/home/timeline";
-import { Manifesto } from "@/components/home/manifesto";
 import { NewsSection } from "@/components/home/news-section";
 import { HomeTasks } from "@/components/home/HomeTasks";
-import { HomeScrollEffects } from "@/components/home/HomeScrollEffects";
 import { getArticles } from "@/lib/data";
 
 import { constructMetadata } from "@/lib/metadata";
@@ -97,14 +94,10 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageJsonLd) }}
       />
       <HeroMarquee />
-      <HomeScrollEffects>
         <Hero />
         <HomeTasks />
         <LeadersGrid />
         <NewsSection articles={articles} />
-        <Manifesto />
-        <Timeline limit={2} showViewAll={true} />
-      </HomeScrollEffects>
     </>
   );
 }

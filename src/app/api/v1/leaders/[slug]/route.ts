@@ -2,7 +2,8 @@ import { apiFail, apiOk } from "@/app/api/v1/http";
 import { getPublicLeader } from "@/lib/public-read/loaders";
 import { leaderDetailSchema } from "@/lib/public-read/schemas";
 
-export const revalidate = 300;
+export const revalidate = 3600;
+export async function generateStaticParams() { return []; }
 
 export async function GET(
     _request: Request,

@@ -8,7 +8,7 @@ import {
 } from "@/lib/public-read/schemas";
 import { z } from "zod";
 
-export const revalidate = 300;
+export const revalidate = 3600;
 
 const homeSchema = z.object({
     countdown: z.object({

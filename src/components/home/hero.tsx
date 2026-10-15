@@ -54,7 +54,7 @@ export function Hero() {
                         className="w-full sm:w-auto font-semibold tracking-widest uppercase shadow-md"
                         asChild
                     >
-                        <Link href="/leaders">
+                        <Link prefetch={false} href="/leaders">
                             {isNepali ? "जीवन यात्रा पढ्नुहोस्" : "EXPLORE BIOGRAPHIES"}
                         </Link>
                     </Button>
@@ -64,7 +64,7 @@ export function Hero() {
                         className="group w-full sm:w-auto font-semibold tracking-widest uppercase shadow-sm"
                         asChild
                     >
-                        <Link href="/history">
+                        <Link prefetch={false} href="/coverage/daily-brief">
                             <span className="flex items-center">
                                 {isNepali ? "समयरेखा हेर्नुहोस्" : "VIEW TIMELINE"}
                                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />

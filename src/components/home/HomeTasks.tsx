@@ -5,9 +5,8 @@ import { useLanguage } from "@/components/providers/language-provider";
 
 const tasks = [
     { href: "/leaders", en: "Leaders", ne: "नेताहरू" },
-    { href: "/history", en: "History", ne: "इतिहास" },
     { href: "/articles", en: "Articles", ne: "लेखहरू" },
-    { href: "/coverage", en: "Coverage", ne: "कभरेज" },
+    { href: "/coverage/daily-brief", en: "Daily", ne: "दैनिक" },
 ];
 
 export function HomeTasks() {
@@ -27,7 +26,7 @@ export function HomeTasks() {
                     aria-label={isNepali ? "यहाँबाट सुरु गर्नुहोस्" : "Start here"}
                 >
                     {tasks.map((task) => (
-                        <Link
+                        <Link prefetch={false}
                             key={task.href}
                             href={task.href}
                             className="inline-flex h-10 items-center rounded-md border border-border px-4 text-sm font-medium text-foreground transition-colors hover:bg-accent"

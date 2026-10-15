@@ -19,6 +19,17 @@
     "production": {
       "autoIncrement": true,
       "environment": "production"
+    },
+    "apk": {
+      "extends": "production",
+      "distribution": "internal",
+      "developmentClient": false,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://the-leadersnp.com"
+      },
+      "android": {
+        "buildType": "apk"
+      }
     }
   },
   "submit": {

@@ -1,5 +1,5 @@
-import NewsPostDesigner from "@/components/admin/NewsPostDesigner";
+import { redirect } from "next/navigation";
 
 export default function DesignerPage() {
-  return <NewsPostDesigner />;
+  redirect("/admin/social");
 }

@@ -3,12 +3,11 @@ import { unstable_cache } from "next/cache";
 import dbConnect from "@/lib/db";
 import Article from "@/models/Article";
 import Leader from "@/models/Leader";
-import History from "@/models/History";
 import Media from "@/models/Media";
 import ActivityLog from "@/models/ActivityLog";
 import Subscriber from "@/models/Subscriber";
 import Contact from "@/models/Contact";
-import { DailyBrief, ElectionArticle, FactCheck } from "@/models/ElectionContent";
+import { DailyBrief } from "@/models/ElectionContent";
 import Admin from "@/models/Admin";
 import { withAuth, apiResponse, apiError } from "@/lib/middleware";
 
@@ -50,14 +49,14 @@ async function buildDashboardStats() {
         Article.countDocuments(),
         Article.countDocuments({ status: "published" }),
         Leader.countDocuments(),
-        History.countDocuments(),
+        Promise.resolve(0),
         Media.countDocuments(),
         DailyBrief.countDocuments(),
-        FactCheck.countDocuments(),
-        ElectionArticle.countDocuments(),
+        Promise.resolve(0),
+        Promise.resolve(0),
         Article.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
         Leader.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
-        History.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
+        Promise.resolve(0),
         Media.countDocuments({ createdAt: { $gte: thirtyDaysAgo } }),
         Subscriber.countDocuments({ $or: [{ isVerified: true }, { isVerified: { $exists: false } }] }),
         Subscriber.countDocuments({ isActive: true, $or: [{ isVerified: true }, { isVerified: { $exists: false } }] }),
@@ -69,10 +68,10 @@ async function buildDashboardStats() {
         Article.countDocuments({ status: "archived" }),
         DailyBrief.countDocuments({ status: "published" }),
         DailyBrief.countDocuments({ status: "draft" }),
-        FactCheck.countDocuments({ status: "published" }),
-        FactCheck.countDocuments({ status: "draft" }),
-        ElectionArticle.countDocuments({ status: "published" }),
-        ElectionArticle.countDocuments({ status: "draft" }),
+        Promise.resolve(0),
+        Promise.resolve(0),
+        Promise.resolve(0),
+        Promise.resolve(0),
         ActivityLog.find().sort({ createdAt: -1 }).limit(10).populate("adminId", "name username email").lean(),
     ]);
 

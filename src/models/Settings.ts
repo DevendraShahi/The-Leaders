@@ -25,6 +25,12 @@ export interface ISettings {
     }[];
     metaKeywords?: string[];
     tickerHeadlines?: string[];
+    trustedSources?: {
+        name: string;
+        feedUrl: string;
+        websiteUrl?: string;
+        enabled: boolean;
+    }[];
 
     // Maintenance
     maintenance: {
@@ -98,6 +104,13 @@ const SettingsSchema = new Schema<ISettings>(
 
         // Dynamic Content
         tickerHeadlines: [{ type: String }],
+        trustedSources: [{
+            name: { type: String, trim: true, maxlength: 120 },
+            feedUrl: { type: String, trim: true, maxlength: 500 },
+            websiteUrl: { type: String, trim: true, maxlength: 500 },
+            enabled: { type: Boolean, default: true },
+            _id: false,
+        }],
 
 
         // Advanced Maintenance System

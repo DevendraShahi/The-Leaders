@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
-import type { DailyBriefDTO, LocalizedValue } from "@/lib/election-data";
+import type { DailyBriefDTO, LocalizedValue } from "@/lib/daily-data";
 
 function resolveText(value: LocalizedValue, language: "en" | "ne"): string {
     if (typeof value === "string") return value;
@@ -116,7 +116,7 @@ export function DailyBriefDetailClient({ brief }: DailyBriefDetailClientProps) {
         <div className="election-typography min-h-screen bg-background">
             <div className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur-sm">
                 <div className="container mx-auto max-w-4xl px-4 py-3 sm:px-6 sm:py-4">
-                    <Link
+                    <Link prefetch={false}
                         href="/coverage/daily-brief"
                         className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors"
                     >
@@ -299,7 +299,7 @@ export function DailyBriefDetailClient({ brief }: DailyBriefDetailClientProps) {
                 </div>
 
                 <div className="mt-12 border-t border-border pt-8 sm:mt-16">
-                    <Link
+                    <Link prefetch={false}
                         href="/coverage/daily-brief"
                         className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-primary hover:underline"
                     >

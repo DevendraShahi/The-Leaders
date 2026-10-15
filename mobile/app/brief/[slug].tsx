@@ -1,3 +1,4 @@
+import { spacing } from "@/theme/tokens";
 import { View } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +20,7 @@ export default function BriefScreen() {
 
     if (query.isLoading) return <View style={{ flex: 1, backgroundColor: colors.background }}><StateView loading /></View>;
     if (query.error || !query.data) {
-        return <View style={{ flex: 1, backgroundColor: colors.background, paddingHorizontal: 20 }}><StateView error={query.error || new Error("Missing")} onRetry={() => query.refetch()} /></View>;
+        return <View style={{ flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.gutter }}><StateView error={query.error || new Error("Missing")} onRetry={() => query.refetch()} /></View>;
     }
 
     return (

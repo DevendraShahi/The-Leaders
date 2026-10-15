@@ -961,7 +961,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                     >
                         <header className="np-utility border-b border-[var(--np-rule)] px-4 py-3 sm:px-6">
                             <div className="grid gap-2 md:grid-cols-[1fr_auto_1fr] md:items-center">
-                                <Link
+                                <Link prefetch={false}
                                     href="/articles"
                                     className={cn(buttonVariants({ variant: "outline", size: "sm" }), "justify-self-start gap-2 font-mono text-[10px] uppercase tracking-[0.12em]")}
                                 >
@@ -1143,7 +1143,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                                 });
 
                                                 return (
-                                                    <Link
+                                                    <Link prefetch={false}
                                                         key={item._id as string}
                                                         href={`/articles/${item.slug}`}
                                                         className="group block border border-[var(--np-rule)] bg-[var(--np-paper)] p-3 transition-colors hover:border-[var(--np-accent)]"
@@ -1156,7 +1156,7 @@ export function ArticleDetail({ article, relatedArticles = [] }: ArticleDetailPr
                                                 );
                                             })}
                                         </div>
-                                        <Link
+                                        <Link prefetch={false}
                                             href="/articles"
                                             className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mt-4 w-full gap-2 font-mono text-[10px] uppercase tracking-[0.14em]")}
                                         >

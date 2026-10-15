@@ -1,16 +1,10 @@
-import { Text, View, Pressable, type TextStyle } from "react-native";
+import { Text, View, type TextStyle } from "react-native";
 import { Image } from "expo-image";
 import { AppText } from "@/ui/AppText";
+import { readerTypography, fontFor, spacing, radius, layout } from "@/theme/tokens";
 import { useColors } from "@/theme/Theme";
 import { useLanguage } from "@/i18n/language";
 import type { ReaderLeading, ReaderScale } from "@/storage/prefs";
-
-const BODY_SIZE: Record<ReaderScale, number> = {
-    sm: 16,
-    md: 18,
-    lg: 20,
-    xl: 22,
-};
 
 function htmlToMarkdown(html: string) {
     let md = html;
@@ -128,18 +122,15 @@ export function MarkdownBody({
 }) {
     const colors = useColors();
     const { language } = useLanguage();
-    const size = BODY_SIZE[scale];
+    const size = readerTypography[scale].size;
     const multiplier = editorial
         ? language === "ne" ? 1.68 : 1.62
         : leading === "compact" ? 1.5 : leading === "loose" ? 1.75 : language === "ne" ? 1.65 : 1.55;
     const lineHeight = Math.round(size * multiplier);
     
-    // Check if the user is using the app's serif setting
-    const useSerif = true; // In the future, we can plug `bodyTypeface` here if passed as a prop
-    
-    const fontFamily = language === "ne" ? "Hind_400Regular" : "Merriweather_400Regular";
-    const strongFamily = language === "ne" ? "Hind_600SemiBold" : "Merriweather_700Bold";
-    const headingFamily = editorial ? strongFamily : language === "ne" ? "Hind_600SemiBold" : "BebasNeue_400Regular";
+    const fontFamily = fontFor(language, "editorial", "regular");
+    const strongFamily = fontFor(language, "editorial", "bold");
+    const headingFamily = strongFamily;
     
     // Process HTML to Markdown
     const markdownSource = htmlToMarkdown(source);
@@ -147,7 +138,7 @@ export function MarkdownBody({
     const bodyStyle: TextStyle = { color: colors.textPrimary, fontFamily, fontSize: size, lineHeight };
 
     return (
-        <View style={{ gap: editorial ? 20 : 14 }}>
+        <View style={{ gap: editorial ? spacing.xl : spacing.lg }}>
             {blocks.map((block, index) => {
                 // Check for Image
                 const imageMatch = /^!\[([^\]]*)\]\(([^)]+)\)$/.exec(block);
@@ -157,11 +148,11 @@ export function MarkdownBody({
                         <View key={`${index}-img`} style={{ marginVertical: 10 }}>
                             <Image
                                 source={{ uri: url }}
-                                style={{ width: "100%", aspectRatio: 16 / 9, borderRadius: 8, backgroundColor: colors.border }}
+                                style={{ width: "100%", aspectRatio: layout.leadImageRatio, borderRadius: radius.md, backgroundColor: colors.border }}
                                 contentFit="cover"
                             />
                             {alt && alt !== "image" ? (
-                                <AppText variant="meta" style={{ color: colors.textSecondary, fontSize: 12, marginTop: 8, fontStyle: "italic", textAlign: "center" }}>
+                                <AppText variant="meta" style={{ color: colors.textSecondary, marginTop: 8, textAlign: "center" }}>
                                     {alt}
                                 </AppText>
                             ) : null}

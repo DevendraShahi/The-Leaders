@@ -15,7 +15,7 @@ export default function ProtectedLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { isLoading, isAuthenticated, user } = useAuth();
+    const { isLoading, isAuthenticated, user, authorizationError } = useAuth();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const pathname = usePathname();
@@ -28,7 +28,12 @@ export default function ProtectedLayout({
     }, [requiredPage, user]);
 
     useEffect(() => {
-        if (isLoading || !isAuthenticated || !user) return;
+        if (authorizationError) {
+            router.replace('/admin/unauthorized');
+            return;
+        }
+        if (isLoading) return;
+        if (!isAuthenticated || !user) { router.replace('/admin/login'); return; }
         if (hasAccess) return;
         const fallback = firstAllowedAdminPage(user.permissions as any);
         if (fallback) {
@@ -36,7 +41,7 @@ export default function ProtectedLayout({
         } else {
             router.replace('/admin/login');
         }
-    }, [hasAccess, isAuthenticated, isLoading, router, user]);
+    }, [authorizationError, hasAccess, isAuthenticated, isLoading, router, user]);
 
     if (isLoading) {
         return (
@@ -46,7 +51,7 @@ export default function ProtectedLayout({
         );
     }
 
-    if (!isAuthenticated) {
+    if (!isAuthenticated || authorizationError) {
         return null; // AuthProvider will redirect
     }
     if (!hasAccess) {
@@ -55,6 +60,12 @@ export default function ProtectedLayout({
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
         );
+    }
+
+    // The studio owns its viewport; retain the same authentication/access guards
+    // without nesting an application workspace inside the Admin page chrome.
+    if (pathname === '/admin/social' || pathname?.startsWith('/admin/social/')) {
+        return <>{children}</>;
     }
 
     return (

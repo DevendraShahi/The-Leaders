@@ -10,7 +10,8 @@ export const getArticles = unstable_cache(
             await dbConnect();
             const articles = await Article.find({ status: "published" })
                 .sort({ publishedDate: -1 })
-                .limit(limit)
+                .limit(Math.min(50, Math.max(1, limit)))
+                .select("slug title excerpt author category image tags publishedDate createdAt")
                 .lean();
 
             return JSON.parse(JSON.stringify(articles)) as IArticle[];

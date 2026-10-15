@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Article from '@/models/Article';
 import ActivityLog from '@/models/ActivityLog';
-import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { withPageAccess, withPermission, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 import { invalidatePublicContent } from '@/lib/cache-invalidation';
+import { canCreateArticle, isArticleStatus } from '@/lib/article-permissions';
 
 function parseDateRange(searchParams: URLSearchParams) {
     const from = searchParams.get('from');
@@ -102,6 +103,15 @@ async function createArticle(request: NextRequest, { user }: { user: any }) {
         }
 
         const data = bodyParse.data as any;
+        const requestedStatus = data.status || 'draft';
+
+        if (!isArticleStatus(requestedStatus)) {
+            return apiError('Invalid article status', 400);
+        }
+
+        if (!canCreateArticle(user, requestedStatus)) {
+            return apiError('Insufficient permissions to publish articles', 403);
+        }
 
         // Basic validation - at least one title and one author
         if ((!data.title?.en && !data.title?.ne) || !data.slug) {
@@ -118,12 +128,14 @@ async function createArticle(request: NextRequest, { user }: { user: any }) {
             return apiError('Slug already exists', 409);
         }
 
-        if (!data.status) {
-            data.status = 'draft';
-        }
+        data.status = requestedStatus;
 
         // Add metadata
         data.lastModifiedBy = user.userId;
+        if (data.editorialWorkflow) {
+            data.editorialWorkflow.updatedBy = user.userId;
+            data.editorialWorkflow.updatedAt = new Date();
+        }
 
         if (data.eventDate) {
             // Check if today matches event date (Day/Month match)
@@ -157,5 +169,5 @@ async function createArticle(request: NextRequest, { user }: { user: any }) {
     }
 }
 
-export const GET = withAuth(getArticles);
-export const POST = withAuth(createArticle);
+export const GET = withPageAccess('content', getArticles);
+export const POST = withPermission('articles', 'create', createArticle);

@@ -1,9 +1,13 @@
 {
   "expo": {
     "name": "The Leaders",
+    "description": "Independent, bilingual journalism and civic context from Nepal.",
     "slug": "the-leaders",
+    "githubUrl": "https://github.com/DevendraShahi/The-Leaders",
     "scheme": "theleaders",
     "version": "1.0.0",
+    "primaryColor": "#B71C1C",
+    "backgroundColor": "#F8F6F1",
     "orientation": "portrait",
     "icon": "./assets/logo-Rbg.png",
     "userInterfaceStyle": "automatic",
@@ -41,7 +45,15 @@
       "expo-router",
       "expo-font",
       "expo-sqlite",
-      "expo-audio",
+      [
+        "expo-audio",
+        {
+          "microphonePermission": false,
+          "recordAudioAndroid": false,
+          "enableBackgroundPlayback": true,
+          "enableBackgroundRecording": false
+        }
+      ],
       "expo-sharing",
       [
         "expo-image-picker",
@@ -50,7 +62,8 @@
           "cameraPermission": "Allow The Leaders to use the camera so you can create news posts.",
           "microphonePermission": false
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": false

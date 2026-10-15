@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, extractTokenFromHeader, JWTPayload } from './auth';
-import dbConnect from './db';
-import Admin, { type IPermissions } from '@/models/Admin';
-import { ensurePermissionShape } from './rbac';
+import { type JWTPayload } from './auth';
+import { type IPermissions } from '@/models/Admin';
+import { getWebsiteAdmin } from '@/lib/website-auth';
 
 export interface AuthenticatedRequest extends NextRequest {
     user?: JWTPayload;
@@ -16,44 +15,18 @@ export async function authenticateRequest(request: NextRequest): Promise<{
     authenticated: boolean;
     user?: JWTPayload;
     error?: string;
+    status?: 401 | 403 | 503;
 }> {
-    const authHeader = request.headers.get('Authorization');
-    const token = extractTokenFromHeader(authHeader) || request.cookies.get('auth-token')?.value || null;
-
-    if (!token) {
-        return {
-            authenticated: false,
-            error: 'No authentication token provided',
-        };
-    }
-
-    const tokenUser = verifyToken(token);
-
-    if (!tokenUser) {
-        return {
-            authenticated: false,
-            error: 'Invalid or expired token',
-        };
-    }
-
     try {
-        await dbConnect();
-        const admin = await Admin.findById(tokenUser.userId).lean();
-
-        if (!admin || !admin.isActive) {
-            return {
-                authenticated: false,
-                error: 'Admin account not found or inactive',
-            };
-        }
-
+        const admin = await getWebsiteAdmin(request);
+        if (!admin) return { authenticated: false, error: 'Sign in is required', status: 401 };
         return {
             authenticated: true,
             user: {
                 userId: String(admin._id),
                 email: admin.email,
                 role: admin.role,
-                permissions: ensurePermissionShape(admin.role, admin.permissions),
+                permissions: admin.permissions,
             },
         };
     } catch (error) {
@@ -61,6 +34,7 @@ export async function authenticateRequest(request: NextRequest): Promise<{
         return {
             authenticated: false,
             error: 'Authentication service unavailable',
+            status: 503,
         };
     }
 }
@@ -72,7 +46,8 @@ export async function authenticateRequest(request: NextRequest): Promise<{
 export function withAuth(
     handler: (request: NextRequest, context: { user: JWTPayload; params: any }) => Promise<NextResponse>
 ) {
-    return async (request: NextRequest, { params }: { params?: any } = {}) => {
+    return async (request: NextRequest, context: any = {}) => {
+        const { params } = context;
         const resolvedParams = params && typeof params?.then === 'function'
             ? await params
             : params;
@@ -81,7 +56,7 @@ export function withAuth(
         if (!authResult.authenticated || !authResult.user) {
             return NextResponse.json(
                 { error: authResult.error || 'Unauthorized' },
-                { status: 401 }
+                { status: authResult.status || 401 }
             );
         }
 

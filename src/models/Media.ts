@@ -9,12 +9,14 @@ export interface IMedia {
     size: number;
     width: number;
     height: number;
-    category: 'article' | 'leader' | 'history' | 'general';
+    category: 'article' | 'leader' | 'history' | 'social' | 'general';
     tags: string[];
     altText?: {
         en: string;
         ne: string;
     };
+    credit?: string;
+    rightsStatus?: 'licensed' | 'owned' | 'public_domain' | 'permission_granted' | 'unknown';
     uploadedBy?: mongoose.Types.ObjectId;
 }
 
@@ -29,7 +31,7 @@ const MediaSchema = new Schema<IMedia>(
         height: { type: Number, required: true },
         category: {
             type: String,
-            enum: ['article', 'leader', 'history', 'general'],
+            enum: ['article', 'leader', 'history', 'social', 'general'],
             default: 'general',
             required: true
         },
@@ -38,6 +40,8 @@ const MediaSchema = new Schema<IMedia>(
             en: { type: String },
             ne: { type: String },
         },
+        credit: { type: String, trim: true, maxlength: 200, default: '' },
+        rightsStatus: { type: String, enum: ['licensed', 'owned', 'public_domain', 'permission_granted', 'unknown'], default: 'unknown' },
         uploadedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
     },
     { timestamps: true }

@@ -1,3 +1,4 @@
+import { layout, spacing } from "@/theme/tokens";
 import { useEffect, useState, type ReactNode } from "react";
 import { AppState, Pressable, ScrollView, View } from "react-native";
 import { useAudioPlayer } from "expo-audio";
@@ -73,9 +74,9 @@ export function DocumentScreen({
     }, [player]);
 
     const choose = (active: boolean) => ({
-        minHeight: 48,
+        minHeight: layout.controlHeight,
         justifyContent: "center" as const,
-        paddingHorizontal: 12,
+        paddingHorizontal: spacing.md,
         borderWidth: 1,
         borderColor: active ? colors.primary : colors.border,
         backgroundColor: active ? colors.primary : "transparent",
@@ -155,7 +156,7 @@ export function DocumentScreen({
                 </View>
             ) : null}
             <View style={{ flexDirection: "row", borderTopWidth: 1, borderColor: colors.border }}>
-                <Pressable onPress={() => setControlsOpen((open) => !open)} style={{ flex: 1, minHeight: 48, alignItems: "center", justifyContent: "center" }}>
+                <Pressable onPress={() => setControlsOpen((open) => !open)} style={{ flex: 1, minHeight: layout.controlHeight, alignItems: "center", justifyContent: "center" }}>
                     <AppText variant="meta" style={{ color: colors.foreground }}>{pick(ui.type, language)}</AppText>
                 </Pressable>
                 <Pressable
@@ -173,7 +174,7 @@ export function DocumentScreen({
                             onStopped: () => setSpeaking(false),
                         });
                     }}
-                    style={{ flex: 1, minHeight: 48, alignItems: "center", justifyContent: "center" }}
+                    style={{ flex: 1, minHeight: layout.controlHeight, alignItems: "center", justifyContent: "center" }}
                 >
                     <AppText variant="meta" style={{ color: colors.primary }}>
                         {pick(speaking ? ui.stop : ui.listen, language)}

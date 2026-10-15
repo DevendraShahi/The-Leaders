@@ -2734,3 +2734,24 @@ body.lang-ne .font-editorial {
   font-family: var(--font-hind), sans-serif;
   line-height: 1.6;
 }
+/* Social Studio is a focused editing surface rather than a dashboard card stack. */
+.social-studio .bg-\[\#efebe3\],
+.social-studio .bg-\[\#faf8f3\],
+.social-studio .bg-white,
+.social-studio .bg-white\/70,
+.social-studio .bg-white\/60 {
+  background-color: #171717 !important;
+}
+
+.social-studio .border-black\/15,
+.social-studio .border-black\/10,
+.social-studio .border-black\/20 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.social-studio .text-black\/45,
+.social-studio .text-black\/50,
+.social-studio .text-black\/55,
+.social-studio .text-black\/60 {
+  color: #a1a1aa !important;
+}

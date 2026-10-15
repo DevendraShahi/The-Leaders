@@ -1,7 +1,7 @@
 import { TouchableOpacity, type TouchableOpacityProps } from "react-native";
 import { AppText } from "./AppText";
 import { useColors } from "@/theme/Theme";
-import { spacing, radius } from "@/theme/tokens";
+import { spacing, radius, layout } from "@/theme/tokens";
 
 export type AppButtonProps = TouchableOpacityProps & {
     label: string;
@@ -24,6 +24,7 @@ export function AppButton({
             activeOpacity={0.7} // Classic iOS active state
             style={[
                 {
+                    minHeight: layout.controlHeight,
                     backgroundColor: colors[bgToken],
                     paddingVertical: spacing.md,
                     paddingHorizontal: spacing.lg,

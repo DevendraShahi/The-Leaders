@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Admin, { IAdmin } from '@/models/Admin';
 import { getDefaultPermissions, ensurePermissionShape } from '@/lib/rbac';
-import { hashPassword } from '@/lib/auth';
 
 /**
  * GET /api/admin/users/[id]
@@ -48,7 +47,7 @@ export const PUT = requireRole(['superadmin'])(async (request, { admin, params }
     try {
         const { id } = params;
         const body = await request.json();
-        const { role, permissions, isActive, name, password } = body;
+        const { role, permissions, isActive, name } = body;
 
         await dbConnect();
 
@@ -93,10 +92,6 @@ export const PUT = requireRole(['superadmin'])(async (request, { admin, params }
 
         if (name) {
             targetAdmin.name = name;
-        }
-
-        if (password) {
-            targetAdmin.passwordHash = await hashPassword(password);
         }
 
         await targetAdmin.save();

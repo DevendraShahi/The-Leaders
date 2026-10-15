@@ -1,7 +1,7 @@
 // Quick SuperAdmin Fix
 const mongoose = require('mongoose');
 
-const MONGODB_URI = 'mongodb+srv://theleadersnp_db_user:lWIpICbd6UnsrN4R@the-leadersnp.4ou8zem.mongodb.net/?appName=The-LeadersNP';
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const AdminSchema = new mongoose.Schema({
     username: String,

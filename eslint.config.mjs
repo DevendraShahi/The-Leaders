@@ -15,6 +15,11 @@ const eslintConfig = defineConfig([
     // Project-specific ignores:
     "scripts/**",
     "mobile/**",
+    // One-off maintenance scripts are not production source and include
+    // legacy CommonJS/database access patterns.
+    "generate_history_md.js",
+    "test-api.js",
+    "test_script.js",
   ]),
   {
     rules: {

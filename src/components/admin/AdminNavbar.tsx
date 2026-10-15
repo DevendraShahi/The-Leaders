@@ -92,6 +92,7 @@ export default function AdminNavbar({ onMobileMenuClick }: AdminNavbarProps) {
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+
                 </div>
 
                 <div className="hidden sm:flex items-center gap-4">
@@ -135,6 +136,7 @@ export default function AdminNavbar({ onMobileMenuClick }: AdminNavbarProps) {
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
+
                 </div>
             </div>
         </header>

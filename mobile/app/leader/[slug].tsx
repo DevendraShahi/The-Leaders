@@ -1,3 +1,4 @@
+import { spacing } from "@/theme/tokens";
 import { View } from "react-native";
 import { Image } from "expo-image";
 import { useLocalSearchParams } from "expo-router";
@@ -21,7 +22,7 @@ export default function LeaderScreen() {
 
     if (query.isLoading) return <View style={{ flex: 1, backgroundColor: colors.background }}><StateView loading /></View>;
     if (query.error || !query.data) {
-        return <View style={{ flex: 1, backgroundColor: colors.background, paddingHorizontal: 20 }}><StateView error={query.error || new Error("Missing")} onRetry={() => query.refetch()} /></View>;
+        return <View style={{ flex: 1, backgroundColor: colors.background, paddingHorizontal: spacing.gutter }}><StateView error={query.error || new Error("Missing")} onRetry={() => query.refetch()} /></View>;
     }
 
     const leader = query.data;

@@ -1,5 +1,13 @@
 import mongoose, { Schema, Model, models } from "mongoose";
 
+export interface IEditorialWorkflow {
+    projectName: string;
+    handoffNotes: string;
+    source: 'news-post-designer';
+    updatedAt: Date;
+    updatedBy?: mongoose.Types.ObjectId;
+}
+
 export interface IArticle {
     _id?: string;
     title: {
@@ -47,7 +55,22 @@ export interface IArticle {
     // Fact Checking & Provenance
     isFactCheck?: boolean;
     provenance?: { claim: string; sourceUrl: string }[];
+
+    // Internal newsroom data. This is deliberately excluded from default queries
+    // so it cannot leak through public article readers or feeds.
+    editorialWorkflow?: IEditorialWorkflow;
 }
+
+const EditorialWorkflowSchema = new Schema<IEditorialWorkflow>(
+    {
+        projectName: { type: String, trim: true, maxlength: 160, default: 'Untitled post' },
+        handoffNotes: { type: String, trim: true, maxlength: 4000, default: '' },
+        source: { type: String, enum: ['news-post-designer'], required: true },
+        updatedAt: { type: Date, default: Date.now },
+        updatedBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
+    },
+    { _id: false }
+);
 
 const ArticleSchema = new Schema<IArticle>(
     {
@@ -109,6 +132,11 @@ const ArticleSchema = new Schema<IArticle>(
             claim: { type: String },
             sourceUrl: { type: String }
         }],
+
+        editorialWorkflow: {
+            type: EditorialWorkflowSchema,
+            select: false,
+        },
     },
     { timestamps: true }
 );

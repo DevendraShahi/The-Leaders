@@ -1,97 +1,55 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Animated, Platform, Pressable, RefreshControl, Share, View } from "react-native";
+import { features } from "@/config/features";
+import { layout, spacing } from "@/theme/tokens";
+import { StatusDot } from "@/ui/StatusDot";
+import { useCallback, useEffect, useState } from "react";
+import { Platform, Pressable, RefreshControl, Share, StyleSheet, View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
-import { useQuery } from "@tanstack/react-query";
-import { Bookmark, ChevronRight, Newspaper, Share2 } from "lucide-react-native";
-import { Image } from "expo-image";
-import { apiGet, type ArticleCard, type HomePayload } from "@/api/client";
+import { useQuery, useQueries } from "@tanstack/react-query";
+import { Bookmark, ChevronRight, Share2 } from "lucide-react-native";
+import { apiGet, type ArticleCard, type FactCard, type Page, type HomePayload } from "@/api/client";
 import { Masthead } from "@/ui/Masthead";
 import { StateView } from "@/ui/StateView";
 import { StoryCard } from "@/ui/StoryCard";
 import { ArticleRow } from "@/ui/ArticleRow";
+import { FactCheckSection } from "@/ui/FactCheckCarousel";
 import { articleWebUrl } from "@/ui/ArticleReader";
 import { AppText } from "@/ui/primitives/AppText";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { pick, useLanguage } from "@/i18n/language";
-import { isSaved, removeSaved, saveArticle } from "@/storage/saved";
+import { toggleBookmark } from "@/services/bookmarks";
 import { useColors } from "@/theme/Theme";
+import { useAppStore } from "@/state/useAppStore";
+
+import { isRecentBreaking, storyDate, readingLabel } from "@/utils/editorial";
+import { SectionHeader } from "@/ui/SectionHeader";
 
 type TickerItem = HomePayload["ticker"]["items"][number];
 
 type Row =
     | { type: "header" }
+    | { type: "following-header" }
+    | { type: "following-state"; loading: boolean; error: Error | null }
     | { type: "ticker"; item: TickerItem }
     | { type: "hero"; item: ArticleCard }
     | { type: "top-header"; updatedAt: string }
     | { type: "article"; item: ArticleCard; divided: boolean }
     | { type: "daily-brief"; payload: HomePayload }
+    | { type: "fact-checks"; items: FactCard[] }
     | { type: "opinion-header" }
     | { type: "opinion-article"; item: ArticleCard };
 
 const T_BREAKING = { en: "Breaking", ne: "ब्रेकिङ" };
 const T_TOP = { en: "Top Stories", ne: "शीर्ष समाचार" };
+const T_LATEST_BRIEF = { en: "Latest brief", ne: "पछिल्लो ब्रीफ" };
 const T_BRIEF = { en: "The Daily Brief", ne: "दैनिक ब्रीफ" };
-const T_READ_BRIEF = { en: "Read today's full brief", ne: "आजको पूर्ण ब्रीफ पढ्नुहोस्" };
+const T_READ_BRIEF = { en: "Read the full brief", ne: "आजको पूर्ण ब्रीफ पढ्नुहोस्" };
 const T_OPINION = { en: "Opinion & Analysis", ne: "विचार र विश्लेषण" };
 const T_PERSPECTIVES = { en: "Perspectives", ne: "दृष्टिकोण" };
-const T_COLUMN = { en: "Column", ne: "स्तम्भ" };
-const T_COLUMNIST = { en: "Columnist", ne: "स्तम्भकार" };
-const T_MIN_READ = { en: "min read", ne: "मिनेट पढाइ" };
 const T_BOOKMARK = { en: "Save for later", ne: "पछिका लागि सुरक्षित गर्नुहोस्" };
 const T_UNBOOKMARK = { en: "Remove bookmark", ne: "सुरक्षित हटाउनुहोस्" };
 const T_SHARE = { en: "Share article", ne: "समाचार सेयर गर्नुहोस्" };
-
-function readingMinutes(text: string) {
-    const words = text.trim().split(/\s+/).filter(Boolean).length;
-    return Math.max(1, Math.round(words / 200));
-}
-
-function formatRelative(iso: string, language: "en" | "ne", now: number) {
-    const then = new Date(iso).getTime();
-    if (Number.isNaN(then)) return "";
-    const minutes = Math.max(0, Math.round((now - then) / 60000));
-    if (language === "ne") {
-        if (minutes < 1) return "अहिले";
-        if (minutes < 60) return `${minutes} मिनेट अघि`;
-        const hours = Math.round(minutes / 60);
-        if (hours < 24) return `${hours} घण्टा अघि`;
-        return `${Math.round(hours / 24)} दिन अघि`;
-    }
-    if (minutes < 1) return "Just now";
-    if (minutes < 60) return `${minutes} min ago`;
-    const hours = Math.round(minutes / 60);
-    if (hours < 24) return `${hours} hr ago`;
-    return `${Math.round(hours / 24)}d ago`;
-}
-
-function formatClock(iso: string) {
-    const date = new Date(iso);
-    if (Number.isNaN(date.getTime())) return "";
-    let hours = date.getHours();
-    const minutes = date.getMinutes();
-    hours = hours % 12 || 12;
-    const minutesStr = minutes < 10 ? `0${minutes}` : String(minutes);
-    return `${hours}:${minutesStr}`;
-}
-
-function PingDot() {
-    const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        const loop = Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, { toValue: 0.35, duration: 800, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
-            ])
-        );
-        loop.start();
-        return () => loop.stop();
-    }, [opacity]);
-
-    return <Animated.View style={{ opacity, backgroundColor: '#FFFFFF' }} className="h-1.5 w-1.5 shrink-0 rounded-full" />;
-}
 
 function shareArticle(item: ArticleCard, headline: string) {
     const url = articleWebUrl(item);
@@ -107,47 +65,30 @@ export default function HomeScreen() {
     const colors = useColors();
     const isNe = language === "ne";
     const [now, setNow] = useState(() => Date.now());
-    const [savedOverrides, setSavedOverrides] = useState<Record<string, boolean>>({});
+    const savedArticleIds = useAppStore((state) => state.savedArticleIds);
 
     const query = useQuery({
         queryKey: ["home", language],
         queryFn: () => apiGet<HomePayload>("/api/v1/home"),
     });
 
+    const followedAuthors = useAppStore(state => state.followedAuthors);
+    const followingQueries = useQueries({ queries: followedAuthors.map(name => ({
+        queryKey: ["articles", "following", name],
+        queryFn: () => apiGet<Page<ArticleCard>>(`/api/v1/articles?page=1&limit=6&author=${encodeURIComponent(name)}`),
+    })) });
     useEffect(() => {
         const id = setInterval(() => setNow(Date.now()), 60_000);
         return () => clearInterval(id);
     }, []);
 
-    const savedFor = useCallback(
-        (slug: string) => (slug in savedOverrides ? savedOverrides[slug] : isSaved(slug)),
-        [savedOverrides]
-    );
+    const savedFor = useCallback((slug: string) => savedArticleIds.includes(slug), [savedArticleIds]);
 
-    const toggleBookmark = useCallback((item: ArticleCard) => {
-        const currently = item.slug in savedOverrides ? savedOverrides[item.slug] : isSaved(item.slug);
-        if (currently) {
-            removeSaved(item.slug);
-        } else {
-            saveArticle({
-                slug: item.slug,
-                source: item.source,
-                titleEn: item.title.en,
-                titleNe: item.title.ne,
-                excerptEn: item.excerpt.en,
-                excerptNe: item.excerpt.ne,
-                contentEn: item.excerpt.en,
-                contentNe: item.excerpt.ne,
-                savedAt: new Date().toISOString(),
-            });
-        }
-        setSavedOverrides((prev) => ({ ...prev, [item.slug]: !currently }));
-    }, [savedOverrides]);
 
     if (query.isLoading) return <View className="flex-1 bg-background"><StateView loading /></View>;
     if (query.error) {
         return (
-            <View className="flex-1 bg-background px-5">
+            <View className="flex-1 bg-background px-gutter">
                 <StateView error={query.error} onRetry={() => query.refetch()} />
             </View>
         );
@@ -158,10 +99,11 @@ export default function HomeScreen() {
 
     const heroArticle = home.articles[0];
     const topStories = home.articles.slice(1);
-    const breaking = home.ticker.items[0];
+    const breaking = home.leadBrief?.tags.some(tag => tag.toLowerCase() === "breaking") ? home.ticker.items.find(item => item.slug === home.leadBrief?.slug && isRecentBreaking(item.date, now)) : undefined;
     const briefItems = home.ticker.items.slice(0, 3);
     const showBrief = briefItems.length > 0 || Boolean(home.leadBrief);
 
+    const followingCards = [...new Map(followingQueries.flatMap(result => result.data?.items ?? []).map(article => [`${article.source}-${article.slug}`, article])).values()].sort((a, b) => Date.parse(b.publishedAt) - Date.parse(a.publishedAt)).slice(0, 6);
     const rows: Row[] = [
         { type: "header" },
         ...(breaking ? [{ type: "ticker" as const, item: breaking }] : []),
@@ -172,7 +114,9 @@ export default function HomeScreen() {
                 ...topStories.map((item, index) => ({ type: "article" as const, item, divided: index > 0 })),
             ]
             : []),
+        ...(followedAuthors.length ? [{ type: "following-header" as const }, ...(followingCards.length ? followingCards.map((item, index) => ({ type: "article" as const, item, divided: index > 0 })) : [{ type: "following-state" as const, loading: followingQueries.some(result => result.isLoading), error: followingQueries.find(result => result.error)?.error ?? null }])] : []),
         ...(showBrief ? [{ type: "daily-brief" as const, payload: home }] : []),
+        ...(features.factChecks && home.factChecks.length ? [{ type: "fact-checks" as const, items: home.factChecks }] : []),
         ...(home.coverage.length
             ? [
                 { type: "opinion-header" as const },
@@ -194,10 +138,12 @@ export default function HomeScreen() {
                 }
                 keyExtractor={(row, index) => {
                     if (row.type === "header") return "header";
+                    if (row.type === "following-header" || row.type === "following-state") return row.type;
                     if (row.type === "ticker") return `ticker-${row.item.slug}`;
                     if (row.type === "hero") return `hero-${row.item.slug}`;
                     if (row.type === "top-header") return "top-header";
                     if (row.type === "daily-brief") return "daily-brief";
+                    if (row.type === "fact-checks") return "fact-checks";
                     if (row.type === "opinion-header") return "opinion-header";
                     if (row.type === "article" || row.type === "opinion-article") return `${row.type}-${row.item.slug}-${index}`;
                     return `row-${index}`;
@@ -209,14 +155,16 @@ export default function HomeScreen() {
                         return <Masthead />;
                     }
 
+                    if (item.type === "following-header") return <View className="px-gutter pt-4"><SectionHeader title={isNe ? "फलो गरिएका लेखकहरू" : "Following"} /></View>;
+                    if (item.type === "following-state") return <View className="px-gutter"><StateView loading={item.loading} error={item.error} empty={!item.loading && !item.error} onRetry={() => { followingQueries.forEach(result => { void result.refetch(); }); }} /></View>;
                     if (item.type === "ticker") {
                         const title = pick(item.item.title, language);
-                        const when = formatRelative(item.item.date, language, now);
+                        const when = storyDate(item.item.date, language, now);
                         return (
                             <Pressable
                                 accessibilityRole="button"
-                                onPress={() => router.push(`/article/${item.item.slug}` as never)}
-                                className="flex-row items-center gap-3 bg-brand-red px-5 py-3 active:opacity-90"
+                                onPress={() => router.push(`/brief/${item.item.slug}` as never)}
+                                className="flex-row items-center gap-3 bg-brand-red px-gutter py-3 active:opacity-90"
                             >
                                 <View className="min-w-0 flex-1 flex-row items-center gap-2.5">
                                     <View className="bg-white/20 px-2 py-0.5 rounded">
@@ -224,7 +172,7 @@ export default function HomeScreen() {
                                             {T_BREAKING[language]}
                                         </AppText>
                                     </View>
-                                    <PingDot />
+                                    <StatusDot color="onPrimary" />
                                     <AppText variant="caption" weight="bold" numberOfLines={1} style={{ flex: 1, color: '#FFFFFF' }}>
                                         {title}
                                     </AppText>
@@ -238,14 +186,14 @@ export default function HomeScreen() {
 
                     if (item.type === "hero") {
                         const author = pick(item.item.author, language);
-                        const ago = formatRelative(item.item.publishedAt, language, now);
-                        const minutes = readingMinutes(pick(item.item.excerpt, language));
+                        const ago = storyDate(item.item.publishedAt, language, now);
+                        const minutes = item.item.readingMinutes?.[language];
                         const byline = author ? `${language === "ne" ? "" : "By "}${author}` : "";
-                        const meta = [byline, ago, `${minutes} ${T_MIN_READ[language]}`].filter(Boolean).join(" • ");
+                        const meta = [byline, ago, readingLabel(minutes, language)].filter(Boolean).join(" • ");
                         const saved = savedFor(item.item.slug);
 
                         return (
-                            <View className="pb-2 pt-4">
+                            <View style={styles.lead}>
                                 <StoryCard
                                     recyclingKey={item.item.slug}
                                     kicker={pick(item.item.category, language)}
@@ -253,6 +201,7 @@ export default function HomeScreen() {
                                     summary={pick(item.item.excerpt, language)}
                                     meta={meta}
                                     image={item.item.image}
+                                    variant="lead"
                                     saved={saved}
                                     bookmarkLabel={saved ? T_UNBOOKMARK[language] : T_BOOKMARK[language]}
                                     onPress={() => router.push(`/article/${item.item.slug}`)}
@@ -263,33 +212,23 @@ export default function HomeScreen() {
                     }
 
                     if (item.type === "top-header") {
-                        const clock = formatClock(item.updatedAt);
+                        const detail = storyDate(item.updatedAt, language, now);
                         return (
-                            <View className="px-5 pt-2">
+                            <View style={styles.section}>
                                 <Separator />
-                                <View className="flex-row items-center justify-between gap-3 pb-1 pt-4">
-                                    <View className="min-w-0 flex-1 flex-row items-center gap-2">
-                                        <View className="h-3.5 w-1 bg-primary" />
-                                        <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={1}>
-                                            {T_TOP[language]}
-                                        </AppText>
-                                    </View>
-                                    {clock ? (
-                                        <AppText variant="caption" colorToken="textSecondary" style={{ flexShrink: 0 }}>
-                                            {isNe ? `अपडेट ${clock} NPT` : `Updated ${clock} NPT`}
-                                        </AppText>
-                                    ) : null}
+                                <View className="pt-4">
+                                    <SectionHeader title={T_TOP[language]} detail={detail} />
                                 </View>
                             </View>
                         );
                     }
 
                     if (item.type === "article") {
-                        const ago = formatRelative(item.item.publishedAt, language, now);
-                        const minutes = readingMinutes(pick(item.item.excerpt, language));
-                        const meta = [ago, `${minutes} ${T_MIN_READ[language]}`].filter(Boolean).join(" • ");
+                        const ago = storyDate(item.item.publishedAt, language, now);
+                        const minutes = item.item.readingMinutes?.[language];
+                        const meta = [ago, readingLabel(minutes, language)].filter(Boolean).join(" • ");
                         return (
-                            <View className="px-5">
+                            <View style={styles.gutter}>
                                 {item.divided ? <Separator className="my-1" /> : null}
                                 <ArticleRow
                                     layout="home"
@@ -309,7 +248,7 @@ export default function HomeScreen() {
                             ? briefItems.map((entry) => ({
                                 key: entry.slug,
                                 title: pick(entry.title, language),
-                                onPress: () => router.push(`/article/${entry.slug}` as never),
+                                onPress: () => router.push(`/brief/${entry.slug}` as never),
                             }))
                             : item.payload.leadBrief
                                 ? [{
@@ -320,27 +259,22 @@ export default function HomeScreen() {
                                 : [];
 
                         return (
-                            <View className="px-5 pt-4">
+                            <View className="px-gutter pt-4">
                                 <Separator />
-                                <View className="mt-4 rounded-lg bg-surface-secondary p-4">
-                                    <View className="flex-row items-center gap-2 pb-2">
-                                        <Newspaper size={16} color={colors.brandRed} />
-                                        <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={2} style={{ flex: 1 }}>
-                                            {T_BRIEF[language]}
-                                        </AppText>
-                                    </View>
+                                <View className="mt-4 bg-surface-secondary px-4 py-4">
+                                    <SectionHeader title={item.payload.ticker.scope === "today" ? T_BRIEF[language] : T_LATEST_BRIEF[language]} detail={item.payload.leadBrief ? storyDate(item.payload.leadBrief.date, language, now) : undefined} />
                                     {lines.map((line, index) => (
                                         <View key={line.key}>
                                             {index > 0 ? <Separator className="my-2.5" /> : null}
                                             <Pressable
                                                 accessibilityRole="button"
                                                 onPress={line.onPress}
-                                                className="min-h-11 flex-row items-start gap-2.5 py-1 active:opacity-70"
+                                                className="min-h-touch flex-row items-start gap-2.5 py-1 active:opacity-70"
                                             >
-                                                <AppText variant="caption" weight="bold" colorToken="primary" style={{ paddingTop: 2 }}>
+                                                <AppText variant="meta" weight="bold" colorToken="brandRed" style={{ paddingTop: 2 }}>
                                                     {String(index + 1).padStart(2, "0")}
                                                 </AppText>
-                                                <AppText variant="caption" weight="medium" colorToken="textPrimary" style={{ flex: 1 }}>
+                                                <AppText variant="bodySmall" weight="medium" colorToken="textPrimary" style={{ flex: 1 }}>
                                                     {line.title}
                                                 </AppText>
                                             </Pressable>
@@ -350,12 +284,12 @@ export default function HomeScreen() {
                                         <Button
                                             variant="link"
                                             onPress={() => router.push(`/brief/${item.payload.leadBrief?.slug}` as never)}
-                                            className="mt-2 h-11 self-start px-0"
+                                            className="mt-2 h-touch self-start px-0"
                                         >
                                             <AppText variant="overline" weight="bold" colorToken="textPrimary">
                                                 {T_READ_BRIEF[language]}
                                             </AppText>
-                                            <ChevronRight size={15} color={colors.textSecondary} />
+                                            <ChevronRight size={layout.iconSmall} color={colors.textSecondary} />
                                         </Button>
                                     ) : null}
                                 </View>
@@ -363,20 +297,16 @@ export default function HomeScreen() {
                         );
                     }
 
+                    if (item.type === "fact-checks") {
+                        return <FactCheckSection items={item.items} />;
+                    }
+
                     if (item.type === "opinion-header") {
                         return (
-                            <View className="px-5 pt-4">
+                            <View className="px-gutter pt-4">
                                 <Separator />
-                                <View className="flex-row items-center justify-between gap-3 pb-3 pt-4">
-                                    <View className="min-w-0 flex-1 flex-row items-center gap-2">
-                                        <View className="h-3.5 w-1 bg-brand-red" />
-                                        <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={1}>
-                                            {T_OPINION[language]}
-                                        </AppText>
-                                    </View>
-                                    <AppText variant="overline" weight="bold" colorToken="textSecondary" style={{ flexShrink: 0 }}>
-                                        {T_PERSPECTIVES[language]}
-                                    </AppText>
+                                <View className="pt-4">
+                                    <SectionHeader title={T_OPINION[language]} detail={T_PERSPECTIVES[language]} />
                                 </View>
                             </View>
                         );
@@ -385,11 +315,11 @@ export default function HomeScreen() {
                     if (item.type === "opinion-article") {
                         const author = pick(item.item.author, language) || (isNe ? "सम्पादकीय" : "Editorial Board");
                         const headline = pick(item.item.title, language);
-                        const minutes = readingMinutes(pick(item.item.excerpt, language));
+                        const minutes = item.item.readingMinutes?.[language];
                         const saved = savedFor(item.item.slug);
 
                         return (
-                            <View className="px-5 pb-5">
+                            <View style={styles.opinion}>
                                 <Pressable
                                     accessibilityRole="button"
                                     onPress={() => router.push(`/article/${item.item.slug}`)}
@@ -397,29 +327,23 @@ export default function HomeScreen() {
                                 >
                                     <View className="flex-col gap-0.5">
                                         <AppText variant="caption" weight="bold" colorToken="textPrimary" numberOfLines={1}>{author}</AppText>
-                                        <AppText variant="caption" colorToken="textSecondary" numberOfLines={1}>
-                                            {T_COLUMNIST[language]}
-                                        </AppText>
                                     </View>
-                                    <View className="mt-4 border-l-2 border-brand-red py-0.5 pl-3.5">
-                                        <AppText variant="overline" weight="semibold" colorToken="textSecondary">
-                                            {T_COLUMN[language]}
-                                        </AppText>
+                                    <View style={styles.opinionCopy}>
                                         <AppText
-                                            variant="heading3"
-                                            weight="bold"
+                                            variant="storyTitle"
+                                            weight="semibold"
                                             style={{ marginTop: 4 }}
                                         >
                                             {headline}
                                         </AppText>
-                                        <AppText variant="body" colorToken="textSecondary" numberOfLines={2} style={{ marginTop: 8 }}>
+                                        <AppText variant="bodySmall" colorToken="textSecondary" numberOfLines={2} style={{ marginTop: 8 }}>
                                             {pick(item.item.excerpt, language)}
                                         </AppText>
                                     </View>
                                 </Pressable>
                                 <View className="mt-1 flex-row items-center justify-between gap-3">
                                     <AppText variant="caption" colorToken="textSecondary" numberOfLines={1} style={{ flex: 1 }}>
-                                        {minutes} {T_MIN_READ[language]}
+                                        {readingLabel(minutes, language)}
                                     </AppText>
                                     <View className="shrink-0 flex-row items-center">
                                         <Button
@@ -427,19 +351,19 @@ export default function HomeScreen() {
                                             size="icon"
                                             accessibilityLabel={T_SHARE[language]}
                                             onPress={() => shareArticle(item.item, headline)}
-                                            className="h-11 w-11 rounded-lg"
+                                            className="h-touch w-touch"
                                         >
-                                            <Share2 size={16} color={colors.textSecondary} />
+                                            <Share2 size={layout.iconSmall} color={colors.textSecondary} />
                                         </Button>
                                         <Button
                                             variant="ghost"
                                             size="icon"
                                             accessibilityLabel={saved ? T_UNBOOKMARK[language] : T_BOOKMARK[language]}
                                             onPress={() => toggleBookmark(item.item)}
-                                            className="h-11 w-11 rounded-lg"
+                                            className="h-touch w-touch"
                                         >
                                             <Bookmark
-                                                size={16}
+                                                size={layout.iconSmall}
                                                 color={saved ? colors.brandRed : colors.textSecondary}
                                                 fill={saved ? colors.brandRed : "transparent"}
                                             />
@@ -456,3 +380,11 @@ export default function HomeScreen() {
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    gutter: { paddingHorizontal: spacing.gutter },
+    lead: { paddingTop: spacing.lg, paddingBottom: spacing.sm },
+    section: { paddingHorizontal: spacing.gutter, paddingTop: spacing.sm },
+    opinion: { paddingHorizontal: spacing.gutter, paddingBottom: spacing.xl },
+    opinionCopy: { marginTop: spacing.xs },
+});

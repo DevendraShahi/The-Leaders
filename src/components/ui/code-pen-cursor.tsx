@@ -2,12 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { usePathname } from "next/navigation";
 
 export default function CodePenCursor() {
     const cursorRef = useRef<HTMLDivElement>(null);
     const [enabled, setEnabled] = useState(false);
+    const pathname = usePathname();
+    const isStudio = pathname === '/admin/social' || pathname?.startsWith('/admin/social/');
 
     useEffect(() => {
+        if (isStudio) return;
         if (typeof window === "undefined" || !cursorRef.current) return;
         if (!gsap) return;
         if (!window.matchMedia("(pointer: fine)").matches) return;
@@ -164,7 +168,7 @@ export default function CodePenCursor() {
             document.body.classList.remove("has-custom-cursor");
             setEnabled(false);
         };
-    }, []);
+    }, [isStudio]);
 
     // Ensure initial render is visible block
     if (!enabled) return null;

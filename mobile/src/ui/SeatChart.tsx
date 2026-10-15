@@ -23,7 +23,7 @@ export function SeatChart({
                         <AppText variant="meta" style={{ color: colors.foreground, flex: 1 }} numberOfLines={1}>
                             {row.party}
                         </AppText>
-                        <AppText variant="meta" style={{ color: colors.muted }}>{String(row.seats)}</AppText>
+                        <AppText variant="meta" style={{ color: colors.textSecondary }}>{String(row.seats)}</AppText>
                     </View>
                     <View style={{ height: 10, backgroundColor: colors.border }}>
                         <View

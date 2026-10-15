@@ -41,7 +41,7 @@ const INITIAL_MAINTENANCE = {
 };
 
 export default function MaintenanceSettingsPage() {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [maintenance, setMaintenance] = useState(INITIAL_MAINTENANCE);
@@ -68,10 +68,10 @@ export default function MaintenanceSettingsPage() {
 
     useEffect(() => {
         const fetchSettings = async () => {
-            if (!token) return;
+            if (!isAuthenticated) return;
             try {
                 const res = await fetch('/api/admin/settings', {
-                    headers: { 'Authorization': `Bearer ${token}` }
+                    headers: {  }
                 });
                 const data = await res.json();
 
@@ -87,7 +87,7 @@ export default function MaintenanceSettingsPage() {
         };
 
         fetchSettings();
-    }, [token]);
+    }, [isAuthenticated]);
 
     const updateMaintenance = (path: string[], newValue: { isActive: boolean, reason?: string }) => {
         setMaintenance(prev => {
@@ -109,7 +109,7 @@ export default function MaintenanceSettingsPage() {
         try {
             // Fetch current settings to preserve other fields
             const currentRes = await fetch('/api/admin/settings', {
-                headers: { 'Authorization': `Bearer ${token}` },
+                headers: {  },
                 cache: 'no-store'
             });
             const currentData = await currentRes.json();
@@ -127,9 +127,7 @@ export default function MaintenanceSettingsPage() {
             const res = await fetch('/api/admin/settings', {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                    'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
 

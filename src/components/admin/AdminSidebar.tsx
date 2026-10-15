@@ -68,12 +68,10 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
             access: 'content' as AdminPageKey,
             children: [
                 { label: 'Articles', href: '/admin/content?type=articles' },
-                { label: 'Column Articles', href: '/admin/content?type=column-articles' },
                 { label: 'Leaders', href: '/admin/content?type=leaders' },
                 { label: 'Daily Brief', href: '/admin/content?type=briefs' },
             ],
         },
-        { label: 'Post Designer', href: '/admin/designer', icon: PenTool, access: 'content' as AdminPageKey },
         { label: 'Media', href: '/admin/media', icon: ImageIcon, access: 'media' as AdminPageKey },
         { label: 'Messages', href: '/admin/messages', icon: Mail, access: 'messages' as AdminPageKey },
         {

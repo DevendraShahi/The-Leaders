@@ -9,6 +9,8 @@ export const ui = {
     loading: { en: "Loading", ne: "लोड हुँदैछ" },
     retry: { en: "Try again", ne: "फेरि प्रयास" },
     empty: { en: "Nothing here yet", ne: "अहिले केही छैन" },
+    errorTitle: { en: "The archive is temporarily unavailable", ne: "अभिलेख अस्थायी रूपमा उपलब्ध छैन" },
+    errorHint: { en: "Check your connection, then try again.", ne: "आफ्नो इन्टरनेट जडान जाँचेर फेरि प्रयास गर्नुहोस्।" },
     save: { en: "Save", ne: "सेभ" },
     saved: { en: "Saved", ne: "सेभ भयो" },
     listen: { en: "Listen", ne: "सुन्नुहोस्" },

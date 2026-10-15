@@ -16,12 +16,11 @@ import { LanguageToggle } from "@/components/language-toggle";
 const links = [
     { href: "/", labelEn: "Home", labelNe: "गृहपृष्ठ" },
     { href: "/leaders", labelEn: "Leaders", labelNe: "स्तम्भहरू" },
-    { href: "/history", labelEn: "History", labelNe: "इतिहास" },
     { href: "/articles", labelEn: "Articles", labelNe: "लेखहरू" },
     {
-        href: "/coverage",
-        labelEn: "Coverage",
-        labelNe: "कभरेज",
+        href: "/coverage/daily-brief",
+        labelEn: "Daily",
+        labelNe: "दैनिक",
     },
 ];
 
@@ -69,7 +68,7 @@ export function Navbar() {
                                     : link.labelEn;
                             const isActive = pathname === link.href;
                             return (
-                                <Link
+                                <Link prefetch={false}
                                     key={link.href}
                                     href={link.href}
                                     className={cn(
@@ -125,7 +124,7 @@ export function Navbar() {
                                         {links.map((link) => {
                                             const label = language === "ne" ? (link.labelNe || link.labelEn) : link.labelEn;
                                             return (
-                                                <Link
+                                                <Link prefetch={false}
                                                     key={link.href}
                                                     href={link.href}
                                                     onClick={() => setIsSheetOpen(false)}

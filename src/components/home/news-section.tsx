@@ -41,7 +41,7 @@ export function NewsSection({ articles }: NewsSectionProps) {
                     </div>
 
                     <Button asChild variant="outline" className="hidden sm:inline-flex group shadow-sm">
-                        <Link href="/articles">
+                        <Link prefetch={false} href="/articles">
                             {language === "en" ? "All Analysis" : "सबै विश्लेषण"}
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Link>
@@ -52,7 +52,7 @@ export function NewsSection({ articles }: NewsSectionProps) {
 
                 <div className="mt-12 text-center sm:hidden">
                     <Button asChild variant="outline" size="lg" className="w-full group shadow-sm">
-                        <Link href="/articles">
+                        <Link prefetch={false} href="/articles">
                             {language === "en" ? "All Analysis" : "सबै विश्लेषण"}
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </Link>

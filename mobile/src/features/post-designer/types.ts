@@ -1,8 +1,25 @@
-export type PostFormat = "square" | "portrait" | "story";
+import { brand } from "@/theme/tokens";
+export type PostFormat = "square" | "portrait" | "story" | "landscape";
 export type PostTemplate = "breaking" | "explainer" | "quote";
 export type TextAlignment = "left" | "center";
 export type ImageTone = "ink" | "clear" | "warm";
 export type PostLayer = "visual" | "kicker" | "headline" | "supporting" | "footer";
+export type PostTextLayer = Exclude<PostLayer, "visual">;
+export type TextPositions = Record<PostTextLayer, { x: number; y: number }>;
+export const defaultTextPositions = (): TextPositions => ({ kicker: { x: 0, y: 0 }, headline: { x: 0, y: 0 }, supporting: { x: 0, y: 0 }, footer: { x: 0, y: 0 } });
+export type TextTypography = { font: "auto" | "onest" | "hind"; size: number; lineSpacing: number; shadow: number };
+export const defaultTextTypography = (): Record<PostTextLayer, TextTypography> => Object.fromEntries(["headline", "supporting", "kicker", "footer"].map(layer => [layer, { font: "auto", size: 100, lineSpacing: 100, shadow: 0 }])) as Record<PostTextLayer, TextTypography>;
+export type TextColors = Record<PostTextLayer, string | null>;
+export const defaultTextColors = (): TextColors => ({ kicker: null, headline: null, supporting: null, footer: null });
+
+export const postOutputDimensions: Record<PostFormat, readonly [number, number]> = {
+  square: [1080, 1080],
+  portrait: [1080, 1350],
+  story: [1080, 1920],
+  landscape: [1920, 1080],
+};
+
+export const postExportReferenceWidth = 360;
 
 export type PostDesign = {
   template: PostTemplate;
@@ -19,8 +36,16 @@ export type PostDesign = {
   imageTone: ImageTone;
   imageOffsetX: number;
   imageOffsetY: number;
+  imageZoom: number;
+  imageFit: "cover" | "contain";
+  imageBlur: number;
+  imageVintage: number;
+  imageFeather: number;
   hiddenLayers: PostLayer[];
   lockedLayers: PostLayer[];
+  textPositions: TextPositions;
+  textColors: TextColors;
+  textTypography: Record<PostTextLayer, TextTypography>;
 };
 
 export const defaultPostDesign: PostDesign = {
@@ -32,17 +57,25 @@ export const defaultPostDesign: PostDesign = {
   summary: "Give readers the useful context before they open the full report.",
   author: "The Leaders Desk",
   imageUri: null,
-  accent: "#B71C1C",
+  accent: brand.red,
   headlineScale: 1,
   textAlign: "left",
   imageTone: "ink",
   imageOffsetX: 0,
   imageOffsetY: 0,
+  imageZoom: 1.08,
+  imageFit: "cover",
+  imageBlur: 0,
+  imageVintage: 0,
+  imageFeather: 0,
   hiddenLayers: [],
   lockedLayers: [],
+  textPositions: defaultTextPositions(),
+  textColors: defaultTextColors(),
+  textTypography: defaultTextTypography(),
 };
 
-export const postTemplates: Array<{ key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }> = [
+export const postTemplates: { key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }[] = [
   {
     key: "breaking",
     title: "Breaking",

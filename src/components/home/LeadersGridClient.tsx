@@ -220,7 +220,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                                 </p>
                                             </div>
                                         ) : null}
-                                        <Link
+                                        <Link prefetch={false}
                                             href={`/leaders/${leader.slug}`}
                                             onClick={(event) => event.stopPropagation()}
                                             className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary font-bold"
@@ -234,7 +234,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                         })}
 
                         {showBrowseCard && (
-                            <Link
+                            <Link prefetch={false}
                                 href="/leaders"
                                 aria-label={tString(l.viewAll, language)}
                             >

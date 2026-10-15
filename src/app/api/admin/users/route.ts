@@ -49,9 +49,9 @@ export const POST = requireRole(['superadmin'])(async (request, { admin }) => {
         const { email, username, password, role, name, customPermissions } = body;
 
         // Validation
-        if (!email || !username || !password || !role) {
+        if (!email || !username || !role) {
             return NextResponse.json(
-                { error: 'Missing required fields: email, username, password, role' },
+                { error: 'Missing required fields: email, username, role' },
                 { status: 400 }
             );
         }
@@ -83,7 +83,7 @@ export const POST = requireRole(['superadmin'])(async (request, { admin }) => {
             customPermissions || getDefaultPermissions(role as IAdmin['role'])
         );
 
-        // Hash password
+        if (typeof password !== 'string' || password.length < 12 || password.length > 128) return NextResponse.json({ error: 'Password must contain 12–128 characters' }, { status: 400 });
         const passwordHash = await hashPassword(password);
 
         // Create admin
@@ -114,7 +114,7 @@ export const POST = requireRole(['superadmin'])(async (request, { admin }) => {
         return NextResponse.json({
             success: true,
             data: adminData,
-            message: 'Admin created successfully',
+            message: 'Admin created. They can sign in with their email and password.',
         }, { status: 201 });
     } catch (error) {
         console.error('Error creating admin:', error);

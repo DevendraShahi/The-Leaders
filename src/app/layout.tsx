@@ -36,9 +36,7 @@ import { constructMetadata } from "@/lib/metadata";
 
 
 import { ThemeProvider } from "@/components/theme-provider";
-import { GlobalLoadingProvider } from "@/components/providers/global-loading-provider";
 import { LanguageProvider } from "@/components/providers/language-provider";
-import CodePenCursor from "@/components/ui/code-pen-cursor";
 
 
 // ... existing imports
@@ -53,7 +51,7 @@ import UmamiScript from "@/components/analytics/UmamiScript";
 
 export async function generateMetadata() {
     const settings = await getSettings();
-    const defaultDescription = "An independent digital archive documenting Nepal's political leaders, democratic history, election intelligence, and civic legacy. Also known as LeadersNP.";
+    const defaultDescription = "An independent digital archive documenting Nepal's political leaders, democratic history, and civic legacy. Also known as LeadersNP.";
     const configuredDescription = settings?.siteDescription?.en?.trim() || defaultDescription;
     const enrichedDescription = /leadersnp/i.test(configuredDescription)
         ? configuredDescription
@@ -65,8 +63,6 @@ export async function generateMetadata() {
             "Nepal history",
             "democratic leadership",
             "Nepal Congress party",
-            "election 2026",
-            "Nepal manifesto",
         ];
     const keywordSet = new Set([
         ...configuredKeywords,
@@ -74,7 +70,6 @@ export async function generateMetadata() {
         "leaders np",
         "The Leaders Nepal",
         "Nepal political leaders",
-        "Nepal election analysis",
     ]);
 
     return constructMetadata({
@@ -110,7 +105,7 @@ export default async function RootLayout({
         "@id": `${siteUrl}/#organization`,
         name: "The Leaders",
         alternateName: ["LeadersNP", "The Leaders Nepal", "leadersnp"],
-        description: "Independent civic archive and election intelligence platform focused on Nepal's political leadership, democracy, and public history.",
+        description: "Independent civic archive and news platform focused on Nepal's political leadership, democracy, and public history.",
         url: siteUrl,
         logo: `${siteUrl}/logo.svg`,
         sameAs,
@@ -140,32 +135,31 @@ export default async function RootLayout({
             <body
                 className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${lora.variable} ${knight.variable} antialiased bg-background text-foreground`}
             >
+
                 <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
                 />
                 <script
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
                 />
-                <CodePenCursor />
                 <ThemeProvider
-                    attribute="data-theme"
-                    defaultTheme="light"
-                    enableSystem
-                    disableTransitionOnChange
+                attribute="data-theme"
+                defaultTheme="light"
+                enableSystem
+                disableTransitionOnChange
                 >
-                    <LanguageProvider>
-                        <GlobalLoadingProvider>
-                            <MaintenanceGuard maintenanceSettings={maintenanceSettings}>
-                                <LayoutStructureWrapper socialLinks={socialLinks}>
-                                    {children}
-                                </LayoutStructureWrapper>
-                            </MaintenanceGuard>
-                            <Toaster position="bottom-right" />
-                        </GlobalLoadingProvider>
-                    </LanguageProvider>
+                <LanguageProvider>
+                <MaintenanceGuard maintenanceSettings={maintenanceSettings}>
+                <LayoutStructureWrapper socialLinks={socialLinks}>
+                {children}
+                </LayoutStructureWrapper>
+                </MaintenanceGuard>
+                <Toaster position="bottom-right" />
+                </LanguageProvider>
                 </ThemeProvider>
+
             </body>
         </html >
     );

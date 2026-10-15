@@ -1,56 +1,25 @@
-import { useEffect, useState } from "react";
-import { View, Animated } from "react-native";
+import { useSyncExternalStore } from "react";
+import { Platform, View } from "react-native";
 import { useNetworkState } from "expo-network";
-import { AppText } from "@/ui/AppText";
-import { useColors } from "@/theme/Theme";
 import { WifiOff } from "lucide-react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import { AppText } from "./primitives/AppText";
+import { useColors } from "@/theme/Theme";
+import { useLanguage } from "@/i18n/language";
+import { spacing, layout } from "@/theme/tokens";
+function subscribe(callback: () => void) {
+    if (Platform.OS !== "web" || typeof window === "undefined") return () => {};
+    window.addEventListener("online", callback); window.addEventListener("offline", callback);
+    return () => { window.removeEventListener("online", callback); window.removeEventListener("offline", callback); };
+}
+function browserOnline() { return typeof navigator === "undefined" || navigator.onLine !== false; }
 export function NetworkToast() {
     const network = useNetworkState();
+    const online = useSyncExternalStore(subscribe, browserOnline, () => true);
     const colors = useColors();
     const insets = useSafeAreaInsets();
-    const [translateY] = useState(new Animated.Value(-100));
-
-    const isOffline = network.isConnected === false && network.isInternetReachable === false;
-
-    useEffect(() => {
-        Animated.timing(translateY, {
-            toValue: isOffline ? 0 : -100,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    }, [isOffline, translateY]);
-
-    return (
-        <Animated.View
-            style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                transform: [{ translateY }],
-                zIndex: 9999,
-            }}
-        >
-            <View
-                style={{
-                    backgroundColor: colors.brandRed,
-                    paddingTop: insets.top + 12,
-                    paddingBottom: 12,
-                    paddingHorizontal: 20,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                }}
-            >
-                {/* @ts-ignore */}
-                <WifiOff color={colors.surface} size={16} />
-                <AppText variant="meta" style={{ color: colors.surface }}>
-                    Network unavailable. Showing cached data.
-                </AppText>
-            </View>
-        </Animated.View>
-    );
+    const { language } = useLanguage();
+    const offline = Platform.OS === "web" ? !online : network.isConnected === false || network.isInternetReachable === false;
+    if (!offline) return null;
+    return <View accessibilityRole="alert" style={{ position: "absolute", top: 0, left: 0, right: 0, backgroundColor: colors.primary, paddingTop: insets.top + spacing.md, paddingBottom: spacing.md, paddingHorizontal: spacing.gutter, flexDirection: "row", alignItems: "center", gap: spacing.sm }}><WifiOff color={colors.onPrimary} size={layout.iconSmall} /><AppText variant="meta" colorToken="onPrimary" style={{ flex: 1 }}>{language === "ne" ? "अफलाइन हुनुहुन्छ। सुरक्षित समाचार पढ्न सक्नुहुन्छ।" : "You're offline. Saved stories are available."}</AppText></View>;
 }

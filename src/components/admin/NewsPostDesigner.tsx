@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   AlignLeft, ArrowUpRight, Check, Clipboard, Download, ImagePlus,
@@ -9,23 +9,15 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { useAuth } from "@/components/admin/AuthProvider";
+import {
+  drawNewsPostGraphic,
+  postGraphicDimensions,
+  type FormatKey,
+  type NewsPostDesign,
+  type TemplateKey } from "@/components/admin/news-post-graphic";
 import { cn } from "@/lib/utils";
 
-type TemplateKey = "breaking" | "explainer" | "quote";
-type FormatKey = "square" | "portrait" | "landscape";
-
-type Design = {
-  template: TemplateKey;
-  format: FormatKey;
-  category: string;
-  eyebrow: string;
-  headline: string;
-  summary: string;
-  author: string;
-  date: string;
-  imageUrl: string;
-  accent: string;
-};
+type Design = NewsPostDesign;
 
 const templates: Array<{ key: TemplateKey; label: string; caption: string; icon: typeof Newspaper }> = [
   { key: "breaking", label: "Breaking", caption: "Fast, clear updates", icon: Newspaper },
@@ -43,14 +35,7 @@ const defaultDesign: Design = {
   author: "The Leaders Desk",
   date: "TODAY",
   imageUrl: "",
-  accent: "#b71c1c",
-};
-
-const dimensions: Record<FormatKey, string> = {
-  square: "aspect-square",
-  portrait: "aspect-[4/5]",
-  landscape: "aspect-[16/10]",
-};
+  accent: "#b71c1c" };
 
 const DESIGNER_DRAFT_KEY = "the-leaders:news-post-designer:draft";
 
@@ -60,12 +45,11 @@ function slugify(value: string) {
 
 function escapeHtml(value: string) {
   return value.replace(/[&<>'"]/g, (character) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;",
-  }[character] || character));
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" }[character] || character));
 }
 
 export default function NewsPostDesigner() {
-  const { token } = useAuth();
+  const { isAuthenticated } = useAuth();
   const router = useRouter();
   const [design, setDesign] = useState<Design>(defaultDesign);
   const [previewImage, setPreviewImage] = useState("");
@@ -76,6 +60,9 @@ export default function NewsPostDesigner() {
   const [handoffNotes, setHandoffNotes] = useState("");
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
+  const [graphicIssue, setGraphicIssue] = useState<string | null>(null);
+  const graphicRef = useRef<HTMLCanvasElement>(null);
+  const graphicRenderVersion = useRef(0);
 
   useEffect(() => {
     try {
@@ -110,6 +97,32 @@ export default function NewsPostDesigner() {
   }, [previewImage]);
 
   const image = previewImage || design.imageUrl;
+  const [graphicWidth, graphicHeight] = postGraphicDimensions[design.format];
+
+  useEffect(() => {
+    const canvas = graphicRef.current;
+    if (!canvas) return;
+
+    const renderVersion = graphicRenderVersion.current + 1;
+    graphicRenderVersion.current = renderVersion;
+    const isCurrentRender = () => graphicRenderVersion.current === renderVersion;
+
+    void drawNewsPostGraphic(canvas, { design, imageUrl: image, showSummary, shouldCommit: isCurrentRender })
+      .then((result) => {
+        if (isCurrentRender()) setGraphicIssue(result.issue || null);
+      })
+      .catch(() => {
+        if (isCurrentRender()) {
+          canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
+          setGraphicIssue("The card preview could not be rendered. Refresh and try again.");
+        }
+      });
+
+    return () => {
+      if (isCurrentRender()) graphicRenderVersion.current += 1;
+    };
+  }, [design, image, showSummary]);
+
   const characterCount = design.headline.length;
   const readability = useMemo(() => {
     if (characterCount < 36) return "Needs a little more detail";
@@ -123,8 +136,7 @@ export default function NewsPostDesigner() {
     const examples: Record<TemplateKey, Partial<Design>> = {
       breaking: { eyebrow: "DEVELOPING STORY", category: "POLITICS", headline: "A clearer way to share the story that matters.", summary: "Give your readers the essential context before they open the full report." },
       explainer: { eyebrow: "WHAT YOU NEED TO KNOW", category: "EXPLAINER", headline: "The five details behind today’s biggest decision.", summary: "A quick, plain-language guide to the names, numbers and next steps." },
-      quote: { eyebrow: "IN THEIR WORDS", category: "VOICES", headline: "“The public deserves a conversation built on facts.”", summary: "A moment from today’s conversation, with the full context linked in the post." },
-    };
+      quote: { eyebrow: "IN THEIR WORDS", category: "VOICES", headline: "“The public deserves a conversation built on facts.”", summary: "A moment from today’s conversation, with the full context linked in the post." } };
     setDesign((current) => ({ ...current, template, ...examples[template] }));
   };
 
@@ -182,109 +194,25 @@ export default function NewsPostDesigner() {
   };
 
   const downloadGraphic = async () => {
-    const size: Record<FormatKey, [number, number]> = {
-      square: [1080, 1080], portrait: [1080, 1350], landscape: [1200, 750],
-    };
-    const [width, height] = size[design.format];
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const context = canvas.getContext("2d");
-    if (!context) return;
+    const canvas = graphicRef.current;
+    if (!canvas) return;
 
-    const padding = Math.round(width * 0.075);
-    context.fillStyle = "#121212";
-    context.fillRect(0, 0, width, height);
-    const glow = context.createRadialGradient(width * 0.94, height * 0.03, 0, width * 0.94, height * 0.03, width * 0.75);
-    glow.addColorStop(0, design.accent);
-    glow.addColorStop(1, "#121212");
-    context.globalAlpha = 0.72;
-    context.fillStyle = glow;
-    context.fillRect(0, 0, width, height);
-    context.globalAlpha = 1;
+    try {
+      const result = await drawNewsPostGraphic(canvas, { design, imageUrl: image, showSummary });
+      if (!result.canExport) throw new Error(result.issue || "The card cannot be exported in its current state.");
+      const file = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!file) throw new Error("The graphic could not be prepared for download.");
 
-    if (image) {
-      try {
-        const source = new Image();
-        source.crossOrigin = "anonymous";
-        await new Promise<void>((resolve, reject) => {
-          source.onload = () => resolve();
-          source.onerror = () => reject(new Error("image unavailable"));
-          source.src = image;
-        });
-        const scale = Math.max(width / source.width, height / source.height);
-        const drawWidth = source.width * scale;
-        const drawHeight = source.height * scale;
-        context.globalAlpha = 0.72;
-        context.drawImage(source, (width - drawWidth) / 2, (height - drawHeight) / 2, drawWidth, drawHeight);
-        context.globalAlpha = 1;
-        const shade = context.createLinearGradient(0, 0, 0, height);
-        shade.addColorStop(0, "rgba(0,0,0,0.04)");
-        shade.addColorStop(0.55, "rgba(0,0,0,0.52)");
-        shade.addColorStop(1, "rgba(0,0,0,0.96)");
-        context.fillStyle = shade;
-        context.fillRect(0, 0, width, height);
-      } catch {
-        // A remote image without CORS support is intentionally skipped for export.
-      }
+      const href = URL.createObjectURL(file);
+      const anchor = document.createElement("a");
+      anchor.href = href;
+      anchor.download = `${slugify(design.headline || "the-leaders-post")}-${design.format}.png`;
+      anchor.click();
+      URL.revokeObjectURL(href);
+      toast.success("Social card downloaded as a PNG.");
+    } catch (error: any) {
+      toast.error(error?.message || "Couldn’t prepare the social card.");
     }
-
-    const wrap = (text: string, maxWidth: number) => {
-      const words = text.split(/\s+/).filter(Boolean);
-      const lines: string[] = [];
-      let line = "";
-      for (const word of words) {
-        const next = line ? `${line} ${word}` : word;
-        if (context.measureText(next).width > maxWidth && line) {
-          lines.push(line);
-          line = word;
-        } else line = next;
-      }
-      if (line) lines.push(line);
-      return lines;
-    };
-
-    context.fillStyle = design.accent;
-    context.fillRect(0, 0, width, Math.round(width * 0.012));
-    context.fillStyle = "#ffffff";
-    context.font = `700 ${Math.round(width * 0.022)}px ui-monospace, monospace`;
-    context.fillText("■  THE LEADERS", padding, padding + Math.round(width * 0.025));
-    context.textAlign = "right";
-    context.fillStyle = "rgba(255,255,255,0.75)";
-    context.fillText(design.category || "NEWS", width - padding, padding + Math.round(width * 0.025));
-    context.textAlign = "left";
-
-    const titleSize = Math.round(width * (design.format === "portrait" ? 0.068 : 0.063));
-    context.font = `600 ${Math.round(width * 0.021)}px ui-monospace, monospace`;
-    context.fillStyle = "rgba(255,255,255,0.72)";
-    context.fillText(design.eyebrow || "THE LEADERS", padding, height * 0.57);
-    context.font = `600 ${titleSize}px Georgia, serif`;
-    context.fillStyle = "#ffffff";
-    const titleLines = wrap(design.headline || "Your headline belongs here.", width - padding * 2).slice(0, 4);
-    const titleLineHeight = Math.round(titleSize * 1.02);
-    let y = height * 0.57 + Math.round(width * 0.043);
-    titleLines.forEach((line) => { context.fillText(line, padding, y); y += titleLineHeight; });
-
-    if (showSummary) {
-      context.font = `400 ${Math.round(width * 0.022)}px Arial, sans-serif`;
-      context.fillStyle = "rgba(255,255,255,0.8)";
-      const summaryLines = wrap(design.summary, width - padding * 2).slice(0, 3);
-      y += Math.round(width * 0.022);
-      summaryLines.forEach((line) => { context.fillText(line, padding, y); y += Math.round(width * 0.032); });
-    }
-    context.strokeStyle = "rgba(255,255,255,0.35)";
-    context.beginPath(); context.moveTo(padding, height - padding * 1.45); context.lineTo(width - padding, height - padding * 1.45); context.stroke();
-    context.font = `500 ${Math.round(width * 0.017)}px ui-monospace, monospace`;
-    context.fillStyle = "rgba(255,255,255,0.78)";
-    context.fillText(design.author || "THE LEADERS DESK", padding, height - padding * 0.85);
-    context.textAlign = "right";
-    context.fillText(design.date || "TODAY", width - padding, height - padding * 0.85);
-    context.textAlign = "left";
-    const anchor = document.createElement("a");
-    anchor.href = canvas.toDataURL("image/png");
-    anchor.download = `${slugify(design.headline || "the-leaders-post")}-${design.format}.png`;
-    anchor.click();
-    toast.success("Social card downloaded as a PNG.");
   };
 
   const createDraft = async () => {
@@ -292,7 +220,7 @@ export default function NewsPostDesigner() {
       toast.error("Add a headline before creating a draft.");
       return;
     }
-    if (!token) {
+    if (!isAuthenticated) {
       toast.error("Your session has expired. Please sign in again.");
       return;
     }
@@ -304,7 +232,7 @@ export default function NewsPostDesigner() {
         body.append("file", imageFile);
         body.append("category", "article");
         body.append("folder", "articles");
-        const media = await fetch("/api/admin/media/upload", { method: "POST", headers: { Authorization: `Bearer ${token}` }, body });
+        const media = await fetch("/api/admin/media/upload", { method: "POST", headers: {  }, body });
         const payload = await media.json();
         if (!media.ok) throw new Error(payload?.error || "Image upload failed");
         imageUrl = payload?.data?.media?.secureUrl || "";
@@ -312,7 +240,7 @@ export default function NewsPostDesigner() {
       const post = {
         title: { en: design.headline, ne: "" },
         excerpt: { en: design.summary, ne: "" },
-        content: { en: `<p>${escapeHtml(design.summary)}</p><p><strong>${escapeHtml(design.eyebrow)}</strong></p>${handoffNotes ? `<hr><p><em>Studio handoff: ${escapeHtml(handoffNotes)}</em></p>` : ""}`, ne: "" },
+        content: { en: `<p>${escapeHtml(design.summary)}</p><p><strong>${escapeHtml(design.eyebrow)}</strong></p>`, ne: "" },
         author: { en: design.author || "The Leaders Desk", ne: "" },
         category: { en: design.category, ne: "" },
         image: imageUrl,
@@ -321,12 +249,14 @@ export default function NewsPostDesigner() {
         status: "draft",
         isFeatured: false,
         publishedDate: new Date().toISOString(),
-      };
+        editorialWorkflow: {
+          projectName: projectName.trim() || "Untitled post",
+          handoffNotes: handoffNotes.trim(),
+          source: "news-post-designer" } };
       const response = await fetch("/api/admin/articles", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify(post),
-      });
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(post) });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload?.error || "Couldn’t create draft");
       toast.success("Article draft created from your design.");
@@ -350,7 +280,7 @@ export default function NewsPostDesigner() {
             <div className="mt-4 flex flex-wrap items-center gap-3 font-mono text-[10px] uppercase tracking-wider text-muted-foreground"><span className="inline-flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Saved on this device</span>{lastSaved && <span>{new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(new Date(lastSaved))}</span>}</div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button onClick={downloadGraphic} className="inline-flex h-10 items-center gap-2 border border-border px-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-colors hover:bg-muted"><Download className="h-3.5 w-3.5" /> Download card</button>
+            <button onClick={downloadGraphic} disabled={Boolean(graphicIssue)} className="inline-flex h-10 items-center gap-2 border border-border px-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-colors hover:bg-muted disabled:cursor-not-allowed disabled:opacity-50"><Download className="h-3.5 w-3.5" /> Download card</button>
             <button onClick={downloadBrief} className="hidden h-10 items-center gap-2 border border-border px-4 font-mono text-[10px] font-bold uppercase tracking-wider transition-colors hover:bg-muted sm:inline-flex"><ArrowUpRight className="h-3.5 w-3.5" /> Export brief</button>
             <button onClick={createDraft} disabled={saving} className="inline-flex h-10 items-center gap-2 bg-primary px-4 font-mono text-[10px] font-bold uppercase tracking-wider text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-60"><Save className="h-3.5 w-3.5" /> {saving ? "Creating…" : "Create article draft"}</button>
           </div>
@@ -405,6 +335,7 @@ export default function NewsPostDesigner() {
           <div className="border border-border bg-card p-5 sm:p-6">
             <div className="mb-3 flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground"><Share2 className="h-3.5 w-3.5 text-primary" /> 04 / Leave a handoff note</div>
             <textarea value={handoffNotes} onChange={(event) => setHandoffNotes(event.target.value)} rows={3} className="w-full resize-none border border-border bg-background px-4 py-3 font-manrope text-sm leading-6 outline-none transition-shadow placeholder:text-muted-foreground/60 focus:border-primary focus:shadow-[3px_3px_0_0_var(--color-primary-soft)]" placeholder="What should the next person double-check? Add source links, approval notes, or the publishing plan." />
+            <p className="mt-2 font-manrope text-xs text-muted-foreground">Private to authenticated content editors. This note is never added to the public article body.</p>
           </div>
         </section>
 
@@ -412,20 +343,18 @@ export default function NewsPostDesigner() {
           <div className="flex h-full flex-col border border-border bg-[#ebe7df] p-3 dark:bg-[#0b0b0b] sm:p-5">
             <div className="mb-4 flex items-center justify-between"><div className="flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground"><Monitor className="h-3.5 w-3.5 text-primary" /> Live social preview</div><div className="inline-flex items-center gap-1 border border-black/10 bg-white/70 px-2 py-1 font-mono text-[9px] uppercase text-black/60 dark:border-white/10 dark:bg-white/5 dark:text-white/50"><Smartphone className="h-3 w-3" /> {design.format}</div></div>
             <div className="flex flex-1 items-center justify-center overflow-hidden py-4">
-              <article className={cn("relative w-full max-w-[520px] overflow-hidden bg-[#151515] text-white shadow-[12px_12px_0_rgba(0,0,0,0.14)]", dimensions[design.format])}>
-                {image && <><img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-80" /><div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/10" /></>}
-                {!image && <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 94% 4%, ${design.accent} 0, transparent 33%), linear-gradient(135deg, #1c1c1c 0%, #090909 70%)` }} />}
-                <div className="absolute left-0 top-0 h-2 w-full" style={{ backgroundColor: design.accent }} />
-                <div className="relative flex h-full flex-col justify-between p-5 sm:p-8">
-                  <div className="flex items-start justify-between gap-3"><div className="flex items-center gap-2 font-mono text-[9px] font-bold tracking-[0.18em]"><span className="inline-block h-2 w-2" style={{ backgroundColor: design.accent }} /> THE LEADERS</div><span className="border border-white/30 px-2 py-1 font-mono text-[8px] font-bold tracking-[0.13em]">{design.category || "NEWS"}</span></div>
-                  <div><div className="mb-3 font-mono text-[9px] font-bold tracking-[0.15em] text-white/70">{design.eyebrow || "THE LEADERS"}</div><h2 className="font-editorial text-[clamp(1.7rem,5.3vw,3.6rem)] font-medium leading-[0.95] tracking-tight">{design.headline || "Your headline belongs here."}</h2>{showSummary && <p className="mt-4 max-w-md font-manrope text-xs leading-5 text-white/80 sm:text-sm">{design.summary}</p>}</div>
-                  <div className="flex items-center justify-between border-t border-white/25 pt-3 font-mono text-[8px] tracking-[0.14em] text-white/75"><span>{design.author || "THE LEADERS DESK"}</span><span>{design.date || "TODAY"}</span></div>
-                </div>
-              </article>
+              <canvas
+                ref={graphicRef}
+                width={graphicWidth}
+                height={graphicHeight}
+                aria-label={`Exact ${design.format} social-card output`}
+                className="block h-auto max-h-[62vh] max-w-full border border-black/30 bg-[#0d0d0d] shadow-[12px_12px_0_rgba(0,0,0,0.14)] dark:border-white/10"
+              />
             </div>
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-black/10 pt-4 dark:border-white/10"><button onClick={() => setShowSummary((value) => !value)} className="inline-flex items-center gap-2 font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground"><span className={cn("flex h-4 w-4 items-center justify-center border", showSummary ? "border-primary bg-primary text-white" : "border-current")}>{showSummary && <Check className="h-3 w-3" />}</span> Include takeaway</button><button onClick={copyCaption} className="inline-flex h-9 items-center gap-2 border border-border bg-card px-3 font-mono text-[10px] font-bold uppercase tracking-wider transition-colors hover:border-primary"><Clipboard className="h-3.5 w-3.5 text-primary" /> Copy caption</button></div>
           </div>
-          <div className="mt-3 flex items-start gap-2 border border-primary/20 bg-primary/5 p-3 font-manrope text-xs leading-5 text-muted-foreground"><Share2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> Download a ready-to-share PNG, copy the caption, or create the article draft for editorial review. Images from hosts that block browser export are replaced with the branded graphic background.</div>
+          {graphicIssue && <p role="alert" className="mt-3 border border-primary/35 bg-primary/10 p-3 font-manrope text-xs leading-5 text-foreground">{graphicIssue}</p>}
+          <div className="mt-3 flex items-start gap-2 border border-primary/20 bg-primary/5 p-3 font-manrope text-xs leading-5 text-muted-foreground"><Share2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> This artboard is the exact PNG you download. If an image host blocks browser use, both preview and export retain the branded graphic background.</div>
         </aside>
       </div>
     </div>

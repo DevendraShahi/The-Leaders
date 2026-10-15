@@ -1,3 +1,5 @@
+import { useLanguage } from "@/i18n/language";
+import { fontFor } from "@/theme/tokens";
 import { cn } from '@/lib/utils';
 import { Slot } from '@rn-primitives/slot';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -68,6 +70,7 @@ function Text({
   className,
   asChild = false,
   variant = 'default',
+  style,
   ...props
 }: React.ComponentProps<typeof RNText> &
   React.RefAttributes<typeof RNText> &
@@ -75,9 +78,11 @@ function Text({
     asChild?: boolean;
   }) {
   const textClass = React.useContext(TextClassContext);
+  const { language } = useLanguage();
   const Component = asChild ? Slot : RNText;
   return (
     <Component
+      style={[{ fontFamily: fontFor(language, "ui", "regular") }, style]}
       className={cn(textVariants({ variant }), textClass, className)}
       role={variant ? ROLE[variant] : undefined}
       aria-level={variant ? ARIA_LEVEL[variant] : undefined}

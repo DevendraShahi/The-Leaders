@@ -13,22 +13,22 @@ export type PublicContentKind =
 const tagMap: Record<PublicContentKind, string[]> = {
     article: ["articles", "stats", "admin-stats"],
     leader: ["leaders", "stats", "admin-stats"],
-    history: ["history", "admin-stats"],
-    "daily-brief": ["daily-briefs", "election-data", "admin-stats"],
-    "fact-check": ["fact-checks", "election-data", "admin-stats"],
-    "election-article": ["election-articles", "election-data", "admin-stats"],
-    "column-article": ["column-articles", "election-data", "admin-stats"],
+    history: [],
+    "daily-brief": ["daily-briefs", "admin-stats"],
+    "fact-check": [],
+    "election-article": [],
+    "column-article": [],
     settings: ["settings"],
 };
 
 const basePathMap: Record<PublicContentKind, string[]> = {
     article: ["/", "/articles", "/api/v1/home", "/api/v1/articles", "/api/v1/search"],
     leader: ["/", "/leaders", "/api/v1/leaders", "/api/v1/search"],
-    history: ["/history", "/api/v1/history"],
-    "daily-brief": ["/coverage", "/coverage/daily-brief", "/election-2026", "/election-2026/daily-brief", "/api/v1/home", "/api/v1/briefs"],
-    "fact-check": ["/election-2026", "/election-2026/fact-checks", "/api/v1/home", "/api/v1/fact-checks"],
-    "election-article": ["/election-2026", "/election-2026/analyses", "/api/v1/articles"],
-    "column-article": ["/coverage", "/coverage/columns", "/api/v1/home", "/api/v1/articles"],
+    history: [],
+    "daily-brief": ["/coverage", "/coverage/daily-brief", "/api/v1/home", "/api/v1/briefs"],
+    "fact-check": [],
+    "election-article": [],
+    "column-article": [],
     settings: ["/", "/api/settings", "/api/maintenance/status"],
 };
 
@@ -36,10 +36,7 @@ function detailPaths(kind: PublicContentKind, slug?: string) {
     if (!slug) return [];
     if (kind === "article") return [`/articles/${slug}`];
     if (kind === "leader") return [`/leaders/${slug}`];
-    if (kind === "daily-brief") return [`/coverage/daily-brief/${slug}`, `/election-2026/daily-brief/${slug}`];
-    if (kind === "fact-check") return [`/election-2026/fact-checks/${slug}`];
-    if (kind === "election-article") return [`/election-2026/analyses/${slug}`];
-    if (kind === "column-article") return [`/coverage/columns/${slug}`];
+    if (kind === "daily-brief") return [`/coverage/daily-brief/${slug}`];
     return [];
 }
 

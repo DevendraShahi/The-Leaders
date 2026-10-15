@@ -1,444 +1,104 @@
-import { View, Pressable, ScrollView, Switch, Platform, Alert } from "react-native";
-import { useState, useMemo } from "react";
-import { router } from "expo-router";
+import { AppSwitch } from "@/ui/primitives/AppSwitch";
+import { useCallback, useState } from "react";
+import { Alert, ScrollView, StyleSheet, View } from "react-native";
+import { router, useFocusEffect } from "expo-router";
+import * as Linking from "expo-linking";
+import Constants from "expo-constants";
+import { PageHeader } from "@/ui/PageHeader";
 import { AppText } from "@/ui/primitives/AppText";
+import { SettingsGroup, SettingsRow, SegmentedControl } from "@/ui/Settings";
 import { Button } from "@/components/ui/button";
 import { useLanguage } from "@/i18n/language";
-import { useAppStore } from "@/state/useAppStore";
-import Constants from "expo-constants";
-import { 
-    Sun, 
-    Moon, 
-    Settings,
-    ChevronRight,
-    ExternalLink,
-    Clock,
-    PenLine
-} from "lucide-react-native";
-import { listSaved, clearSaved, type SavedArticle } from "@/storage/saved";
+import { useAppStore, type ReaderScale, type ThemePreference } from "@/state/useAppStore";
+import { listSaved, clearSaved } from "@/storage/saved";
 import { useColors } from "@/theme/Theme";
-
-function calculateSizeMB(article: SavedArticle) {
-    const jsonStr = JSON.stringify(article);
-    const bytes = new Blob([jsonStr]).size;
-    const mb = bytes / (1024 * 1024);
-    return Math.max(0.1, mb + 3.1);
-}
+import { fontFor, readerTypography, spacing, radius, layout } from "@/theme/tokens";
+import { useAdminAccount } from "@/services/useAdminAccount";
+import { LogIn, ShieldCheck } from "lucide-react-native";
+import { useSessionAuth } from "@/services/AuthProvider";
 
 export default function ProfileScreen() {
-    const { language } = useLanguage();
-    const isNe = language === "ne";
+    const { language, setLanguage } = useLanguage();
     const store = useAppStore();
     const colors = useColors();
-    
-    // Derived Storage metrics
-    const savedIds = useAppStore(state => state.savedArticleIds);
-    const { totalMB, percentage } = useMemo(() => {
-        const articles = listSaved();
-        let total = 0;
-        for (const article of articles) {
-            total += calculateSizeMB(article);
-        }
-        return {
-            totalMB: total.toFixed(1),
-            percentage: Math.min(100, Math.max(2, (total / 250) * 100)).toFixed(1)
-        };
-    }, [savedIds]); // recompute when savedIds changes
-
-    const handleClearCache = () => {
-        Alert.alert(
-            "Clear Offline Cache?",
-            "This will delete all your downloaded articles.",
-            [
-                { text: "Cancel", style: "cancel" },
-                { 
-                    text: "Clear", 
-                    style: "destructive", 
-                    onPress: () => {
-                        clearSaved();
-                        // Also clear the store IDs
-                        store.savedArticleIds.forEach(id => store.toggleSavedArticle(id));
-                    }
-                }
-            ]
-        );
+    const account = useAdminAccount();
+    const { isAdmin } = account;
+    const auth = useSessionAuth();
+    const [signingOut, setSigningOut] = useState(false);
+    const signOut = async () => {
+        setSigningOut(true);
+        try { await auth.signOut(); } catch { Alert.alert(t("Unable to sign out", "लगआउट गर्न सकिएन")); } finally { setSigningOut(false); }
     };
+    const refetchAccount = account.refetch;
+    useFocusEffect(useCallback(() => { void refetchAccount(); }, [refetchAccount]));
+    const [confirmClear, setConfirmClear] = useState(false);
+    const ne = language === "ne";
+    const t = (en: string, np: string) => ne ? np : en;
+    const reader = readerTypography[store.readerScale];
+    const saved = listSaved();
+    const open = (url: string) => { void Linking.openURL(url).catch(() => Alert.alert(t("Unable to open link", "लिङ्क खोल्न सकिएन"))); };
+    const toggle = (label: string, value: boolean, onValueChange: (value: boolean) => void) => <AppSwitch accessibilityLabel={label} value={value} onValueChange={onValueChange} />;
+    return <ScrollView style={{ flex: 1, backgroundColor: colors.background }} contentContainerStyle={{ paddingBottom: spacing["3xl"] }}>
+        <PageHeader compact title={isAdmin ? t("Profile", "प्रोफाइल") : t("Settings", "सेटिङ्स")} subtitle={isAdmin ? t("Your newsroom account and preferences", "तपाईंको समाचार कक्ष खाता र प्राथमिकताहरू") : t("Make The Leaders work for you", "आफ्नो सुविधाअनुसार एप मिलाउनुहोस्")} />
+        <View style={styles.content}>
+            {isAdmin ? <View style={[styles.account, { backgroundColor: colors.surfaceSecondary, borderColor: colors.border }]}>
+                <View style={styles.accountHeading}><ShieldCheck size={layout.iconSize} color={colors.brandRed} /><AppText variant="uiTitle">{account.data?.profile?.name || t("Newsroom admin", "समाचार कक्ष एडमिन")}</AppText></View>
+                {account.data?.profile?.role ? <AppText variant="overline" colorToken="brandRed">{account.data.profile.role.replace(/_/g, " ")}</AppText> : null}
+                <AppText variant="bodySmall" colorToken="textSecondary">{t("Your approved account has access to Studio. Reader preferences are saved on this device.", "तपाईंको स्वीकृत खाताले स्टुडियो प्रयोग गर्न सक्छ। पठन प्राथमिकताहरू यस उपकरणमा सुरक्षित छन्।")}</AppText>
+                <Button onPress={() => router.push("/studio" as never)}><AppText variant="label" colorToken="onPrimary">{t("Open Studio", "स्टुडियो खोल्नुहोस्")}</AppText></Button>
+                <Button variant="outline" disabled={signingOut} onPress={() => { void signOut(); }}><AppText variant="label">{signingOut ? t("Signing out…", "लगआउट हुँदैछ…") : t("Sign out", "लगआउट")}</AppText></Button>
+            </View> : null}
 
-    const SegmentButton = ({ label, active, onPress, children }: { label?: string, active: boolean, onPress: () => void, children?: React.ReactNode }) => (
-        <Pressable 
-            onPress={onPress}
-            className={`flex-1 py-2 items-center justify-center rounded-sm ${active ? 'bg-primary' : 'bg-transparent'}`}
-        >
-            {children ? children : (
-                <AppText
-                    variant="caption"
-                    weight={active ? 'bold' : 'medium'}
-                    style={{ textTransform: "uppercase", letterSpacing: 0.5 }}
-                    colorToken={active ? 'textInverse' : 'textPrimary'}
-                >
-                    {label}
-                </AppText>
-            )}
-        </Pressable>
-    );
-
-    const SectionHeader = ({ title, subtitle, num }: { title: string, subtitle: string, num: number }) => (
-        <View className="flex-row items-center justify-between pb-2 mb-4 bg-surface-secondary px-3 py-2 rounded-lg">
-            <AppText variant="caption" weight="bold" colorToken="textPrimary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>
-                {num}. {title}
-            </AppText>
-            <AppText variant="caption" weight={isNe ? "medium" : "medium"} colorToken="textSecondary">
-                {subtitle}
-            </AppText>
+            {!isAdmin ? <SettingsGroup title={t("Admin access", "एडमिन पहुँच")}>
+                <View style={[styles.account, { backgroundColor: colors.surfaceSecondary, borderColor: colors.border }]}>
+                    <View style={styles.accountHeading}><LogIn size={layout.iconSize} color={colors.brandRed} /><AppText variant="uiTitle">{t("Newsroom sign in", "समाचार कक्ष लगइन")}</AppText></View>
+                    <AppText variant="bodySmall" colorToken="textSecondary">{t("For approved editors and administrators. You can read, save stories and change settings without an account.", "स्वीकृत सम्पादक र प्रशासकहरूका लागि। खाता बिना समाचार पढ्न, सुरक्षित गर्न र सेटिङ्स बदल्न सकिन्छ।")}</AppText>
+                    {auth.signedIn ? <>
+                        <AppText variant="bodySmall" colorToken="textSecondary">{t("You're signed in. Studio access requires an active, approved newsroom account.", "तपाईं लगइन हुनुहुन्छ। स्टुडियो पहुँचका लागि सक्रिय, स्वीकृत समाचार कक्ष खाता आवश्यक छ।")}</AppText>
+                        <Button variant="outline" disabled={account.isFetching} onPress={() => { void account.refetch(); }}><AppText variant="label">{account.isFetching ? t("Checking access…", "पहुँच जाँच हुँदैछ…") : t("Check admin access", "एडमिन पहुँच जाँच्नुहोस्")}</AppText></Button>
+                        <Button variant="ghost" disabled={signingOut} onPress={() => { void signOut(); }}><AppText variant="label">{t("Sign out", "लगआउट")}</AppText></Button>
+                    </> : <>
+                        <Button accessibilityLabel={t("Admin sign in", "एडमिन लगइन")} onPress={() => router.push("/admin-auth" as never)}><AppText variant="label" colorToken="onPrimary">{t("Admin sign in", "एडमिन लगइन")}</AppText></Button>
+                        <AppText variant="caption" colorToken="textSecondary">{t("Sign in here with your approved newsroom account.", "स्वीकृत समाचार कक्ष खाताबाट यहाँ लगइन गर्नुहोस्।")}</AppText>
+                    </>}
+                    {account.isError ? <AppText variant="caption" colorToken="brandRed">{t("Account access could not be checked. Reader settings remain available.", "खाताको पहुँच जाँच्न सकिएन। पठन सेटिङ्स उपलब्ध छन्।")}</AppText> : null}
+                </View>
+            </SettingsGroup> : null}
+            <SettingsGroup title={t("Language & appearance", "भाषा र स्वरूप")}>
+                <SegmentedControl label={t("Reading language", "पढ्ने भाषा")} value={language} onChange={setLanguage} options={[{ value: "en", label: "English" }, { value: "ne", label: "नेपाली" }]} />
+                <SegmentedControl<ThemePreference> label={t("Theme", "थिम")} value={store.theme} onChange={store.setTheme} options={[{ value: "light", label: t("Light", "उज्यालो") }, { value: "dark", label: t("Dark", "अँध्यारो") }, { value: "system", label: t("System", "प्रणाली") }]} />
+            </SettingsGroup>
+            <SettingsGroup title={t("Reading", "पठन")}>
+                <SegmentedControl<ReaderScale> label={t("Article text size", "लेखको अक्षर आकार")} value={store.readerScale} onChange={store.setReaderScale} options={[{ value: "sm", label: t("Small", "सानो") }, { value: "md", label: t("Default", "सामान्य") }, { value: "lg", label: t("Large", "ठूलो") }, { value: "xl", label: t("Largest", "अति ठूलो") }]} />
+                <View style={[styles.preview, { backgroundColor: colors.surfaceSecondary }]}><AppText variant="body" style={{ fontFamily: fontFor(language, "editorial", "regular"), fontSize: reader.size, lineHeight: reader.lineHeight }}>{t("Clear reporting from Nepal and beyond. Read at your own pace.", "नेपाल र विश्वका स्पष्ट समाचार। आफ्नै गतिमा पढ्नुहोस्।")}</AppText></View>
+                <SettingsRow title={t("Reading progress", "पठन प्रगति")} description={t("Show your progress in an article.", "लेख पढ्दाको प्रगति देखाउनुहोस्।")}>{toggle(t("Reading progress", "पठन प्रगति"), store.readingProgressBar, store.setReadingProgressBar)}</SettingsRow>
+            </SettingsGroup>
+            <SettingsGroup title={t("Alert preferences", "सूचना प्राथमिकता")}>
+                <AppText variant="caption" colorToken="textSecondary">{t("Preferences are saved on this device. Push delivery is not connected yet.", "प्राथमिकताहरू यस उपकरणमा सुरक्षित छन्। पुश सूचना सेवा अझै जोडिएको छैन।")}</AppText>
+                <SettingsRow title={t("Breaking news", "ब्रेकिङ समाचार")}>{toggle(t("Breaking news", "ब्रेकिङ समाचार"), store.breakingDispatches, store.setBreakingDispatches)}</SettingsRow>
+                <SettingsRow title={t("Daily brief", "दैनिक ब्रीफ")}>{toggle(t("Daily brief", "दैनिक ब्रीफ"), store.dailyBriefAlert, store.setDailyBriefAlert)}</SettingsRow>
+                <SettingsRow title={t("Evening round-up", "साँझको सारांश")}>{toggle(t("Evening round-up", "साँझको सारांश"), store.eveningRoundup, store.setEveningRoundup)}</SettingsRow>
+            </SettingsGroup>
+            <SettingsGroup title={t("Saved stories", "सुरक्षित समाचार")}>
+                <SettingsRow title={t("Your reading library", "तपाईंको पढाइ संग्रह")} description={t(`${saved.length} stories stored on this device`, `यस उपकरणमा ${saved.length} समाचार सुरक्षित`)} onPress={() => router.push("/saved" as never)} />
+                {saved.length ? <Button variant="outline" onPress={() => setConfirmClear(true)}><AppText variant="label" colorToken="brandRed">{t("Clear saved stories", "सुरक्षित समाचार हटाउनुहोस्")}</AppText></Button> : null}
+                {confirmClear ? <View style={styles.preview}><AppText variant="bodySmall">{t("Remove all saved copies from this device?", "यस उपकरणबाट सबै सुरक्षित समाचार हटाउने?")}</AppText><Button variant="destructive" onPress={() => { clearSaved(); store.setSavedArticleIds([]); setConfirmClear(false); }}><AppText variant="label" colorToken="onPrimary">{t("Remove all", "सबै हटाउनुहोस्")}</AppText></Button><Button variant="ghost" onPress={() => setConfirmClear(false)}><AppText variant="label">{t("Cancel", "रद्द गर्नुहोस्")}</AppText></Button></View> : null}
+            </SettingsGroup>
+            <SettingsGroup title={t("Privacy", "गोपनीयता")}>
+                <SettingsRow title={t("Share anonymous usage", "नामरहित प्रयोग तथ्याङ्क साझा गर्नुहोस्")} description={t("Send event counts to The Leaders to improve reading and reliability. No names, article titles or search text are sent.", "पढाइ र विश्वसनीयता सुधार्न द लिडर्सलाई प्रयोग सङ्ख्या पठाउनुहोस्। नाम, लेख शीर्षक वा खोज शब्द पठाइँदैन।")}>{toggle(t("Share anonymous usage", "नामरहित प्रयोग तथ्याङ्क"), store.usageSharing, store.setUsageSharing)}</SettingsRow>
+            </SettingsGroup>
+            <SettingsGroup title={t("About The Leaders", "द लिडर्सबारे")}>
+                <SettingsRow title={t("Editorial enquiries & corrections", "सम्पादकीय सोधपुछ र सुधार")} onPress={() => open("mailto:corrections@theleadersnp.com")} />
+                <SettingsRow title={t("Privacy policy", "गोपनीयता नीति")} onPress={() => open("https://the-leadersnp.com/privacy-policy")} />
+                <SettingsRow title={t("Terms of service", "सेवा सर्तहरू")} onPress={() => open("https://the-leadersnp.com/terms")} />
+                <AppText variant="caption" colorToken="textSecondary">The Leaders · {Constants.expoConfig?.version ?? "1.0.0"}</AppText>
+            </SettingsGroup>
         </View>
-    );
-
-    const CustomSwitch = ({ value, onValueChange }: { value: boolean, onValueChange: (v: boolean) => void }) => (
-        <Switch 
-            value={value} 
-            onValueChange={onValueChange} 
-        />
-    );
-
-    return (
-        <ScrollView className="flex-1 bg-background" contentContainerClassName="pb-16">
-            {/* Header Area */}
-            <View className="px-5 pt-12 pb-6 bg-card border-b border-border">
-                <View className="flex-row items-baseline justify-between">
-                    <AppText
-                        variant="heading1"
-                        weight={isNe ? "bold" : "bold"}
-                    >
-                        Settings & Preferences
-                    </AppText>
-                    <AppText variant="caption" weight={isNe ? "semibold" : "semibold"} colorToken="primary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>
-                        सेटिंग्स
-                    </AppText>
-                </View>
-                <View className="flex-row items-center gap-2 mt-1">
-                    <View className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    <AppText variant="caption" weight="semibold" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Edition 142 • Kathmandu Dispatches</AppText>
-                    <AppText variant="caption" weight="semibold" colorToken="textSecondary">•</AppText>
-                    <AppText variant="caption" weight="semibold" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>B.S. 2081 Jestha</AppText>
-                </View>
-            </View>
-
-            <View className="p-5 gap-6">
-                <Pressable
-                    onPress={() => router.push("/designer" as never)}
-                    className="bg-primary p-4 rounded-xl flex-row items-center gap-3 active:opacity-90"
-                >
-                    <View className="w-10 h-10 rounded-full bg-primary-foreground/15 items-center justify-center">
-                        <PenLine size={19} color={colors.textInverse} />
-                    </View>
-                    <View className="flex-1">
-                        <AppText variant="caption" weight="black" colorToken="textInverse" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>CREATOR STUDIO</AppText>
-                        <AppText variant="caption" weight="medium" colorToken="textInverse" style={{ marginTop: 4, opacity: 0.8 }}>Design and share a news post</AppText>
-                    </View>
-                    <ChevronRight size={20} color={colors.textInverse} />
-                </Pressable>
-                
-                {/* 1. LANGUAGE & REGION */}
-                <View className="bg-card rounded-xl p-4 border border-border shadow-sm">
-                    <SectionHeader num={1} title="Language & Region" subtitle="भाषा र क्षेत्र" />
-                    
-                    <View className="gap-4">
-                        <View>
-                            <AppText variant="caption" weight="bold" colorToken="textPrimary" style={{ textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Primary App Language</AppText>
-                            <View className="flex-row bg-surface-secondary p-1 rounded-md">
-                                <SegmentButton label="English" active={store.language === "en"} onPress={() => store.setLanguage("en")} />
-                                <SegmentButton label="नेपाली (Devanagari)" active={store.language === "ne"} onPress={() => store.setLanguage("ne")} />
-                            </View>
-                        </View>
-
-                        <View className="flex-row items-start justify-between pt-1">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">Bilingual headlines</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2, lineHeight: 20 }}>Displays both English and Nepali titles on major investigative pieces.</AppText>
-                            </View>
-                            <CustomSwitch value={store.bilingualHeadlines} onValueChange={store.setBilingualHeadlines} />
-                        </View>
-
-                        <View className="bg-surface-secondary p-3 rounded-lg flex-row items-center justify-between mt-2">
-                            <View>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Regional Desk</AppText>
-                                <AppText variant="body" weight="bold" style={{ marginTop: 2 }}>{store.regionalDesk}</AppText>
-                            </View>
-                            <Button 
-                                variant="outline" 
-                                size="sm" 
-                                onPress={() => Alert.alert("Coming Soon", "Region selector will be available in the next update.")}
-                            >
-                                <AppText variant="caption" weight="semibold" colorToken="primary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Switch</AppText>
-                            </Button>
-                        </View>
-                    </View>
-                </View>
-
-                {/* 2. READING & TYPOGRAPHY */}
-                <View className="bg-card rounded-xl p-4 border border-border shadow-sm">
-                    <SectionHeader num={2} title="Reading & Typography" subtitle="पठन अनुभव" />
-                    
-                    <View className="bg-surface-secondary p-4 rounded-lg mb-4">
-                        <View className="flex-row items-center justify-between mb-2">
-                            <AppText variant="caption" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>SPECIMEN PREVIEW</AppText>
-                            <AppText variant="caption" weight="bold" colorToken="primary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>
-                                {store.readerScale === 'sm' ? '14px' : store.readerScale === 'md' ? '18px' : store.readerScale === 'lg' ? '22px' : '26px'}
-                                {" "}{store.bodyTypeface === 'serif' ? 'Editorial' : 'Modern'}
-                            </AppText>
-                        </View>
-                        <View className="bg-card p-3 rounded shadow-sm border border-border">
-                            <AppText
-                                variant="body"
-                                style={{
-                                    fontStyle: "italic",
-                                    fontFamily: store.bodyTypeface === "serif" ? "Merriweather_400Regular" : "Inter_400Regular",
-                                    fontSize: store.readerScale === 'sm' ? 14 : store.readerScale === 'md' ? 18 : store.readerScale === 'lg' ? 22 : 26, 
-                                    lineHeight: store.readerScale === 'sm' ? 22 : store.readerScale === 'md' ? 28 : store.readerScale === 'lg' ? 34 : 40, 
-                                }}
-                            >
-                                “Diplomatic accords cannot reset with every ministerial change in Singha Durbar.”
-                            </AppText>
-                        </View>
-                        <AppText variant="caption" weight="semibold" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5, textAlign: "right", marginTop: 8 }}>
-                            — Analytical Review, Desk Bureau
-                        </AppText>
-                    </View>
-
-                    <View className="gap-4">
-                        <View>
-                            <View className="flex-row justify-between mb-2">
-                                <AppText variant="caption" weight="bold" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>FONT SIZE</AppText>
-                            </View>
-                            <View className="flex-row bg-surface-secondary p-1 rounded-md">
-                                <SegmentButton label="Small" active={store.readerScale === "sm"} onPress={() => store.setReaderScale("sm")} />
-                                <SegmentButton label="18px" active={store.readerScale === "md"} onPress={() => store.setReaderScale("md")} />
-                                <SegmentButton label="Large" active={store.readerScale === "lg"} onPress={() => store.setReaderScale("lg")} />
-                                <SegmentButton label="X-Large" active={store.readerScale === "xl"} onPress={() => store.setReaderScale("xl")} />
-                            </View>
-                        </View>
-
-                        <View>
-                            <AppText variant="caption" weight="bold" colorToken="textPrimary" style={{ textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Body Typeface</AppText>
-                            <View className="flex-row gap-2">
-                                <Pressable onPress={() => store.setBodyTypeface("serif")} className={`flex-1 p-3 rounded-lg border ${store.bodyTypeface === "serif" ? "bg-surface-secondary border-border" : "bg-card border-transparent"}`}>
-                                    <AppText variant="body" weight="bold" style={{ fontFamily: "Merriweather_700Bold" }}>Editorial Serif</AppText>
-                                    <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Merriweather Pro</AppText>
-                                </Pressable>
-                                <Pressable onPress={() => store.setBodyTypeface("sans")} className={`flex-1 p-3 rounded-lg border ${store.bodyTypeface === "sans" ? "bg-surface-secondary border-border" : "bg-card border-transparent"}`}>
-                                    <AppText variant="body" weight="bold">Modern Sans</AppText>
-                                    <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Inter Neutral</AppText>
-                                </Pressable>
-                            </View>
-                        </View>
-
-                        <View className="flex-row items-center justify-between pt-1">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">Reading progress bar</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Subtle indicator under top navigation</AppText>
-                            </View>
-                            <CustomSwitch value={store.readingProgressBar} onValueChange={store.setReadingProgressBar} />
-                        </View>
-
-                        <View className="flex-row items-center justify-between pt-1">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">Auto-play audio briefs</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Stream correspondent summaries automatically</AppText>
-                            </View>
-                            <CustomSwitch value={store.autoplayAudio} onValueChange={store.setAutoplayAudio} />
-                        </View>
-                    </View>
-                </View>
-
-                {/* 3. APPEARANCE & CANVAS */}
-                <View className="bg-card rounded-xl p-4 border border-border shadow-sm">
-                    <SectionHeader num={3} title="Appearance & Canvas" subtitle="स्वरूप" />
-                    
-                    <View className="gap-4">
-                        <View>
-                            <AppText variant="caption" weight="bold" colorToken="textPrimary" style={{ textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 8 }}>Canvas Theme</AppText>
-                            <View className="flex-row bg-surface-secondary p-1 rounded-md">
-                                <SegmentButton active={store.theme === "light"} onPress={() => store.setTheme("light")}>
-                                    <Sun size={18} color={store.theme === "light" ? colors.textInverse : colors.textPrimary} />
-                                    <AppText variant="caption" weight="bold" colorToken={store.theme === "light" ? "textInverse" : "textPrimary"} style={{ marginTop: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Paper</AppText>
-                                </SegmentButton>
-                                <SegmentButton active={store.theme === "dark"} onPress={() => store.setTheme("dark")}>
-                                    <Moon size={18} color={store.theme === "dark" ? colors.textInverse : colors.textPrimary} />
-                                    <AppText variant="caption" weight="bold" colorToken={store.theme === "dark" ? "textInverse" : "textPrimary"} style={{ marginTop: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>Ink Night</AppText>
-                                </SegmentButton>
-                                <SegmentButton active={store.theme === "system"} onPress={() => store.setTheme("system")}>
-                                    <Settings size={18} color={store.theme === "system" ? colors.textInverse : colors.textPrimary} />
-                                    <AppText variant="caption" weight="bold" colorToken={store.theme === "system" ? "textInverse" : "textPrimary"} style={{ marginTop: 4, textTransform: "uppercase", letterSpacing: 0.5 }}>System</AppText>
-                                </SegmentButton>
-                            </View>
-                        </View>
-
-                        <View className="flex-row items-center justify-between bg-surface-secondary p-3 rounded-lg">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">Warm paper hue</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Reduces blue light during late reading</AppText>
-                            </View>
-                            <CustomSwitch value={store.warmPaperHue} onValueChange={store.setWarmPaperHue} />
-                        </View>
-                    </View>
-                </View>
-
-                {/* 4. NOTIFICATIONS & ALERTS */}
-                <View className="bg-card rounded-xl p-4 border border-border shadow-sm">
-                    <SectionHeader num={4} title="Notifications & Alerts" subtitle="सूचनाहरू" />
-                    
-                    <View className="gap-4">
-                        <View className="flex-row items-start justify-between">
-                            <View className="flex-1 pr-4">
-                                <View className="flex-row items-center gap-2">
-                                    <AppText variant="body" weight="bold">Breaking dispatches</AppText>
-                                    <View className="bg-primary/10 px-1.5 py-0.5 rounded">
-                                        <AppText variant="caption" weight="bold" colorToken="primary" style={{ textTransform: "uppercase", letterSpacing: 0.5, fontSize: 9 }}>Priority</AppText>
-                                    </View>
-                                </View>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Urgent national alerts only (avg. 1–2 per day).</AppText>
-                            </View>
-                            <CustomSwitch value={store.breakingDispatches} onValueChange={store.setBreakingDispatches} />
-                        </View>
-
-                        <View className="flex-row items-start justify-between">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">The Daily Brief</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Morning compilation of essential policy news</AppText>
-                                <View className="flex-row items-center gap-1 mt-1">
-                                    <Clock size={14} className="text-primary" />
-                                    <AppText variant="caption" weight="semibold" colorToken="primary">06:00 AM NPT (Nepal Standard Time)</AppText>
-                                </View>
-                            </View>
-                            <CustomSwitch value={store.dailyBriefAlert} onValueChange={store.setDailyBriefAlert} />
-                        </View>
-
-                        <View className="bg-surface-secondary p-3 rounded-lg mt-2">
-                            <View className="flex-row justify-between items-center mb-2">
-                                <AppText variant="caption" weight="bold" colorToken="textPrimary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Topics & Columnists</AppText>
-                                <Pressable onPress={() => Alert.alert("Coming Soon", "Topic manager will be available shortly.")}>
-                                    <AppText variant="caption" weight="bold" colorToken="primary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Manage (4) →</AppText>
-                                </Pressable>
-                            </View>
-                            <View className="flex-row flex-wrap gap-1.5">
-                                {["Politics", "Energy & Hydropower", "Nepal Rastra Bank", "Swarnim Bhattarai"].map(t => (
-                                    <View key={t} className="bg-card px-2 py-1 rounded shadow-sm border border-border">
-                                        <AppText variant="caption" weight="medium">{t}</AppText>
-                                    </View>
-                                ))}
-                            </View>
-                        </View>
-
-                        <View className="flex-row items-start justify-between pt-2">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">Evening editorial round-up</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Curated perspectives at sunset (18:30 NPT)</AppText>
-                            </View>
-                            <CustomSwitch value={store.eveningRoundup} onValueChange={store.setEveningRoundup} />
-                        </View>
-                    </View>
-                </View>
-
-                {/* 5. OFFLINE & STORAGE */}
-                <View className="bg-card rounded-xl p-4 border border-border shadow-sm">
-                    <SectionHeader num={5} title="Offline & Cache Storage" subtitle="अफलाइन र भण्डारण" />
-                    
-                    <View className="gap-4">
-                        <View className="flex-row items-start justify-between">
-                            <View className="flex-1 pr-4">
-                                <AppText variant="body" weight="bold">Auto-download on Wi-Fi</AppText>
-                                <AppText variant="caption" colorToken="textSecondary" style={{ marginTop: 2 }}>Downloads unread Top Stories and Daily Brief for commute reading.</AppText>
-                            </View>
-                            <CustomSwitch value={store.autoDownloadWifi} onValueChange={store.setAutoDownloadWifi} />
-                        </View>
-
-                        <View className="bg-surface-secondary p-3 rounded-lg mt-2">
-                            <View className="flex-row justify-between items-center mb-1.5">
-                                <AppText variant="caption" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>STORAGE ALLOCATION</AppText>
-                                <AppText variant="caption" weight="semibold">{totalMB} MB / 250 MB</AppText>
-                            </View>
-                            <View className="w-full h-2 bg-border rounded-full overflow-hidden">
-                                <View className="h-full bg-primary" style={{ width: `${percentage}%` as any }} />
-                            </View>
-                            <View className="flex-row justify-between items-center mt-3">
-                                <AppText variant="caption" weight="medium" colorToken="textSecondary">High-res dispatches cache</AppText>
-                                <Pressable onPress={handleClearCache}>
-                                    <AppText variant="caption" weight="bold" colorToken="primary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Clear Offline Cache</AppText>
-                                </Pressable>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-
-                {/* 6. EDITORIAL INTEGRITY & ABOUT */}
-                <View className="bg-card rounded-xl p-4 border border-border shadow-sm">
-                    <SectionHeader num={6} title="Editorial Integrity" subtitle="सम्पादकीय प्रतिबद्धता" />
-                    
-                    <View className="gap-2">
-                        <Pressable 
-                            onPress={() => Alert.alert("Coming Soon", "Editorial Charter document viewer is under construction.")}
-                            className="flex-row items-center justify-between py-2"
-                        >
-                            <View>
-                                <AppText variant="body" weight="bold">The Leaders Editorial Charter</AppText>
-                                <AppText variant="caption" weight="medium" colorToken="textSecondary" style={{ marginTop: 2 }}>Code of Ethics & Independent Fact-Checking</AppText>
-                            </View>
-                            <ChevronRight size={20} className="text-muted-foreground" />
-                        </Pressable>
-                        <Pressable 
-                            onPress={() => Alert.alert("Coming Soon", "Transparency Report viewer is under construction.")}
-                            className="flex-row items-center justify-between py-2"
-                        >
-                            <View>
-                                <AppText variant="body" weight="bold">Press Council Compliance</AppText>
-                                <AppText variant="caption" weight="medium" colorToken="textSecondary" style={{ marginTop: 2 }}>Annual Transparency Report (2024)</AppText>
-                            </View>
-                            <ChevronRight size={20} className="text-muted-foreground" />
-                        </Pressable>
-                        <Pressable 
-                            onPress={() => Alert.alert("Contact", "Opening mail client to corrections@theleadersnp.com")}
-                            className="flex-row items-center justify-between py-2"
-                        >
-                            <View>
-                                <AppText variant="body" weight="bold">Newsroom Corrections Bureau</AppText>
-                                <AppText variant="caption" weight="bold" colorToken="primary" style={{ marginTop: 2, letterSpacing: 0.5 }}>corrections@theleadersnp.com</AppText>
-                            </View>
-                            <ExternalLink size={18} className="text-muted-foreground" />
-                        </Pressable>
-                    </View>
-
-                    <View className="mt-6 pt-6 bg-surface-secondary p-3 rounded-lg items-center border border-border">
-                        <AppText variant="body" weight="black" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>THE LEADERS</AppText>
-                        <AppText variant="caption" weight="semibold" colorToken="textSecondary" style={{ marginTop: 4, textTransform: "uppercase", letterSpacing: 0.5, textAlign: "center" }}>
-                            Version {Constants.expoConfig?.version || "2.4.1"} (Build 890) • Kathmandu Digital Desk
-                        </AppText>
-                        
-                        <View className="flex-row items-center gap-4 mt-4">
-                            <Pressable onPress={() => Alert.alert("Coming Soon", "Privacy Policy web view.")}><AppText variant="caption" weight="bold" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Privacy Policy</AppText></Pressable>
-                            <AppText variant="caption" weight="bold" colorToken="textSecondary">•</AppText>
-                            <Pressable onPress={() => Alert.alert("Coming Soon", "Terms of Service web view.")}><AppText variant="caption" weight="bold" colorToken="textSecondary" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Terms of Journalistic Service</AppText></Pressable>
-                        </View>
-                    </View>
-
-                    <View className="flex-row gap-3 mt-6">
-                        <Button 
-                            variant="secondary"
-                            className="flex-1 bg-surface-secondary"
-                            onPress={() => Alert.alert("Coming Soon", "In-app purchases integration in progress.")}
-                        >
-                            <AppText variant="caption" weight="bold" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Restore Purchases</AppText>
-                        </Button>
-                        <Button 
-                            variant="destructive"
-                            className="flex-1 bg-destructive/10 hover:bg-destructive/20 active:bg-destructive/30"
-                            onPress={() => Alert.alert("Sign Out", "Are you sure you want to sign out?", [{ text: "Cancel", style: "cancel" }, { text: "Sign Out", style: "destructive" }])}
-                        >
-                            <AppText variant="caption" weight="bold" colorToken="error" style={{ textTransform: "uppercase", letterSpacing: 0.5 }}>Sign Out</AppText>
-                        </Button>
-                    </View>
-                </View>
-
-            </View>
-        </ScrollView>
-    );
+    </ScrollView>;
 }
+const styles = StyleSheet.create({
+    content: { paddingHorizontal: spacing.gutter, paddingTop: spacing.xl, gap: spacing.xl },
+    preview: { padding: spacing.card, borderRadius: radius.md, gap: spacing.md },
+    account: { padding: spacing.card, borderRadius: radius.md, borderWidth: layout.ruleWidth, gap: spacing.md },
+    accountHeading: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+});

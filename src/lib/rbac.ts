@@ -9,6 +9,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             return {
                 pageAccess: { dashboard: true, content: true, media: true, messages: true, settings: true, users: true },
                 articles: { create: true, edit: true, delete: true, publish: true },
+                socialPosts: { create: true, edit: true, submit: true, approve: true, export: true },
                 settings: { view: true, modify: true },
                 users: { view: true, manage: true },
                 analytics: { view: true, viewAll: true },
@@ -18,6 +19,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             return {
                 pageAccess: { dashboard: true, content: false, media: true, messages: true, settings: true, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
+                socialPosts: { create: false, edit: false, submit: false, approve: false, export: false },
                 settings: { view: true, modify: true },
                 users: { view: false, manage: false },
                 analytics: { view: true, viewAll: false },
@@ -27,6 +29,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             return {
                 pageAccess: { dashboard: true, content: true, media: true, messages: true, settings: false, users: false },
                 articles: { create: true, edit: true, delete: true, publish: true },
+                socialPosts: { create: true, edit: true, submit: true, approve: true, export: true },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
                 analytics: { view: true, viewAll: false },
@@ -36,6 +39,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             return {
                 pageAccess: { dashboard: true, content: false, media: true, messages: true, settings: false, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
+                socialPosts: { create: false, edit: false, submit: false, approve: false, export: true },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
                 analytics: { view: true, viewAll: true },
@@ -46,6 +50,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             return {
                 pageAccess: { dashboard: false, content: false, media: false, messages: false, settings: false, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
+                socialPosts: { create: false, edit: false, submit: false, approve: false, export: false },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
                 analytics: { view: false, viewAll: false },
@@ -68,6 +73,10 @@ export function ensurePermissionShape(
         articles: {
             ...defaults.articles,
             ...(permissions?.articles || {}),
+        },
+        socialPosts: {
+            ...defaults.socialPosts,
+            ...(permissions?.socialPosts || {}),
         },
         settings: {
             ...defaults.settings,

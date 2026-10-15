@@ -27,7 +27,7 @@ export default function ImageUploader({
     const [isDragging, setIsDragging] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
@@ -77,7 +77,7 @@ export default function ImageUploader({
             const res = await fetch('/api/admin/media/upload', {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`
+
                 },
                 body: formData
             });

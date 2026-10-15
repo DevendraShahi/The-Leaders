@@ -48,19 +48,14 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                                     href: "/leaders",
                                 },
                                 {
-                                    nameEn: "History",
-                                    nameNe: "इतिहास",
-                                    href: "/history",
-                                },
-                                {
                                     nameEn: "Articles",
                                     nameNe: "लेखहरू",
                                     href: "/articles",
                                 },
                                 {
-                                    nameEn: "Coverage",
+                                    nameEn: "Daily",
                                     nameNe: "कभरेज",
-                                    href: "/coverage",
+                                    href: "/coverage/daily-brief",
                                 },
                                 {
                                     nameEn: "About Us",

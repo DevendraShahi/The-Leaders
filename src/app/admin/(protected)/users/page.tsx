@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { IAdmin, IPermissions } from "@/models/Admin";
 import { ConfirmDialog } from "@/components/admin/ConfirmDialog";
 import { toast } from "sonner";
-import { Trash2, Edit, Plus, Power, PowerOff } from "lucide-react";
+import { Trash2, Edit, Plus, Power, PowerOff, X } from "lucide-react";
 
 interface AdminUser extends Omit<IAdmin, '_id'> {
     _id: string;
 }
+
+
 
 const PAGE_ACCESS_LABELS: Record<keyof IPermissions['pageAccess'], string> = {
     dashboard: 'Dashboard',
@@ -33,6 +35,8 @@ function normalizePageAccess(admin?: Partial<AdminUser> | null): IPermissions['p
         ...(admin?.permissions?.pageAccess || {}),
     };
 }
+
+function IdentityStatus({ admin }: { admin: AdminUser }) { return <span className="text-xs text-muted-foreground">{admin.isActive ? 'Active' : 'Disabled'}</span>; }
 
 export default function AdminUsersPage() {
     const [admins, setAdmins] = useState<AdminUser[]>([]);
@@ -125,15 +129,15 @@ export default function AdminUsersPage() {
         <div className="p-4 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                 <div>
-                    <h1 className="text-2xl sm:text-3xl font-bebas uppercase tracking-wide">Admin Management</h1>
-                    <p className="text-muted-foreground mt-1">Manage admin users and their permissions</p>
+                    <h1 className="text-2xl sm:text-3xl font-bebas uppercase tracking-wide">Newsroom access</h1>
+                    <p className="text-muted-foreground mt-1">Manage newsroom accounts and permissions.</p>
                 </div>
                 <button
                     onClick={() => setShowCreateModal(true)}
                     className="flex items-center justify-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 hover:bg-primary/90 transition-colors w-full sm:w-auto"
                 >
                     <Plus size={20} />
-                    Create Admin
+                    Provision teammate
                 </button>
             </div>
 
@@ -171,6 +175,7 @@ export default function AdminUsersPage() {
                                         {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString() : 'N/A'}
                                     </span>
                                 </div>
+                                <IdentityStatus admin={admin} />
 
                                 <div className="flex items-center gap-2">
                                     {admin.role !== 'superadmin' ? (
@@ -212,6 +217,7 @@ export default function AdminUsersPage() {
                                 <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Email</th>
                                 <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Role</th>
                                 <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Status</th>
+                                <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Identity</th>
                                 <th className="text-left px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Created</th>
                                 <th className="text-right px-6 py-4 font-bebas uppercase tracking-wide max-md:whitespace-nowrap">Actions</th>
                             </tr>
@@ -223,6 +229,7 @@ export default function AdminUsersPage() {
                                         <div className="font-medium">{admin.name || admin.username}</div>
                                         <div className="text-sm text-muted-foreground">@{admin.username}</div>
                                     </td>
+                                    <td className="px-6 py-4"><IdentityStatus admin={admin} /></td>
                                     <td className="px-6 py-4 text-muted-foreground max-md:whitespace-nowrap">{admin.email}</td>
                                     <td className="px-6 py-4">
                                         <span className={`px-3 py-1 text-xs font-medium uppercase tracking-wide ${getRoleBadgeColor(admin.role)}`}>
@@ -374,7 +381,8 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div className="bg-background border border-border p-8 max-w-md w-full mx-4">
-                <h2 className="text-2xl font-bebas uppercase tracking-wide mb-6">Create New Admin</h2>
+                <h2 className="text-2xl font-bebas uppercase tracking-wide mb-2">Provision teammate</h2>
+                <p className="mb-6 text-sm text-muted-foreground">Create an email and password account for your teammate.</p>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                         <label className="block text-sm font-medium mb-1">Email</label>
@@ -386,6 +394,7 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
                             className="w-full px-4 py-2 bg-muted border border-border focus:border-primary outline-none"
                         />
                     </div>
+                    <label className="block text-sm">Initial password<input type="password" autoComplete="new-password" required minLength={12} maxLength={128} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="mt-1 w-full border border-border bg-muted px-4 py-2" /></label>
                     <div>
                         <label className="block text-sm font-medium mb-1">Username</label>
                         <input
@@ -393,16 +402,6 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
                             required
                             value={formData.username}
                             onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                            className="w-full px-4 py-2 bg-muted border border-border focus:border-primary outline-none"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium mb-1">Password</label>
-                        <input
-                            type="password"
-                            required
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             className="w-full px-4 py-2 bg-muted border border-border focus:border-primary outline-none"
                         />
                     </div>
@@ -460,7 +459,7 @@ function CreateAdminModal({ onClose, onSuccess }: { onClose: () => void; onSucce
                             disabled={submitting}
                             className="flex-1 bg-primary text-primary-foreground py-2 hover:bg-primary/90 transition-colors disabled:opacity-50"
                         >
-                            {submitting ? 'Creating...' : 'Create Admin'}
+                            {submitting ? 'Provisioning...' : 'Provision access'}
                         </button>
                         <button
                             type="button"

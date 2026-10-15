@@ -1,0 +1,15 @@
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import dotenv from 'dotenv';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+dotenv.config({ path: path.join(root, '.env.local'), quiet: true });
+const secret = process.env.STUDIO_ATTENTION_AUTOMATION_SECRET;
+if (!secret) throw new Error('Studio automation is not configured.');
+const file = process.argv[2];
+if (!file) throw new Error('Use --due or supply an absolute path to a bilingual edition JSON file.');
+const body = file === '--due' ? undefined : await readFile(file, 'utf8');
+if (body) JSON.parse(body);
+const response = await fetch(`${process.env.STUDIO_ATTENTION_API_URL || 'http://localhost:3001'}/api/v1/auth/daily-social/ingest`, { method: body ? 'POST' : 'GET', headers: { Authorization: `Bearer ${secret}`, 'Content-Type': 'application/json' }, body, signal: AbortSignal.timeout(30000) });
+if (!response.ok) throw new Error(`Daily edition request failed (${response.status}): ${await response.text()}`);
+console.log(JSON.stringify(await response.json()));

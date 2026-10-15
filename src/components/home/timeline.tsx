@@ -91,7 +91,7 @@ export function Timeline({ limit, showViewAll }: { limit?: number; showViewAll?:
                         viewport={{ once: true }}
                         className="mt-9 pl-[var(--timeline-content-start)]"
                     >
-                        <Link href="/history" className="block sm:max-w-[700px]">
+                        <Link prefetch={false} href="/history" className="block sm:max-w-[700px]">
                             <Card className="group relative cursor-pointer overflow-hidden border border-border/20 bg-card p-6 transition-all duration-500 hover:border-primary/30 hover:bg-muted/50 sm:p-8">
                                 <div className="relative z-10 flex items-center justify-between gap-4 sm:gap-6">
                                     <div className="min-w-0">

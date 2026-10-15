@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
-import { AppText } from "@/ui/AppText";
+import { AppText } from "@/ui/primitives/AppText";
 import { useColors } from "@/theme/Theme";
 import { pick, useLanguage } from "@/i18n/language";
 import { ui } from "@/i18n/copy";
@@ -21,8 +21,9 @@ export function Countdown({ iso, label }: { iso: string; label: string }) {
     return (
         <View style={{ flexDirection: "row", alignItems: "baseline", gap: 8, marginBottom: 16 }}>
             <AppText
-                variant="body"
-                style={{ color: colors.brandRed, fontFamily: "Manrope_600SemiBold", fontSize: 28, lineHeight: 32 }}
+                variant="heading1"
+                weight="semibold"
+                style={{ color: colors.brandRed, fontVariant: ["tabular-nums"] }}
             >
                 {String(days)}
             </AppText>

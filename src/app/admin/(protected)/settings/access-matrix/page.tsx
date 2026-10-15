@@ -35,6 +35,11 @@ const PAGE_LABELS: Record<keyof IPermissions['pageAccess'], string> = {
     users: 'Manage Admins',
 };
 
+const SOCIAL_KEYS: Array<keyof IPermissions['socialPosts']> = ['create', 'edit', 'submit', 'approve', 'export'];
+const SOCIAL_LABELS: Record<keyof IPermissions['socialPosts'], string> = {
+    create: 'Create', edit: 'Edit', submit: 'Submit review', approve: 'Approve', export: 'Export',
+};
+
 function normalizePageAccess(permissions?: IPermissions) {
     return {
         dashboard: Boolean(permissions?.pageAccess?.dashboard),
@@ -43,6 +48,13 @@ function normalizePageAccess(permissions?: IPermissions) {
         messages: Boolean(permissions?.pageAccess?.messages),
         settings: Boolean(permissions?.pageAccess?.settings),
         users: Boolean(permissions?.pageAccess?.users),
+    };
+}
+
+function normalizeSocialAccess(permissions?: IPermissions): IPermissions['socialPosts'] {
+    return {
+        create: Boolean(permissions?.socialPosts?.create), edit: Boolean(permissions?.socialPosts?.edit),
+        submit: Boolean(permissions?.socialPosts?.submit), approve: Boolean(permissions?.socialPosts?.approve), export: Boolean(permissions?.socialPosts?.export),
     };
 }
 
@@ -95,6 +107,12 @@ export default function AccessMatrixPage() {
                 };
             })
         );
+    };
+
+    const updateSocialToggle = (adminId: string, key: keyof IPermissions['socialPosts'], value: boolean) => {
+        setAdmins((prev) => prev.map((admin) => admin._id !== adminId ? admin : ({
+            ...admin, permissions: { ...admin.permissions, socialPosts: { ...normalizeSocialAccess(admin.permissions), [key]: value } },
+        })));
     };
 
     const saveAdminAccess = async (target: AdminUser) => {
@@ -289,6 +307,24 @@ export default function AccessMatrixPage() {
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 Changes apply immediately after save.
             </div>
+
+            <section className="border border-border bg-card overflow-hidden">
+                <div className="border-b border-border p-4">
+                    <h2 className="font-bebas text-2xl tracking-wide">Social Studio permissions</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">Grant the exact newsroom actions each account may take. An assigned reviewer still cannot approve their own post.</p>
+                </div>
+                <div className="divide-y divide-border">
+                    {visibleAdmins.map((admin) => {
+                        const socialAccess = normalizeSocialAccess(admin.permissions);
+                        const disabled = !admin.isActive;
+                        return <div key={`social-${admin._id}`} className="flex flex-col gap-3 p-4 lg:flex-row lg:items-center lg:justify-between">
+                            <div><p className="font-medium">{admin.name || admin.username}</p><p className="text-xs text-muted-foreground">{admin.email}</p></div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-2">{SOCIAL_KEYS.map((key) => <label key={key} className="flex items-center gap-2 text-xs"><input type="checkbox" checked={socialAccess[key]} disabled={disabled || Boolean(savingById[admin._id])} onChange={(event) => updateSocialToggle(admin._id, key, event.target.checked)} className="size-4 accent-primary" />{SOCIAL_LABELS[key]}</label>)}</div>
+                            <button onClick={() => saveAdminAccess(admin)} disabled={disabled || Boolean(savingById[admin._id])} className="inline-flex items-center justify-center gap-2 border border-border px-3 py-2 text-xs font-bold uppercase tracking-wider hover:bg-muted disabled:opacity-50">{savingById[admin._id] ? <Loader2 className="size-3.5 animate-spin" /> : <Save className="size-3.5" />} Save</button>
+                        </div>;
+                    })}
+                </div>
+            </section>
         </div>
     );
 }

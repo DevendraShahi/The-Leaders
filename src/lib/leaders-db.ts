@@ -12,6 +12,8 @@ export const getLeaders = unstable_cache(async () => {
         // Sort by order ascending
         const leaders = await Leader.find({ status: "published" })
             .sort({ order: 1 })
+            .limit(100)
+            .select("slug name desc party position years image cover isActive order")
             .lean();
 
         return serialize(leaders) as ILeader[];

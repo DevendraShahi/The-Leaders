@@ -37,7 +37,7 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                     transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                     className="group relative overflow-hidden"
                 >
-                    <Link
+                    <Link prefetch={false}
                         href={`/articles/${hero.slug}`}
                         className="block h-full"
                         onClick={() =>
@@ -118,7 +118,7 @@ export function ArticleGrid({ articles }: ArticleGridProps) {
                             transition={{ duration: 0.5, delay: index * 0.08 }}
                             className="group h-full"
                         >
-                            <Link
+                            <Link prefetch={false}
                                 href={`/articles/${article.slug}`}
                                 onClick={() =>
                                     trackHomeEvent("home_article_click", {

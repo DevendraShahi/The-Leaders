@@ -2,6 +2,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Tabs } from "expo-router/js-tabs";
 import { AnimatedTabBar } from "@/ui/AnimatedTabBar";
 import { useColors } from "@/theme/Theme";
+import { useAdminAccount } from "@/services/useAdminAccount";
 
 import { View } from "react-native";
 import { MiniPlayer } from "@/ui/MiniPlayer";
@@ -13,13 +14,14 @@ export const unstable_settings = {
 export default function TabLayout() {
     const colors = useColors();
     const insets = useSafeAreaInsets();
+    const { isAdmin, isPending } = useAdminAccount();
 
     return (
         <Tabs
             tabBar={(props) => (
                 <View>
                     <MiniPlayer />
-                    <AnimatedTabBar {...props} />
+                    <AnimatedTabBar {...props} showStudio={isAdmin} />
                 </View>
             )}
             screenOptions={{
@@ -33,7 +35,9 @@ export default function TabLayout() {
             <Tabs.Screen name="index" />
             <Tabs.Screen name="latest" />
             <Tabs.Screen name="explore" />
-            <Tabs.Screen name="saved" />
+            <Tabs.Protected guard={isPending || isAdmin}>
+                <Tabs.Screen name="studio" />
+            </Tabs.Protected>
             <Tabs.Screen name="profile" />
         </Tabs>
     );

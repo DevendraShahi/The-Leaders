@@ -1,9 +1,9 @@
 import { ActivityIndicator, Pressable, View } from "react-native";
-import { AppText } from "@/ui/AppText";
+import { AppText } from "@/ui/primitives/AppText";
 import { useColors } from "@/theme/Theme";
 import { pick, useLanguage } from "@/i18n/language";
 import { ui } from "@/i18n/copy";
-import { radius, spacing } from "@/theme/tokens";
+import { radius, spacing, layout } from "@/theme/tokens";
 import { AlertCircle, Inbox, RotateCcw } from "lucide-react-native";
 
 export function StateView({
@@ -26,7 +26,7 @@ export function StateView({
                 <ActivityIndicator color={colors.primary} size="small" />
                 <AppText
                     variant="meta"
-                    style={{ color: colors.mutedForeground, fontFamily: "Manrope_500Medium" }}
+                    style={{ color: colors.mutedForeground }}
                 >
                     {pick(ui.loading, language)}
                 </AppText>
@@ -37,59 +37,61 @@ export function StateView({
     if (error) {
         return (
             <View
+                accessibilityRole="alert"
                 style={{
-                    marginVertical: spacing.xl,
+                    marginTop: spacing["3xl"],
+                    marginBottom: spacing.xl,
                     padding: spacing.xl,
-                    backgroundColor: colors.muted,
+                    backgroundColor: colors.surfaceSecondary,
                     borderWidth: 1,
                     borderColor: colors.border,
                     borderRadius: radius.lg,
-                    gap: spacing.lg,
+                    borderTopWidth: 3,
+                    borderTopColor: colors.destructive,
+                    gap: spacing.md,
                     alignItems: "flex-start",
                 }}
             >
                 <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.sm }}>
-                    <AlertCircle size={16} color={colors.destructive} />
+                    <AlertCircle size={layout.iconSize} color={colors.destructive} />
                     <AppText
-                        variant="meta"
-                        style={{
-                            color: colors.destructive,
-                            fontFamily: "Manrope_600SemiBold",
-                            fontSize: 13,
-                        }}
+                        variant="uiTitle"
+                        style={{ color: colors.textPrimary }}
                     >
-                        Something went wrong
+                        {pick(ui.errorTitle, language)}
                     </AppText>
                 </View>
                 <AppText
-                    variant="meta"
-                    style={{ color: colors.mutedForeground, lineHeight: 20 }}
+                    variant="bodySmall"
+                    style={{ color: colors.textSecondary }}
                 >
                     {error.message}
                 </AppText>
+                <AppText variant="caption" style={{ color: colors.textSecondary }}>
+                    {pick(ui.errorHint, language)}
+                </AppText>
                 {onRetry ? (
                     <Pressable
+                        accessibilityRole="button"
+                        accessibilityLabel={pick(ui.retry, language)}
                         onPress={onRetry}
                         style={({ pressed }) => ({
                             flexDirection: "row",
                             alignItems: "center",
                             gap: spacing.xs,
                             paddingHorizontal: spacing.md,
-                            paddingVertical: spacing.sm,
+                            minHeight: layout.touchTarget,
                             borderRadius: radius.md,
-                            backgroundColor: pressed ? colors.surfaceSecondary : colors.surface,
+                            backgroundColor: pressed ? colors.pressedOverlay : colors.surface,
                             borderWidth: 1,
                             borderColor: colors.border,
                         })}
                     >
-                        <RotateCcw size={14} color={colors.textPrimary} />
+                        <RotateCcw size={layout.iconSmall} color={colors.textPrimary} />
                         <AppText
                             variant="meta"
-                            style={{
-                                color: colors.textPrimary,
-                                fontFamily: "Manrope_600SemiBold",
-                                fontSize: 13,
-                            }}
+                            weight="semibold"
+                            style={{ color: colors.textPrimary }}
                         >
                             {pick(ui.retry, language)}
                         </AppText>
@@ -112,15 +114,11 @@ export function StateView({
                         justifyContent: "center",
                     }}
                 >
-                    <Inbox size={24} color={colors.mutedForeground} />
+                    <Inbox size={layout.iconLarge} color={colors.mutedForeground} />
                 </View>
                 <AppText
                     variant="meta"
-                    style={{
-                        color: colors.mutedForeground,
-                        fontFamily: "Manrope_500Medium",
-                        textAlign: "center",
-                    }}
+                    style={{ color: colors.mutedForeground, textAlign: "center" }}
                 >
                     {pick(ui.empty, language)}
                 </AppText>

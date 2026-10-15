@@ -1,66 +1,62 @@
+import { type ReactNode } from "react";
 import { Pressable, View } from "react-native";
-import { AppText } from "@/ui/AppText";
+import { AppText } from "@/ui/primitives/AppText";
 import { useColors } from "@/theme/Theme";
 import { pick, useLanguage } from "@/i18n/language";
 import { ui } from "@/i18n/copy";
-import { radius, spacing } from "@/theme/tokens";
+import { layout, radius, spacing } from "@/theme/tokens";
+import { ArrowLeft } from "lucide-react-native";
 
-export function PageHeader({ title }: { title: string }) {
+export function PageHeader({ title, onBack, backLabel, subtitle, actions, compact = false }: { title: string; onBack?: () => void; backLabel?: string; subtitle?: string; actions?: ReactNode; compact?: boolean }) {
     const colors = useColors();
     const { language, toggleLanguage } = useLanguage();
-    const nepali = language === "ne";
 
     return (
         <View
             style={{
                 paddingHorizontal: spacing.gutter,
-                paddingTop: spacing.xl,
-                paddingBottom: spacing.lg,
+                paddingTop: compact ? spacing.md : spacing.lg,
+                paddingBottom: compact ? spacing.md : spacing.lg,
                 flexDirection: "row",
-                alignItems: "flex-end",
+                alignItems: "center",
                 justifyContent: "space-between",
-                gap: 12,
+                gap: spacing.md,
                 borderBottomWidth: 1,
                 borderBottomColor: colors.border,
-                marginBottom: spacing.lg,
+                marginBottom: compact ? 0 : spacing.lg,
             }}
         >
-            <AppText
-                variant="body"
-                numberOfLines={2}
+            {onBack ? <Pressable onPress={onBack} accessibilityRole="button" accessibilityLabel={backLabel ?? (language === "ne" ? "पछाडि" : "Back")} style={{ minWidth: layout.touchTarget, minHeight: layout.touchTarget, alignItems: "center", justifyContent: "center" }}><ArrowLeft size={layout.iconSize} color={colors.textPrimary} /></Pressable> : null}
+            <View style={{ flex: 1, minWidth: 0, gap: spacing.xs }}><AppText
+                variant="pageTitle"
                 style={{
-                    flex: 1,
                     color: colors.textPrimary,
-                    fontFamily: nepali ? "Hind_600SemiBold" : "Manrope_700Bold",
-                    fontSize: nepali ? 28 : 30,
-                    lineHeight: nepali ? 40 : 38,
-                    letterSpacing: -0.5,
                 }}
             >
                 {title}
             </AppText>
+            {subtitle ? <AppText variant="caption" colorToken="textSecondary">{subtitle}</AppText> : null}</View>
+            {actions}
             <Pressable
                 onPress={toggleLanguage}
                 accessibilityRole="button"
-                accessibilityLabel={pick(ui.language, language)}
-                style={({ pressed }) => ({
+                accessibilityLabel={language === "ne" ? "Switch to English" : "नेपालीमा पढ्नुहोस्"}
+                style={{
                     paddingHorizontal: spacing.md,
-                    paddingVertical: spacing.xs + 2,
+                    minHeight: layout.touchTarget,
+                    justifyContent: "center",
+                    paddingVertical: spacing.xs,
                     borderRadius: radius.sm,
-                    backgroundColor: pressed ? colors.accent : "transparent",
+                    backgroundColor: "transparent",
                     borderWidth: 1,
                     borderColor: colors.border,
                     marginBottom: 2,
-                })}
+                }}
             >
                 <AppText
                     variant="meta"
-                    style={{
-                        color: colors.textPrimary,
-                        fontFamily: "Manrope_600SemiBold",
-                        fontSize: 12,
-                        letterSpacing: 0.3,
-                    }}
+                    weight="semibold"
+                    style={{ color: colors.textPrimary }}
                 >
                     {pick(ui.language, language)}
                 </AppText>

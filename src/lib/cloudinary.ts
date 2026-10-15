@@ -7,7 +7,7 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export type MediaCategory = 'article' | 'leader' | 'history' | 'general';
+export type MediaCategory = 'article' | 'leader' | 'history' | 'social' | 'general';
 
 /**
  * Get the folder path for a media category
@@ -17,6 +17,7 @@ export function getFolderPath(category: MediaCategory): string {
         article: 'the-leaders/articles',
         leader: 'the-leaders/leaders',
         history: 'the-leaders/history',
+        social: 'the-leaders/social',
         general: 'the-leaders/general',
     };
     return folderMap[category];
@@ -38,14 +39,18 @@ export async function uploadImage(
     try {
         const folder = getFolderPath(category);
 
+        const isSocialPng = category === 'social' && mimeType === 'image/png';
         const uploadOptions: any = {
             folder,
             resource_type: 'image',
-            transformation: [
+            transformation: isSocialPng ? [] : [
                 { quality: 'auto:good' },
                 { fetch_format: 'auto' },
             ],
         };
+        // Social exports are immutable, fixed-format PNGs, not delivery-optimized
+        // photographs. Do not let automatic format conversion alter that file.
+        if (isSocialPng) uploadOptions.format = 'png';
 
         if (filename) {
             // Add timestamp to ensure uniqueness

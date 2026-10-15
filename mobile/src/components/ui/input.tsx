@@ -1,7 +1,11 @@
 import { cn } from '@/lib/utils';
 import { Platform, TextInput } from 'react-native';
+import { useLanguage } from '@/i18n/language';
+import { fontFor, typography, layout, radius } from '@/theme/tokens';
 
-function Input({ className, ...props }: React.ComponentProps<typeof TextInput> & React.RefAttributes<TextInput>) {
+function Input({ className, style, ...props }: React.ComponentProps<typeof TextInput> & React.RefAttributes<TextInput>) {
+  const { language } = useLanguage();
+
   return (
     <TextInput
       className={cn(
@@ -21,6 +25,16 @@ function Input({ className, ...props }: React.ComponentProps<typeof TextInput> &
         }),
         className
       )}
+      style={[
+        {
+          minHeight: layout.controlHeight,
+          borderRadius: radius.md,
+          fontFamily: fontFor(language, 'ui', 'regular'),
+          fontSize: typography.body.size,
+          lineHeight: typography.body.lineHeight,
+        },
+        style,
+      ]}
       {...props}
     />
   );

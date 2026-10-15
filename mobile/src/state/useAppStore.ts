@@ -6,7 +6,6 @@ import { Platform } from "react-native";
 export type LanguageCode = "en" | "ne";
 export type ThemePreference = "light" | "dark" | "system";
 export type ReaderScale = "sm" | "md" | "lg" | "xl";
-export type BodyTypeface = "serif" | "sans";
 
 // Safe wrapper to prevent "Native module is null" crashes
 const customStorage = {
@@ -46,6 +45,13 @@ const customStorage = {
 };
 
 interface AppState {
+    usageSharing: boolean;
+    setUsageSharing: (value: boolean) => void;
+    notice: string | null;
+    setNotice: (notice: string | null) => void;
+    followedAuthors: string[];
+    toggleFollowedAuthor: (name: string) => void;
+
     // Language & Region
     language: LanguageCode;
     setLanguage: (language: LanguageCode) => void;
@@ -63,8 +69,6 @@ interface AppState {
     // Reading Preferences
     readerScale: ReaderScale;
     setReaderScale: (scale: ReaderScale) => void;
-    bodyTypeface: BodyTypeface;
-    setBodyTypeface: (tf: BodyTypeface) => void;
     readingProgressBar: boolean;
     setReadingProgressBar: (val: boolean) => void;
     autoplayAudio: boolean;
@@ -85,6 +89,8 @@ interface AppState {
     // Saved Items
     savedArticleIds: string[];
     toggleSavedArticle: (id: string) => void;
+    setSavedArticleSaved: (id: string, saved: boolean) => void;
+    setSavedArticleIds: (ids: string[]) => void;
 
     // Onboarding
     hasCompletedOnboarding: boolean;
@@ -94,6 +100,12 @@ interface AppState {
 export const useAppStore = create<AppState>()(
     persist(
         (set) => ({
+            usageSharing: false,
+            setUsageSharing: (usageSharing) => set({ usageSharing }),
+            notice: null,
+            setNotice: (notice) => set({ notice }),
+            followedAuthors: [],
+            toggleFollowedAuthor: (name) => set(state => ({ followedAuthors: state.followedAuthors.includes(name) ? state.followedAuthors.filter(value => value !== name) : [...state.followedAuthors, name] })),
             language: "en",
             setLanguage: (language) => set({ language }),
             bilingualHeadlines: true,
@@ -108,8 +120,6 @@ export const useAppStore = create<AppState>()(
 
             readerScale: "md",
             setReaderScale: (readerScale) => set({ readerScale }),
-            bodyTypeface: "serif",
-            setBodyTypeface: (bodyTypeface) => set({ bodyTypeface }),
             readingProgressBar: true,
             setReadingProgressBar: (readingProgressBar) => set({ readingProgressBar }),
             autoplayAudio: false,
@@ -132,6 +142,17 @@ export const useAppStore = create<AppState>()(
                         ? state.savedArticleIds.filter((savedId) => savedId !== id)
                         : [...state.savedArticleIds, id],
                 })),
+            setSavedArticleSaved: (id, saved) =>
+                set((state) => {
+                    const exists = state.savedArticleIds.includes(id);
+                    if (saved === exists) return state;
+                    return {
+                        savedArticleIds: saved
+                            ? [...state.savedArticleIds, id]
+                            : state.savedArticleIds.filter((savedId) => savedId !== id),
+                    };
+                }),
+            setSavedArticleIds: (ids) => set({ savedArticleIds: [...new Set(ids)] }),
 
             hasCompletedOnboarding: false,
             completeOnboarding: () => set({ hasCompletedOnboarding: true }),
@@ -139,6 +160,7 @@ export const useAppStore = create<AppState>()(
         {
             name: "leaders-app-storage",
             storage: createJSONStorage(() => customStorage),
+            partialize: (state) => ({ ...state, notice: null }),
         }
     )
 );

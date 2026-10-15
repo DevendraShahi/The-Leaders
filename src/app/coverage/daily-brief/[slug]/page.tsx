@@ -1,4 +1,4 @@
-import { getDailyBriefs } from "@/lib/election-data";
+import { getDailyBriefBySlug } from "@/lib/daily-data";
 import { notFound } from "next/navigation";
 import { DailyBriefDetailClient } from "./DailyBriefDetailClient";
 import type { Metadata } from "next";
@@ -14,17 +14,11 @@ interface PageProps {
     params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-    const briefs = await getDailyBriefs();
-    return briefs.map((brief) => ({
-        slug: brief.slug,
-    }));
-}
+export async function generateStaticParams() { return []; }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
-    const briefs = await getDailyBriefs();
-    const brief = briefs.find((b) => b.slug === slug);
+    const brief = await getDailyBriefBySlug(slug);
 
     if (!brief) {
         return constructMetadata({
@@ -51,8 +45,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function DailyBriefDetailPage({ params }: PageProps) {
     const { slug } = await params;
-    const briefs = await getDailyBriefs();
-    const brief = briefs.find((b) => b.slug === slug);
+    const brief = await getDailyBriefBySlug(slug);
 
     if (!brief) {
         notFound();

@@ -1,0 +1,9 @@
+"use client";
+import { useState } from 'react';
+import { useAuth } from '@/components/admin/AuthProvider';
+export default function AdminLogin() {
+    const { signIn } = useAuth();
+    const [email, setEmail] = useState(''); const [password, setPassword] = useState('');
+    const [error, setError] = useState(''); const [busy, setBusy] = useState(false);
+    return <main className="grid min-h-screen place-items-center bg-background p-6"><form className="w-full max-w-sm space-y-5 rounded-xl border border-border bg-card p-8" onSubmit={async event => { event.preventDefault(); setBusy(true); setError(''); try { await signIn(email, password); } catch (error) { setError(error instanceof Error ? error.message : 'Could not sign in'); } finally { setBusy(false); } }}><p className="text-xs font-bold tracking-widest text-primary">THE LEADERS</p><h1 className="text-3xl font-semibold">Admin sign in</h1><p className="text-sm text-muted-foreground">Use your existing newsroom email and password.</p><label className="block text-sm">Email<input className="mt-2 w-full rounded-md border border-border bg-background p-3" type="email" autoComplete="username" required value={email} onChange={event => setEmail(event.target.value)} /></label><label className="block text-sm">Password<input className="mt-2 w-full rounded-md border border-border bg-background p-3" type="password" autoComplete="current-password" required value={password} onChange={event => setPassword(event.target.value)} /></label>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}<button disabled={busy} className="w-full rounded-md bg-primary p-3 font-semibold text-primary-foreground disabled:opacity-50">{busy ? 'Signing in…' : 'Sign in'}</button><p className="text-xs text-muted-foreground">Accounts are managed by your newsroom administrator.</p></form></main>;
+}

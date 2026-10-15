@@ -1,5 +1,9 @@
+import { responseContract } from "./contracts";
 import { z } from "zod";
-import Constants from "expo-constants";
+import { apiBase } from "./config";
+import { recordUsage } from "@/services/telemetry";
+export { apiBase } from "./config";
+const REQUEST_TIMEOUT_MS = 15_000;
 
 const envelopeSchema = z.object({
     success: z.boolean(),
@@ -7,61 +11,30 @@ const envelopeSchema = z.object({
     error: z.string().optional(),
 });
 
-const LOCAL_API_PORT = 3000;
-const REQUEST_TIMEOUT_MS = 15_000;
-
-function trimTrailingSlash(value: string) {
-    return value.replace(/\/+$/, "");
-}
-
-function hostnameFromUri(value: string | null | undefined) {
-    if (!value) return null;
-
-    try {
-        const url = new URL(value.includes("://") ? value : `http://${value}`);
-        return url.hostname || null;
-    } catch {
-        return null;
-    }
-}
-
-export function apiBase() {
-    const configuredUrl = process.env.EXPO_PUBLIC_API_URL?.trim();
-    if (configuredUrl) return trimTrailingSlash(configuredUrl);
-
-    if (__DEV__) {
-        const developmentHost = hostnameFromUri(
-            Constants.expoConfig?.hostUri || Constants.linkingUri
-        );
-        if (developmentHost) return `http://${developmentHost}:${LOCAL_API_PORT}`;
-    }
-
-    return `http://localhost:${LOCAL_API_PORT}`;
-}
-
 export async function apiGet<T>(path: string): Promise<T> {
+    const base = apiBase();
     let response: Response;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
     try {
-        response = await fetch(`${apiBase()}${path}`, { signal: controller.signal });
+        response = await fetch(`${base}${path}`, { signal: controller.signal });
     } catch {
+        clearTimeout(timeout);
+        recordUsage("request_failure");
         throw new Error(
             __DEV__
                 ? "Could not reach The Leaders server. Start the website server and keep this device on the same network, then try again."
                 : "Could not reach The Leaders. Check your internet connection and try again."
         );
-    } finally {
-        clearTimeout(timeout);
     }
 
     let json: unknown;
     try {
         json = await response.json();
     } catch {
-        throw new Error("The Leaders server returned an invalid response. Please try again.");
-    }
+        throw new Error(controller.signal.aborted ? "The request timed out. Please try again." : "The Leaders server returned an invalid response. Please try again.");
+    } finally { clearTimeout(timeout); }
 
     const parsed = envelopeSchema.safeParse(json);
     if (!parsed.success) {
@@ -71,6 +44,12 @@ export async function apiGet<T>(path: string): Promise<T> {
     const body = parsed.data;
     if (!response.ok || !body.success || body.data === undefined) {
         throw new Error(body.error || "Request failed");
+    }
+    const contract = responseContract(path);
+    if (contract) {
+        const result = contract.safeParse(body.data);
+        if (!result.success) throw new Error("The Leaders returned incomplete content. Please try again.");
+        return result.data as T;
     }
     return body.data as T;
 }
@@ -82,6 +61,8 @@ export type ArticleCard = {
     source: "article" | "column" | "analysis";
     title: Bilingual;
     excerpt: Bilingual;
+    readingMinutes?: { en: number; ne: number };
+    availableLanguages?: ("en" | "ne")[];
     author: Bilingual;
     category: Bilingual;
     image: string;

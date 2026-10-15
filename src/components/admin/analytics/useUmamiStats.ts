@@ -5,7 +5,7 @@ import { useAuth } from "@/components/admin/AuthProvider";
 import type { UmamiDashboardData } from "@/lib/umami";
 
 export function useUmamiStats(days = 30) {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [analytics, setAnalytics] = useState<UmamiDashboardData | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -14,12 +14,12 @@ export function useUmamiStats(days = 30) {
         let cancelled = false;
 
         const fetchStats = async () => {
-            if (!token) return;
+            if (!isAuthenticated) return;
             setLoading(true);
             setError(null);
             try {
                 const res = await fetch(`/api/admin/umami?days=${days}`, {
-                    headers: { Authorization: `Bearer ${token}` },
+                    credentials: 'same-origin',
                 });
                 const data = await res.json();
                 if (!res.ok) throw new Error(data?.error || "Failed to fetch Umami analytics");
@@ -35,7 +35,7 @@ export function useUmamiStats(days = 30) {
         return () => {
             cancelled = true;
         };
-    }, [days, token]);
+    }, [days, isAuthenticated]);
 
     return { analytics, loading, error };
 }

@@ -15,6 +15,13 @@ export interface IPermissions {
         delete: boolean;
         publish: boolean;
     };
+    socialPosts: {
+        create: boolean;
+        edit: boolean;
+        submit: boolean;
+        approve: boolean;
+        export: boolean;
+    };
     settings: {
         view: boolean;
         modify: boolean;
@@ -40,6 +47,7 @@ export interface IAdmin {
     isActive: boolean;
     name?: string;
     avatar?: string;
+    clerkId?: string;
     createdBy?: string; // ObjectId of admin who created this user
     createdAt?: Date;
     updatedAt?: Date;
@@ -59,6 +67,13 @@ const PermissionsSchema = new Schema<IPermissions>({
         edit: { type: Boolean, default: false },
         delete: { type: Boolean, default: false },
         publish: { type: Boolean, default: false },
+    },
+    socialPosts: {
+        create: { type: Boolean, default: false },
+        edit: { type: Boolean, default: false },
+        submit: { type: Boolean, default: false },
+        approve: { type: Boolean, default: false },
+        export: { type: Boolean, default: false },
     },
     settings: {
         view: { type: Boolean, default: false },
@@ -93,6 +108,7 @@ const AdminSchema = new Schema<IAdmin>(
         isActive: { type: Boolean, default: true },
         name: { type: String },
         avatar: { type: String },
+        clerkId: { type: String, unique: true, sparse: true, index: true },
         createdBy: { type: Schema.Types.ObjectId, ref: 'Admin' },
     },
     { timestamps: true }

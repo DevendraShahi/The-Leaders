@@ -1,3 +1,5 @@
+import { articleDetailSchema } from "@/api/schemas";
+import type { ArticleDetail } from "@/api/client";
 import * as SQLite from "expo-sqlite";
 
 export type SavedArticle = {
@@ -10,6 +12,7 @@ export type SavedArticle = {
     contentEn: string;
     contentNe: string;
     savedAt: string;
+    article?: ArticleDetail;
 };
 
 let database: SQLite.SQLiteDatabase | null = null;
@@ -27,9 +30,12 @@ function db() {
                 excerpt_ne TEXT NOT NULL,
                 content_en TEXT NOT NULL,
                 content_ne TEXT NOT NULL,
-                saved_at TEXT NOT NULL
+                saved_at TEXT NOT NULL,
+                detail_json TEXT
             );
         `);
+        const columns = database.getAllSync<{ name: string }>("PRAGMA table_info(saved_articles)");
+        if (!columns.some(column => column.name === "detail_json")) database.execSync("ALTER TABLE saved_articles ADD COLUMN detail_json TEXT");
     }
     return database;
 }
@@ -55,7 +61,8 @@ export function saveArticle(article: SavedArticle) {
         article.excerptNe,
         article.contentEn,
         article.contentNe,
-        article.savedAt
+        article.savedAt,
+        article.article ? JSON.stringify(article.article) : null
     );
 }
 
@@ -64,24 +71,30 @@ export function removeSaved(slug: string) {
 }
 
 export function readSaved(slug: string): SavedArticle | null {
-    return db().getFirstSync<SavedArticle>(
+    const row = db().getFirstSync<SavedRow>(
         `SELECT slug, source, title_en as titleEn, title_ne as titleNe,
                 excerpt_en as excerptEn, excerpt_ne as excerptNe,
-                content_en as contentEn, content_ne as contentNe, saved_at as savedAt
+                content_en as contentEn, content_ne as contentNe, saved_at as savedAt, detail_json as detailJson
          FROM saved_articles WHERE slug = ?`,
         slug
     );
+    return row ? decodeRow(row) : null;
 }
 
 export function listSaved(): SavedArticle[] {
-    return db().getAllSync<SavedArticle>(
+    return db().getAllSync<SavedRow>(
         `SELECT slug, source, title_en as titleEn, title_ne as titleNe,
                 excerpt_en as excerptEn, excerpt_ne as excerptNe,
-                content_en as contentEn, content_ne as contentNe, saved_at as savedAt
+                content_en as contentEn, content_ne as contentNe, saved_at as savedAt, detail_json as detailJson
          FROM saved_articles ORDER BY saved_at DESC`
-    );
+    ).map(decodeRow);
 }
 
 export function clearSaved() {
     db().runSync("DELETE FROM saved_articles");
+}
+
+type SavedRow = SavedArticle & { detailJson: string | null };
+function decodeRow({ detailJson, ...article }: SavedRow): SavedArticle {
+    try { const detail = detailJson ? articleDetailSchema.safeParse(JSON.parse(detailJson)) : null; return { ...article, article: detail?.success ? detail.data : undefined }; } catch { return article; }
 }

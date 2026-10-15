@@ -147,7 +147,7 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
                     >
                         {/* Profile Header Card */}
                         <div className="leader-card p-6 sm:p-8 lg:p-10">
-                            <Link
+                            <Link prefetch={false}
                                 href="/leaders"
                                 className="inline-flex items-center gap-2 text-sm text-[var(--leader-text-secondary)] hover:text-[var(--leader-accent)] transition-colors mb-6"
                             >

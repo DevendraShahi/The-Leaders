@@ -1,106 +1,38 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import { Animated, Pressable, ScrollView, View } from "react-native";
+import { useAppStore } from "@/state/useAppStore";
+import { layout, radius, spacing, textStyleFor } from "@/theme/tokens";
+import { useCallback, useMemo, useState } from "react";
+import { Pressable, RefreshControl, ScrollView, StyleSheet, TextInput, View } from "react-native";
 import { router, useFocusEffect } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, ArrowUpRight, BookOpen, Search } from "lucide-react-native";
-import { Image } from "expo-image";
+import { ArrowRight, ArrowUpRight, Bookmark, Search } from "lucide-react-native";
 import { apiGet, type ArticleCard, type Bilingual, type HomePayload, type Page } from "@/api/client";
-import { Masthead } from "@/ui/Masthead";
+import { PageHeader } from "@/ui/PageHeader";
+import { SectionHeader } from "@/ui/SectionHeader";
+import { StoryCard } from "@/ui/StoryCard";
+import { ArticleRow } from "@/ui/ArticleRow";
 import { StateView } from "@/ui/StateView";
 import { AppText } from "@/ui/primitives/AppText";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useLanguage, pick } from "@/i18n/language";
-import { ui } from "@/i18n/copy";
 import { readRecentSearches } from "@/storage/prefs";
-
 import { useColors } from "@/theme/Theme";
+import { readingLabel, storyDate } from "@/utils/editorial";
 
-const T_SEARCH_PLACEHOLDER = {
-    en: "Search articles, topics, authors, or explainers...",
-    ne: "लेख, विषय, लेखक, वा व्याख्या खोज्नुहोस्...",
-};
-const T_TRENDING = { en: "Trending in Nepal", ne: "नेपालमा चर्चामा" };
-const T_DESKS = { en: "Desks & Topics", ne: "डेस्क र विषय" };
-const T_VIEW_ALL = { en: "View all", ne: "सबै हेर्नुहोस्" };
-const T_SHOW_LESS = { en: "Show less", ne: "कम हेर्नुहोस्" };
-const T_DOSSIER = { en: "Featured Dossier", ne: "विशेष दस्तावेज" };
-const T_SERIES = { en: "Series", ne: "शृंखला" };
-const T_READ = { en: "Read", ne: "पढ्नुहोस्" };
-const T_MIN = { en: "min read", ne: "मिनेट पढाइ" };
-const T_COLUMNISTS = { en: "Columnists & Editors", ne: "स्तम्भकार र सम्पादकहरू" };
-const T_VOICES = { en: "Distinct Voices", ne: "विशिष्ट आवाजहरू" };
-const T_FOLLOW = { en: "Follow", ne: "फलो" };
-const T_FOLLOWING = { en: "Following", ne: "फलो गर्दै" };
-
-function uniqueBilingual(items: Bilingual[]) {
-    const seen = new Set<string>();
-    return items.filter((item) => {
-        const key = (item.en || item.ne).trim().toLowerCase();
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-    });
+function uniqueArticles(items: ArticleCard[]) {
+    return [...new Map(items.map(item => [`${item.source}-${item.slug}`, item])).values()];
 }
-
-function uniqueAuthors(articles: ArticleCard[]) {
-    const seen = new Set<string>();
-    const authors: { name: Bilingual; category: Bilingual }[] = [];
-    articles.forEach((item) => {
-        const key = (item.author.en || item.author.ne).trim().toLowerCase();
-        if (!key || seen.has(key)) return;
-        seen.add(key);
-        authors.push({ name: item.author, category: item.category });
-    });
-    return authors;
+function uniqueTopics(items: ArticleCard[]) {
+    return [...new Map(items.filter(item => (item.category.en || item.category.ne).trim()).map(item => [(item.category.en || item.category.ne).trim().toLowerCase(), item.category])).values()];
 }
-
-function readingMinutes(text: string) {
-    const words = text.trim().split(/\s+/).filter(Boolean).length;
-    return Math.max(1, Math.round(words / 200));
+function uniqueAuthors(items: ArticleCard[]) {
+    return [...new Map(items.filter(item => (item.author.en || item.author.ne).trim()).map(item => [(item.author.en || item.author.ne).trim(), item.author])).entries()];
 }
-
-function formatUpdated(updatedAt: number, now: number, language: "en" | "ne") {
-    if (!updatedAt) return "";
-    const minutes = Math.max(0, Math.round((now - updatedAt) / 60000));
-    if (language === "ne") {
-        if (minutes < 1) return "अहिले अपडेट";
-        return `${minutes} मिनेट अघि अपडेट`;
-    }
-    if (minutes < 1) return "Updated just now";
-    return `Updated ${minutes}m ago`;
-}
-
-function PulseDot() {
-    const opacity = useRef(new Animated.Value(1)).current;
-
-    useEffect(() => {
-        const loop = Animated.loop(
-            Animated.sequence([
-                Animated.timing(opacity, { toValue: 0.35, duration: 800, useNativeDriver: true }),
-                Animated.timing(opacity, { toValue: 1, duration: 800, useNativeDriver: true }),
-            ])
-        );
-        loop.start();
-        return () => loop.stop();
-    }, [opacity]);
-
-    return <Animated.View style={{ opacity }} className="h-1.5 w-1.5 rounded-full bg-primary" />;
-}
-
-function openSearch(query: string) {
-    const trimmed = query.trim();
-    if (trimmed.length < 2) {
-        router.push("/search" as never);
-        return;
-    }
-    router.push(`/search?q=${encodeURIComponent(trimmed)}` as never);
-}
-
 function openCategory(category: Bilingual) {
-    router.push(
-        `/category/${encodeURIComponent(category.en || category.ne)}?ne=${encodeURIComponent(category.ne || category.en)}` as never
-    );
+    router.push(`/category/${encodeURIComponent(category.en || category.ne)}?ne=${encodeURIComponent(category.ne || category.en)}` as never);
+}
+function openSearch(query: string) {
+    const term = query.trim();
+    router.push((term.length >= 2 ? `/search?q=${encodeURIComponent(term)}` : "/search") as never);
 }
 
 export default function ExploreScreen() {
@@ -109,282 +41,101 @@ export default function ExploreScreen() {
     const isNe = language === "ne";
     const [query, setQuery] = useState("");
     const [recent, setRecent] = useState<string[]>([]);
-    const [showAllDesks, setShowAllDesks] = useState(false);
-    const [following, setFollowing] = useState<Record<string, boolean>>({});
-    const [now, setNow] = useState(() => Date.now());
+    const [showAllTopics, setShowAllTopics] = useState(false);
+    const followedAuthors = useAppStore(state => state.followedAuthors);
+    const savedCount = useAppStore(state => state.savedArticleIds.length);
+    const toggleFollowedAuthor = useAppStore(state => state.toggleFollowedAuthor);
+    const articles = useQuery({ queryKey: ["articles", "discover"], queryFn: () => apiGet<Page<ArticleCard>>("/api/v1/articles?page=1&limit=50") });
+    const home = useQuery({ queryKey: ["home", "discover"], queryFn: () => apiGet<HomePayload>("/api/v1/home") });
+    useFocusEffect(useCallback(() => { setRecent(readRecentSearches().slice(0, 4)); }, []));
+    const cards = useMemo(() => uniqueArticles([...(articles.data?.items ?? []), ...(home.data?.articles ?? []), ...(home.data?.coverage ?? [])]), [articles.data, home.data]);
+    const topics = useMemo(() => uniqueTopics(cards), [cards]);
+    const authors = useMemo(() => uniqueAuthors(home.data?.coverage ?? []), [home.data]);
+    const featured = home.data?.articles?.[0] ?? articles.data?.items?.[0];
+    const suggestions = cards.filter(item => !featured || item.source !== featured.source || item.slug !== featured.slug).slice(0, 4);
+    const loading = (articles.isPending || home.isPending) && cards.length === 0;
+    const unavailable = !loading && cards.length === 0 && Boolean(articles.error || home.error);
+    const refresh = () => { void Promise.all([articles.refetch(), home.refetch()]); };
+    const visibleTopics = showAllTopics ? topics : topics.slice(0, 8);
 
-    const articles = useQuery({
-        queryKey: ["articles", "discover"],
-        queryFn: () => apiGet<Page<ArticleCard>>("/api/v1/articles?page=1&limit=50"),
-    });
-    const home = useQuery({
-        queryKey: ["home", "discover"],
-        queryFn: () => apiGet<HomePayload>("/api/v1/home"),
-    });
-
-    useFocusEffect(useCallback(() => {
-        setRecent(readRecentSearches().slice(0, 4));
-    }, []));
-
-    useEffect(() => {
-        const id = setInterval(() => setNow(Date.now()), 60_000);
-        return () => clearInterval(id);
-    }, []);
-
-    const cards = [...(articles.data?.items ?? []), ...(home.data?.coverage ?? [])];
-    const categories = uniqueBilingual(cards.map((item) => item.category));
-    const visibleDesks = showAllDesks ? categories : categories.slice(0, 8);
-    const columnists = uniqueAuthors(home.data?.coverage ?? []);
-    const trending = (home.data?.articles?.length ? home.data.articles : articles.data?.items ?? []).slice(0, 4);
-    const dossier = home.data?.articles?.[0] ?? articles.data?.items?.[0];
-    const loading = (articles.isLoading || home.isLoading) && categories.length === 0;
-    const failed = Boolean(articles.error && home.error && categories.length === 0);
-    const updatedLabel = formatUpdated(home.dataUpdatedAt, now, language);
-
-    return (
-        <ScrollView className="flex-1 bg-background" contentContainerClassName="pb-12" keyboardShouldPersistTaps="handled">
-            <Masthead />
-
-            <View className="px-5 pb-2">
-                <View className="h-11 flex-row items-center rounded-lg bg-surface-secondary px-3">
-                    <Search size={20} color={colors.textSecondary} />
-                    <Input
-                        value={query}
-                        onChangeText={setQuery}
-                        onSubmitEditing={() => openSearch(query)}
-                        returnKeyType="search"
-                        placeholder={T_SEARCH_PLACEHOLDER[language]}
-                        className="h-11 flex-1 border-0 bg-transparent px-2 text-sm shadow-none"
-                    />
+    return <View style={[styles.screen, { backgroundColor: colors.background }]}>
+        <PageHeader compact title={isNe ? "अन्वेषण" : "Explore"} subtitle={isNe ? "विषय, समाचार र लेखक खोज्नुहोस्" : "Find stories, topics and voices"} />
+        <ScrollView keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag" contentContainerStyle={styles.content}
+            refreshControl={<RefreshControl refreshing={articles.isRefetching || home.isRefetching} onRefresh={refresh} tintColor={colors.brandRed} colors={[colors.brandRed]} />}>
+            <View style={styles.gutter}>
+                <View style={[styles.search, { backgroundColor: colors.surfaceSecondary, borderColor: colors.border }]}>
+                    <Search size={layout.iconSize} color={colors.textSecondary} />
+                    <TextInput accessibilityLabel={isNe ? "समाचार, विषय वा लेखक खोज्नुहोस्" : "Search stories, topics or authors"}
+                        value={query} onChangeText={setQuery} onSubmitEditing={() => openSearch(query)} returnKeyType="search"
+                        placeholder={isNe ? "समाचार, विषय वा लेखक" : "Stories, topics or authors"} placeholderTextColor={colors.textSecondary}
+                        style={[styles.input, textStyleFor("bodySmall", language), { color: colors.textPrimary }]} />
+                    {query.trim().length >= 2 ? <Button variant="ghost" size="icon" accessibilityLabel={isNe ? "खोज्नुहोस्" : "Search"} onPress={() => openSearch(query)}><ArrowRight size={layout.iconSmall} color={colors.brandRed} /></Button> : null}
                 </View>
-                {recent.length > 0 ? (
-                    <ScrollView
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        contentContainerClassName="items-center gap-2 pt-2"
-                    >
-                        <AppText variant="overline" weight="bold" colorToken="textSecondary" style={{ marginRight: 4 }}>
-                            {pick(ui.recent, language)}:
-                        </AppText>
-                        {recent.map((term) => (
-                            <Pressable
-                                key={term}
-                                accessibilityRole="button"
-                                onPress={() => {
-                                    setQuery(term);
-                                    openSearch(term);
-                                }}
-                                className="h-8 items-center justify-center rounded-lg bg-surface-secondary px-2.5 active:opacity-70"
-                            >
-                                <AppText variant="caption" colorToken="textSecondary" numberOfLines={1}>{term}</AppText>
-                            </Pressable>
-                        ))}
-                    </ScrollView>
-                ) : null}
+                {recent.length ? <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.recent}>
+                    <AppText variant="caption" colorToken="textTertiary">{isNe ? "हालका खोजहरू" : "Recent"}</AppText>
+                    {recent.map(term => <Pressable key={term} accessibilityRole="button" accessibilityLabel={isNe ? `${term} खोज्नुहोस्` : `Search for ${term}`} onPress={() => openSearch(term)} style={[styles.recentTerm, { borderColor: colors.border }]}><AppText variant="caption" colorToken="textSecondary" numberOfLines={1}>{term}</AppText></Pressable>)}
+                </ScrollView> : null}
+                <Pressable accessibilityRole="button" accessibilityLabel={isNe ? "सुरक्षित समाचार खोल्नुहोस्" : "Open saved stories"} onPress={() => router.push("/saved")} style={[styles.saved, { borderBottomColor: colors.border }]}>
+                    <Bookmark size={layout.iconSize} color={colors.brandRed} />
+                    <View style={styles.copy}><AppText variant="label">{isNe ? "सुरक्षित समाचार" : "Saved stories"}</AppText><AppText variant="caption" colorToken="textSecondary">{savedCount ? (isNe ? `${savedCount} समाचार यस उपकरणमा` : `${savedCount} ${savedCount === 1 ? "story" : "stories"} on this device`) : (isNe ? "पछिका लागि आफ्नो सूची बनाउनुहोस्" : "Build your reading list for later")}</AppText></View>
+                    <ArrowRight size={layout.iconSmall} color={colors.textSecondary} />
+                </Pressable>
             </View>
-
-            {loading ? (
-                <View className="p-5">
-                    <StateView loading />
+            {loading ? <StateView loading /> : unavailable ? <View style={styles.gutter}><StateView error={articles.error || home.error} onRetry={refresh} /></View> : null}
+            {visibleTopics.length ? <View style={styles.section}>
+                <View style={styles.sectionTitle}><View style={styles.copy}><SectionHeader title={isNe ? "विषयहरू" : "Browse topics"} /></View>
+                    {topics.length > 8 ? <Button variant="ghost" size="sm" onPress={() => setShowAllTopics(value => !value)}><AppText variant="caption" colorToken="brandRed">{showAllTopics ? (isNe ? "कम देखाउनुहोस्" : "Show less") : (isNe ? "सबै हेर्नुहोस्" : "View all")}</AppText></Button> : null}
                 </View>
-            ) : null}
-            {failed ? (
-                <View className="p-5">
-                    <StateView
-                        error={articles.error || home.error}
-                        onRetry={() => {
-                            articles.refetch();
-                            home.refetch();
-                        }}
-                    />
-                </View>
-            ) : null}
-
-            {trending.length > 0 ? (
-                <View className="mt-4 px-5">
-                    <View className="mb-2 flex-row items-center justify-between gap-3">
-                        <View className="min-w-0 flex-1 flex-row items-center gap-2">
-                            <PulseDot />
-                            <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={1}>
-                                {T_TRENDING[language]}
-                            </AppText>
-                        </View>
-                        {updatedLabel ? (
-                            <AppText variant="caption" colorToken="textSecondary" style={{ flexShrink: 0 }}>{updatedLabel}</AppText>
-                        ) : null}
-                    </View>
-                    {trending.map((item, index) => (
-                        <Pressable
-                            key={item.slug}
-                            accessibilityRole="button"
-                            onPress={() => router.push(`/article/${item.slug}` as never)}
-                            className="min-h-11 flex-row items-start gap-3 rounded-lg px-2 py-2 active:bg-surface-secondary"
-                        >
-                            <AppText
-                                variant="heading2"
-                                weight="bold"
-                                colorToken={index === 0 ? "primary" : "textSecondary"}
-                                style={{ width: 28, fontFamily: "serif" }}
-                            >
-                                {String(index + 1).padStart(2, "0")}
-                            </AppText>
-                            <View className="min-w-0 flex-1">
-                                <AppText variant={isNe ? "heading3" : "body"} weight="bold">
-                                    {pick(item.title, language)}
-                                </AppText>
-                                <View className="mt-0.5 flex-row items-center gap-2">
-                                    <AppText variant="caption" colorToken="textSecondary" numberOfLines={1}>
-                                        {pick(item.category, language)}
-                                    </AppText>
-                                </View>
-                            </View>
+                <View style={styles.topics}>{visibleTopics.map(topic => <Pressable key={topic.en || topic.ne} accessibilityRole="button" accessibilityLabel={pick(topic, language)} onPress={() => openCategory(topic)} style={[styles.topic, { borderColor: colors.border, backgroundColor: colors.surfaceSecondary }]}>
+                    <AppText variant="label" style={styles.copy}>{pick(topic, language)}</AppText><ArrowUpRight size={layout.iconSmall} color={colors.textTertiary} />
+                </Pressable>)}</View>
+            </View> : null}
+            {featured ? <View style={styles.featured}>
+                <View style={styles.gutter}><SectionHeader title={isNe ? "विशेष समाचार" : "Featured story"} /></View>
+                <StoryCard variant="standard" recyclingKey={`${featured.source}-${featured.slug}`} title={pick(featured.title, language)} kicker={pick(featured.category, language)}
+                    summary={pick(featured.excerpt, language)} image={featured.image}
+                    meta={[storyDate(featured.publishedAt, language), readingLabel(featured.readingMinutes?.[language], language)].filter(Boolean).join(" · ")}
+                    onPress={() => router.push(`/article/${featured.slug}` as never)} />
+            </View> : null}
+            {suggestions.length ? <View style={styles.section}><SectionHeader title={isNe ? "थप पढ्नुहोस्" : "More to discover"} />
+                {suggestions.map(item => <ArticleRow key={`${item.source}-${item.slug}`} recyclingKey={`${item.source}-${item.slug}`} title={pick(item.title, language)} kicker={pick(item.category, language)} image={item.image} meta={readingLabel(item.readingMinutes?.[language], language)} onPress={() => router.push(`/article/${item.slug}` as never)} />)}
+            </View> : null}
+            {authors.length ? <View style={styles.section}><SectionHeader title={isNe ? "लेखकहरू" : "Voices to follow"} />
+                {authors.map(([name, author]) => {
+                    const following = followedAuthors.includes(name);
+                    const displayedName = pick(author, language);
+                    const initials = displayedName.trim().split(/\s+/).slice(0, 2).map(part => Array.from(part)[0]).join("").toUpperCase();
+                    return <View key={name} style={[styles.author, { borderTopColor: colors.border }]}>
+                        <Pressable accessibilityRole="button" accessibilityLabel={displayedName} onPress={() => router.push(`/author/${encodeURIComponent(name)}` as never)} style={styles.authorIdentity}>
+                            <View accessible={false} style={[styles.initials, { backgroundColor: colors.surfaceSecondary }]}><AppText variant="label" colorToken="textSecondary">{initials}</AppText></View>
+                            <AppText variant="label" style={styles.copy}>{displayedName}</AppText>
                         </Pressable>
-                    ))}
-                </View>
-            ) : null}
-
-            {visibleDesks.length > 0 ? (
-                <View className="mt-6 px-5">
-                    <View className="mb-2 flex-row items-center justify-between gap-3">
-                        <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={1} style={{ flex: 1 }}>
-                            {T_DESKS[language]}
-                        </AppText>
-                        {categories.length > 8 ? (
-                            <Pressable accessibilityRole="button" onPress={() => setShowAllDesks((value) => !value)} className="h-11 justify-center">
-                                <AppText variant="caption" weight="bold" colorToken="primary">
-                                    {showAllDesks ? T_SHOW_LESS[language] : `${T_VIEW_ALL[language]} ${categories.length}`}
-                                </AppText>
-                            </Pressable>
-                        ) : null}
-                    </View>
-                    <View className="flex-row flex-wrap justify-between">
-                        {visibleDesks.map((category, index) => {
-                            const title = isNe ? category.ne || category.en : category.en || category.ne;
-                            const subtitle = isNe ? category.en : category.ne;
-                            return (
-                                <Pressable
-                                    key={category.en || category.ne}
-                                    accessibilityRole="button"
-                                    onPress={() => openCategory(category)}
-                                    className="mb-2 w-[48%] rounded-lg bg-surface-secondary p-3 active:opacity-80"
-                                >
-                                    <View className="flex-row items-center justify-between">
-                                        <AppText variant="overline" weight="bold" colorToken="textSecondary">
-                                            {isNe ? `डेस्क ${String(index + 1).padStart(2, "0")}` : `Desk ${String(index + 1).padStart(2, "0")}`}
-                                        </AppText>
-                                        <ArrowUpRight size={16} color={colors.textSecondary} />
-                                    </View>
-                                    <AppText variant="body" weight="bold" numberOfLines={1} style={{ marginTop: 4 }}>
-                                        {title}
-                                    </AppText>
-                                    {subtitle && subtitle !== title ? (
-                                        <AppText variant="caption" colorToken="textSecondary" numberOfLines={1}>{subtitle}</AppText>
-                                    ) : null}
-                                </Pressable>
-                            );
-                        })}
-                    </View>
-                </View>
-            ) : null}
-
-            {dossier ? (
-                <View className="mt-6 px-5">
-                    <View className="mb-2 flex-row items-center justify-between gap-3">
-                        <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={1} style={{ flex: 1 }}>
-                            {T_DOSSIER[language]}
-                        </AppText>
-                        <AppText variant="overline" weight="bold" colorToken="primary" style={{ backgroundColor: colors.brandRedSoft, paddingHorizontal: 8, paddingVertical: 2, overflow: "hidden" }}>
-                            {T_SERIES[language]}
-                        </AppText>
-                    </View>
-                    <View className="overflow-hidden rounded-lg bg-surface-secondary">
-                        {dossier.image ? (
-                            <View className="h-44 w-full">
-                                <Image source={{ uri: dossier.image }} contentFit="cover" className="h-full w-full" />
-                                <View className="absolute left-3 top-3 rounded-lg bg-background px-2 py-1">
-                                    <AppText variant="overline" weight="bold" colorToken="primary">
-                                        {pick(dossier.category, language)}
-                                    </AppText>
-                                </View>
-                            </View>
-                        ) : null}
-                        <View className="p-4">
-                            <AppText variant={isNe ? "heading1" : "heading2"} weight="bold">
-                                {pick(dossier.title, language)}
-                            </AppText>
-                            <AppText variant="body" colorToken="textSecondary" style={{ marginTop: 8 }}>
-                                {pick(dossier.excerpt, language)}
-                            </AppText>
-                            <View className="mt-4 flex-row items-center justify-between gap-3">
-                                <View className="min-w-0 flex-1 flex-row items-center gap-1.5">
-                                    <BookOpen size={18} color={colors.brandRed} />
-                                    <AppText variant="caption" weight="bold" colorToken="textPrimary" numberOfLines={1}>
-                                        {readingMinutes(pick(dossier.excerpt, language))} {T_MIN[language]}
-                                    </AppText>
-                                </View>
-                                <Button
-                                    onPress={() => router.push(`/article/${dossier.slug}` as never)}
-                                    className="rounded-full px-4"
-                                >
-                                    <AppText variant="body" weight="bold" colorToken="textInverse">{T_READ[language]}</AppText>
-                                    <ArrowRight size={14} color={colors.textInverse} />
-                                </Button>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            ) : null}
-
-            {columnists.length > 0 ? (
-                <View className="mt-6 px-5">
-                    <View className="mb-2 flex-row items-center justify-between gap-3">
-                        <AppText variant="overline" weight="bold" colorToken="textPrimary" numberOfLines={1} style={{ flex: 1 }}>
-                            {T_COLUMNISTS[language]}
-                        </AppText>
-                        <AppText variant="caption" colorToken="textSecondary" style={{ flexShrink: 0 }}>{T_VOICES[language]}</AppText>
-                    </View>
-                    <View className="gap-2">
-                        {columnists.map((author) => {
-                            const name = author.name.en || author.name.ne;
-                            const isFollowing = Boolean(following[name]);
-                            return (
-                                <View key={name} className="flex-row items-center justify-between gap-3 rounded-lg bg-surface-secondary p-3">
-                                    <Pressable
-                                        accessibilityRole="button"
-                                        onPress={() => router.push(`/search?q=${encodeURIComponent(pick(author.name, language))}` as never)}
-                                        className="min-w-0 flex-1 flex-row items-center gap-3"
-                                    >
-                                        <Image
-                                            source={{
-                                                uri: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=F0F0EC&color=111111&size=100`,
-                                            }}
-                                            className="h-12 w-12 shrink-0 rounded-full bg-background"
-                                        />
-                                        <View className="min-w-0 flex-1">
-                                            <AppText variant="body" weight="bold" numberOfLines={1}>
-                                                {pick(author.name, language)}
-                                            </AppText>
-                                            <AppText variant="caption" colorToken="primary" numberOfLines={1}>
-                                                {pick(author.category, language)}
-                                            </AppText>
-                                        </View>
-                                    </Pressable>
-                                    <Button
-                                        variant={isFollowing ? "default" : "outline"}
-                                        size="sm"
-                                        onPress={() => setFollowing((current) => ({ ...current, [name]: !current[name] }))}
-                                        className="rounded-full px-4"
-                                    >
-                                        <AppText variant="caption" weight="bold" colorToken={isFollowing ? "textInverse" : "textPrimary"}>
-                                            {isFollowing ? T_FOLLOWING[language] : T_FOLLOW[language]}
-                                        </AppText>
-                                    </Button>
-                                </View>
-                            );
-                        })}
-                    </View>
-                </View>
-            ) : null}
+                        <Button variant={following ? "secondary" : "outline"} size="sm" accessibilityLabel={isNe ? `${displayedName}: ${following ? "फलो हटाउनुहोस्" : "फलो गर्नुहोस्"}` : `${following ? "Unfollow" : "Follow"} ${displayedName}`} accessibilityState={{ selected: following }} onPress={() => toggleFollowedAuthor(name)}>
+                            <AppText variant="caption" weight="semibold" colorToken={following ? "brandRed" : "textPrimary"}>{following ? (isNe ? "फलो गर्दै" : "Following") : (isNe ? "फलो" : "Follow")}</AppText>
+                        </Button>
+                    </View>;
+                })}
+            </View> : null}
+            {!loading && !unavailable && !cards.length ? <View style={styles.gutter}><StateView empty /></View> : null}
         </ScrollView>
-    );
+    </View>;
 }
+const styles = StyleSheet.create({
+    screen: { flex: 1 },
+    content: { paddingTop: spacing.lg, paddingBottom: spacing["2xl"] },
+    gutter: { paddingHorizontal: spacing.gutter },
+    copy: { flex: 1, minWidth: 0 },
+    search: { flexDirection: "row", alignItems: "center", gap: spacing.sm, paddingLeft: spacing.md, paddingRight: spacing.xs, minHeight: layout.controlHeight, borderWidth: layout.ruleWidth, borderRadius: radius.md },
+    input: { flex: 1, minWidth: 0, minHeight: layout.controlHeight, paddingVertical: spacing.sm, paddingHorizontal: 0 },
+    recent: { alignItems: "center", gap: spacing.sm, paddingTop: spacing.sm },
+    recentTerm: { minHeight: layout.touchTarget, justifyContent: "center", maxWidth: 220, paddingHorizontal: spacing.md, borderWidth: layout.ruleWidth, borderRadius: radius.full },
+    saved: { flexDirection: "row", alignItems: "center", gap: spacing.md, paddingVertical: spacing.lg, borderBottomWidth: layout.ruleWidth },
+    section: { paddingHorizontal: spacing.gutter, marginTop: spacing.xl },
+    sectionTitle: { flexDirection: "row", alignItems: "center", gap: spacing.sm },
+    topics: { flexDirection: "row", flexWrap: "wrap", gap: spacing.sm },
+    topic: { flexBasis: "47%", flexGrow: 1, minWidth: 0, flexDirection: "row", alignItems: "center", gap: spacing.sm, padding: spacing.md, minHeight: layout.controlHeight, borderWidth: layout.ruleWidth, borderRadius: radius.sm },
+    featured: { marginTop: spacing.xl },
+    author: { flexDirection: "row", alignItems: "center", gap: spacing.sm, paddingVertical: spacing.md, borderTopWidth: layout.ruleWidth },
+    authorIdentity: { flex: 1, minWidth: 0, flexDirection: "row", alignItems: "center", gap: spacing.sm, minHeight: layout.touchTarget },
+    initials: { width: layout.touchTarget, height: layout.touchTarget, borderRadius: radius.full, alignItems: "center", justifyContent: "center" },
+});

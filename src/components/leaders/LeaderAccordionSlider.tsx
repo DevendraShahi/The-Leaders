@@ -147,7 +147,7 @@ export default function LeaderAccordionSlider({ leaders }: LeaderAccordionSlider
 
                     {/* View Toggle */}
                     <div className="accordion-view-toggle">
-                        <Link href="/leaders" className="accordion-view-btn">
+                        <Link prefetch={false} href="/leaders" className="accordion-view-btn">
                             <LayoutGrid className="w-4 h-4" />
                             <span>{isNepali ? "मूल दृश्य" : "Original View"}</span>
                         </Link>
@@ -386,7 +386,7 @@ function LeaderCard({ leader, isActive, index, language, isNepali, onActivate }:
                         {party && (
                             <p className="accordion-card-party">{party}</p>
                         )}
-                        <Link
+                        <Link prefetch={false}
                             href={`/leaders/${leader.slug}`}
                             onClick={(e) => e.stopPropagation()}
                             className="accordion-card-btn"

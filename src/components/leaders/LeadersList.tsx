@@ -294,7 +294,7 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                                 {tString(locale.hero.subheading, language)}
                             </p>
                             <div className="mt-4">
-                                <Link
+                                <Link prefetch={false}
                                     href="/leaders/gallery"
                                     className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/30 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
                                 >
@@ -360,7 +360,7 @@ export default function LeadersList({ leaders }: LeadersListProps) {
 
                         <aside className="relative min-h-[340px] overflow-hidden">
                             {featuredLeader ? (
-                                <Link href={`/leaders/${featuredLeader.slug}`} className="group block h-full">
+                                <Link prefetch={false} href={`/leaders/${featuredLeader.slug}`} className="group block h-full">
                                     <div className="absolute inset-0">
                                         {featuredLeader.image ? (
                                             <Image
@@ -488,7 +488,7 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                                                         </span>
                                                     </div>
 
-                                                    <Link
+                                                    <Link prefetch={false}
                                                         href={`/leaders/${leader.slug}`}
                                                         className="mt-4 inline-flex h-10 items-center gap-2 border border-border/80 bg-background/75 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-foreground transition-colors hover:border-primary/55 hover:bg-primary/10 hover:text-primary"
                                                     >

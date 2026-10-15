@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { toggleBookmark, saveCompleteArticle } from "@/services/bookmarks";
+import { useEffect, useMemo } from "react";
 import { View } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useQuery } from "@tanstack/react-query";
@@ -9,7 +10,27 @@ import { AppText } from "@/ui/AppText";
 import { useColors } from "@/theme/Theme";
 import { pick, useLanguage } from "@/i18n/language";
 import { ui } from "@/i18n/copy";
-import { isSaved, removeSaved, saveArticle } from "@/storage/saved";
+import { readSaved, type SavedArticle } from "@/storage/saved";
+import { useAppStore } from "@/state/useAppStore";
+
+function localArticle(savedArticle: SavedArticle): ArticleDetail {
+    const source = savedArticle.source === "column" || savedArticle.source === "analysis"
+        ? savedArticle.source
+        : "article";
+
+    return {
+        slug: savedArticle.slug,
+        source,
+        title: { en: savedArticle.titleEn, ne: savedArticle.titleNe },
+        excerpt: { en: savedArticle.excerptEn, ne: savedArticle.excerptNe },
+        content: { en: savedArticle.contentEn, ne: savedArticle.contentNe },
+        author: { en: "", ne: "" },
+        category: { en: "Saved", ne: "सुरक्षित" },
+        image: "",
+        publishedAt: "",
+        tags: [],
+    };
+}
 
 export default function ArticleScreen() {
     const { slug } = useLocalSearchParams<{ slug: string }>();
@@ -25,13 +46,13 @@ export default function ArticleScreen() {
         enabled: Boolean(query.data),
         queryFn: () => apiGet<Page<ArticleCard>>("/api/v1/articles?page=1&limit=20"),
     });
-    const [saved, setSaved] = useState(false);
+    const saved = useAppStore((state) => (slug ? state.savedArticleIds.includes(slug) : false));
 
+    const savedCopy = useMemo(() => (slug ? readSaved(slug) : null), [slug]);
+    const article = query.data ?? savedCopy?.article ?? (savedCopy ? localArticle(savedCopy) : undefined);
     useEffect(() => {
-        setSaved(slug ? isSaved(slug) : false);
-    }, [slug]);
-
-    const article = query.data;
+        if (saved && query.data) saveCompleteArticle(query.data, savedCopy?.savedAt);
+    }, [saved, query.data, savedCopy?.savedAt]);
     const related = (relatedQuery.data?.items ?? []).filter((item) =>
         item.slug !== article?.slug &&
         Boolean(article?.category.en) &&
@@ -47,8 +68,10 @@ export default function ArticleScreen() {
                 headerStyle: { backgroundColor: colors.background }, 
                 headerTintColor: colors.textPrimary 
             }} />
-            {query.isLoading ? <ArticleSkeleton /> : null}
-            {query.error ? (
+            {query.isLoading && !article ? <ArticleSkeleton /> : null}
+            {query.error && article ? <AppText variant="meta" style={{ padding: 16, color: colors.textSecondary }}>{language === "ne" ? "सुरक्षित अफलाइन प्रति" : "Reading your saved offline copy"}</AppText> : null}
+            {savedCopy && !savedCopy.article && !query.data && savedCopy.contentEn === savedCopy.excerptEn && savedCopy.contentNe === savedCopy.excerptNe ? <AppText variant="meta" style={{ padding: 16, color: colors.textSecondary }}>{language === "ne" ? "यो पुरानो सुरक्षित प्रतिमा सारांश मात्र छ। पूरा लेखका लागि जडान गर्नुहोस्।" : "This older saved copy contains only a summary. Connect to refresh the full article."}</AppText> : null}
+            {query.error && !article ? (
                 <StateView
                     error={
                         query.error.message === "Article not found"
@@ -71,25 +94,7 @@ export default function ArticleScreen() {
                     article={article}
                     related={related}
                     saved={saved}
-                    onToggleSave={() => {
-                        if (saved) {
-                            removeSaved(article.slug);
-                            setSaved(false);
-                            return;
-                        }
-                        saveArticle({
-                            slug: article.slug,
-                            source: article.source,
-                            titleEn: article.title.en,
-                            titleNe: article.title.ne,
-                            excerptEn: article.excerpt.en,
-                            excerptNe: article.excerpt.ne,
-                            contentEn: article.content.en,
-                            contentNe: article.content.ne,
-                            savedAt: new Date().toISOString(),
-                        });
-                        setSaved(true);
-                    }}
+                    onToggleSave={() => { void toggleBookmark(article); }}
                 />
             ) : null}
         </View>

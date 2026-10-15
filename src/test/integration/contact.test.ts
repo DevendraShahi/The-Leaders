@@ -124,9 +124,9 @@ describe('POST /api/contact - Creation', () => {
             phone: '+977-1234567890',
             location: 'Kathmandu',
             subject: 'Inquiry',
-            message: 'Hello',
-            feeling: 'happy',
-            attachmentUrl: 'https://example.com/file.pdf',
+            message: 'Hello from Kathmandu.',
+            feeling: 'hopeful',
+            attachmentUrl: 'https://res.cloudinary.com/the-leaders/raw/upload/file.pdf',
             status: 'new',
         } as any)
 
@@ -138,9 +138,9 @@ describe('POST /api/contact - Creation', () => {
                 phone: '+977-1234567890',
                 location: 'Kathmandu',
                 subject: 'Inquiry',
-                message: 'Hello',
-                feeling: 'happy',
-                attachmentUrl: 'https://example.com/file.pdf',
+                message: 'Hello from Kathmandu.',
+                feeling: 'hopeful',
+                attachmentUrl: 'https://res.cloudinary.com/the-leaders/raw/upload/file.pdf',
             }
         })
         const res = await POST(req)
@@ -150,8 +150,8 @@ describe('POST /api/contact - Creation', () => {
             expect.objectContaining({
                 phone: '+977-1234567890',
                 location: 'Kathmandu',
-                feeling: 'happy',
-                attachmentUrl: 'https://example.com/file.pdf',
+                feeling: 'hopeful',
+                attachmentUrl: 'https://res.cloudinary.com/the-leaders/raw/upload/file.pdf',
             })
         )
     })
@@ -166,26 +166,26 @@ describe('PATCH /api/contact', () => {
         const { PATCH } = await import('@/app/api/contact/route')
         const req = createMockRequest({
             method: 'PATCH',
-            body: { feeling: 'happy' }
+            body: { feeling: 'hopeful' }
         })
         const res = await PATCH(req)
         
         expect(res.status).toBe(400)
         const data = await res.json()
-        expect(data.error).toBe('ID and Feeling are required')
+        expect(data.error).toBe('Invalid feeling update')
     })
 
     it('should return 400 for missing feeling', async () => {
         const { PATCH } = await import('@/app/api/contact/route')
         const req = createMockRequest({
             method: 'PATCH',
-            body: { id: 'some-id' }
+            body: { id: '507f1f77bcf86cd799439011' }
         })
         const res = await PATCH(req)
         
         expect(res.status).toBe(400)
         const data = await res.json()
-        expect(data.error).toBe('ID and Feeling are required')
+        expect(data.error).toBe('Invalid feeling update')
     })
 
     it('should return 404 for non-existent contact', async () => {
@@ -195,7 +195,7 @@ describe('PATCH /api/contact', () => {
         const { PATCH } = await import('@/app/api/contact/route')
         const req = createMockRequest({
             method: 'PATCH',
-            body: { id: 'nonexistent-id', feeling: 'happy' }
+            body: { id: '507f1f77bcf86cd799439011', feeling: 'hopeful' }
         })
         const res = await PATCH(req)
         
@@ -209,24 +209,23 @@ describe('PATCH /api/contact', () => {
         vi.mocked(Contact.findByIdAndUpdate).mockResolvedValue({
             _id: 'contact-id',
             name: 'Test User',
-            feeling: 'happy',
+            feeling: 'hopeful',
         } as any)
 
         const { PATCH } = await import('@/app/api/contact/route')
         const req = createMockRequest({
             method: 'PATCH',
-            body: { id: 'contact-id', feeling: 'happy' }
+            body: { id: '507f1f77bcf86cd799439011', feeling: 'hopeful' }
         })
         const res = await PATCH(req)
         
         expect(res.status).toBe(200)
         const data = await res.json()
         expect(data.message).toBe('Feeling updated successfully')
-        expect(data.contact).toBeDefined()
         expect(Contact.findByIdAndUpdate).toHaveBeenCalledWith(
-            'contact-id',
-            { feeling: 'happy' },
-            { new: true }
+            '507f1f77bcf86cd799439011',
+            { feeling: 'hopeful' },
+            { new: false }
         )
     })
 
@@ -234,13 +233,13 @@ describe('PATCH /api/contact', () => {
         const { default: Contact } = await import('@/models/Contact')
         vi.mocked(Contact.findByIdAndUpdate).mockResolvedValue({
             _id: 'contact-id',
-            feeling: 'sad',
+            feeling: 'concerned',
         } as any)
 
         const { PATCH } = await import('@/app/api/contact/route')
         const req = createMockRequest({
             method: 'PATCH',
-            body: { id: 'contact-id', feeling: 'sad' }
+            body: { id: '507f1f77bcf86cd799439011', feeling: 'concerned' }
         })
         const res = await PATCH(req)
         

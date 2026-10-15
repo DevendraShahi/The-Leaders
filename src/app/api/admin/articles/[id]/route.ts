@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import Article from '@/models/Article';
 import ActivityLog from '@/models/ActivityLog';
-import { withAuth, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
+import { withPageAccess, withPermission, apiResponse, apiError, parseRequestBody } from '@/lib/middleware';
 import { invalidatePublicContent } from '@/lib/cache-invalidation';
+import { canUpdateArticle, hasArticlePermission, isArticleStatus, type ArticleStatus } from '@/lib/article-permissions';
 
 // GET: Fetch single article
 async function getArticle(request: NextRequest, { params }: { params: any }) {
@@ -11,7 +12,9 @@ async function getArticle(request: NextRequest, { params }: { params: any }) {
         await dbConnect();
         const { id } = await params;
 
-        const article = await Article.findById(id).populate('lastModifiedBy', 'name email');
+        const article = await Article.findById(id)
+            .select('+editorialWorkflow')
+            .populate('lastModifiedBy', 'name email');
 
         if (!article) {
             return apiError('Article not found', 404);
@@ -37,18 +40,38 @@ async function updateArticle(request: NextRequest, { user, params }: { user: any
         }
 
         const data = bodyParse.data as any;
+        if (data.status !== undefined && !isArticleStatus(data.status)) {
+            return apiError('Invalid article status', 400);
+        }
+
+        const existing = await Article.findById(id).select('status').lean();
+        if (!existing) {
+            return apiError('Article not found', 404);
+        }
+
+        const currentStatus = (existing.status || 'draft') as ArticleStatus;
+        const requestedStatus = (data.status || currentStatus) as ArticleStatus;
+        const mayPublish = hasArticlePermission(user, 'publish');
+
+        if (!canUpdateArticle(user, currentStatus, requestedStatus)) {
+            return apiError('Insufficient permissions to publish articles', 403);
+        }
 
         // Add metadata
         data.lastModifiedBy = user.userId;
+        if (data.editorialWorkflow) {
+            data.editorialWorkflow.updatedBy = user.userId;
+            data.editorialWorkflow.updatedAt = new Date();
+        }
 
-        const article = await Article.findByIdAndUpdate(
-            id,
+        const article = await Article.findOneAndUpdate(
+            mayPublish ? { _id: id } : { _id: id, status: { $ne: 'published' } },
             { ...data },
             { new: true, runValidators: true }
         );
 
         if (!article) {
-            return apiError('Article not found', 404);
+            return apiError('Article changed before it could be updated. Refresh and try again.', 409);
         }
 
         // Log activity
@@ -110,6 +133,6 @@ async function deleteArticle(request: NextRequest, { user, params }: { user: any
     }
 }
 
-export const GET = withAuth(getArticle);
-export const PUT = withAuth(updateArticle);
-export const DELETE = withAuth(deleteArticle);
+export const GET = withPageAccess('content', getArticle);
+export const PUT = withPermission('articles', 'edit', updateArticle);
+export const DELETE = withPermission('articles', 'delete', deleteArticle);

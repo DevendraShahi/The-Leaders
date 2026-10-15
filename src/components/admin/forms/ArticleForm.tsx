@@ -23,7 +23,7 @@ interface ArticleFormProps {
 
 export default function ArticleForm({ initialData, id }: ArticleFormProps) {
     const router = useRouter();
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(false);
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
 
@@ -44,8 +44,7 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
         content: normalize(initialData.content),
         author: normalize(initialData.author),
         category: normalize(initialData.category),
-        status: initialData.status || "draft",
-    } : {
+        status: initialData.status || "draft" } : {
         title: { en: "", ne: "" },
         excerpt: { en: "", ne: "" },
         content: { en: "", ne: "" },
@@ -94,7 +93,7 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
             try {
                 const uploadRes = await fetch('/api/admin/media/upload', {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` },
+                    headers: {  },
                     body: formData
                 });
                 if (!uploadRes.ok) throw new Error('Failed to upload image');
@@ -123,9 +122,7 @@ export default function ArticleForm({ initialData, id }: ArticleFormProps) {
             const res = await fetch(endpoint, {
                 method,
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
+                    "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             });
 

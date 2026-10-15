@@ -48,7 +48,7 @@ export function toIso(value: unknown): string {
 export function readPageParams(searchParams: URLSearchParams, defaultLimit = 20) {
     const pageValue = Number(searchParams.get("page") || "1");
     const limitValue = Number(searchParams.get("limit") || String(defaultLimit));
-    const page = Number.isFinite(pageValue) ? Math.max(1, Math.floor(pageValue)) : 1;
+    const page = Number.isFinite(pageValue) ? Math.min(1000, Math.max(1, Math.floor(pageValue))) : 1;
     const limit = Number.isFinite(limitValue)
         ? Math.min(50, Math.max(1, Math.floor(limitValue)))
         : defaultLimit;

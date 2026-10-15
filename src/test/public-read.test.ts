@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { bilingual, pagePayload, publicImage, readPageParams, slicePage } from "@/lib/public-read/shape";
+import { articleDetailSchema } from "@/lib/public-read/schemas";
 
 describe("public read shapes", () => {
     it("fills both languages from a single string", () => {
@@ -29,5 +30,26 @@ describe("public read shapes", () => {
             total: 3,
             hasMore: false,
         });
+    });
+
+    it("drops private editorial workflow fields from public article responses", () => {
+        const article = articleDetailSchema.parse({
+            slug: "private-notes-stay-private",
+            source: "article",
+            title: { en: "Headline", ne: "शीर्षक" },
+            excerpt: { en: "Summary", ne: "सारांश" },
+            author: { en: "Desk", ne: "डेस्क" },
+            category: { en: "Politics", ne: "राजनीति" },
+            image: "https://example.com/image.png",
+            publishedAt: "2026-10-01T00:00:00.000Z",
+            tags: ["news"],
+            content: { en: "Public content", ne: "सार्वजनिक सामग्री" },
+            editorialWorkflow: {
+                projectName: "Internal plan",
+                handoffNotes: "Do not publish before legal review.",
+            },
+        });
+
+        expect(article).not.toHaveProperty("editorialWorkflow");
     });
 });

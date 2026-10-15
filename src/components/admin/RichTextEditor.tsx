@@ -181,7 +181,7 @@ const validateImage = (file: File): { valid: boolean; error?: string } => {
 };
 
 export default function RichTextEditor({ value, onChange, placeholder, className }: RichTextEditorProps) {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [isUploading, setIsUploading] = useState(false);
     const [uploadError, setUploadError] = useState<string | null>(null);
     const [pendingFile, setPendingFile] = useState<File | null>(null);
@@ -192,14 +192,10 @@ export default function RichTextEditor({ value, onChange, placeholder, className
             Link.configure({
                 openOnClick: false,
                 HTMLAttributes: {
-                    class: 'text-primary underline cursor-pointer',
-                },
-            }),
+                    class: 'text-primary underline cursor-pointer' } }),
             Image.configure({
                 HTMLAttributes: {
-                    class: 'rounded-none max-w-full h-auto my-4 border border-border',
-                },
-            }),
+                    class: 'rounded-none max-w-full h-auto my-4 border border-border' } }),
         ],
         content: value,
         immediatelyRender: false,
@@ -208,10 +204,7 @@ export default function RichTextEditor({ value, onChange, placeholder, className
         },
         editorProps: {
             attributes: {
-                class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[300px] p-4 text-foreground bg-transparent font-serif leading-relaxed',
-            },
-        },
-    });
+                class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[300px] p-4 text-foreground bg-transparent font-serif leading-relaxed' } } });
 
     // Sync content when prop changes (needed for editing existing articles)
     useEffect(() => {
@@ -235,7 +228,7 @@ export default function RichTextEditor({ value, onChange, placeholder, className
         try {
             const res = await fetch('/api/admin/media/upload', {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${token}` },
+                headers: {  },
                 body: formData
             });
 
@@ -249,7 +242,7 @@ export default function RichTextEditor({ value, onChange, placeholder, className
             console.error('Image upload error:', error);
             return null;
         }
-    }, [token]);
+    }, [isAuthenticated]);
 
     const handleUpload = useCallback(async () => {
         const input = document.createElement('input');

@@ -18,7 +18,7 @@ import {
 import { format } from 'date-fns';
 
 export default function MediaLibrary() {
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [media, setMedia] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -34,20 +34,19 @@ export default function MediaLibrary() {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchMedia = async () => {
-        if (!token) return;
+        if (!isAuthenticated) return;
         setLoading(true);
         try {
             const params = new URLSearchParams({
                 page: page.toString(),
                 limit: '24',
-                search: searchTerm,
-            });
+                search: searchTerm });
             if (categoryFilter) params.append('category', categoryFilter);
             if (dateFrom) params.append('from', dateFrom);
             if (dateTo) params.append('to', dateTo);
 
             const res = await fetch(`/api/admin/media?${params}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {  }
             });
             const data = await res.json();
 
@@ -65,7 +64,7 @@ export default function MediaLibrary() {
 
     useEffect(() => {
         fetchMedia();
-    }, [token, page, searchTerm, categoryFilter, dateFrom, dateTo]);
+    }, [isAuthenticated, page, searchTerm, categoryFilter, dateFrom, dateTo]);
 
     const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -84,7 +83,7 @@ export default function MediaLibrary() {
 
                 const res = await fetch('/api/admin/media/upload', {
                     method: 'POST',
-                    headers: { 'Authorization': `Bearer ${token}` },
+                    headers: {  },
                     body: formData
                 });
 
@@ -120,9 +119,7 @@ export default function MediaLibrary() {
             const res = await fetch('/api/admin/media', {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                    'Content-Type': 'application/json' },
                 body: JSON.stringify({ ids: selectedIds })
             });
 

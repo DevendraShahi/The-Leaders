@@ -1,3 +1,4 @@
+import { spacing } from "@/theme/tokens";
 import { View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { router, useLocalSearchParams } from "expo-router";
@@ -59,7 +60,7 @@ export default function CategoryScreen() {
                     contentContainerStyle={{ paddingBottom: 40 }}
                     keyExtractor={(item) => `${item.source}-${item.slug}`}
                     ListHeaderComponent={
-                        <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
+                        <View style={{ paddingHorizontal: spacing.gutter, paddingTop: 20 }}>
                             <PageHeader title={title} />
                             
                             {leadArticle && (
@@ -73,7 +74,7 @@ export default function CategoryScreen() {
                                             />
                                         )}
                                     </View>
-                                    <AppText variant="body" style={{ color: colors.textPrimary, fontFamily: language === "ne" ? "Hind_600SemiBold" : "Manrope_600SemiBold", fontSize: 24, lineHeight: 32, marginBottom: 8 }} onPress={() => router.push(`/article/${leadArticle.slug}` as never)}>
+                                    <AppText variant="title" weight="semibold" style={{ color: colors.textPrimary, marginBottom: 8 }} onPress={() => router.push(`/article/${leadArticle.slug}` as never)}>
                                         {pick(leadArticle.title, language)}
                                     </AppText>
                                     <AppText variant="meta" style={{ color: colors.textMuted }}>
@@ -96,7 +97,7 @@ export default function CategoryScreen() {
                         if (query.hasNextPage && !query.isFetchingNextPage) query.fetchNextPage();
                     }}
                     renderItem={({ item }) => (
-                        <View style={{ paddingHorizontal: 20 }}>
+                        <View style={{ paddingHorizontal: spacing.gutter }}>
                             <ArticleRow
                                 recyclingKey={`${item.source}-${item.slug}`}
                                 kicker={pick(item.category, language)}

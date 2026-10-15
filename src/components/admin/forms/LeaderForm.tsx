@@ -23,7 +23,7 @@ interface LeaderFormProps {
 
 export default function LeaderForm({ initialData, id }: LeaderFormProps) {
     const router = useRouter();
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(false);
 
     // Helper to normalize bilingual fields
@@ -167,9 +167,7 @@ export default function LeaderForm({ initialData, id }: LeaderFormProps) {
             const res = await fetch(endpoint, {
                 method,
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
+                    "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             });
 

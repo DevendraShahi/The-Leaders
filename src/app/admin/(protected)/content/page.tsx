@@ -20,11 +20,12 @@ type ContentStatus = 'draft' | 'published' | 'archived';
 function ContentList() {
     const searchParams = useSearchParams();
     const router = useRouter();
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const { language } = useLanguage();
 
     // Default tab from URL or 'articles'
-    const type = searchParams.get('type') || 'articles';
+    const requestedType = searchParams.get('type') || 'articles';
+    const type = ['articles', 'leaders', 'briefs'].includes(requestedType) ? requestedType : 'articles';
     const [data, setData] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
@@ -50,20 +51,19 @@ function ContentList() {
     };
 
     const fetchContent = async () => {
-        if (!token) return;
+        if (!isAuthenticated) return;
         setLoading(true);
         try {
             const params = new URLSearchParams({
                 page: page.toString(),
-                limit: '10',
-            });
+                limit: '10' });
             if (dateFrom) params.set('from', dateFrom);
             if (dateTo) params.set('to', dateTo);
             if (statusFilter) params.set('status', statusFilter);
 
             const endpoint = `/api/admin/${type}?${params.toString()}`;
             const res = await fetch(endpoint, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {  }
             });
             const responseData = await res.json();
 
@@ -92,7 +92,7 @@ function ContentList() {
     useEffect(() => {
         fetchContent();
         // Reset page when switching types? Yes preferably.
-    }, [type, page, token, dateFrom, dateTo, statusFilter]);
+    }, [type, page, isAuthenticated, dateFrom, dateTo, statusFilter]);
 
     useEffect(() => {
         setPreviewItem(null);
@@ -108,7 +108,7 @@ function ContentList() {
     const handlePreview = async (row: any, itemType: string) => {
         const allowedTypes = new Set(['article', 'leader', 'history', 'brief', 'fact-check', 'election-article', 'column-article']);
         if (!allowedTypes.has(itemType)) return;
-        if (!token) return;
+        if (!isAuthenticated) return;
         const normalizedType = itemType as 'article' | 'leader' | 'history' | 'brief' | 'fact-check' | 'election-article' | 'column-article';
         const itemId = getBulkDeleteId(row, normalizedType);
         const routeType = getRouteType(normalizedType);
@@ -117,7 +117,7 @@ function ContentList() {
         setPreviewLoading(true);
         try {
             const res = await fetch(`/api/admin/${routeType}/${itemId}`, {
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {  }
             });
             const response = await res.json();
 
@@ -128,8 +128,7 @@ function ContentList() {
                 brief: 'brief',
                 'fact-check': 'factCheck',
                 'election-article': 'electionArticle',
-                'column-article': 'columnArticle',
-            };
+                'column-article': 'columnArticle' };
             const payloadKey = keyMap[normalizedType];
             const previewPayload = response?.data?.[payloadKey];
 
@@ -161,7 +160,7 @@ function ContentList() {
 
             const res = await fetch(`/api/admin/${routeType}/${id}`, {
                 method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: {  }
             });
 
             if (res.ok) {
@@ -182,7 +181,7 @@ function ContentList() {
     };
 
     const handleStatusChange = async (row: any, itemType: string, status: ContentStatus) => {
-        if (!token) return;
+        if (!isAuthenticated) return;
         const routeType = getRouteType(itemType);
         const itemId = getBulkDeleteId(row, itemType);
         if (!itemId) return;
@@ -198,9 +197,7 @@ function ContentList() {
             const res = await fetch(`/api/admin/${routeType}/${itemId}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
+                    'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })
             });
 
@@ -287,7 +284,7 @@ function ContentList() {
     };
 
     const executeBulkDelete = async (rows: any[]) => {
-        if (!token || rows.length === 0) return;
+        if (!isAuthenticated || rows.length === 0) return;
 
         const itemType = getCurrentItemType();
         const routeType = getRouteType(itemType);
@@ -299,7 +296,7 @@ function ContentList() {
                     if (!itemId) return { ok: false };
                     const res = await fetch(`/api/admin/${routeType}/${itemId}`, {
                         method: 'DELETE',
-                        headers: { 'Authorization': `Bearer ${token}` }
+                        headers: {  }
                     });
                     return { ok: res.ok };
                 })
@@ -322,12 +319,12 @@ function ContentList() {
     };
 
     const handleBulkDelete = async (rows: any[]) => {
-        if (!token || rows.length === 0) return;
+        if (!isAuthenticated || rows.length === 0) return;
         setPendingBulkDeleteRows(rows);
     };
 
     const executeBulkStatusChange = async (rows: any[], status: ContentStatus) => {
-        if (!token || rows.length === 0) return;
+        if (!isAuthenticated || rows.length === 0) return;
 
         const itemType = getCurrentItemType();
         const routeType = getRouteType(itemType);
@@ -342,9 +339,7 @@ function ContentList() {
                     const res = await fetch(`/api/admin/${routeType}/${itemId}`, {
                         method: 'PUT',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
+                            'Content-Type': 'application/json' },
                         body: JSON.stringify({ status })
                     });
 
@@ -550,14 +545,6 @@ function ContentList() {
                         <Plus className="h-4 w-4 mr-2" />
                         {getCreateLabel()}
                     </Link>
-
-                    <Link
-                        href="/admin/content/import"
-                        className="inline-flex items-center justify-center gap-2 border border-border bg-background hover:bg-muted text-foreground px-4 py-2.5 transition-colors text-xs font-bold font-mono uppercase tracking-wider rounded-none h-10 w-full sm:w-auto"
-                    >
-                        <Upload className="h-3.5 w-3.5" />
-                        Leaders Automation
-                    </Link>
                 </div>
             </div>
 
@@ -639,22 +626,10 @@ function ContentList() {
                         {language === 'ne' ? 'नेताहरू' : 'Leaders'}
                     </button>
                     <button
-                        onClick={() => handleTabChange('history')}
-                        className={`${tabBase} ${type === 'history' ? activeTab : inactiveTab}`}
-                    >
-                        {language === 'ne' ? 'इतिहास' : 'History'}
-                    </button>
-                    <button
                         onClick={() => handleTabChange('briefs')}
                         className={`${tabBase} ${type === 'briefs' ? activeTab : inactiveTab}`}
                     >
                         {language === 'ne' ? 'संक्षिप्तहरू' : 'Briefs'}
-                    </button>
-                    <button
-                        onClick={() => handleTabChange('column-articles')}
-                        className={`${tabBase} ${type === 'column-articles' ? activeTab : inactiveTab}`}
-                    >
-                        {language === 'ne' ? 'स्तम्भहरू' : 'Column Articles'}
                     </button>
                 </div>
             </div>

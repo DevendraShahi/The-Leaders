@@ -54,8 +54,7 @@ const normalizeLocalized = (value: unknown): { en: string; ne: string } => {
         const localized = value as { en?: string; ne?: string };
         return {
             en: typeof localized.en === "string" ? localized.en : "",
-            ne: typeof localized.ne === "string" ? localized.ne : "",
-        };
+            ne: typeof localized.ne === "string" ? localized.ne : "" };
     }
     return { en: "", ne: "" };
 };
@@ -86,8 +85,7 @@ const getTypeConfig = (type: ElectionContentType) => {
             title: "Edit Daily Brief",
             endpoint: "/api/admin/briefs",
             redirectType: "briefs",
-            saveLabel: "Save Brief",
-        };
+            saveLabel: "Save Brief" };
     }
 
     if (type === "fact-check") {
@@ -95,8 +93,7 @@ const getTypeConfig = (type: ElectionContentType) => {
             title: "Edit Fact Check",
             endpoint: "/api/admin/fact-checks",
             redirectType: "fact-checks",
-            saveLabel: "Save Fact Check",
-        };
+            saveLabel: "Save Fact Check" };
     }
 
     if (type === "column-article") {
@@ -104,21 +101,19 @@ const getTypeConfig = (type: ElectionContentType) => {
             title: "Edit Column",
             endpoint: "/api/admin/column-articles",
             redirectType: "column-articles",
-            saveLabel: "Save Column",
-        };
+            saveLabel: "Save Column" };
     }
 
     return {
         title: "Edit Election Article",
         endpoint: "/api/admin/election-articles",
         redirectType: "election-articles",
-        saveLabel: "Save Election Article",
-    };
+        saveLabel: "Save Election Article" };
 };
 
 export default function ElectionContentForm({ id, type, initialData }: ElectionContentFormProps) {
     const router = useRouter();
-    const { token } = useAuth();
+    const { isAuthenticated } = useAuth();
     const [loading, setLoading] = useState(false);
     const config = getTypeConfig(type);
 
@@ -144,18 +139,14 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
         analysis: normalizeLocalized(initialData?.analysis),
         articleTitle: normalizeLocalized({
             en: initialData?.title_en,
-            ne: initialData?.title_ne,
-        }),
+            ne: initialData?.title_ne }),
         articleExcerpt: normalizeLocalized({
             en: initialData?.excerpt_en,
-            ne: initialData?.excerpt_ne,
-        }),
+            ne: initialData?.excerpt_ne }),
         articleContent: normalizeLocalized({
             en: initialData?.content_en,
-            ne: initialData?.content_ne,
-        }),
-        category: normalizeString(initialData?.category),
-    };
+            ne: initialData?.content_ne }),
+        category: normalizeString(initialData?.category) };
 
     const form = useForm<FormValues>({ defaultValues: defaults });
     const { control, handleSubmit, setValue, getValues } = form;
@@ -168,9 +159,9 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
     const [isCustomCategory, setIsCustomCategory] = useState(false);
     
     useEffect(() => {
-        if (type === 'column-article' && token) {
+        if (type === 'column-article' && isAuthenticated) {
             fetch('/api/admin/column-articles/categories', {
-                headers: { Authorization: `Bearer ${token}` }
+                headers: {  }
             })
             .then(res => res.json())
             .then(data => {
@@ -186,7 +177,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
             })
             .catch(console.error);
         }
-    }, [type, token, getValues]);
+    }, [type, isAuthenticated, getValues]);
 
     useEffect(() => {
         const sourceText =
@@ -209,8 +200,8 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
     }, [type, briefTitle, factClaim, articleTitle, getValues, setValue]);
 
     const onSubmit = async (values: FormValues) => {
-        if (!token) {
-            toast.error("Missing auth token");
+        if (!isAuthenticated) {
+            toast.error("Please sign in again.");
             return;
         }
 
@@ -233,8 +224,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                     tags,
                     status: values.status,
                     isPublished: values.status === "published",
-                    image: values.image || undefined,
-                };
+                    image: values.image || undefined };
             } else if (type === "fact-check") {
                 payload = {
                     claim: values.claim,
@@ -248,8 +238,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                         .map((item) => item.trim())
                         .filter(Boolean),
                     date: values.date ? new Date(values.date).toISOString() : undefined,
-                    image: values.image || undefined,
-                };
+                    image: values.image || undefined };
             } else {
                 payload = {
                     editor: values.editor || "The Leaders Editorial",
@@ -263,8 +252,7 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
                     slug: values.slug,
                     tags,
                     status: values.status,
-                    image: values.image || undefined,
-                };
+                    image: values.image || undefined };
             }
 
             const isCreateMode = id === "new";
@@ -272,11 +260,8 @@ export default function ElectionContentForm({ id, type, initialData }: ElectionC
             const res = await fetch(endpoint, {
                 method: isCreateMode ? "POST" : "PUT",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(payload),
-            });
+                    "Content-Type": "application/json" },
+                body: JSON.stringify(payload) });
 
             const result = await res.json();
             if (!res.ok) {

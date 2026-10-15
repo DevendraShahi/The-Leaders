@@ -18,6 +18,8 @@ async function uploadMedia(request: NextRequest, { user }: { user: any }) {
         const altTextEn = formData.get('altTextEn') as string;
         const altTextNe = formData.get('altTextNe') as string;
         const tagsStr = formData.get('tags') as string;
+        const credit = formData.get('credit') as string;
+        const rightsStatus = formData.get('rightsStatus') as string;
 
         if (!file) {
             return apiError('No file provided', 400);
@@ -55,6 +57,8 @@ async function uploadMedia(request: NextRequest, { user }: { user: any }) {
                 en: altTextEn || '',
                 ne: altTextNe || ''
             },
+            credit: credit || '',
+            rightsStatus: ['licensed', 'owned', 'public_domain', 'permission_granted', 'unknown'].includes(rightsStatus) ? rightsStatus : 'unknown',
             uploadedBy: user.userId
         });
 

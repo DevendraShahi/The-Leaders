@@ -1,35 +1,25 @@
-import { View, Pressable } from "react-native";
+import { View } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 import { router, useLocalSearchParams } from "expo-router";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { Image } from "expo-image";
+import { Button } from "@/components/ui/button";
+import { useAppStore } from "@/state/useAppStore";
 import { apiGet, type ArticleCard, type Page } from "@/api/client";
 import { ArticleRow } from "@/ui/ArticleRow";
 import { AppText } from "@/ui/AppText";
 import { StateView } from "@/ui/StateView";
 import { useColors } from "@/theme/Theme";
 import { pick, useLanguage } from "@/i18n/language";
-import { ui } from "@/i18n/copy";
 import { spacing } from "@/theme/tokens";
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-function whenLabel(iso: string, language: "en" | "ne") {
-    const then = Date.parse(iso);
-    if (Number.isNaN(then)) return "";
-    const minutes = Math.max(1, Math.round((Date.now() - then) / 60000));
-    if (minutes < 60) return language === "ne" ? `${minutes} मिनेट अघि` : `${minutes} min ago`;
-    const hours = Math.round(minutes / 60);
-    if (hours < 36) return language === "ne" ? `${hours} घण्टा अघि` : `${hours} hr ago`;
-    const date = new Date(then);
-    return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`;
-}
+import { storyDate } from "@/utils/editorial";
 
 export default function AuthorScreen() {
     const { name } = useLocalSearchParams<{ name: string }>();
-    const authorName = decodeURIComponent(name || "");
+    const authorName = name || "";
     const colors = useColors();
     const { language } = useLanguage();
+    const followed = useAppStore(state => state.followedAuthors.includes(authorName));
+    const toggleFollowedAuthor = useAppStore(state => state.toggleFollowedAuthor);
     
     const query = useInfiniteQuery({
         queryKey: ["articles", "author", authorName],
@@ -45,20 +35,19 @@ export default function AuthorScreen() {
         <View style={{ marginBottom: spacing["3xl"] }}>
             <View style={{ alignItems: "center", marginBottom: spacing.xl }}>
                 <View style={{ width: 100, height: 100, borderRadius: 50, backgroundColor: colors.surfaceSecondary, overflow: "hidden", marginBottom: spacing.md }}>
-                    <Image
-                        source={{ uri: `https://ui-avatars.com/api/?name=${encodeURIComponent(authorName)}&background=random&size=200` }}
-                        style={{ width: "100%", height: "100%" }}
-                        contentFit="cover"
-                    />
+                    <AppText variant="title" style={{ textAlign: "center", marginTop: spacing.xl }}>{authorName.slice(0, 2).toUpperCase()}</AppText>
                 </View>
                 <AppText variant="title" style={{ color: colors.textPrimary, textAlign: "center" }}>
                     {authorName}
                 </AppText>
                 <AppText variant="meta" style={{ color: colors.brandRed, marginTop: spacing.xs, textAlign: "center" }}>
-                    {language === "ne" ? "लेखक / सम्पादक" : "Author / Editor"}
+                    {language === "ne" ? "लेखक" : "Author"}
                 </AppText>
             </View>
             
+            <Button variant={followed ? "outline" : "default"} accessibilityState={{ selected: followed }} onPress={() => toggleFollowedAuthor(authorName)}>
+                <AppText variant="body" style={{ color: followed ? colors.brandRed : colors.onPrimary }}>{language === "ne" ? followed ? "फलो गर्दै" : "फलो गर्नुहोस्" : followed ? "Following" : "Follow author"}</AppText>
+            </Button>
             <View style={{ height: 1, backgroundColor: colors.border, marginVertical: spacing.md }} />
             
             <AppText variant="meta" style={{ color: colors.textSecondary, marginBottom: spacing.md }}>
@@ -90,7 +79,7 @@ export default function AuthorScreen() {
                             recyclingKey={`${item.source}-${item.slug}`}
                             kicker={pick(item.category, language)}
                             title={pick(item.title, language)}
-                            meta={whenLabel(item.publishedAt, language)}
+                            meta={storyDate(item.publishedAt, language)}
                             image={item.image}
                             onPress={() => router.push(`/article/${item.slug}` as never)}
                         />
