@@ -2,12 +2,26 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({ admin: vi.fn(), login: vi.fn() }));
 vi.mock('@/lib/mobile-auth', () => ({ getMobileAdmin: mocks.admin }));
 vi.mock('@/app/api/v1/auth/login/route', () => ({ POST: mocks.login }));
+import { NextRequest, NextResponse } from 'next/server';
+import { withAuth } from '@/lib/middleware';
 import { getWebsiteAdmin, websiteSessionCookie } from '@/lib/website-auth';
 import { POST as login } from '@/app/api/auth/login/route';
 import { POST as logout } from '@/app/api/auth/logout/route';
 const origin = 'https://news.example.com';
 beforeEach(() => vi.clearAllMocks());
 describe('website password session boundary', () => {
+    it('marks both authenticated and rejected admin API responses private and uncacheable', async () => {
+        const handler = withAuth(async () => NextResponse.json({ success: true }));
+        const request = new NextRequest(`${origin}/api/admin/articles`, { headers: { authorization: 'Bearer test-session' } });
+        mocks.admin.mockResolvedValue(null);
+        const rejected = await handler(request);
+        expect(rejected.status).toBe(401);
+        expect(rejected.headers.get('cache-control')).toBe('private, no-store');
+        mocks.admin.mockResolvedValue({ _id: 'admin-1', email: 'admin@example.com', role: 'editorial', permissions: {} });
+        const accepted = await handler(request);
+        expect(accepted.status).toBe(200);
+        expect(accepted.headers.get('cache-control')).toBe('private, no-store');
+    });
     it('uses the same current-admin verifier as native login for bearer requests', async () => {
         mocks.admin.mockResolvedValue({ role: 'editorial' });
         const request = new Request(`${origin}/api/admin/articles`, { headers: { authorization: 'Bearer native-session' } });

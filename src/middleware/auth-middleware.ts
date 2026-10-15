@@ -19,13 +19,15 @@ export function withAuth(
                 ? await params
                 : params;
             const admin = await getWebsiteAdmin(request);
-            if (!admin) return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
-            return handler(request, { admin, params: resolvedParams });
+            if (!admin) return NextResponse.json({ error: 'Authentication required' }, { status: 401, headers: { 'Cache-Control': 'private, no-store' } });
+            const response = await handler(request, { admin, params: resolvedParams });
+            response.headers.set('Cache-Control', 'private, no-store');
+            return response;
         } catch (error) {
             console.error('Auth middleware error:', error);
             return NextResponse.json(
                 { error: 'Authentication failed' },
-                { status: 500 }
+                { status: 500, headers: { 'Cache-Control': 'private, no-store' } }
             );
         }
     };

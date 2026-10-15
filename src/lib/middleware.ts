@@ -56,11 +56,13 @@ export function withAuth(
         if (!authResult.authenticated || !authResult.user) {
             return NextResponse.json(
                 { error: authResult.error || 'Unauthorized' },
-                { status: authResult.status || 401 }
+                { status: authResult.status || 401, headers: { 'Cache-Control': 'private, no-store' } }
             );
         }
 
-        return handler(request, { user: authResult.user, params: resolvedParams });
+        const response = await handler(request, { user: authResult.user, params: resolvedParams });
+        response.headers.set('Cache-Control', 'private, no-store');
+        return response;
     };
 }
 
