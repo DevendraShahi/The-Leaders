@@ -68,3 +68,14 @@ actual traffic window. No numerical savings or universal usage ceiling is
 promised: traffic, bots, image sizes, cache misses and edits affect the bill.
 The Vercel owner account is required to inspect project-level cron settings and
 usage; repository inspection alone cannot rule out an external scheduler.
+
+## Local development resource usage
+
+`npm run dev` uses Webpack and a 4 GiB JavaScript old-space limit. On this Mac,
+the previous Turbopack development process reached a 12.1 GiB footprint while
+spending most sampled time in JSON serialization/garbage collection without
+ongoing HTTP traffic. Webpack avoids that observed development path. This
+workaround does not change the production bundler or impose a total-process
+memory ceiling. Production-only split-chunk overrides are disabled during dev.
+Tailwind scans the website `src` directory explicitly instead of the repository
+root, keeping the separate Expo application out of website class detection.

@@ -80,9 +80,9 @@ const nextConfig: NextConfig = {
   turbopack: {},
 
   // Webpack optimization (used when --webpack flag is passed)
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     // Optimize bundle splitting for client-side
-    if (!isServer) {
+    if (!isServer && !dev) {
       config.optimization = {
         ...config.optimization,
         splitChunks: {
