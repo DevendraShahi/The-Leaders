@@ -13,6 +13,9 @@
   author filtering/search, author directory and daily brief reader.
 - Expo Doctor passes 20/21 checks. Its remaining warning is this Mac's Xcode
   26.0.1; SDK 57 needs Xcode 26.4+ for iOS. This does not prevent EAS Android builds.
+- Signed APK build completed; signature verification passed. Package `com.theleaders.app`,
+  version 1.0.0 (2), minimum Android API 24 (Android 7), target API 36. It includes
+  ARM32, ARM64, x86 and x86_64, is not debuggable, and embeds the production API URL.
 - No connected Android device or configured AVD was available during these checks.
   Physical-device login, playback, offline saves and native export remain pending.
 - No cloud news automation, push delivery or automatic publishing is activated.
@@ -41,7 +44,7 @@ source in `src/theme/design-system.json`, shared with NativeWind. See
 | Localization | English/Nepali provider and Hind font support | Partial | Complete copy parity and test long Devanagari strings on every screen. |
 | Code quality | TypeScript and Expo lint are configured | Passing | `npm run check` passes without warnings. |
 | Automated tests | Nine functional tests, six design tests and live API smoke checks | Partial | Add native device flows for saved copies, search, reader, radio and offline recovery. |
-| Release builds | Linked Expo project; signed standalone APK profile targets the live backend | Android build running | Verify the downloaded APK on a physical device before wider distribution. |
+| Release builds | Linked Expo project; signed standalone APK profile targets the live backend | APK built and signature verified | Verify the downloaded APK on a physical device before wider distribution. |
 | OTA updates | `expo-updates` is installed | Not configured | Run `npx eas-cli@latest update:configure`, then use preview/production update branches only after device validation. |
 | Observability | Opt-in first-party daily event counts and root render recovery | Partial | Configure detailed crash reporting, release tags and alert ownership; counts do not provide per-user retention. |
 | Security & privacy | Secure Store is installed; public API base is environment-driven | Partial | Verify auth token storage, server-side authorization, privacy manifest, permission copy, and data-retention policy. |
