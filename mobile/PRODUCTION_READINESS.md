@@ -1,5 +1,22 @@
 # Mobile Production Readiness
 
+## Android release check — 2026-10-15
+
+- Expo project: `@devendra_shahi/the-leaders` (linked).
+- `npm run build:apk` uses the signed internal `apk` EAS profile with the live
+  `https://the-leadersnp.com` backend and a bundled production JavaScript release.
+- Expo SDK 57 patch dependencies are aligned; Metro uses Expo's recommended
+  resolution defaults. The obsolete `newArchEnabled` setting is removed.
+- Production Android export, mobile lint/typecheck and 57 focused functional,
+  authentication, draft, export and Nepali typography tests passed.
+- Read-only live API smoke passed for home, full article content, reading times,
+  author filtering/search, author directory and daily brief reader.
+- Expo Doctor passes 20/21 checks. Its remaining warning is this Mac's Xcode
+  26.0.1; SDK 57 needs Xcode 26.4+ for iOS. This does not prevent EAS Android builds.
+- No connected Android device or configured AVD was available during these checks.
+  Physical-device login, playback, offline saves and native export remain pending.
+- No cloud news automation, push delivery or automatic publishing is activated.
+
 ## Design direction
 
 The Leaders is an editorial civic product, not a generic feed. The mobile system
@@ -24,7 +41,7 @@ source in `src/theme/design-system.json`, shared with NativeWind. See
 | Localization | English/Nepali provider and Hind font support | Partial | Complete copy parity and test long Devanagari strings on every screen. |
 | Code quality | TypeScript and Expo lint are configured | Passing | `npm run check` passes without warnings. |
 | Automated tests | Nine functional tests, six design tests and live API smoke checks | Partial | Add native device flows for saved copies, search, reader, radio and offline recovery. |
-| Release builds | EAS development, preview, and production profiles are configured | Ready to configure | Link the Expo project and create signing credentials before the first cloud build. |
+| Release builds | Linked Expo project; signed standalone APK profile targets the live backend | Android build running | Verify the downloaded APK on a physical device before wider distribution. |
 | OTA updates | `expo-updates` is installed | Not configured | Run `npx eas-cli@latest update:configure`, then use preview/production update branches only after device validation. |
 | Observability | Opt-in first-party daily event counts and root render recovery | Partial | Configure detailed crash reporting, release tags and alert ownership; counts do not provide per-user retention. |
 | Security & privacy | Secure Store is installed; public API base is environment-driven | Partial | Verify auth token storage, server-side authorization, privacy manifest, permission copy, and data-retention policy. |
