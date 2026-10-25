@@ -1,8 +1,38 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, BookOpen, Download, Eye, EyeOff, ImagePlus, Layers3, LayoutTemplate, Lock, LockOpen, Redo2, Type, Undo2, X } from 'lucide-react';
-import { updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
+import { 
+    ArrowDown, 
+    ArrowLeft, 
+    ArrowRight, 
+    ArrowUp, 
+    BookOpen, 
+    Check, 
+    ChevronLeft, 
+    ChevronRight, 
+    Copy, 
+    Download, 
+    Eye, 
+    EyeOff, 
+    Globe, 
+    ImagePlus, 
+    Instagram, 
+    Layers3, 
+    LayoutTemplate, 
+    Link2, 
+    Lock, 
+    LockOpen, 
+    MoveLeft, 
+    MoveRight, 
+    Plus, 
+    Redo2, 
+    Trash2, 
+    Type, 
+    Undo2, 
+    Upload, 
+    X 
+} from 'lucide-react';
+import { createDraft, listDrafts, setDraftTrashed, updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
 import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
 import { commitInteraction } from '@/lib/post-studio/history';
@@ -12,9 +42,12 @@ import { setTextTypography } from '@/lib/post-studio/typography';
 import { imageEffectControls, setImageEffect } from '@/lib/post-studio/image-effects';
 import { moveImage, replaceImage, resetImageAdjustments, setImageFit, wheelMovement } from '@/lib/post-studio/image-positioning';
 import { artworkBytes, download } from '@/lib/post-studio/export';
+import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip } from '@/lib/post-studio/carousel';
 import { Artwork } from './Artwork';
 import { ColorPicker, Section, Slider } from './Controls';
 import BookReviewModal from './BookReviewModal';
+import StudioMediaModal from './StudioMediaModal';
+import InstagramPreviewModal from './InstagramPreviewModal';
 import styles from './PostStudio.module.css';
 
 type Tool = 'text' | 'layout' | 'media' | 'layers';
@@ -23,9 +56,23 @@ const layers: { key: PostLayer; label: string }[] = [{ key: 'visual', label: 'Vi
 const fields = [{ layer: 'headline', key: 'headline', label: 'Headline' }, { layer: 'supporting', key: 'summary', label: 'Summary' }, { layer: 'kicker', key: 'eyebrow', label: 'Kicker' }, { layer: 'footer', key: 'author', label: 'Byline' }] as const;
 
 export default function PostEditor({ scope, draft, onClose, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; canExport?: boolean }) {
+    // Carousel state
+    const [slides, setSlides] = useState<PostDraft[]>([draft]);
+    const [activeSlideIndex, setActiveSlideIndex] = useState(0);
+    const [instagramPreviewOpen, setInstagramPreviewOpen] = useState(false);
+
+    // Active design state
     const [design, setDesign] = useState(draft.design);
     const designRef = useRef(design);
+
+    // Media & Modals state
     const [bookModalOpen, setBookModalOpen] = useState(false);
+    const [mediaModalOpen, setMediaModalOpen] = useState(false);
+    const [quickImageUrl, setQuickImageUrl] = useState('');
+    const [quickUrlLoading, setQuickUrlLoading] = useState(false);
+    const [mediaCopied, setMediaCopied] = useState(false);
+
+    // Editor tools & UI state
     const [tool, setTool] = useState<Tool>('text');
     const [selected, setSelected] = useState<PostLayer>('headline');
     const [reposition, setReposition] = useState(false);
@@ -38,14 +85,38 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [overflow, setOverflow] = useState(false);
     const [exporting, setExporting] = useState(false);
     const [history, setHistory] = useState({ undo: 0, redo: 0 });
+
     const undoRef = useRef<PostDesign[]>([]), redoRef = useRef<PostDesign[]>([]), interaction = useRef<PostDesign | null>(null);
     const stageRef = useRef<HTMLDivElement>(null), exportRef = useRef<HTMLDivElement>(null), previewRef = useRef<HTMLDivElement>(null), fileRef = useRef<HTMLInputElement>(null);
+    const carouselExportRefs = useRef<(HTMLDivElement | null)[]>([]);
     const [stageSize, setStageSize] = useState({ width: 360, height: 480 });
     const mounted = useRef(true), dirty = useRef(false);
     const drag = useRef<{ x: number; y: number; design: PostDesign } | null>(null);
     const ballDrag = useRef<{ x: number; y: number } | null>(null);
     const ballRef = useRef<HTMLDivElement>(null);
     const wheelTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+    // Discover sibling drafts in the same carousel pack
+    useEffect(() => {
+        let active = true;
+        void (async () => {
+            try {
+                const allDrafts = await listDrafts(scope);
+                if (!active) return;
+                const found = findCarouselSiblings(draft, allDrafts);
+                if (found.length > 0) {
+                    setSlides(found);
+                    const currentIdx = found.findIndex(s => s.id === draft.id);
+                    if (currentIdx >= 0) setActiveSlideIndex(currentIdx);
+                }
+            } catch {
+                // Keep default single slide
+            }
+        })();
+        return () => { active = false; };
+    }, [scope, draft.id]);
+
+    const activeSlide = slides[activeSlideIndex] || draft;
 
     const updateHistory = () => setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
     const apply = useCallback((change: Change, record = true) => {
@@ -64,18 +135,21 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         interaction.current = null; setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
     }, []);
     const live = useCallback((change: Change) => apply(change, !interaction.current), [apply]);
+
     const persist = useCallback(async () => {
         if (!dirty.current) return true;
         const snapshot = designRef.current;
+        const targetId = slides[activeSlideIndex]?.id || draft.id;
         try {
-            await updateDraft(scope, draft.id, { design: snapshot });
+            await updateDraft(scope, targetId, { design: snapshot });
             if (snapshot === designRef.current) { dirty.current = false; if (mounted.current) setSaveState('saved'); }
             return true;
         } catch (error) {
             if (mounted.current) { setSaveState('error'); setIssue(error instanceof Error ? error.message : 'Keep the editor open and retry saving.'); }
             return false;
         }
-    }, [scope, draft.id]);
+    }, [scope, draft.id, slides, activeSlideIndex]);
+
     useEffect(() => { const timer = setTimeout(() => { void persist(); }, 380); return () => clearTimeout(timer); }, [design, persist]);
     useEffect(() => {
         mounted.current = true;
@@ -83,12 +157,14 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         window.addEventListener('beforeunload', unload);
         return () => { mounted.current = false; clearTimeout(wheelTimer.current); window.removeEventListener('beforeunload', unload); void persist(); };
     }, [persist]);
+
     useEffect(() => {
         const node = stageRef.current;
         if (!node) return;
         const observer = new ResizeObserver(entries => { const { width, height } = entries[0].contentRect; setStageSize({ width, height }); });
         observer.observe(node); return () => observer.disconnect();
     }, []);
+
     useEffect(() => {
         setImageIssue('');
         if (!design.imageUri) return;
@@ -98,6 +174,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         image.src = design.imageUri;
         return () => { active = false; };
     }, [design.imageUri]);
+
     useEffect(() => {
         let active = true;
         void document.fonts.ready.then(() => {
@@ -110,12 +187,111 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         return () => { active = false; };
     }, [design]);
 
+    // Carousel Slide Switcher
+    const switchSlide = async (targetIndex: number) => {
+        if (targetIndex < 0 || targetIndex >= slides.length || targetIndex === activeSlideIndex) return;
+        const currentSlide = slides[activeSlideIndex];
+        if (currentSlide && dirty.current) {
+            try {
+                await updateDraft(scope, currentSlide.id, { design: designRef.current });
+            } catch {
+                // ignore
+            }
+        }
+        const updated = [...slides];
+        if (updated[activeSlideIndex]) {
+            updated[activeSlideIndex] = {
+                ...updated[activeSlideIndex],
+                design: designRef.current,
+            };
+            setSlides(updated);
+        }
+        const nextSlide = updated[targetIndex];
+        if (!nextSlide) return;
+        dirty.current = false;
+        undoRef.current = [];
+        redoRef.current = [];
+        interaction.current = null;
+        setActiveSlideIndex(targetIndex);
+        designRef.current = nextSlide.design;
+        setDesign(nextSlide.design);
+        setHistory({ undo: 0, redo: 0 });
+        setSaveState('saved');
+    };
+
+    // Carousel Slide Actions
+    const handleAddSlide = async () => {
+        try {
+            const baseTitle = getCarouselBaseTitle(slides[0]?.name || draft.name);
+            const newIndex = slides.length + 1;
+            const newDesign: PostDesign = {
+                ...designRef.current,
+                headline: `Key Point ${newIndex}`,
+                summary: `Add context, analysis, or quote for slide ${newIndex}.`,
+            };
+            const created = await createDraft(scope, `${baseTitle} · ${newIndex}/${newIndex}`, newDesign);
+            const nextSlides = [...slides, created];
+            setSlides(nextSlides);
+            await switchSlide(nextSlides.length - 1);
+            setNotice(`Slide ${newIndex} added to carousel`);
+        } catch (err) {
+            setIssue(err instanceof Error ? err.message : 'Could not add slide.');
+        }
+    };
+
+    const handleDuplicateSlide = async () => {
+        try {
+            const baseTitle = getCarouselBaseTitle(slides[0]?.name || draft.name);
+            const newIndex = slides.length + 1;
+            const duplicatedDesign = { ...designRef.current };
+            const created = await createDraft(scope, `${baseTitle} · ${newIndex}/${newIndex} (Copy)`, duplicatedDesign);
+            const nextSlides = [...slides, created];
+            setSlides(nextSlides);
+            await switchSlide(nextSlides.length - 1);
+            setNotice('Slide duplicated');
+        } catch (err) {
+            setIssue(err instanceof Error ? err.message : 'Could not duplicate slide.');
+        }
+    };
+
+    const handleDeleteSlide = async () => {
+        if (slides.length <= 1) return;
+        const toDelete = slides[activeSlideIndex];
+        if (!toDelete) return;
+        try {
+            await setDraftTrashed(scope, toDelete.id, true);
+            const remaining = slides.filter((_, idx) => idx !== activeSlideIndex);
+            setSlides(remaining);
+            const nextIdx = Math.max(0, activeSlideIndex - 1);
+            setActiveSlideIndex(nextIdx);
+            designRef.current = remaining[nextIdx].design;
+            setDesign(remaining[nextIdx].design);
+            dirty.current = false;
+            setNotice('Slide removed from carousel');
+        } catch (err) {
+            setIssue(err instanceof Error ? err.message : 'Could not delete slide.');
+        }
+    };
+
+    const handleMoveSlide = (direction: -1 | 1) => {
+        const targetIdx = activeSlideIndex + direction;
+        if (targetIdx < 0 || targetIdx >= slides.length) return;
+        const reordered = [...slides];
+        const temp = reordered[activeSlideIndex];
+        reordered[activeSlideIndex] = reordered[targetIdx];
+        reordered[targetIdx] = temp;
+        setSlides(reordered);
+        setActiveSlideIndex(targetIdx);
+        setNotice(`Slide moved to position ${targetIdx + 1}`);
+    };
+
     const [outputW, outputH] = postOutputDimensions[design.format];
     const referenceH = 360 * outputH / outputW;
-    const scale = Math.max(.1, Math.min((stageSize.width - 32) / 360, (stageSize.height - 64) / referenceH, 1.25));
+    const scale = Math.max(.1, Math.min((stageSize.width - 32) / 360, (stageSize.height - 120) / referenceH, 1.25));
     const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : 'text'); setReposition(false); };
     const locked = design.lockedLayers.includes(selected);
     const mediaDisabled = !design.imageUri || design.lockedLayers.includes('visual') || design.hiddenLayers.includes('visual');
+
     useEffect(() => {
         const node = ballRef.current;
         if (!node) return;
@@ -129,6 +305,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         node.addEventListener('wheel', wheel, { passive: false });
         return () => node.removeEventListener('wheel', wheel);
     }, [tool, mediaDisabled, begin, end, live]);
+
     const update = <K extends keyof PostDesign>(key: K, value: PostDesign[K]) => apply(current => ({ ...current, [key]: value }));
     const toggle = (key: 'hiddenLayers' | 'lockedLayers', layer: PostLayer) => apply(current => ({ ...current, [key]: current[key].includes(layer) ? current[key].filter(item => item !== layer) : [...current[key], layer] }));
     const undo = (redo = false) => {
@@ -153,6 +330,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         }
     };
     const canvasEnd = () => { if (drag.current) { drag.current = null; end(); } };
+
     const chooseFile = async (file?: File) => {
         if (!file || designRef.current.lockedLayers.includes('visual')) return;
         try {
@@ -165,17 +343,99 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             apply(current => replaceImage(current, uri, keepAdjustments));
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add photo.'); }
     };
-    const exportPost = async () => {
-        if (!exportRef.current || exporting || !canExport) return;
+
+    // Quick Paste URL handler
+    const handleApplyQuickUrl = async () => {
+        if (!quickImageUrl.trim() || designRef.current.lockedLayers.includes('visual')) return;
+        setQuickUrlLoading(true);
+        setIssue('');
+        try {
+            const res = await fetch('/api/admin/studio/media-search', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: quickImageUrl.trim() }),
+            });
+            const data = await res.json();
+            if (!res.ok || !data.dataUri) {
+                throw new Error(data.error || 'Failed to fetch and process image URL.');
+            }
+            apply(current => replaceImage(current, data.dataUri, keepAdjustments));
+            setQuickImageUrl('');
+            setNotice('Web image applied to canvas');
+        } catch (err) {
+            setIssue(err instanceof Error ? err.message : 'Could not load image from URL.');
+        } finally {
+            setQuickUrlLoading(false);
+        }
+    };
+
+    // Copy visual URL or Data URI
+    const handleCopyActiveVisual = async () => {
+        if (!design.imageUri) return;
+        try {
+            await navigator.clipboard.writeText(design.imageUri);
+            setMediaCopied(true);
+            setTimeout(() => setMediaCopied(false), 2500);
+        } catch {
+            setIssue('Could not copy image to clipboard.');
+        }
+    };
+
+    // Download visual image file
+    const handleDownloadActiveVisual = () => {
+        if (!design.imageUri) return;
+        const link = document.createElement('a');
+        link.href = design.imageUri;
+        link.download = `${design.headline.slice(0, 24).toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'visual'}.png`;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    };
+
+    // Export single slide
+    const exportPost = async (slideIdx = activeSlideIndex) => {
+        const targetNode = slideIdx === activeSlideIndex ? exportRef.current : carouselExportRefs.current[slideIdx];
+        if (!targetNode || exporting || !canExport) return;
         setExporting(true); setIssue(''); setNotice('');
         try {
             if (imageIssue && !design.hiddenLayers.includes('visual')) throw new Error(imageIssue);
-            const bytes = await artworkBytes(exportRef.current, design.format);
-            download(bytes, `${design.headline.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 42) || 'the-leaders-post'}.png`);
-            setNotice('PNG downloaded');
+            const targetDesign = slides[slideIdx]?.design || design;
+            const bytes = await artworkBytes(targetNode, targetDesign.format);
+            const cleanName = (targetDesign.headline || activeSlide.name)
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '')
+                .slice(0, 42) || 'the-leaders-post';
+            download(bytes, `${cleanName}.png`);
+            setNotice(`Slide ${slideIdx + 1} downloaded (PNG)`);
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Export failed.'); }
         finally { setExporting(false); }
     };
+
+    // Export all carousel slides as ZIP
+    const exportAllCarousel = async () => {
+        if (exporting || !canExport) return;
+        setExporting(true); setIssue(''); setNotice('');
+        try {
+            const validNodes = carouselExportRefs.current.filter((n): n is HTMLDivElement => Boolean(n));
+            if (validNodes.length !== slides.length) {
+                throw new Error('Some slides are still preparing for export.');
+            }
+            const baseTitle = getCarouselBaseTitle(slides[0]?.name || draft.name)
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .slice(0, 32) || 'carousel';
+            await exportCarouselZip(validNodes, slides, `${baseTitle}-pack.zip`);
+            setNotice(`All ${slides.length} slides exported in ZIP!`);
+        } catch (err) {
+            setIssue(err instanceof Error ? err.message : 'Carousel ZIP export failed.');
+        } finally {
+            setExporting(false);
+        }
+    };
+
     const field = fields.find(item => item.layer === selected) || fields[0];
     const textLocked = design.lockedLayers.includes(field.layer);
     const slider = (label: string, value: number, min: number, max: number, change: (value: number) => Change, disabled = false, vertical = false) => <Slider label={label} value={value} min={min} max={max} disabled={disabled} vertical={vertical} onStart={begin} onChange={value => live(change(value))} onEnd={end} />;
@@ -186,27 +446,236 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
     return <div className={`${styles.studio} ${styles.editor}`}>
         <header className={styles.header}>
-            <div className={styles.row}><button className={styles.iconButton} aria-label="Close editor" onClick={async () => { if (await persist()) onClose(); }}><X /></button><h1 className={styles.grow}>{draft.name}</h1><button className={styles.primary} disabled={exporting || !canExport || Boolean(imageIssue && !design.hiddenLayers.includes('visual'))} onClick={() => { void exportPost(); }}><Download />{exporting ? 'Exporting…' : 'Export'}</button></div>
-            <div className={styles.between}><button className={styles.saveState} onClick={() => { void persist(); }}><span className={`${styles.saveDot} ${saveState === 'saving' ? styles.saving : saveState === 'error' ? styles.failed : ''}`} />{saveState === 'saved' ? 'All changes saved' : saveState === 'saving' ? 'Saving changes…' : 'Save failed · click to retry'}</button><div className={styles.row}><button className={styles.iconButton} aria-label="Undo" disabled={!history.undo} onClick={() => undo()}><Undo2 /></button><button className={styles.iconButton} aria-label="Redo" disabled={!history.redo} onClick={() => undo(true)}><Redo2 /></button></div></div>
+            <div className={styles.row}>
+                <button className={styles.iconButton} aria-label="Close editor" onClick={async () => { if (await persist()) onClose(); }}><X /></button>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <h1 className={styles.grow} style={{ margin: 0, fontSize: 16 }}>
+                        {slides.length > 1 ? `${getCarouselBaseTitle(activeSlide.name)} · Slide ${activeSlideIndex + 1}/${slides.length}` : activeSlide.name}
+                    </h1>
+                </div>
+                <div className={styles.row} style={{ gap: 8 }}>
+                    <button
+                        type="button"
+                        className={styles.button}
+                        style={{ borderColor: '#E1306C', color: '#E1306C', gap: 6 }}
+                        onClick={() => setInstagramPreviewOpen(true)}
+                        title="Simulate Instagram Feed and Carousel"
+                    >
+                        <Instagram size={15} />
+                        Instagram Preview
+                    </button>
+                    {slides.length > 1 && (
+                        <button
+                            type="button"
+                            className={styles.button}
+                            disabled={exporting || !canExport}
+                            onClick={exportAllCarousel}
+                            title="Export all slides in a ZIP file"
+                        >
+                            <Download size={15} />
+                            Export ZIP ({slides.length})
+                        </button>
+                    )}
+                    <button 
+                        className={styles.primary} 
+                        disabled={exporting || !canExport || Boolean(imageIssue && !design.hiddenLayers.includes('visual'))} 
+                        onClick={() => { void exportPost(activeSlideIndex); }}
+                    >
+                        <Download size={15} />
+                        {exporting ? 'Exporting…' : slides.length > 1 ? `Export Slide ${activeSlideIndex + 1}` : 'Export PNG'}
+                    </button>
+                </div>
+            </div>
+            <div className={styles.between}>
+                <button className={styles.saveState} onClick={() => { void persist(); }}>
+                    <span className={`${styles.saveDot} ${saveState === 'saving' ? styles.saving : saveState === 'error' ? styles.failed : ''}`} />
+                    {saveState === 'saved' ? 'All changes saved' : saveState === 'saving' ? 'Saving changes…' : 'Save failed · click to retry'}
+                </button>
+                <div className={styles.row}>
+                    <button className={styles.iconButton} aria-label="Undo" disabled={!history.undo} onClick={() => undo()}><Undo2 /></button>
+                    <button className={styles.iconButton} aria-label="Redo" disabled={!history.redo} onClick={() => undo(true)}><Redo2 /></button>
+                </div>
+            </div>
             {(issue || imageIssue || overflow) && <p className={styles.error} role="alert">{issue || imageIssue || 'Text exceeds this format’s line limit. Shorten it or reduce size/spacing before export.'}</p>}
             {notice && <p className={styles.notice} role="status">{notice}</p>}
         </header>
+
         <div className={styles.body}>
             <div ref={stageRef} className={styles.stage}>
-                <div className={styles.canvasMeta}><span>{reposition ? 'Drag selected text' : design.format[0].toUpperCase() + design.format.slice(1)}</span><span>{outputW} × {outputH}</span></div>
-                <div className={styles.canvasShell} style={{ width: 360 * scale, height: referenceH * scale }} onPointerDown={canvasDown} onPointerMove={canvasMove} onPointerUp={canvasEnd} onPointerCancel={canvasEnd}>
-                    <div className={styles.scaledArtwork} style={{ transform: `scale(${scale})` }}><Artwork ref={previewRef} design={design} selected={selected} guides={reposition} onSelect={reposition ? undefined : select} onChooseImage={() => fileRef.current?.click()} /></div>
+                <div className={styles.canvasMeta}>
+                    <span>{reposition ? 'Drag selected text' : design.format[0].toUpperCase() + design.format.slice(1)}</span>
+                    <span>{outputW} × {outputH}</span>
+                </div>
+
+                <div 
+                    className={styles.canvasShell} 
+                    style={{ width: 360 * scale, height: referenceH * scale, position: 'relative' }} 
+                    onPointerDown={canvasDown} 
+                    onPointerMove={canvasMove} 
+                    onPointerUp={canvasEnd} 
+                    onPointerCancel={canvasEnd}
+                >
+                    <div className={styles.scaledArtwork} style={{ transform: `scale(${scale})` }}>
+                        <Artwork 
+                            ref={previewRef} 
+                            design={design} 
+                            selected={selected} 
+                            guides={reposition} 
+                            onSelect={reposition ? undefined : select} 
+                            onChooseImage={() => setMediaModalOpen(true)} 
+                        />
+                    </div>
+
+                    {/* Instagram Carousel Badge on Canvas */}
+                    {slides.length > 1 && (
+                        <div className={styles.carouselCanvasCounter}>
+                            {activeSlideIndex + 1}/{slides.length}
+                        </div>
+                    )}
+
+                    {/* Quick Canvas Navigation Chevrons */}
+                    {slides.length > 1 && activeSlideIndex > 0 && (
+                        <button
+                            type="button"
+                            className={`${styles.carouselNavBtn} ${styles.carouselNavLeft}`}
+                            onClick={() => switchSlide(activeSlideIndex - 1)}
+                            aria-label="Previous Slide"
+                            title="Previous Slide"
+                        >
+                            <ChevronLeft size={20} />
+                        </button>
+                    )}
+                    {slides.length > 1 && activeSlideIndex < slides.length - 1 && (
+                        <button
+                            type="button"
+                            className={`${styles.carouselNavBtn} ${styles.carouselNavRight}`}
+                            onClick={() => switchSlide(activeSlideIndex + 1)}
+                            aria-label="Next Slide"
+                            title="Next Slide"
+                        >
+                            <ChevronRight size={20} />
+                        </button>
+                    )}
+                </div>
+
+                {/* Carousel Navigation Strip Docked in Stage */}
+                <div className={styles.carouselBar}>
+                    <div className={styles.carouselBarHeader}>
+                        <div className={styles.row} style={{ gap: 8 }}>
+                            <span className={styles.carouselBadgePill}>
+                                <Layers3 size={13} color="var(--studio-red)" />
+                                {slides.length > 1 ? `Carousel (${slides.length} Slides)` : 'Single Post · Carousel Ready'}
+                            </span>
+                            <span className={styles.subtle} style={{ fontSize: 11 }}>
+                                Slide {activeSlideIndex + 1} of {slides.length}
+                            </span>
+                        </div>
+                        <div className={styles.row} style={{ gap: 6 }}>
+                            <button
+                                type="button"
+                                className={styles.button}
+                                style={{ fontSize: 11, padding: '4px 8px', borderColor: '#E1306C', color: '#E1306C' }}
+                                onClick={() => setInstagramPreviewOpen(true)}
+                            >
+                                <Instagram size={13} />
+                                Instagram Preview
+                            </button>
+                            <button
+                                type="button"
+                                className={styles.button}
+                                style={{ fontSize: 11, padding: '4px 8px' }}
+                                onClick={handleAddSlide}
+                            >
+                                <Plus size={13} />
+                                Add Slide
+                            </button>
+                            <button
+                                type="button"
+                                className={styles.button}
+                                style={{ fontSize: 11, padding: '4px 8px' }}
+                                onClick={handleDuplicateSlide}
+                                title="Duplicate current slide"
+                            >
+                                <Copy size={13} />
+                                Duplicate
+                            </button>
+                            {slides.length > 1 && (
+                                <>
+                                    <button
+                                        type="button"
+                                        className={styles.iconButton}
+                                        style={{ width: 28, height: 28 }}
+                                        disabled={activeSlideIndex === 0}
+                                        onClick={() => handleMoveSlide(-1)}
+                                        title="Move slide left"
+                                    >
+                                        <MoveLeft size={13} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.iconButton}
+                                        style={{ width: 28, height: 28 }}
+                                        disabled={activeSlideIndex === slides.length - 1}
+                                        onClick={() => handleMoveSlide(1)}
+                                        title="Move slide right"
+                                    >
+                                        <MoveRight size={13} />
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.iconButton}
+                                        style={{ width: 28, height: 28, color: 'var(--studio-red)' }}
+                                        onClick={handleDeleteSlide}
+                                        title="Delete current slide"
+                                    >
+                                        <Trash2 size={13} />
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Slide Thumbnail Cards Strip */}
+                    <div className={styles.carouselStrip}>
+                        {slides.map((s, idx) => {
+                            const isCurrent = idx === activeSlideIndex;
+                            const title = s.design.headline || s.name;
+                            return (
+                                <button
+                                    key={s.id}
+                                    type="button"
+                                    className={`${styles.carouselSlideCard} ${isCurrent ? styles.carouselSlideCardActive : ''}`}
+                                    onClick={() => switchSlide(idx)}
+                                >
+                                    <span className={styles.carouselSlideBadge}>{idx + 1}</span>
+                                    <span>{title.slice(0, 18)}</span>
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
+
             <aside className={styles.inspector}>
-                <div className={styles.tabs} role="tablist" aria-label="Editor tools">{([{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Layout', Icon: LayoutTemplate }, { key: 'media', label: 'Media', Icon: ImagePlus }, { key: 'layers', label: 'Layers', Icon: Layers3 }] as const).map(({ key, label, Icon }) => <button key={key} role="tab" aria-selected={tool === key} className={styles.tab} onClick={() => { setTool(key); setReposition(false); if (key === 'media') setSelected('visual'); else if (key === 'text' && selected === 'visual') setSelected('headline'); }}><Icon />{label}</button>)}</div>
+                <div className={styles.tabs} role="tablist" aria-label="Editor tools">
+                    {([{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Layout', Icon: LayoutTemplate }, { key: 'media', label: 'Media', Icon: ImagePlus }, { key: 'layers', label: 'Layers', Icon: Layers3 }] as const).map(({ key, label, Icon }) => (
+                        <button key={key} role="tab" aria-selected={tool === key} className={styles.tab} onClick={() => { setTool(key); setReposition(false); if (key === 'media') setSelected('visual'); else if (key === 'text' && selected === 'visual') setSelected('headline'); }}>
+                            <Icon />
+                            {label}
+                        </button>
+                    ))}
+                </div>
+
                 <div className={styles.panel} role="tabpanel" aria-label={`${tool} controls`} key={tool}>
                     {tool === 'text' && <>
                         <div className={styles.row}>{fields.map(item => {
                             const cl = currentCraft.layers.find(l => l.key === item.layer);
                             return choice(cl ? cl.label : item.label, selected === item.layer, () => select(item.layer));
                         })}</div>
-                        <label className={styles.field}><span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span><textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} /></label>
+                        <label className={styles.field}>
+                            <span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span>
+                            <textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} />
+                        </label>
                         {field.layer === 'kicker' && <label className={styles.field}><span>Category / Tag</span><input className={styles.input} aria-label="Edit category" disabled={textLocked} value={design.category} onChange={event => update('category', event.target.value.toUpperCase())} /></label>}
                         <Section title="Typography"><div className={styles.row}>{(['auto', 'onest', 'hind'] as const).map(font => choice(font === 'auto' ? 'Auto' : font === 'onest' ? 'Onest' : 'Hind', design.textTypography[field.layer].font === font, () => apply(current => setTextTypography(current, field.layer, { font })), textLocked))}</div><p className={styles.subtle}>Nepali uses Hind to keep vowel marks and joined letters intact.</p>
                             {([{ key: 'size', label: 'size', min: 60, max: 160 }, { key: 'lineSpacing', label: 'line spacing', min: 90, max: 180 }, { key: 'shadow', label: 'shadow', min: 0, max: 100 }] as const).map(setting => <div key={setting.key}>{slider(`${field.label} ${setting.label}`, setting.key === 'size' && field.layer === 'headline' ? design.headlineScale * 100 : design.textTypography[field.layer][setting.key], setting.min, setting.max, value => current => setTextTypography(current, field.layer, { [setting.key]: value }), textLocked)}</div>)}
@@ -217,14 +686,103 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                         </Section>
                         <div className={styles.field}><span>Alignment</span><div className={styles.row}>{(['left', 'center'] as const).map(alignment => choice(alignment === 'left' ? 'Align left' : 'Align center', design.textAlign === alignment, () => update('textAlign', alignment), textLocked))}</div></div>
                     </>}
+
                     {tool === 'layout' && <>
                         <div className={styles.field}><span>Post format</span><div className={styles.row}>{(Object.keys(postOutputDimensions) as PostDesign['format'][]).map(format => choice(format[0].toUpperCase() + format.slice(1), design.format === format, () => update('format', format)))}</div><p className={styles.subtle}>{outputW} × {outputH} px</p></div>
                         <div className={styles.field}><span>Artwork accent</span><ColorPicker key={design.accent} label="Artwork accent" color={design.accent} reset="#B71C1C" onChange={color => update('accent', color || '#B71C1C')} /></div>
                         <div className={styles.field}><span>Template</span>{postTemplates.map(template => <button key={template.key} className={`${styles.choice} ${design.template === template.key ? styles.active : ''}`} aria-pressed={design.template === template.key} onClick={() => apply(current => ({ ...current, template: template.key, ...template.patch }))}><span className={styles.grow}>{template.title}<small className={styles.subtle}> · {template.subtitle}</small></span></button>)}</div>
                     </>}
+
                     {tool === 'media' && <>
-                        <div className={styles.field}><strong>{design.imageUri ? 'Background image' : 'Add a background'}</strong><p className={styles.subtle}>{design.imageUri ? 'Drag the image on the canvas to position it.' : 'Choose a photo from your device for this post.'}</p><button className={styles.primary} disabled={design.lockedLayers.includes('visual')} onClick={() => fileRef.current?.click()}><ImagePlus />{design.imageUri ? 'Replace image' : 'Choose image'}</button></div>
-                        <label className={styles.row}><input type="checkbox" checked={keepAdjustments} onChange={event => setKeepAdjustments(event.target.checked)} />Keep adjustments on replace</label>
+                        <div className={styles.field}>
+                            <strong>{design.imageUri ? 'Background Visual' : 'Add Post Visual'}</strong>
+                            <p className={styles.subtle}>
+                                {design.imageUri
+                                    ? 'Reposition, zoom, style or replace with web archives & Google search.'
+                                    : 'Search web archives, paste any Google image URL, or upload from your device.'}
+                            </p>
+                            <div className={styles.row}>
+                                <button
+                                    type="button"
+                                    className={styles.primary}
+                                    style={{ flex: 1 }}
+                                    disabled={design.lockedLayers.includes('visual')}
+                                    onClick={() => setMediaModalOpen(true)}
+                                >
+                                    <Globe size={16} />
+                                    {design.imageUri ? 'Browse / Replace Web Media' : 'Browse & Search Web Media'}
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.button}
+                                    disabled={design.lockedLayers.includes('visual')}
+                                    onClick={() => fileRef.current?.click()}
+                                    title="Upload file from device"
+                                >
+                                    <Upload size={16} />
+                                    Upload
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className={styles.field}>
+                            <span>Quick Paste Web or Google Image URL</span>
+                            <div className={styles.row}>
+                                <input
+                                    type="url"
+                                    className={styles.input}
+                                    placeholder="https://... image address"
+                                    value={quickImageUrl}
+                                    onChange={e => setQuickImageUrl(e.target.value)}
+                                    disabled={design.lockedLayers.includes('visual') || quickUrlLoading}
+                                    onKeyDown={e => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            void handleApplyQuickUrl();
+                                        }
+                                    }}
+                                />
+                                <button
+                                    type="button"
+                                    className={styles.button}
+                                    disabled={!quickImageUrl.trim() || design.lockedLayers.includes('visual') || quickUrlLoading}
+                                    onClick={() => { void handleApplyQuickUrl(); }}
+                                >
+                                    {quickUrlLoading ? 'Loading…' : 'Load'}
+                                </button>
+                            </div>
+                        </div>
+
+                        {design.imageUri && (
+                            <div className={styles.row}>
+                                <button
+                                    type="button"
+                                    className={styles.button}
+                                    style={{ flex: 1 }}
+                                    onClick={handleCopyActiveVisual}
+                                    title="Copy image URL or Data URI"
+                                >
+                                    {mediaCopied ? <Check size={15} color="var(--studio-green)" /> : <Copy size={15} />}
+                                    {mediaCopied ? 'Copied' : 'Copy Image'}
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.button}
+                                    style={{ flex: 1 }}
+                                    onClick={handleDownloadActiveVisual}
+                                    title="Download current artwork image"
+                                >
+                                    <Download size={15} />
+                                    Download Image
+                                </button>
+                            </div>
+                        )}
+
+                        <label className={styles.row}>
+                            <input type="checkbox" checked={keepAdjustments} onChange={event => setKeepAdjustments(event.target.checked)} />
+                            Keep adjustments on replace
+                        </label>
+
                         <div className={styles.field}><span>Image crop</span><div className={styles.row}>{choice('Fill canvas', design.imageFit === 'cover', () => apply(current => setImageFit(current, 'cover')), mediaDisabled)}{choice('Fit whole photo', design.imageFit === 'contain', () => apply(current => setImageFit(current, 'contain')), mediaDisabled)}</div></div>
                         <div className={styles.field}><span>Image position</span><div ref={ballRef} role="group" aria-label="Image scroll ball" aria-disabled={mediaDisabled} className={styles.ball}
                             onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
@@ -238,6 +796,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                         <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>
                         <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
                     </>}
+
                     {tool === 'layers' && (
                         <div className={styles.craftContainer}>
                             <div className={styles.craftHeader}>
@@ -374,8 +933,27 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 </div>
             </aside>
         </div>
-        <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" hidden ref={fileRef} aria-label="Upload studio photo" onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
-        <div className={styles.offscreen} aria-hidden="true"><Artwork ref={exportRef} design={design} /></div>
+
+        <input 
+            type="file" 
+            accept="image/png,image/jpeg,image/webp,image/avif,image/gif" 
+            hidden 
+            ref={fileRef} 
+            aria-label="Upload studio photo" 
+            onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} 
+        />
+
+        {/* Offscreen artwork nodes for single export and carousel batch zip */}
+        <div className={styles.offscreen} aria-hidden="true">
+            <Artwork ref={exportRef} design={design} />
+            {slides.map((s, idx) => (
+                <div key={s.id} ref={el => { carouselExportRefs.current[idx] = el; }}>
+                    <Artwork design={s.design} />
+                </div>
+            ))}
+        </div>
+
+        {/* Book Review Modal */}
         {bookModalOpen && (
             <BookReviewModal
                 scope={scope}
@@ -384,6 +962,33 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     setBookModalOpen(false);
                     apply(item.design);
                 }}
+            />
+        )}
+
+        {/* Web Media Search & Direct URL Modal */}
+        {mediaModalOpen && (
+            <StudioMediaModal
+                onClose={() => setMediaModalOpen(false)}
+                onApplyImage={(uri) => {
+                    apply(current => replaceImage(current, uri, keepAdjustments));
+                    setMediaModalOpen(false);
+                    setNotice('Web image applied to canvas');
+                }}
+                initialQuery={design.headline ? design.headline.slice(0, 40) : (design.category || "Nepal politics")}
+            />
+        )}
+
+        {/* Instagram Mobile Feed Simulator Modal */}
+        {instagramPreviewOpen && (
+            <InstagramPreviewModal
+                slides={slides}
+                activeSlideIndex={activeSlideIndex}
+                onSelectSlide={(index) => {
+                    void switchSlide(index);
+                }}
+                onClose={() => setInstagramPreviewOpen(false)}
+                onExportCurrent={(index) => exportPost(index)}
+                onExportAll={slides.length > 1 ? exportAllCarousel : undefined}
             />
         )}
     </div>;

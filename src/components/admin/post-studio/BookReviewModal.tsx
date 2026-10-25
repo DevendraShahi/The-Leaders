@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from 'react';
-import { BookOpen, Check, Copy, Layers, Sparkles, X, Star } from 'lucide-react';
+import { BookOpen, Check, Copy, Globe, Layers, Sparkles, X, Star } from 'lucide-react';
 import { bookReviewPresets, generateBookReviewCaption, generateBookReviewDrafts, generateBookReviewSummaryDraft, type BookReviewInput } from '@/lib/post-studio/book-review';
 import { createDraft, createDraftCollection, type PostDraft } from '@/lib/post-studio/drafts';
 import type { PostFormat } from '@/lib/post-studio/types';
+import StudioMediaModal from './StudioMediaModal';
 import styles from './PostStudio.module.css';
 
 interface BookReviewModalProps {
@@ -31,6 +32,7 @@ export default function BookReviewModal({ scope, onClose, onOpenDraft }: BookRev
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
+    const [mediaModalOpen, setMediaModalOpen] = useState(false);
 
     const handleSelectPreset = (index: number) => {
         setActivePresetIndex(index);
@@ -278,6 +280,57 @@ export default function BookReviewModal({ scope, onClose, onOpenDraft }: BookRev
                                     </button>
                                 </div>
                             </div>
+
+                            <div className={styles.field}>
+                                <span>Book Cover Visual (Optional)</span>
+                                <p className={styles.subtle} style={{ fontSize: 11, margin: '-2px 0 6px' }}>
+                                    Applied as the visual background for Title (1/5) and Verdict (5/5) slides.
+                                </p>
+                                {formData.imageUri ? (
+                                    <div className={styles.row} style={{ alignItems: 'center', gap: 12 }}>
+                                        <img
+                                            src={formData.imageUri}
+                                            alt="Cover preview"
+                                            style={{ width: 52, height: 68, objectFit: 'cover', borderRadius: 4, border: '1px solid var(--studio-border)' }}
+                                        />
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, flex: 1 }}>
+                                            <span style={{ fontSize: 12, color: 'var(--studio-text)', fontWeight: 600 }}>Cover artwork attached</span>
+                                            <div className={styles.row} style={{ gap: 6 }}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.button}
+                                                    style={{ fontSize: 11, padding: '4px 8px' }}
+                                                    onClick={() => setMediaModalOpen(true)}
+                                                >
+                                                    <Globe size={13} />
+                                                    Change Cover
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.button}
+                                                    style={{ fontSize: 11, padding: '4px 8px', color: 'var(--studio-red)' }}
+                                                    onClick={() => updateField('imageUri', null as any)}
+                                                >
+                                                    <X size={13} />
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className={styles.row}>
+                                        <button
+                                            type="button"
+                                            className={styles.button}
+                                            style={{ flex: 1, borderColor: 'var(--studio-red)', color: 'var(--studio-red)' }}
+                                            onClick={() => setMediaModalOpen(true)}
+                                        >
+                                            <Globe size={14} />
+                                            Search Book Cover on Web (Google / Wikimedia / Archives)
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
 
@@ -446,6 +499,16 @@ export default function BookReviewModal({ scope, onClose, onOpenDraft }: BookRev
                     </button>
                 </div>
             </div>
+            {mediaModalOpen && (
+                <StudioMediaModal
+                    onClose={() => setMediaModalOpen(false)}
+                    onApplyImage={(uri) => {
+                        updateField('imageUri', uri);
+                        setMediaModalOpen(false);
+                    }}
+                    initialQuery={`${formData.title} book cover`.trim()}
+                />
+            )}
         </div>
     );
 }

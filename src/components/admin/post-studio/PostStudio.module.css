@@ -54,3 +54,109 @@
 .craftLayerPreview code{font-family:inherit;color:var(--studio-text);line-height:1.4;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;white-space:pre-wrap;font-style:normal}
 .craftFooterActions{padding-top:8px;border-top:1px solid var(--studio-border)}
 
+.mediaModalDialog{max-width:860px;width:min(860px,calc(100vw - 32px));max-height:90dvh;display:flex;flex-direction:column;gap:16px;padding:24px}
+.mediaIconBadge{width:40px;height:40px;border-radius:8px;background:var(--studio-red);display:grid;place-items:center;flex-shrink:0}
+.mediaSearchStack{display:flex;flex-direction:column;gap:14px}
+.mediaSearchBar{display:flex;gap:8px}
+.mediaSuggestions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--studio-muted);padding:8px 12px;border-radius:8px;border:1px solid var(--studio-border)}
+.mediaResultsGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;max-height:50dvh;overflow-y:auto;padding-right:4px}
+.mediaCard{border:1px solid var(--studio-border);border-radius:8px;background:var(--studio-surface);overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;transition:box-shadow .15s ease}
+.mediaCard:hover{box-shadow:0 4px 12px #00000015}
+.mediaCardThumb{position:relative;height:120px;background:var(--studio-muted);display:grid;place-items:center;overflow:hidden}
+.mediaCardThumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s ease}
+.mediaCard:hover .mediaCardThumb img{transform:scale(1.05)}
+.mediaSourceBadge{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.7);color:#fff;font-size:8px;font-family:Onest_700Bold,sans-serif;padding:2px 6px;border-radius:4px;letter-spacing:.5px}
+.mediaCardBody{padding:8px 10px;display:flex;flex-direction:column;gap:2px}
+.mediaCardTitle{font-size:11px;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:var(--studio-text)}
+.mediaCardAuthor{font-size:10px;color:var(--studio-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mediaCardActions{padding:6px 10px 10px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--studio-border);background:var(--studio-muted)}
+.mediaUrlStack{display:flex;flex-direction:column;gap:16px;padding:8px 0}
+.mediaUrlPreviewCard{display:flex;gap:16px;border:1px solid var(--studio-border);border-radius:8px;padding:14px;background:var(--studio-surface)}
+.mediaUrlPreviewThumb{width:160px;height:160px;border-radius:6px;overflow:hidden;background:var(--studio-muted);flex-shrink:0}
+.mediaUrlPreviewThumb img{width:100%;height:100%;object-fit:contain}
+.mediaUrlPreviewMeta{display:flex;flex-direction:column;justify-content:center;gap:4px}
+.mediaUploadZone{border:2px dashed var(--studio-border);border-radius:12px;padding:48px 24px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;transition:border-color .2s,background .2s}
+.mediaUploadZone:hover{border-color:var(--studio-red);background:var(--studio-muted)}
+.spin{animation:studioSpin 1s linear infinite}
+@keyframes studioSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@media(max-width:640px){.mediaResultsGrid{grid-template-columns:repeat(2,1fr)}.mediaUrlPreviewCard{flex-direction:column}}
+
+/* Editor Carousel Bar */
+.carouselBar{width:100%;max-width:760px;margin-top:16px;background:var(--studio-surface);border:1px solid var(--studio-border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:10px;box-shadow:0 4px 16px #0000000a}
+.carouselBarHeader{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.carouselBadgePill{display:inline-flex;align-items:center;gap:6px;background:var(--studio-muted);border:1px solid var(--studio-border);padding:4px 10px;border-radius:999px;font-size:11px;font-weight:600;color:var(--studio-text)}
+.carouselStrip{display:flex;align-items:center;gap:8px;overflow-x:auto;padding-bottom:4px}
+.carouselSlideCard{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;border:1px solid var(--studio-border);background:var(--studio-surface);cursor:pointer;white-space:nowrap;transition:all .15s ease;font-size:12px;color:var(--studio-text)}
+.carouselSlideCard:hover{border-color:var(--studio-red);background:var(--studio-muted)}
+.carouselSlideCardActive{border-color:var(--studio-red);background:var(--studio-muted);font-weight:600;box-shadow:0 0 0 1px var(--studio-red)}
+.carouselSlideBadge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:999px;background:var(--studio-border);font-size:10px;font-weight:700}
+.carouselSlideCardActive .carouselSlideBadge{background:var(--studio-red);color:#fff}
+.carouselCanvasCounter{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:12px;backdrop-filter:blur(4px);pointer-events:none;z-index:10}
+.carouselNavBtn{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.9);color:#000;border:1px solid #e5e7eb;box-shadow:0 4px 12px #00000020;display:grid;place-items:center;cursor:pointer;z-index:10;transition:all .15s}
+.carouselNavBtn:hover{background:#fff;transform:translateY(-50%) scale(1.08)}
+.carouselNavLeft{left:10px}
+.carouselNavRight{right:10px}
+
+/* Instagram Live Simulator Modal */
+.instagramModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:grid;place-items:center;z-index:9999;padding:16px;overflow-y:auto}
+.instagramModalShell{position:relative;max-width:880px;width:100%;max-height:94vh;display:flex;flex-direction:column;align-items:center}
+.instagramModalClose{position:absolute;top:-8px;right:-8px;width:38px;height:38px;border-radius:999px;background:var(--studio-surface);border:1px solid var(--studio-border);color:var(--studio-text);display:grid;place-items:center;cursor:pointer;z-index:10;box-shadow:0 4px 12px #00000030}
+.instagramContentRow{display:flex;align-items:flex-start;justify-content:center;gap:32px;width:100%;flex-wrap:wrap}
+
+/* Phone Mockup */
+.instagramPhoneWrapper{display:flex;justify-content:center}
+.instagramPhone{width:350px;background:#fff;border-radius:38px;box-shadow:0 20px 48px #00000060,0 0 0 10px #1e1e24;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.phoneDynamicIsland{width:96px;height:22px;background:#000;border-radius:12px;position:absolute;top:9px;left:50%;transform:translateX(-50%);z-index:20}
+.instagramStatusBar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 6px;font-size:11px;font-weight:600;color:#000}
+.instagramAppHeader{display:flex;align-items:center;justify-content:space-between;padding:4px 12px 8px;border-bottom:1px solid #f0f0f0}
+.instagramAppTitle{text-align:center;display:flex;flex-direction:column;line-height:1.2}
+.instagramAppTitle span{font-size:11px;color:#737373;text-transform:uppercase;font-weight:600;letter-spacing:.4px}
+.instagramAppTitle small{font-size:13px;font-weight:700;color:#000}
+.instagramHeaderBack{color:#000;cursor:pointer}
+.instagramPostHeader{display:flex;align-items:center;padding:8px 12px;gap:8px}
+.instagramAvatarRing{width:36px;height:36px;border-radius:999px;background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);padding:2px;display:grid;place-items:center}
+.instagramAvatarInner{width:100%;height:100%;border-radius:999px;background:#B71C1C;display:grid;place-items:center;border:2px solid #fff}
+.instagramAvatarText{color:#fff;font-size:11px;font-weight:800;letter-spacing:-.5px}
+.instagramHeaderMeta{display:flex;flex-direction:column;flex:1;line-height:1.2}
+.instagramUsername{font-size:12px;font-weight:700;color:#000}
+.instagramVerifiedBadge{display:inline-flex;align-items:center;justify-content:center;width:12px;height:12px;border-radius:999px;background:#0095f6;color:#fff;font-size:8px;font-weight:800}
+.instagramLocation{font-size:10px;color:#737373}
+.instagramMoreBtn{background:none;border:none;color:#000;cursor:pointer;padding:4px}
+.instagramMediaStage{position:relative;background:#111;overflow:hidden;display:grid;place-items:center}
+.instagramArtworkWrapper{position:absolute;top:0;left:0}
+.instagramCounterBadge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:11px;font-weight:700;padding:3px 8px;border-radius:12px;backdrop-filter:blur(4px);z-index:5}
+.instagramMediaNavLeft,.instagramMediaNavRight{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:999px;background:rgba(255,255,255,.8);color:#000;border:none;display:grid;place-items:center;cursor:pointer;z-index:6;transition:transform .15s}
+.instagramMediaNavLeft:hover,.instagramMediaNavRight:hover{transform:translateY(-50%) scale(1.1);background:#fff}
+.instagramMediaNavLeft{left:8px}
+.instagramMediaNavRight{right:8px}
+.instagramActionBar{display:flex;align-items:center;justify-content:space-between;padding:10px 12px 6px}
+.instagramActionLeft{display:flex;align-items:center;gap:14px}
+.instagramActionIcon{background:none;border:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.instagramDots{display:flex;align-items:center;gap:4px}
+.instagramDot{width:6px;height:6px;border-radius:999px;background:#dbdbdb;cursor:pointer;transition:all .15s}
+.instagramDotActive{width:7px;height:7px;background:#0095f6}
+.instagramLikes{padding:2px 12px;font-size:12px;color:#000}
+.instagramCaptionSection{padding:4px 12px;font-size:12px;color:#000;line-height:1.4}
+.instagramCaptionText{margin:0}
+.instagramCaptionToggle{background:none;border:none;color:#737373;padding:0;font-size:12px;cursor:pointer;margin-left:4px}
+.instagramCommentsMeta{padding:4px 12px 12px;display:flex;flex-direction:column;gap:3px;font-size:11px;color:#737373}
+.instagramTimestamp{font-size:9px;color:#8e8e8e;letter-spacing:.2px}
+
+/* Side Controls */
+.instagramSideControls{width:320px;background:var(--studio-surface);border:1px solid var(--studio-border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:18px;box-shadow:0 12px 32px #00000030}
+.instagramControlHeader{border-bottom:1px solid var(--studio-border);padding-bottom:12px}
+.instagramBadge{width:34px;height:34px;border-radius:8px;background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);display:grid;place-items:center;flex-shrink:0}
+.instagramSlidePillList{display:flex;flex-direction:column;gap:6px;max-height:180px;overflow-y:auto;padding-right:4px}
+.instagramSlidePill{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;border:1px solid var(--studio-border);background:var(--studio-muted);cursor:pointer;text-align:left;font-size:12px;color:var(--studio-text);transition:all .15s}
+.instagramSlidePill:hover{border-color:var(--studio-red)}
+.instagramSlidePillActive{border-color:var(--studio-red);background:var(--studio-surface);font-weight:600;box-shadow:0 0 0 1px var(--studio-red)}
+.instagramPillNumber{width:18px;height:18px;border-radius:999px;background:var(--studio-border);display:grid;place-items:center;font-size:10px;font-weight:700}
+.instagramSlidePillActive .instagramPillNumber{background:var(--studio-red);color:#fff}
+.instagramPillTitle{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.instagramActionsStack{display:flex;flex-direction:column;gap:8px}
+.instagramTipsBox{display:flex;align-items:flex-start;gap:8px;background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:10px 12px}
+
+@media(max-width:768px){.instagramContentRow{flex-direction:column;align-items:center}.instagramSideControls{width:100%;max-width:350px}}
+
+
+
