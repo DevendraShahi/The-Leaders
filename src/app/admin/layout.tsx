@@ -1,5 +1,6 @@
 import AuthProvider from '@/components/admin/AuthProvider';
 import type { Metadata } from 'next';
+import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
     robots: {
@@ -18,8 +19,8 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     return (
-        <AuthProvider>
-            {children}
-        </AuthProvider>
+        <ClerkProvider signInUrl="/admin/login" signUpUrl="/admin/signup" signInFallbackRedirectUrl="/admin" signUpFallbackRedirectUrl="/admin/unauthorized">
+            <AuthProvider>{children}</AuthProvider>
+        </ClerkProvider>
     );
 }

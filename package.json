@@ -16,6 +16,7 @@
     "build:production": "NODE_ENV=production next build"
   },
   "dependencies": {
+    "@clerk/nextjs": "^7.9.10",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-checkbox": "^1.3.11",
@@ -49,8 +50,10 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "dotenv": "^18.0.4",
+    "fflate": "^0.8.3",
     "framer-motion": "^12.26.2",
     "gsap": "^3.14.2",
+    "html-to-image": "^1.11.13",
     "jose": "^6.1.3",
     "jsonwebtoken": "^9.0.3",
     "lenis": "^1.3.17",

@@ -17,10 +17,22 @@ collection, deletes published content, or resets an admin account.
   are capped. The author directory uses one cached dataset, then filters locally.
 - Article/leader list payloads exclude large detail bodies and timelines.
 - Public traffic has no authentication middleware or authentication SDK. Website
-  admin uses the existing password backend and an HttpOnly SameSite session cookie;
-  cookie writes require same origin. Mobile uses scoped bearer sessions.
+  admin offers Clerk and the existing database email/password login. Clerk is
+  scoped to admin pages and web admin/auth APIs. Browser writes require same origin.
+  Password login stores its scoped 12-hour session in an HttpOnly, SameSite=Strict
+  cookie (Secure in production), and sign-out clears it before signing out of Clerk.
+  An explicit native bearer takes precedence, followed by a valid password cookie,
+  then Clerk. Expired password cookies fall back to Clerk. Mobile retains password/bearer
+  sessions at `/api/v1/auth/*`.
+  Clerk identities must match an active MongoDB admin by `clerkId`, or link once
+  through their verified primary email to an existing active, unlinked account.
+  New Clerk signups receive no admin access. Roles and permissions stay in MongoDB.
 - Admin/private responses are never publicly cached. Authenticated writes always
   check current active-admin permissions; client caching does not authorize writes.
+- The admin dashboard contains only permission-aware workspace shortcuts and makes
+  no dashboard data requests. Its former `/api/admin/stats` endpoint returns an
+  uncacheable HTTP 410 without database access, including for older open clients.
+  Admin navigation disables prefetching; analytics loads only on its own pages.
 - Mobile public queries remain fresh for 15 minutes, with no focus/reconnect
   refresh loop. Admin status has five-minute freshness; idle polling is off.
 - Studio has daily drafts and the post editor. Daily drafts refresh explicitly.
@@ -56,6 +68,15 @@ The existing GitHub main-branch → Vercel integration performs deployment. This
 an application replacement, not a new cloud project or a database migration.
 Preview/release environments must supply the existing database/media settings,
 JWT_SECRET (at least 32 characters). These are server configuration, not committed credentials.
+Web admin additionally requires the existing Clerk application's
+`NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and server-only `CLERK_SECRET_KEY` in development
+and deployment settings. Use the matching production instance keys for production;
+the publishable key must be present during the build. Re-enable that Clerk instance
+before testing sign-in. MongoDB must also be available for admin authorization and
+content access; restoring Clerk alone does not replace the database. Web password
+login/logout are available at `/api/auth/login` and `/api/auth/logout`, with the
+same credential validation and rate limits as native login. Neither browser method
+stores tokens in localStorage. Native sessions are unchanged.
 Daily ingestion is optional and requires its server-only ingestion secret.
 
 ## Verification and limits

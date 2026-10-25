@@ -39,7 +39,7 @@ export default function ProtectedLayout({
         if (fallback) {
             router.replace(fallback);
         } else {
-            router.replace('/admin/login');
+            router.replace('/admin/unauthorized');
         }
     }, [authorizationError, hasAccess, isAuthenticated, isLoading, router, user]);
 

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { POST as passwordLogin } from '@/app/api/v1/auth/login/route';
 import { websiteSessionCookie } from '@/lib/website-auth';
 export async function POST(request: Request) {
-    if (request.headers.get('origin') !== new URL(request.url).origin) return NextResponse.json({ error: 'Same-origin login required' }, { status: 403 });
+    if (request.headers.get('origin') !== new URL(request.url).origin) return NextResponse.json({ error: 'Same-origin login required' }, { status: 403, headers: { 'Cache-Control': 'private, no-store' } });
     const result = await passwordLogin(request);
     if (!result.ok) return result;
     const session = await result.json();

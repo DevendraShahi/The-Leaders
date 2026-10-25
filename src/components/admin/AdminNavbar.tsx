@@ -77,7 +77,7 @@ export default function AdminNavbar({ onMobileMenuClick }: AdminNavbarProps) {
                             <DropdownMenuLabel className="font-bebas tracking-wide text-lg">My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild className="rounded-none cursor-pointer">
-                                <Link href="/admin/settings" className="flex items-center gap-2">
+                                <Link prefetch={false} href="/admin/settings" className="flex items-center gap-2">
                                     <Settings className="h-4 w-4" />
                                     <span>Settings</span>
                                 </Link>
@@ -121,7 +121,7 @@ export default function AdminNavbar({ onMobileMenuClick }: AdminNavbarProps) {
                             <DropdownMenuLabel className="font-bebas tracking-wide text-lg">My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild className="rounded-none cursor-pointer">
-                                <Link href="/admin/settings" className="flex items-center gap-2">
+                                <Link prefetch={false} href="/admin/settings" className="flex items-center gap-2">
                                     <Settings className="h-4 w-4" />
                                     <span>Settings</span>
                                 </Link>

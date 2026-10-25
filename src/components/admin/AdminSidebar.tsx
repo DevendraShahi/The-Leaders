@@ -73,6 +73,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
             ],
         },
         { label: 'Media', href: '/admin/media', icon: ImageIcon, access: 'media' as AdminPageKey },
+        { label: 'Studio', href: '/admin/social', icon: PenTool, access: 'content' as AdminPageKey },
         { label: 'Messages', href: '/admin/messages', icon: Mail, access: 'messages' as AdminPageKey },
         {
             label: 'Settings',
@@ -139,7 +140,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
                 <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
                     {/* SuperAdmin Only: Manage Admins */}
                     {user?.role === 'superadmin' && canAccess('users') && (
-                        <Link
+                        <Link prefetch={false}
                             href="/admin/users"
                             className={cn(
                                 "flex items-center gap-3 px-3 py-3 transition-all group border-l-2",
@@ -186,7 +187,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
                                             {children.map((child) => {
                                                 const childActive = isLinkActive(child.href);
                                                 return (
-                                                    <Link
+                                                    <Link prefetch={false}
                                                         key={child.href}
                                                         href={child.href}
                                                         className={cn(
@@ -208,7 +209,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
                         }
 
                         return (
-                            <Link
+                            <Link prefetch={false}
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
@@ -234,7 +235,7 @@ export default function AdminSidebar({ isCollapsed, toggleCollapse, mobileOpen, 
                             <p className="px-2 text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-3">
                                 Quick Actions
                             </p>
-                            <Link
+                            <Link prefetch={false}
                                 href="/admin/content/article/new"
                                 className="flex items-center gap-2 px-4 py-3 bg-foreground text-background hover:bg-muted-foreground transition-colors text-sm font-bold font-mono uppercase tracking-wide rounded-none group"
                             >

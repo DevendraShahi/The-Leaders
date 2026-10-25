@@ -1,125 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { format } from "date-fns";
-import { Activity, BarChart3, CheckCircle2, FileText, History, Image as ImageIcon, Layers3, Mail, UserPlus, Users } from "lucide-react";
+import { ArrowUpRight, FileText, Image as ImageIcon, Mail, Newspaper, PenTool, Settings, Users, UserRoundCog } from "lucide-react";
 import { useAuth } from "@/components/admin/AuthProvider";
-import StatsCard from "@/components/admin/StatsCard";
+import type { AdminPageKey } from "@/lib/admin-page-access";
+
+const shortcuts: { label: string; href: string; access: AdminPageKey; icon: typeof FileText; superadminOnly?: boolean }[] = [
+    { label: "Articles", href: "/admin/content?type=articles", access: "content", icon: FileText },
+    { label: "Leaders", href: "/admin/content?type=leaders", access: "content", icon: Users },
+    { label: "Daily briefs", href: "/admin/content?type=briefs", access: "content", icon: Newspaper },
+    { label: "Media", href: "/admin/media", access: "media", icon: ImageIcon },
+    { label: "Studio", href: "/admin/social", access: "content", icon: PenTool },
+    { label: "Messages", href: "/admin/messages", access: "messages", icon: Mail },
+    { label: "Settings", href: "/admin/settings", access: "settings", icon: Settings },
+    { label: "Admin accounts", href: "/admin/users", access: "users", icon: UserRoundCog, superadminOnly: true },
+];
 
 export default function AdminDashboard() {
-    const { isAuthenticated } = useAuth();
-    const [stats, setStats] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchStats = async () => {
-            if (!isAuthenticated) return;
-            try {
-                const res = await fetch("/api/admin/stats", {
-                    headers: {  } });
-                if (res.ok) {
-                    const data = await res.json();
-                    setStats(data.data);
-                }
-            } catch (error) {
-                console.error("Failed to fetch dashboard stats", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchStats();
-    }, [isAuthenticated]);
-
-    if (loading) {
-        return <div className="p-8 font-mono text-xs uppercase animate-pulse">Loading dashboard...</div>;
-    }
-
-    const activityCount = stats?.recentActivity?.length || 0;
+    const { user } = useAuth();
+    const available = shortcuts.filter(item => user?.role === "superadmin"
+        || (!item.superadminOnly && user?.permissions?.pageAccess?.[item.access]));
 
     return (
-        <div className="space-y-8 animate-in fade-in duration-500">
+        <div className="space-y-6">
             <div className="border-b border-border pb-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                    <div>
-                        <h1 className="font-bebas text-4xl text-foreground tracking-wide">Dashboard Overview</h1>
-                        <p className="text-muted-foreground font-manrope text-sm mt-1">
-                            Content operations, publishing pipeline, subscribers, and recent admin activity.
-                        </p>
-                    </div>
-                    <Link href="/admin/analytics" className="inline-flex items-center gap-2 border border-border px-3 py-2 text-xs font-mono uppercase tracking-wider hover:bg-muted">
-                        <BarChart3 className="h-4 w-4" />
-                        View Umami Analytics
+                <h1 className="font-bebas text-4xl tracking-wide text-foreground">Dashboard</h1>
+                <p className="mt-1 text-sm text-muted-foreground">Choose a workspace to get started.</p>
+            </div>
+            <nav aria-label="Admin workspaces" className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                {available.map(({ label, href, icon: Icon }) => (
+                    <Link key={href} href={href} prefetch={false}
+                        className="flex items-center gap-3 border border-border bg-card p-5 text-foreground transition-colors hover:border-primary hover:bg-muted/30">
+                        <Icon aria-hidden="true" className="h-5 w-5 text-primary" />
+                        <span className="flex-1 font-medium">{label}</span>
+                        <ArrowUpRight aria-hidden="true" className="h-4 w-4 text-muted-foreground" />
                     </Link>
-                </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-                <StatsCard title="Total Articles" value={stats?.counts?.articles || 0} icon={<FileText className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newArticlesIn30Days ? `+${stats.growth.newArticlesIn30Days}` : undefined} />
-                <StatsCard title="Published Articles" value={stats?.counts?.articlesPublished || 0} icon={<CheckCircle2 className="h-6 w-6" />} />
-                <StatsCard title="Leaders Profiles" value={stats?.counts?.leaders || 0} icon={<Users className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newLeadersIn30Days ? `+${stats.growth.newLeadersIn30Days}` : undefined} />
-                <StatsCard title="Media Assets" value={stats?.counts?.media || 0} icon={<ImageIcon className="h-6 w-6" />} trend="up" trendValue={stats?.growth?.newMediaIn30Days ? `+${stats.growth.newMediaIn30Days}` : undefined} />
-                <StatsCard title="Recent Activity" value={activityCount} icon={<Activity className="h-6 w-6" />} />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <StatsCard title="Subscribers" value={stats?.kpis?.subscribersTotal || 0} icon={<UserPlus className="h-6 w-6" />} trend="up" trendValue={stats?.kpis?.subscribersIn30Days ? `+${stats.kpis.subscribersIn30Days}` : "0"} />
-                <StatsCard title="Open Messages" value={stats?.kpis?.contactsNew || 0} icon={<Mail className="h-6 w-6" />} />
-                <StatsCard title="Reply Rate" value={`${stats?.kpis?.contactReplyRate || 0}%`} icon={<CheckCircle2 className="h-6 w-6" />} />
-                <StatsCard title="Publish Efficiency" value={`${stats?.kpis?.publishEfficiency || 0}%`} icon={<Layers3 className="h-6 w-6" />} />
-            </div>
-
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-                <div className="bg-card p-6 border border-border shadow-sm">
-                    <h2 className="font-bebas text-xl tracking-wide mb-4 flex items-center gap-2 border-b border-border pb-4">
-                        <Layers3 className="h-5 w-5 text-primary" />
-                        Content Pipeline
-                    </h2>
-                    <div className="space-y-3 text-xs font-mono uppercase tracking-wider">
-                        {[
-                            { label: "Articles", data: stats?.pipeline?.articles },
-                            { label: "Daily Briefs", data: stats?.pipeline?.dailyBriefs },
-                        ].map((row) => (
-                            <div key={row.label} className="border border-border p-3">
-                                <p className="text-foreground mb-2">{row.label}</p>
-                                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-muted-foreground">
-                                    <span>Published: {row.data?.published || 0}</span>
-                                    <span>Draft: {row.data?.draft || 0}</span>
-                                    {"archived" in (row.data || {}) ? <span>Archived: {row.data?.archived || 0}</span> : null}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="bg-card p-6 border border-border shadow-sm">
-                    <h2 className="font-bebas text-xl tracking-wide mb-4 flex items-center gap-2 border-b border-border pb-4">
-                        <Activity className="h-5 w-5 text-primary" />
-                        Recent Activity
-                    </h2>
-                    <div className="space-y-4">
-                        {stats?.recentActivity?.length > 0 ? (
-                            stats.recentActivity.map((activity: any, index: number) => (
-                                <div key={`${activity.id || index}`} className="flex items-start gap-3 pb-3 border-b border-border last:border-0 last:pb-0">
-                                    <div className="mt-1.5 h-1.5 w-1.5 bg-primary flex-shrink-0" />
-                                    <div>
-                                        <span className="inline-block px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-muted border border-border text-foreground mb-1">
-                                            @{activity.user}
-                                        </span>
-                                        <p className="text-sm font-medium text-foreground font-manrope">{activity.description}</p>
-                                        <p className="text-[10px] uppercase tracking-wider text-muted-foreground mt-1">
-                                            {format(new Date(activity.timestamp), "MMM d, h:mm a")}
-                                        </p>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <p className="text-sm text-muted-foreground font-mono text-xs uppercase">No recent activity</p>
-                        )}
-                    </div>
-                </div>
-            </div>
+                ))}
+            </nav>
         </div>
     );
 }
