@@ -55,7 +55,7 @@ export default function AdminLogin() {
                 </form>
                 {clerkEnabled && <div className="flex justify-center">
                     {clerkSignedIn ? <p role="status">Checking newsroom access…</p> :
-                        <SignIn routing="path" path="/admin/login" withSignUp={false}
+                        <SignIn routing="path" path="/admin/login" withSignUp={false} fallbackRedirectUrl="/admin"
                             appearance={{ elements: { footerAction: { display: 'none' } } }} />}
                 </div>}
             </div>

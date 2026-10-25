@@ -18,7 +18,8 @@ export async function getWebsiteAdmin(request: Request) {
     if (token) {
         const headers = new Headers(request.headers);
         headers.set('authorization', `Bearer ${token}`);
-        const legacyAdmin = await getMobileAdmin(new Request(request, { headers }));
+        // The verifier only needs headers. Avoid cloning framework request streams.
+        const legacyAdmin = await getMobileAdmin(new Request(request.url, { headers }));
         if (legacyAdmin) return legacyAdmin;
         // An expired password cookie must not prevent a fresh Clerk sign-in.
     }

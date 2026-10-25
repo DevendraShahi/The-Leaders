@@ -26,7 +26,13 @@ export default function AdminLayout({
         return <AuthProvider clerkEnabled={false}>{children}</AuthProvider>;
     }
     return (
-        <ClerkProvider signInUrl="/admin/login" signUpUrl="/admin/signup" signInFallbackRedirectUrl="/admin" signUpFallbackRedirectUrl="/admin/unauthorized">
+        <ClerkProvider
+            publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+            signInUrl="/admin/login"
+            signUpUrl="/admin/signup"
+            signInFallbackRedirectUrl="/admin"
+            signUpFallbackRedirectUrl="/admin/unauthorized"
+        >
             <AuthProvider>{children}</AuthProvider>
         </ClerkProvider>
     );

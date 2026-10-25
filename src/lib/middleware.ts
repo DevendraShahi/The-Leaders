@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { type JWTPayload } from './auth';
 import { type IPermissions } from '@/models/Admin';
 import { getWebsiteAdmin } from '@/lib/website-auth';
+import { AdminSessionError } from './admin-session-error';
 
 export interface AuthenticatedRequest extends NextRequest {
     user?: JWTPayload;
@@ -15,6 +16,7 @@ export async function authenticateRequest(request: NextRequest): Promise<{
     authenticated: boolean;
     user?: JWTPayload;
     error?: string;
+    code?: string;
     status?: 401 | 403 | 503;
 }> {
     try {
@@ -33,7 +35,8 @@ export async function authenticateRequest(request: NextRequest): Promise<{
         console.error('Failed to validate admin session:', error);
         return {
             authenticated: false,
-            error: 'Authentication service unavailable',
+            error: error instanceof AdminSessionError ? error.message : 'Authentication service unavailable',
+            code: error instanceof AdminSessionError ? error.code : 'AUTH_SESSION_UNAVAILABLE',
             status: 503,
         };
     }
@@ -55,7 +58,7 @@ export function withAuth(
 
         if (!authResult.authenticated || !authResult.user) {
             return NextResponse.json(
-                { error: authResult.error || 'Unauthorized' },
+                { error: authResult.error || 'Unauthorized', ...(authResult.code ? { code: authResult.code } : {}) },
                 { status: authResult.status || 401, headers: { 'Cache-Control': 'private, no-store' } }
             );
         }

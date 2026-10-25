@@ -5,6 +5,7 @@ import { z } from 'zod';
 import dbConnect from '@/lib/db';
 import Admin from '@/models/Admin';
 import { getJwtSecret } from '@/lib/auth-config';
+import { AdminSessionError } from './admin-session-error';
 
 const issuer = 'the-leaders-mobile';
 const audience = 'the-leaders-mobile-account';
@@ -29,9 +30,12 @@ export async function getMobileAdmin(request: Request) {
     try {
         session = sessionSchema.parse(jwt.verify(authorization.slice(7), getJwtSecret(), { algorithms: ['HS256'], issuer, audience }));
     } catch { return null; }
-    await dbConnect();
-    const admin = await Admin.findById(session.sub).select('+passwordHash');
-    if (!admin?.isActive || credentialVersion(admin.passwordHash) !== session.credential) return null;
+    try { await dbConnect(); }
+    catch (error) { throw new AdminSessionError('AUTH_DATABASE_CONNECTION', error); }
+    let admin;
+    try { admin = await Admin.findById(session.sub).select('+passwordHash'); }
+    catch (error) { throw new AdminSessionError('AUTH_ACCOUNT_LOOKUP', error); }
+    if (!admin?.isActive || typeof admin.passwordHash !== 'string' || !admin.passwordHash || credentialVersion(admin.passwordHash) !== session.credential) return null;
     return admin;
 }
 
