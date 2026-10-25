@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Copy, Pencil, Plus, RotateCcw, Trash2 } from 'lucide-react';
+import { BookOpen, Copy, Pencil, Plus, RotateCcw, Trash2 } from 'lucide-react';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { createDraft, duplicateDraft, listDrafts, readDraft, readPreviousLocalDesign, setDraftTrashed, updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
 import { defaultPostDesign, postTemplates, type PostDesign, type PostTemplate } from '@/lib/post-studio/types';
 import PostEditor from './PostEditor';
 import DailyEditions from './DailyEditions';
+import BookReviewModal from './BookReviewModal';
 import { Modal } from './Controls';
 import styles from './PostStudio.module.css';
 
@@ -23,6 +24,7 @@ export default function PostStudio() {
     const [error, setError] = useState(''), [loading, setLoading] = useState(true), [busy, setBusy] = useState(false);
     const [renaming, setRenaming] = useState<PostDraft | null>(null), [name, setName] = useState('');
     const [previous, setPrevious] = useState<PostDesign | null>(null);
+    const [bookModalOpen, setBookModalOpen] = useState(false);
     const lock = useRef(false);
     const permission = (key: string) => user?.role === 'superadmin' || Boolean(user?.permissions?.socialPosts?.[key]);
     const refresh = useCallback(async () => {
@@ -62,7 +64,10 @@ export default function PostStudio() {
         <DailyEditions scope={scope} onOpen={open} canExport={permission('export')} canEdit={permission('edit')} canSubmit={permission('submit')} canApprove={permission('approve')} />
         <div><h2>Your post drafts</h2><p className={styles.subtle}>Design, save and export. Drafts stay in this browser for your admin account.</p></div>
         <div className={styles.templates}>{postTemplates.map(item => <button className={`${styles.choice} ${template === item.key ? styles.active : ''}`} key={item.key} aria-pressed={template === item.key} onClick={() => setTemplate(item.key)}>{item.title}<small>{item.subtitle}</small></button>)}</div>
-        <button className={styles.primary} disabled={busy || loading || Boolean(error)} onClick={() => { void run(async () => { const selected = postTemplates.find(item => item.key === template)!; open(await createDraft(scope, `Untitled ${selected.title.toLowerCase()}`, { ...defaultPostDesign, ...selected.patch, template })); }); }}><Plus />New post</button>
+        <div className={styles.row}>
+            <button className={styles.primary} disabled={busy || loading || Boolean(error)} onClick={() => { void run(async () => { const selected = postTemplates.find(item => item.key === template)!; open(await createDraft(scope, `Untitled ${selected.title.toLowerCase()}`, { ...defaultPostDesign, ...selected.patch, template })); }); }}><Plus />New post</button>
+            <button className={styles.button} style={{ borderColor: 'var(--studio-red)', color: 'var(--studio-red)' }} disabled={busy || loading} onClick={() => setBookModalOpen(true)}><BookOpen size={18} />New book review</button>
+        </div>
         {previous && <button className={styles.button} disabled={busy || loading} onClick={() => { void run(async () => { open(await createDraft(scope, 'Previous local design', previous)); }); }}>Import previous local design</button>}
         <div className={styles.row}><button className={`${styles.button} ${!trash ? styles.active : ''}`} onClick={() => setTrash(false)}>Drafts · {active.length}</button><button className={`${styles.button} ${trash ? styles.active : ''}`} onClick={() => setTrash(true)}>Trash · {discarded.length}</button></div>
         <input className={styles.input} aria-label="Search drafts" placeholder="Search drafts" value={search} onChange={event => setSearch(event.target.value)} />
@@ -75,5 +80,15 @@ export default function PostStudio() {
         </article>)}
         <p className={styles.storageNote}>Drafts are local to this browser, not cloud-synced. Use your own browser profile on shared computers.</p>
         {renaming && <Modal labelledBy="rename-title" blocked={busy} onClose={() => setRenaming(null)}><form className={styles.field} onSubmit={event => { event.preventDefault(); void run(async () => { await updateDraft(scope, renaming.id, { name: name.trim() }); setRenaming(null); }); }}><h2 id="rename-title">Rename draft</h2><label className={styles.field}><span>Draft name</span><input className={styles.input} autoFocus maxLength={100} required value={name} onChange={event => setName(event.target.value)} /></label><button className={styles.primary} disabled={busy || !name.trim()}>Save name</button><button type="button" className={styles.button} disabled={busy} onClick={() => setRenaming(null)}>Cancel</button></form></Modal>}
+        {bookModalOpen && (
+            <BookReviewModal
+                scope={scope}
+                onClose={() => setBookModalOpen(false)}
+                onOpenDraft={(item) => {
+                    setBookModalOpen(false);
+                    open(item);
+                }}
+            />
+        )}
     </div></div>;
 }

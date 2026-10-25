@@ -7,7 +7,7 @@ const layer = z.enum(["visual", "kicker", "headline", "supporting", "footer"]);
 const position = z.object({ x: z.number().min(-50).max(50), y: z.number().min(-50).max(50) });
 const typographySettings = z.object({ font: z.enum(["auto", "onest", "hind"]), size: z.number().min(60).max(160), lineSpacing: z.number().min(90).max(180), shadow: z.number().min(0).max(100) });
 export const postDesignSchema = z.object({
-    template: z.enum(["breaking", "explainer", "quote"]), format: z.enum(["square", "portrait", "story", "landscape"]),
+    template: z.enum(["breaking", "explainer", "quote", "book-review", "book-analysis", "book-takeaways", "book-verdict"]), format: z.enum(["square", "portrait", "story", "landscape"]),
     category: z.string(), eyebrow: z.string(), headline: z.string(), summary: z.string(), author: z.string(),
     imageUri: z.string().nullable(), accent: z.string().regex(/^#[\da-f]{6}$/i),
     headlineScale: z.number().finite().positive(), textAlign: z.enum(["left", "center"]), imageTone: z.enum(["ink", "clear", "warm"]),

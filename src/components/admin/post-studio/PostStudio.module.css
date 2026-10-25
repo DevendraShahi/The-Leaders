@@ -14,3 +14,24 @@
 .nativeDialog{border:0;padding:0;margin:auto;width:min(720px,calc(100vw - 40px));max-height:90dvh;border-radius:12px;background:transparent;color:inherit;overflow:auto}.nativeDialog::backdrop{background:#0008}.nativeDialog .dialog{max-height:none}
 
 .studio{font-family:Onest_400Regular,Hind_400Regular,sans-serif}.panel textarea{font-size:16px;line-height:1.75}
+
+.bookModalDialog{max-width:780px;width:min(780px,calc(100vw - 32px));padding:24px;display:flex;flex-direction:column;gap:16px}
+.bookIconBadge{width:40px;height:40px;border-radius:8px;background:var(--studio-red);display:grid;place-items:center;flex-shrink:0}
+.bookPresetBar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--studio-muted);padding:8px 12px;border-radius:8px;border:1px solid var(--studio-border)}
+.presetPill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:6px;font-size:12px;font-family:Onest_500Medium,sans-serif;border:1px solid var(--studio-border);background:var(--studio-surface);color:var(--studio-text);cursor:pointer;transition:all .15s ease}
+.presetPill:hover{background:var(--studio-muted)}
+.activePreset{background:var(--studio-red)!important;color:#fff!important;border-color:var(--studio-red)!important}
+.bookTabs{display:flex;border-bottom:2px solid var(--studio-border);gap:4px}
+.bookTab{padding:10px 16px;font-size:13px;font-family:Onest_600SemiBold,sans-serif;border:none;background:none;color:var(--studio-secondary);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s ease}
+.bookTab:hover{color:var(--studio-text)}
+.activeBookTab{color:var(--studio-red)!important;border-bottom-color:var(--studio-red)!important}
+.bookFormPanel{min-height:260px}
+.bookGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.bookFormStack{display:flex;flex-direction:column;gap:14px}
+.bookSlidePreviewBar{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;background:var(--studio-muted);padding:10px;border-radius:8px;border:1px solid var(--studio-border)}
+.bookSlideChip{display:flex;flex-direction:column;gap:2px;font-size:11px;padding:6px;border-radius:4px;background:var(--studio-surface);text-align:center;border:1px solid var(--studio-border)}
+.bookSlideChip strong{color:var(--studio-red);font-size:10px;text-transform:uppercase;letter-spacing:.5px}
+.bookSlideChip span{color:var(--studio-secondary);font-size:10px;line-height:1.2;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.bookModalActions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--studio-border)}
+@media(max-width:640px){.bookGrid{grid-template-columns:1fr}.bookSlidePreviewBar{grid-template-columns:repeat(2,1fr)}.bookModalActions{justify-content:stretch}.bookModalActions button{flex:1}}
+

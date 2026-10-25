@@ -1,7 +1,7 @@
 // Ported from mobile/src/features/post-designer; keep artwork behavior in sync.
 import { brand } from "./tokens";
 export type PostFormat = "square" | "portrait" | "story" | "landscape";
-export type PostTemplate = "breaking" | "explainer" | "quote";
+export type PostTemplate = "breaking" | "explainer" | "quote" | "book-review" | "book-analysis" | "book-takeaways" | "book-verdict";
 export type TextAlignment = "left" | "center";
 export type ImageTone = "ink" | "clear" | "warm";
 export type PostLayer = "visual" | "kicker" | "headline" | "supporting" | "footer";
@@ -94,5 +94,61 @@ export const postTemplates: { key: PostTemplate; title: string; subtitle: string
     title: "Quote",
     subtitle: "Put voices forward",
     patch: { category: "VOICES", eyebrow: "IN THEIR WORDS", headline: "“The public deserves a conversation built on facts.”", summary: "A moment from today’s conversation, with the full context in the caption." },
+  },
+  {
+    key: "book-review",
+    title: "Book Review",
+    subtitle: "Overview & Thesis",
+    patch: {
+      category: "BOOK REVIEW · DEMOCRATIC THOUGHT",
+      eyebrow: "B.P. KOIRALA · ★★★★★ 5.0",
+      headline: "Jail Journal: The Conscience of Democracy",
+      summary: "CENTRAL THESIS: True national sovereignty cannot exist without the democratic freedom of individual citizens. Surrendering rights to preserve a regime guarantees both domestic subjugation and foreign subservience.",
+      author: "By B.P. Koirala · Review by The Leaders",
+      accent: "#B71C1C",
+      format: "portrait",
+    },
+  },
+  {
+    key: "book-analysis",
+    title: "Deep Analysis",
+    subtitle: "Arguments & Ideology",
+    patch: {
+      category: "ARGUMENT & EVIDENCE",
+      eyebrow: "PURPOSE & IDEOLOGY",
+      headline: "The Institutional Roots of Prosperity and Decay",
+      summary: "PURPOSE: Dissect why cosmetic reforms fail under extractive monopolies.\n\nARGUMENT: Extractive political elites actively resist creative destruction to preserve elite cartels.",
+      author: "The Leaders Book Review",
+      accent: "#C5A059",
+      format: "portrait",
+    },
+  },
+  {
+    key: "book-takeaways",
+    title: "Key Takeaways",
+    subtitle: "Relevance & Lessons",
+    patch: {
+      category: "RELEVANCE & APPLICATION",
+      eyebrow: "LESSONS FOR NEPAL",
+      headline: "Three Lessons for Nepal's Republic Today",
+      summary: "1. Democratic vigilance is the only hedge against institutional decay.\n2. Inclusivity must precede stability.\n3. Moral conviction outlasts opportunistic coalitions.",
+      author: "Ideas for Modern Governance",
+      accent: "#1E3A8A",
+      format: "portrait",
+    },
+  },
+  {
+    key: "book-verdict",
+    title: "Critic Verdict",
+    subtitle: "Why It Matters & Rating",
+    patch: {
+      category: "THE VERDICT · ★★★★★ 5.0",
+      eyebrow: "CRITIC'S VERDICT",
+      headline: "“A searing human testament to conscience over convenience.”",
+      summary: "WHY IT MATTERS: In an era of political cynicism, it remains the ultimate ethical compass for leadership, statecraft, and civic dignity.",
+      author: "The Leaders Editorial Board",
+      accent: "#B71C1C",
+      format: "portrait",
+    },
   },
 ];
