@@ -68,11 +68,15 @@ The existing GitHub main-branch → Vercel integration performs deployment. This
 an application replacement, not a new cloud project or a database migration.
 Preview/release environments must supply the existing database/media settings,
 JWT_SECRET (at least 32 characters). These are server configuration, not committed credentials.
-Web admin additionally requires the existing Clerk application's
+Clerk sign-in additionally requires the existing Clerk application's
 `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and server-only `CLERK_SECRET_KEY` in development
 and deployment settings. Use the matching production instance keys for production;
-the publishable key must be present during the build. Re-enable that Clerk instance
-before testing sign-in. MongoDB must also be available for admin authorization and
+the publishable key must be present during the build. Missing, malformed or
+mismatched Clerk keys disable only Clerk middleware/UI; the database login and
+its server-side permission checks remain available. The admin layout reads this
+configuration per request rather than caching a build-time auth choice. Password
+login/logout and native bearer requests do not execute Clerk middleware.
+Re-enable that Clerk instance before testing Clerk sign-in. MongoDB must also be available for admin authorization and
 content access; restoring Clerk alone does not replace the database. Web password
 login/logout are available at `/api/auth/login` and `/api/auth/logout`, with the
 same credential validation and rate limits as native login. Neither browser method

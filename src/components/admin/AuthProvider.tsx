@@ -21,16 +21,32 @@ interface AuthContextType {
     signIn: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     retryAuthorization: () => void;
+    clerkEnabled: boolean;
+    clerkSignedIn: boolean;
 }
 const AuthContext = createContext<AuthContextType>({
     user: null, isAuthenticated: false, isLoading: true, authorizationError: null,
     login: () => {}, signIn: async () => {}, logout: async () => {}, retryAuthorization: () => {},
+    clerkEnabled: false, clerkSignedIn: false,
 });
 export const useAuth = () => useContext(AuthContext);
 
-export default function AuthProvider({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({ children, clerkEnabled = true }: { children: React.ReactNode; clerkEnabled?: boolean }) {
+    return clerkEnabled ? <ClerkSessionProvider>{children}</ClerkSessionProvider> :
+        <SessionProvider clerkEnabled={false} isLoaded isSignedIn={false}>{children}</SessionProvider>;
+}
+
+function ClerkSessionProvider({ children }: { children: React.ReactNode }) {
     const { isLoaded, isSignedIn, user: identity } = useUser();
     const { signOut } = useClerk();
+    const revokeClerk = useCallback(() => signOut({ redirectUrl: '/admin/login' }), [signOut]);
+    return <SessionProvider clerkEnabled isLoaded={isLoaded} isSignedIn={Boolean(isSignedIn)} identityId={identity?.id} revokeClerk={revokeClerk}>{children}</SessionProvider>;
+}
+
+function SessionProvider({ children, clerkEnabled, isLoaded, isSignedIn, identityId, revokeClerk }: {
+    children: React.ReactNode; clerkEnabled: boolean; isLoaded: boolean; isSignedIn: boolean;
+    identityId?: string; revokeClerk?: () => Promise<unknown>;
+}) {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setLoading] = useState(true);
     const [authorizationError, setError] = useState<string | null>(null);
@@ -58,7 +74,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
             }
         })();
         return () => controller.abort();
-    }, [isLoaded, isSignedIn, identity?.id, attempt]);
+    }, [isLoaded, isSignedIn, identityId, attempt]);
 
     async function signIn(email: string, password: string) {
         const response = await fetch('/api/auth/login', {
@@ -75,18 +91,19 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         try {
             const response = await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
             if (!response.ok) throw new Error('Could not clear password session');
-            if (isSignedIn) await signOut({ redirectUrl: '/admin/login' });
+            if (isSignedIn && revokeClerk) await revokeClerk();
             setUser(null);
             setError(null);
             router.replace('/admin/login');
         } catch {
             setError('Could not sign out. Please retry.');
         }
-    }, [isSignedIn, signOut, router]);
+    }, [isSignedIn, revokeClerk, router]);
 
     return <AuthContext.Provider value={{
         user, isAuthenticated: Boolean(user), isLoading,
         authorizationError, login: () => router.push('/admin/login'), signIn, logout,
         retryAuthorization: () => setAttempt(value => value + 1),
+        clerkEnabled, clerkSignedIn: isSignedIn,
     }}>{children}</AuthContext.Provider>;
 }

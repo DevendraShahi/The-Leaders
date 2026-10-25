@@ -5,10 +5,11 @@ import AuthProvider, { useAuth } from '@/components/admin/AuthProvider';
 const mocks = vi.hoisted(() => ({
     identity: { isLoaded: true, isSignedIn: true, user: { id: 'user_clerk' } as { id: string } | null },
     signOut: vi.fn(), push: vi.fn(), replace: vi.fn(), fetch: vi.fn(),
+    hooksDisabled: false,
 }));
 vi.mock('@clerk/nextjs', () => ({
-    useUser: () => mocks.identity,
-    useClerk: () => ({ signOut: mocks.signOut }),
+    useUser: () => { if (mocks.hooksDisabled) throw new Error('Clerk provider is unavailable'); return mocks.identity; },
+    useClerk: () => { if (mocks.hooksDisabled) throw new Error('Clerk provider is unavailable'); return { signOut: mocks.signOut }; },
 }));
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: mocks.push, replace: mocks.replace }) }));
 
@@ -25,6 +26,7 @@ function Consumer() {
 const profile = () => Response.json({ data: { user: { id: 'admin-1', email: 'editor@example.com', role: 'editorial' } } });
 beforeEach(() => {
     vi.resetAllMocks();
+    mocks.hooksDisabled = false;
     mocks.identity = { isLoaded: true, isSignedIn: true, user: { id: 'user_clerk' } };
     mocks.fetch.mockResolvedValue(profile());
     mocks.signOut.mockResolvedValue(undefined);
@@ -33,6 +35,14 @@ beforeEach(() => {
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 describe('Clerk admin client session', () => {
+    it('restores password login without mounting or calling Clerk hooks', async () => {
+        mocks.hooksDisabled = true;
+        render(<AuthProvider clerkEnabled={false}><Consumer /></AuthProvider>);
+        expect(await screen.findByText('editor@example.com')).toBeInTheDocument();
+        fireEvent.click(screen.getByText('Sign out'));
+        expect(await screen.findByText('signed out')).toBeInTheDocument();
+        expect(mocks.signOut).not.toHaveBeenCalled();
+    });
     it('restores a database session even before Clerk has loaded', async () => {
         mocks.identity = { isLoaded: false, isSignedIn: false, user: null };
         render(<AuthProvider><Consumer /></AuthProvider>);

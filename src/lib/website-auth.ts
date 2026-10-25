@@ -2,6 +2,7 @@ import { auth, currentUser } from '@clerk/nextjs/server';
 import dbConnect from './db';
 import Admin from '@/models/Admin';
 import { getMobileAdmin } from './mobile-auth';
+import { isClerkConfigured } from './clerk-config';
 
 export const websiteSessionCookie = 'leaders_admin_session';
 
@@ -22,6 +23,7 @@ export async function getWebsiteAdmin(request: Request) {
         // An expired password cookie must not prevent a fresh Clerk sign-in.
     }
 
+    if (!isClerkConfigured()) return null;
     const { userId } = await auth();
     if (!userId) return null;
 

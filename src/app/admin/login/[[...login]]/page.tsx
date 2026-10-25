@@ -1,13 +1,12 @@
 "use client";
 
-import { SignIn, useUser } from '@clerk/nextjs';
+import { SignIn } from '@clerk/nextjs';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/admin/AuthProvider';
 
 export default function AdminLogin() {
-    const { isSignedIn } = useUser();
-    const { isLoading, isAuthenticated, authorizationError, signIn } = useAuth();
+    const { isLoading, isAuthenticated, authorizationError, signIn, clerkEnabled, clerkSignedIn } = useAuth();
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,17 +16,17 @@ export default function AdminLogin() {
     useEffect(() => {
         if (isLoading) return;
         if (isAuthenticated) router.replace('/admin');
-        else if (isSignedIn && authorizationError) router.replace('/admin/unauthorized');
-    }, [isSignedIn, isLoading, isAuthenticated, authorizationError, router]);
+        else if (clerkSignedIn && authorizationError) router.replace('/admin/unauthorized');
+    }, [clerkSignedIn, isLoading, isAuthenticated, authorizationError, router]);
 
     return <main className="grid min-h-screen place-items-center bg-background p-6">
         <section className="w-full max-w-4xl space-y-6">
             <div className="space-y-2 text-center">
                 <p className="text-xs font-bold tracking-widest text-primary">THE LEADERS</p>
                 <h1 className="text-3xl font-semibold">Admin sign in</h1>
-                <p className="text-sm text-muted-foreground">Use your newsroom email and password, or continue with Clerk.</p>
+                <p className="text-sm text-muted-foreground">{clerkEnabled ? 'Use your newsroom email and password, or continue with Clerk.' : 'Use your existing newsroom email and password.'}</p>
             </div>
-            <div className="grid items-start gap-6 md:grid-cols-2">
+            <div className={clerkEnabled ? 'grid items-start gap-6 md:grid-cols-2' : 'mx-auto w-full max-w-sm'}>
                 <form className="space-y-5 rounded-xl border border-border bg-card p-8"
                     onSubmit={async event => {
                         event.preventDefault();
@@ -54,11 +53,11 @@ export default function AdminLogin() {
                         {busy ? 'Signing in…' : 'Sign in with email'}
                     </button>
                 </form>
-                <div className="flex justify-center">
-                    {isSignedIn ? <p role="status">Checking newsroom access…</p> :
+                {clerkEnabled && <div className="flex justify-center">
+                    {clerkSignedIn ? <p role="status">Checking newsroom access…</p> :
                         <SignIn routing="path" path="/admin/login" withSignUp={false}
                             appearance={{ elements: { footerAction: { display: 'none' } } }} />}
-                </div>
+                </div>}
             </div>
             <p className="text-center text-xs text-muted-foreground">Accounts are managed by your newsroom administrator.</p>
         </section>

@@ -1,13 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 const mocks = vi.hoisted(() => ({
     mobileAdmin: vi.fn(), auth: vi.fn(), currentUser: vi.fn(),
-    connect: vi.fn(), findOne: vi.fn(), link: vi.fn(), passwordLogin: vi.fn(),
+    connect: vi.fn(), findOne: vi.fn(), link: vi.fn(), passwordLogin: vi.fn(), clerkConfigured: vi.fn(),
 }));
 vi.mock('@/app/api/v1/auth/login/route', () => ({ POST: mocks.passwordLogin }));
 vi.mock('@clerk/nextjs/server', () => ({ auth: mocks.auth, currentUser: mocks.currentUser }));
 vi.mock('@/lib/db', () => ({ default: mocks.connect }));
 vi.mock('@/models/Admin', () => ({ default: { findOne: mocks.findOne, findOneAndUpdate: mocks.link } }));
 vi.mock('@/lib/mobile-auth', () => ({ getMobileAdmin: mocks.mobileAdmin }));
+vi.mock('@/lib/clerk-config', () => ({ isClerkConfigured: mocks.clerkConfigured }));
 
 import { NextRequest, NextResponse } from 'next/server';
 import { withAuth } from '@/lib/middleware';
@@ -24,6 +25,7 @@ const request = (method = 'GET', source: string | undefined = origin) => {
 };
 beforeEach(() => {
     vi.resetAllMocks();
+    mocks.clerkConfigured.mockReturnValue(true);
     mocks.auth.mockResolvedValue({ userId: 'user_clerk' });
     mocks.findOne.mockResolvedValue(null);
     mocks.link.mockResolvedValue(null);
@@ -34,6 +36,23 @@ beforeEach(() => {
 });
 
 describe('Clerk website authorization boundary', () => {
+    it('rejects anonymous and spoofed Clerk headers when Clerk is not configured', async () => {
+        mocks.clerkConfigured.mockReturnValue(false);
+        const response = await getWebsiteAdmin(new Request(`${origin}/api/admin/articles`, {
+            headers: { 'x-clerk-auth-status': 'signed-in', 'x-clerk-auth-user-id': 'spoofed-user' },
+        }));
+        expect(response).toBeNull();
+        expect(mocks.auth).not.toHaveBeenCalled();
+        expect(mocks.connect).not.toHaveBeenCalled();
+    });
+    it('keeps password sessions working with no Clerk configuration', async () => {
+        mocks.clerkConfigured.mockReturnValue(false);
+        mocks.mobileAdmin.mockResolvedValue(admin);
+        expect(await getWebsiteAdmin(new Request(`${origin}/api/admin/articles`, {
+            headers: { cookie: 'leaders_admin_session=valid-session' },
+        }))).toEqual(admin);
+        expect(mocks.auth).not.toHaveBeenCalled();
+    });
     it('rejects an invalid password cookie when Clerk is also signed out', async () => {
         mocks.auth.mockResolvedValue({ userId: null });
         const legacy = new Request(`${origin}/api/admin/articles`, { headers: { cookie: 'leaders_admin_session=old-password-session' } });
