@@ -121,6 +121,13 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const ballRef = useRef<HTMLDivElement>(null);
     const wheelTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
+    const slidesRef = useRef<PostDraft[]>(slides);
+    useEffect(() => { slidesRef.current = slides; }, [slides]);
+
+    const [syncBackgroundEffects, setSyncBackgroundEffects] = useState(true);
+    const syncBackgroundEffectsRef = useRef(true);
+    useEffect(() => { syncBackgroundEffectsRef.current = syncBackgroundEffects; }, [syncBackgroundEffects]);
+
     // Discover sibling drafts in the same carousel pack
     useEffect(() => {
         let active = true;
@@ -130,6 +137,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 if (!active) return;
                 const found = findCarouselSiblings(draft, allDrafts);
                 if (found.length > 0) {
+                    slidesRef.current = found;
                     setSlides(found);
                     const currentIdx = found.findIndex(s => s.id === draft.id);
                     if (currentIdx >= 0) setActiveSlideIndex(currentIdx);
@@ -152,10 +160,50 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         designRef.current = next; dirty.current = true;
         setDesign(next); setSaveState('saving'); setIssue(''); setNotice('');
         setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
+
+        const shouldSync = syncBackgroundEffectsRef.current;
+        const bgSyncKeys: (keyof PostDesign)[] = [
+            'imageUri', 'imageFit', 'imageTone', 'imageZoom', 'imageOffsetX', 'imageOffsetY',
+            'imageBlur', 'imageVintage', 'imageFeather', 'backgroundColor', 'backgroundGradient'
+        ];
+        const bgEffectChanged = shouldSync && bgSyncKeys.some(k => previous[k] !== next[k]);
+
         setSlides(prevSlides => {
-            if (!prevSlides.length || !prevSlides[activeSlideIndex]) return prevSlides;
-            const updated = [...prevSlides];
-            updated[activeSlideIndex] = { ...updated[activeSlideIndex], design: next };
+            const currentList = prevSlides.length ? prevSlides : slidesRef.current;
+            if (!currentList.length || !currentList[activeSlideIndex]) return currentList;
+            const updated = currentList.map((s, idx) => {
+                if (idx === activeSlideIndex) {
+                    return { ...s, design: next };
+                }
+                if (bgEffectChanged) {
+                    const sharesSameImage = Boolean(next.imageUri && s.design.imageUri === next.imageUri);
+                    const sharesSameGradientOrColor = !next.imageUri && !s.design.imageUri && (
+                        Boolean(next.backgroundGradient && s.design.backgroundGradient === previous.backgroundGradient) ||
+                        Boolean(next.backgroundColor && s.design.backgroundColor === previous.backgroundColor)
+                    );
+
+                    if (sharesSameImage || sharesSameGradientOrColor) {
+                        return {
+                            ...s,
+                            design: {
+                                ...s.design,
+                                imageFit: next.imageFit,
+                                imageTone: next.imageTone,
+                                imageZoom: next.imageZoom,
+                                imageOffsetX: next.imageOffsetX,
+                                imageOffsetY: next.imageOffsetY,
+                                imageBlur: next.imageBlur,
+                                imageVintage: next.imageVintage,
+                                imageFeather: next.imageFeather,
+                                backgroundColor: next.backgroundColor,
+                                backgroundGradient: next.backgroundGradient,
+                            },
+                        };
+                    }
+                }
+                return s;
+            });
+            slidesRef.current = updated;
             return updated;
         });
     }, [activeSlideIndex]);
@@ -170,9 +218,18 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const persist = useCallback(async () => {
         if (!dirty.current) return true;
         const snapshot = designRef.current;
-        const targetId = slides[activeSlideIndex]?.id || draft.id;
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
         try {
-            await updateDraft(scope, targetId, { design: snapshot });
+            if (currentSlides.length > 1) {
+                await Promise.all(
+                    currentSlides.map(s => updateDraft(scope, s.id, {
+                        design: s.id === (currentSlides[activeSlideIndex]?.id || draft.id) ? snapshot : s.design,
+                    }))
+                );
+            } else {
+                const targetId = currentSlides[activeSlideIndex]?.id || draft.id;
+                await updateDraft(scope, targetId, { design: snapshot });
+            }
             if (snapshot === designRef.current) { dirty.current = false; if (mounted.current) setSaveState('saved'); }
             return true;
         } catch (error) {
@@ -220,8 +277,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
     // Carousel Slide Switcher
     const switchSlide = async (targetIndex: number) => {
-        if (targetIndex < 0 || targetIndex >= slides.length || targetIndex === activeSlideIndex) return;
-        const currentSlide = slides[activeSlideIndex];
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+        if (targetIndex < 0 || targetIndex >= currentSlides.length || targetIndex === activeSlideIndex) return;
+        const currentSlide = currentSlides[activeSlideIndex];
         if (currentSlide && dirty.current) {
             try {
                 await updateDraft(scope, currentSlide.id, { design: designRef.current });
@@ -229,23 +287,57 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 // ignore
             }
         }
-        const updated = [...slides];
+        const updated = [...currentSlides];
         if (updated[activeSlideIndex]) {
             updated[activeSlideIndex] = {
                 ...updated[activeSlideIndex],
                 design: designRef.current,
             };
+            slidesRef.current = updated;
             setSlides(updated);
         }
         const nextSlide = updated[targetIndex];
         if (!nextSlide) return;
+
+        let nextDesign = nextSlide.design;
+        // If syncing effects across slides with the same background:
+        if (syncBackgroundEffectsRef.current) {
+            const sameImage = Boolean(designRef.current.imageUri && nextDesign.imageUri === designRef.current.imageUri);
+            const sameGradient = !designRef.current.imageUri && !nextDesign.imageUri && (
+                Boolean(designRef.current.backgroundGradient && nextDesign.backgroundGradient) ||
+                Boolean(designRef.current.backgroundColor && nextDesign.backgroundColor)
+            );
+
+            if (sameImage || sameGradient) {
+                nextDesign = {
+                    ...nextDesign,
+                    imageFit: designRef.current.imageFit,
+                    imageTone: designRef.current.imageTone,
+                    imageZoom: designRef.current.imageZoom,
+                    imageOffsetX: designRef.current.imageOffsetX,
+                    imageOffsetY: designRef.current.imageOffsetY,
+                    imageBlur: designRef.current.imageBlur,
+                    imageVintage: designRef.current.imageVintage,
+                    imageFeather: designRef.current.imageFeather,
+                    backgroundColor: designRef.current.backgroundColor,
+                    backgroundGradient: designRef.current.backgroundGradient,
+                };
+                updated[targetIndex] = {
+                    ...nextSlide,
+                    design: nextDesign,
+                };
+                slidesRef.current = updated;
+                setSlides(updated);
+            }
+        }
+
         dirty.current = false;
         undoRef.current = [];
         redoRef.current = [];
         interaction.current = null;
         setActiveSlideIndex(targetIndex);
-        designRef.current = nextSlide.design;
-        setDesign(nextSlide.design);
+        designRef.current = nextDesign;
+        setDesign(nextDesign);
         setHistory({ undo: 0, redo: 0 });
         setSaveState('saved');
         setAlertDismissed(false);
@@ -255,15 +347,17 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     // Carousel Slide Actions
     const handleAddSlide = async () => {
         try {
-            const baseTitle = getCarouselBaseTitle(slides[0]?.name || draft.name);
-            const newIndex = slides.length + 1;
+            const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+            const baseTitle = getCarouselBaseTitle(currentSlides[0]?.name || draft.name);
+            const newIndex = currentSlides.length + 1;
             const newDesign: PostDesign = {
                 ...designRef.current,
                 headline: `Key Point ${newIndex}`,
                 summary: `Add context, analysis, or quote for slide ${newIndex}.`,
             };
             const created = await createDraft(scope, `${baseTitle} · ${newIndex}/${newIndex}`, newDesign);
-            const nextSlides = [...slides, created];
+            const nextSlides = [...currentSlides, created];
+            slidesRef.current = nextSlides;
             setSlides(nextSlides);
             await switchSlide(nextSlides.length - 1);
             setNotice(`Slide ${newIndex} added to carousel`);
@@ -274,11 +368,13 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
     const handleDuplicateSlide = async () => {
         try {
-            const baseTitle = getCarouselBaseTitle(slides[0]?.name || draft.name);
-            const newIndex = slides.length + 1;
+            const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+            const baseTitle = getCarouselBaseTitle(currentSlides[0]?.name || draft.name);
+            const newIndex = currentSlides.length + 1;
             const duplicatedDesign = { ...designRef.current };
             const created = await createDraft(scope, `${baseTitle} · ${newIndex}/${newIndex} (Copy)`, duplicatedDesign);
-            const nextSlides = [...slides, created];
+            const nextSlides = [...currentSlides, created];
+            slidesRef.current = nextSlides;
             setSlides(nextSlides);
             await switchSlide(nextSlides.length - 1);
             setNotice('Slide duplicated');
@@ -288,12 +384,14 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     };
 
     const handleDeleteSlide = async (targetIndex = activeSlideIndex) => {
-        if (slides.length <= 1) return;
-        const toDelete = slides[targetIndex];
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+        if (currentSlides.length <= 1) return;
+        const toDelete = currentSlides[targetIndex];
         if (!toDelete) return;
         try {
             await setDraftTrashed(scope, toDelete.id, true);
-            const remaining = slides.filter((_, idx) => idx !== targetIndex);
+            const remaining = currentSlides.filter((_, idx) => idx !== targetIndex);
+            slidesRef.current = remaining;
             setSlides(remaining);
             const nextIdx = Math.min(targetIndex, remaining.length - 1);
             setActiveSlideIndex(nextIdx);
@@ -307,12 +405,14 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     };
 
     const handleMoveSlide = (fromIdx: number, direction: -1 | 1) => {
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
         const targetIdx = fromIdx + direction;
-        if (targetIdx < 0 || targetIdx >= slides.length) return;
-        const reordered = [...slides];
+        if (targetIdx < 0 || targetIdx >= currentSlides.length) return;
+        const reordered = [...currentSlides];
         const temp = reordered[fromIdx];
         reordered[fromIdx] = reordered[targetIdx];
         reordered[targetIdx] = temp;
+        slidesRef.current = reordered;
         setSlides(reordered);
         if (activeSlideIndex === fromIdx) {
             setActiveSlideIndex(targetIdx);
@@ -454,7 +554,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
     // Apply current slide's background image, adjustments, and gradient/color across all carousel slides
     const handleApplyBackgroundToAllSlides = async () => {
-        if (!slides.length) return;
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+        if (!currentSlides.length) return;
         const bgProps: Partial<PostDesign> = {
             imageUri: design.imageUri,
             imageFit: design.imageFit,
@@ -469,7 +570,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             backgroundGradient: design.backgroundGradient ?? null,
         };
 
-        const updated = slides.map(s => ({
+        const updated = currentSlides.map(s => ({
             ...s,
             design: {
                 ...s.design,
@@ -477,9 +578,48 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             },
         }));
 
+        slidesRef.current = updated;
         setSlides(updated);
         dirty.current = true;
-        setNotice(`Background applied to all ${slides.length} slides!`);
+        setNotice(`Background & applied effects synced across all ${currentSlides.length} slides!`);
+        try {
+            await Promise.all(
+                updated.map(s => updateDraft(scope, s.id, { design: s.design }))
+            );
+        } catch {
+            // Keep in-memory sync
+        }
+    };
+
+    // Apply only the image effects & adjustments (blur, vintage, feather, tone, crop, zoom) to all slides
+    const handleApplyEffectsToAllSlides = async () => {
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+        if (!currentSlides.length) return;
+        const effectProps: Partial<PostDesign> = {
+            imageFit: design.imageFit,
+            imageTone: design.imageTone,
+            imageZoom: design.imageZoom,
+            imageOffsetX: design.imageOffsetX,
+            imageOffsetY: design.imageOffsetY,
+            imageBlur: design.imageBlur,
+            imageVintage: design.imageVintage,
+            imageFeather: design.imageFeather,
+            backgroundColor: design.backgroundColor ?? null,
+            backgroundGradient: design.backgroundGradient ?? null,
+        };
+
+        const updated = currentSlides.map(s => ({
+            ...s,
+            design: {
+                ...s.design,
+                ...effectProps,
+            },
+        }));
+
+        slidesRef.current = updated;
+        setSlides(updated);
+        dirty.current = true;
+        setNotice(`Image effects applied across all ${currentSlides.length} slides!`);
         try {
             await Promise.all(
                 updated.map(s => updateDraft(scope, s.id, { design: s.design }))
@@ -497,7 +637,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
     // Reuse another slide's visual for current slide
     const handleReuseSlideImage = (sourceIndex: number) => {
-        const sourceDesign = slides[sourceIndex]?.design;
+        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+        const sourceDesign = currentSlides[sourceIndex]?.design;
         if (!sourceDesign?.imageUri) return;
         apply(current => ({
             ...current,
@@ -1478,8 +1619,45 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 </div>
                                 {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
 
-                                <Section title="Image effects"><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>Reset image effects</button>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}</Section>
-                                <div className={styles.field}><span>Image tone</span><div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div></div>
+                                <Section title="Image effects">
+                                    <div className={styles.row}>
+                                        <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>
+                                            Reset image effects
+                                        </button>
+                                        {slides.length > 1 && (
+                                            <button
+                                                type="button"
+                                                className={styles.button}
+                                                disabled={mediaDisabled}
+                                                onClick={handleApplyEffectsToAllSlides}
+                                                title="Apply current effects (blur, vintage, feather, tone) to all carousel slides"
+                                            >
+                                                <Sparkles size={13} />
+                                                <span>Apply to All Slides</span>
+                                            </button>
+                                        )}
+                                    </div>
+                                    {slides.length > 1 && (
+                                        <label className={styles.row} style={{ fontSize: 11, cursor: 'pointer', margin: '4px 0 6px', color: 'var(--studio-secondary)' }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={syncBackgroundEffects}
+                                                onChange={event => setSyncBackgroundEffects(event.target.checked)}
+                                            />
+                                            <span>Sync effects across slides with same background</span>
+                                        </label>
+                                    )}
+                                    {imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}
+                                </Section>
+                                <div className={styles.field}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <span>Image tone</span>
+                                        {slides.length > 1 && syncBackgroundEffects && (
+                                            <span style={{ fontSize: 10, color: 'var(--studio-secondary)' }}>Synced across shared slides</span>
+                                        )}
+                                    </div>
+                                    <div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div>
+                                </div>
                                 <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>
                                 <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
 
@@ -1530,6 +1708,20 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                         </button>
                                     </div>
                                 </div>
+                                {slides.length > 1 && (
+                                    <div style={{ marginTop: 10 }}>
+                                        <button
+                                            type="button"
+                                            className={styles.applyAllSlidesBtn}
+                                            style={{ margin: 0, width: '100%', padding: '7px 12px' }}
+                                            onClick={handleApplyBackgroundToAllSlides}
+                                            title="Sync active slide's background image and effects across all slides"
+                                        >
+                                            <Sparkles size={13} />
+                                            <span>Sync Background & Effects to All Slides</span>
+                                        </button>
+                                    </div>
+                                )}
                             </div>
 
                             {/* Vertical Slide Sequence List */}

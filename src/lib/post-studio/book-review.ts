@@ -248,7 +248,7 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
         backgroundColor,
         backgroundGradient,
         imageUri,
-        imageTone: "warm",
+        imageTone: "ink",
         headlineScale: 0.86,
     };
 

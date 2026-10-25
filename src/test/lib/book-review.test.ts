@@ -312,5 +312,18 @@ Critic Says: “A merciless dissection of power stripped of moral disguise.”
             expect(slide.design.backgroundGradient).toBe("linear-gradient(135deg, #062b1a 0%, #0d5c3a 50%, #10b981 100%)");
         }
     });
+
+    it('ensures slides sharing an image have matching imageTone and background effects', () => {
+        const bookWithCover: BookReviewInput = {
+            ...sampleBook,
+            imageUri: 'data:image/png;base64,testcover',
+        };
+        const slides = generateBookReviewDrafts(bookWithCover, 'portrait');
+        expect(slides[0].design.imageUri).toBe('data:image/png;base64,testcover');
+        expect(slides[4].design.imageUri).toBe('data:image/png;base64,testcover');
+        expect(slides[0].design.imageTone).toBe('ink');
+        expect(slides[4].design.imageTone).toBe('ink');
+        expect(slides[0].design.imageTone).toBe(slides[4].design.imageTone);
+    });
 });
 
