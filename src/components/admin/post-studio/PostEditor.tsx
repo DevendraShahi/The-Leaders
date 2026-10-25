@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Download, Eye, EyeOff, ImagePlus, Layers3, LayoutTemplate, Lock, LockOpen, Redo2, Type, Undo2, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, BookOpen, Download, Eye, EyeOff, ImagePlus, Layers3, LayoutTemplate, Lock, LockOpen, Redo2, Type, Undo2, X } from 'lucide-react';
 import { updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
 import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer } from '@/lib/post-studio/types';
+import { getStudioCraft } from '@/lib/post-studio/studio-craft';
 import { commitInteraction } from '@/lib/post-studio/history';
 import { positionText, snapTextPosition } from '@/lib/post-studio/positioning';
 import { setTextColor } from '@/lib/post-studio/text-colors';
@@ -13,6 +14,7 @@ import { moveImage, replaceImage, resetImageAdjustments, setImageFit, wheelMovem
 import { artworkBytes, download } from '@/lib/post-studio/export';
 import { Artwork } from './Artwork';
 import { ColorPicker, Section, Slider } from './Controls';
+import BookReviewModal from './BookReviewModal';
 import styles from './PostStudio.module.css';
 
 type Tool = 'text' | 'layout' | 'media' | 'layers';
@@ -23,6 +25,7 @@ const fields = [{ layer: 'headline', key: 'headline', label: 'Headline' }, { lay
 export default function PostEditor({ scope, draft, onClose, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; canExport?: boolean }) {
     const [design, setDesign] = useState(draft.design);
     const designRef = useRef(design);
+    const [bookModalOpen, setBookModalOpen] = useState(false);
     const [tool, setTool] = useState<Tool>('text');
     const [selected, setSelected] = useState<PostLayer>('headline');
     const [reposition, setReposition] = useState(false);
@@ -178,6 +181,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const slider = (label: string, value: number, min: number, max: number, change: (value: number) => Change, disabled = false, vertical = false) => <Slider label={label} value={value} min={min} max={max} disabled={disabled} vertical={vertical} onStart={begin} onChange={value => live(change(value))} onEnd={end} />;
     const choice = (label: string, active: boolean, action: () => void, disabled = false) => <button type="button" key={label} className={`${styles.choice} ${active ? styles.active : ''}`} aria-pressed={active} disabled={disabled} onClick={action}>{label}</button>;
 
+    const isBookTemplate = design.template.startsWith('book-');
+    const currentCraft = getStudioCraft(design.template);
+
     return <div className={`${styles.studio} ${styles.editor}`}>
         <header className={styles.header}>
             <div className={styles.row}><button className={styles.iconButton} aria-label="Close editor" onClick={async () => { if (await persist()) onClose(); }}><X /></button><h1 className={styles.grow}>{draft.name}</h1><button className={styles.primary} disabled={exporting || !canExport || Boolean(imageIssue && !design.hiddenLayers.includes('visual'))} onClick={() => { void exportPost(); }}><Download />{exporting ? 'Exporting…' : 'Export'}</button></div>
@@ -196,9 +202,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 <div className={styles.tabs} role="tablist" aria-label="Editor tools">{([{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Layout', Icon: LayoutTemplate }, { key: 'media', label: 'Media', Icon: ImagePlus }, { key: 'layers', label: 'Layers', Icon: Layers3 }] as const).map(({ key, label, Icon }) => <button key={key} role="tab" aria-selected={tool === key} className={styles.tab} onClick={() => { setTool(key); setReposition(false); if (key === 'media') setSelected('visual'); else if (key === 'text' && selected === 'visual') setSelected('headline'); }}><Icon />{label}</button>)}</div>
                 <div className={styles.panel} role="tabpanel" aria-label={`${tool} controls`} key={tool}>
                     {tool === 'text' && <>
-                        <div className={styles.row}>{fields.map(item => choice(item.label, selected === item.layer, () => select(item.layer)))}</div>
-                        <label className={styles.field}><span>{field.label}{textLocked ? ' · locked' : ''}</span><textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} /></label>
-                        {field.layer === 'kicker' && <label className={styles.field}><span>Category</span><input className={styles.input} aria-label="Edit category" disabled={textLocked} value={design.category} onChange={event => update('category', event.target.value.toUpperCase())} /></label>}
+                        <div className={styles.row}>{fields.map(item => {
+                            const cl = currentCraft.layers.find(l => l.key === item.layer);
+                            return choice(cl ? cl.label : item.label, selected === item.layer, () => select(item.layer));
+                        })}</div>
+                        <label className={styles.field}><span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span><textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} /></label>
+                        {field.layer === 'kicker' && <label className={styles.field}><span>Category / Tag</span><input className={styles.input} aria-label="Edit category" disabled={textLocked} value={design.category} onChange={event => update('category', event.target.value.toUpperCase())} /></label>}
                         <Section title="Typography"><div className={styles.row}>{(['auto', 'onest', 'hind'] as const).map(font => choice(font === 'auto' ? 'Auto' : font === 'onest' ? 'Onest' : 'Hind', design.textTypography[field.layer].font === font, () => apply(current => setTextTypography(current, field.layer, { font })), textLocked))}</div><p className={styles.subtle}>Nepali uses Hind to keep vowel marks and joined letters intact.</p>
                             {([{ key: 'size', label: 'size', min: 60, max: 160 }, { key: 'lineSpacing', label: 'line spacing', min: 90, max: 180 }, { key: 'shadow', label: 'shadow', min: 0, max: 100 }] as const).map(setting => <div key={setting.key}>{slider(`${field.label} ${setting.label}`, setting.key === 'size' && field.layer === 'headline' ? design.headlineScale * 100 : design.textTypography[field.layer][setting.key], setting.min, setting.max, value => current => setTextTypography(current, field.layer, { [setting.key]: value }), textLocked)}</div>)}
                         </Section>
@@ -229,11 +238,153 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                         <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>
                         <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
                     </>}
-                    {tool === 'layers' && <><strong>Layers</strong><p className={styles.subtle}>Select a layer, or control its visibility and lock.</p>{layers.map(layer => <div className={styles.layer} key={layer.key}><button className={styles.layerName} onClick={() => select(layer.key)}><strong>{layer.label}</strong><div className={styles.subtle}>{design.hiddenLayers.includes(layer.key) ? 'Hidden' : 'Visible'}{design.lockedLayers.includes(layer.key) ? ' · locked' : ''}</div></button><button className={styles.iconButton} aria-label={`${design.hiddenLayers.includes(layer.key) ? 'Show' : 'Hide'} ${layer.label}`} onClick={() => toggle('hiddenLayers', layer.key)}>{design.hiddenLayers.includes(layer.key) ? <EyeOff /> : <Eye />}</button><button className={styles.iconButton} aria-label={`${design.lockedLayers.includes(layer.key) ? 'Unlock' : 'Lock'} ${layer.label}`} onClick={() => toggle('lockedLayers', layer.key)}>{design.lockedLayers.includes(layer.key) ? <Lock /> : <LockOpen />}</button></div>)}</>}
+                    {tool === 'layers' && (
+                        <div className={styles.craftContainer}>
+                            <div className={styles.craftHeader}>
+                                <div className={styles.between}>
+                                    <span className={styles.craftBadge}>{currentCraft.badge}</span>
+                                    <span className={styles.subtle} style={{ fontSize: 11, textTransform: 'uppercase' }}>
+                                        {design.format} · {outputW} × {outputH}
+                                    </span>
+                                </div>
+                                <h3 className={styles.craftTitle}>{currentCraft.name}</h3>
+                                <p className={styles.subtle} style={{ fontSize: 12 }}>{currentCraft.description}</p>
+                            </div>
+
+                            {currentCraft.archetypes && (
+                                <div className={styles.craftArchetypes}>
+                                    <span className={styles.subtle} style={{ fontSize: 11, fontWeight: 600 }}>CRAFT SLIDE / ARCHETYPE:</span>
+                                    <div className={styles.row}>
+                                        {currentCraft.archetypes.map(arch => (
+                                            <button
+                                                key={arch.key}
+                                                type="button"
+                                                className={`${styles.craftArchetypePill} ${design.template === arch.key ? styles.active : ''}`}
+                                                onClick={() => {
+                                                    const matched = postTemplates.find(t => t.key === arch.key);
+                                                    if (matched) {
+                                                        apply(current => ({
+                                                            ...current,
+                                                            template: arch.key,
+                                                            category: matched.patch.category ?? current.category,
+                                                            eyebrow: matched.patch.eyebrow ?? current.eyebrow,
+                                                            accent: matched.patch.accent ?? current.accent,
+                                                            summary: matched.patch.summary ?? current.summary,
+                                                            author: matched.patch.author ?? current.author,
+                                                        }));
+                                                    }
+                                                }}
+                                            >
+                                                {arch.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className={styles.craftLayerList}>
+                                <div className={styles.between} style={{ padding: '4px 0' }}>
+                                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--studio-secondary)' }}>STUDIO CRAFT LAYERS</span>
+                                    <span style={{ fontSize: 11, color: 'var(--studio-secondary)' }}>{currentCraft.layers.length} layers</span>
+                                </div>
+
+                                {currentCraft.layers.map(layer => {
+                                    const isSelected = selected === layer.key;
+                                    const isHidden = design.hiddenLayers.includes(layer.key);
+                                    const isLocked = design.lockedLayers.includes(layer.key);
+                                    const previewText = layer.getPreview(design);
+
+                                    return (
+                                        <div
+                                            key={layer.key}
+                                            className={`${styles.craftLayerCard} ${isSelected ? styles.craftLayerSelected : ''}`}
+                                        >
+                                            <div className={styles.craftLayerHeader}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.craftLayerSelectBtn}
+                                                    onClick={() => {
+                                                        select(layer.key);
+                                                        if (layer.key === 'visual') setTool('media');
+                                                        else setTool('text');
+                                                    }}
+                                                >
+                                                    <div className={styles.row} style={{ gap: 6 }}>
+                                                        <span className={styles.craftRoleBadge}>{layer.role}</span>
+                                                        <strong style={{ fontSize: 13 }}>{layer.label}</strong>
+                                                    </div>
+                                                    <span className={styles.craftLayerSubtle}>{layer.description}</span>
+                                                </button>
+
+                                                <div className={styles.craftLayerActions}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.iconButton}
+                                                        style={{ width: 34, height: 34, padding: 6 }}
+                                                        aria-label={`${isHidden ? 'Show' : 'Hide'} ${layer.label}`}
+                                                        title={isHidden ? 'Show layer' : 'Hide layer'}
+                                                        onClick={() => toggle('hiddenLayers', layer.key)}
+                                                    >
+                                                        {isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.iconButton}
+                                                        style={{ width: 34, height: 34, padding: 6 }}
+                                                        aria-label={`${isLocked ? 'Unlock' : 'Lock'} ${layer.label}`}
+                                                        title={isLocked ? 'Unlock layer' : 'Lock layer'}
+                                                        onClick={() => toggle('lockedLayers', layer.key)}
+                                                    >
+                                                        {isLocked ? <Lock size={16} /> : <LockOpen size={16} />}
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            {previewText && (
+                                                <div
+                                                    className={styles.craftLayerPreview}
+                                                    onClick={() => {
+                                                        select(layer.key);
+                                                        setTool(layer.key === 'visual' ? 'media' : 'text');
+                                                    }}
+                                                >
+                                                    <code>{previewText}</code>
+                                                </div>
+                                            )}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {isBookTemplate && (
+                                <div className={styles.craftFooterActions}>
+                                    <button
+                                        type="button"
+                                        className={styles.button}
+                                        style={{ width: '100%', borderColor: 'var(--studio-red)', color: 'var(--studio-red)' }}
+                                        onClick={() => setBookModalOpen(true)}
+                                    >
+                                        <BookOpen size={16} />
+                                        Book Review Data Craft (12 Fields)
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </aside>
         </div>
         <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" hidden ref={fileRef} aria-label="Upload studio photo" onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
         <div className={styles.offscreen} aria-hidden="true"><Artwork ref={exportRef} design={design} /></div>
+        {bookModalOpen && (
+            <BookReviewModal
+                scope={scope}
+                onClose={() => setBookModalOpen(false)}
+                onOpenDraft={(item) => {
+                    setBookModalOpen(false);
+                    apply(item.design);
+                }}
+            />
+        )}
     </div>;
 }

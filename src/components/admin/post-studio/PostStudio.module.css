@@ -35,3 +35,22 @@
 .bookModalActions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding-top:12px;border-top:1px solid var(--studio-border)}
 @media(max-width:640px){.bookGrid{grid-template-columns:1fr}.bookSlidePreviewBar{grid-template-columns:repeat(2,1fr)}.bookModalActions{justify-content:stretch}.bookModalActions button{flex:1}}
 
+.craftContainer{display:flex;flex-direction:column;gap:16px}
+.craftHeader{background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.craftBadge{display:inline-flex;align-items:center;background:var(--studio-red);color:#fff;font-size:10px;font-family:Onest_700Bold,sans-serif;padding:3px 8px;border-radius:4px;letter-spacing:.8px;text-transform:uppercase;align-self:flex-start}
+.craftTitle{font:16px/1.3 Onest_600SemiBold,sans-serif;margin:0;color:var(--studio-text)}
+.craftArchetypes{display:flex;flex-direction:column;gap:8px;background:var(--studio-surface);border:1px solid var(--studio-border);border-radius:8px;padding:10px 12px}
+.craftArchetypePill{font-size:11px;padding:6px 10px;border-radius:6px;border:1px solid var(--studio-border);background:var(--studio-muted);color:var(--studio-text);cursor:pointer;font-family:Onest_500Medium,sans-serif;transition:all .15s ease}
+.craftArchetypePill:hover{border-color:var(--studio-red)}
+.craftLayerList{display:flex;flex-direction:column;gap:10px}
+.craftLayerCard{border:1px solid var(--studio-border);border-radius:8px;background:var(--studio-surface);overflow:hidden;transition:border-color .15s ease,box-shadow .15s ease;display:flex;flex-direction:column}
+.craftLayerSelected{border-color:var(--studio-red)!important;box-shadow:0 0 0 1px var(--studio-red);background:var(--studio-surface)}
+.craftLayerHeader{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;gap:8px}
+.craftLayerSelectBtn{background:none;border:0;text-align:left;padding:0;flex:1;cursor:pointer;color:inherit;display:flex;flex-direction:column;gap:3px}
+.craftRoleBadge{font-size:9px;padding:2px 6px;border-radius:3px;background:var(--studio-muted);color:var(--studio-secondary);font-family:Onest_600SemiBold,sans-serif;text-transform:uppercase;letter-spacing:.5px;border:1px solid var(--studio-border)}
+.craftLayerSubtle{font-size:11px;color:var(--studio-secondary);line-height:1.3}
+.craftLayerActions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.craftLayerPreview{padding:8px 12px;background:var(--studio-muted);border-top:1px solid var(--studio-border);font-size:11px;cursor:pointer}
+.craftLayerPreview code{font-family:inherit;color:var(--studio-text);line-height:1.4;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;white-space:pre-wrap;font-style:normal}
+.craftFooterActions{padding-top:8px;border-top:1px solid var(--studio-border)}
+

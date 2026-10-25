@@ -121,4 +121,37 @@ describe('Book Review Templates & Generator', () => {
         expect(textLineLimit('portrait', 'supporting', 'book-takeaways')).toBe(6);
         expect(textLineLimit('portrait', 'supporting', 'book-verdict')).toBe(6);
     });
+
+    it('provides rich studio craft layer specifications for all book review templates', async () => {
+        const { getStudioCraft } = await import('@/lib/post-studio/studio-craft');
+        const craft = getStudioCraft('book-review');
+
+        expect(craft.badge).toBe('BOOK REVIEW CRAFT');
+        expect(craft.layers).toHaveLength(5);
+
+        const keys = craft.layers.map(l => l.key);
+        expect(keys).toContain('kicker');
+        expect(keys).toContain('headline');
+        expect(keys).toContain('supporting');
+        expect(keys).toContain('footer');
+        expect(keys).toContain('visual');
+
+        // Check contextual role labels
+        const headlineLayer = craft.layers.find(l => l.key === 'headline');
+        expect(headlineLayer?.label).toBe('Book Title');
+        expect(headlineLayer?.role).toBe('Title & Work');
+
+        const supportingLayer = craft.layers.find(l => l.key === 'supporting');
+        expect(supportingLayer?.label).toBe('Central Thesis');
+        expect(supportingLayer?.role).toBe('Core Argument');
+
+        // Check archetype navigation
+        expect(craft.archetypes).toHaveLength(4);
+        expect(craft.archetypes?.map(a => a.key)).toEqual([
+            'book-review',
+            'book-analysis',
+            'book-takeaways',
+            'book-verdict',
+        ]);
+    });
 });
