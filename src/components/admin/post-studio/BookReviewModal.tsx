@@ -43,6 +43,14 @@ const colorPresets = [
     { label: "Graphite", hex: "#27272A" },
 ];
 
+const gradientPresets = [
+    { label: "Leaders Crimson", value: "linear-gradient(135deg, #4a0000 0%, #8B0000 50%, #1a0000 100%)" },
+    { label: "Midnight Navy", value: "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" },
+    { label: "Emerald Aurora", value: "linear-gradient(135deg, #062b1a 0%, #0d5c3a 50%, #10b981 100%)" },
+    { label: "Instagram Sunset", value: "linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)" },
+    { label: "Dark Slate", value: "linear-gradient(135deg, #18181b 0%, #27272a 50%, #09090b 100%)" },
+];
+
 const ratingPresets = ["★★★★★ 5.0", "★★★★½ 4.8", "★★★★☆ 4.5", "★★★★☆ 4.0"];
 
 const quickBookSuggestions = [
@@ -664,27 +672,55 @@ export default function BookReviewModal({ scope, onClose, onOpenDraft }: BookRev
                                 </div>
 
                                 <div className={styles.field}>
-                                    <span>Accent Color</span>
-                                    <div className={styles.row}>
-                                        {colorPresets.map(color => (
-                                            <button
-                                                key={color.hex}
-                                                type="button"
-                                                className={styles.swatch}
-                                                style={{
-                                                    backgroundColor: color.hex,
-                                                    outline: formData.accent === color.hex ? '2px solid var(--studio-red)' : 'none',
-                                                    outlineOffset: 2,
-                                                    width: 28,
-                                                    height: 28,
-                                                }}
-                                                title={color.label}
-                                                onClick={() => updateField('accent', color.hex)}
-                                            />
-                                        ))}
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 2 }}>
+                                        <span>Accent & Slide Background</span>
+                                        <span style={{ fontSize: 10, color: 'var(--studio-secondary)' }}>Default background for all 5 slides</span>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                                            <span style={{ fontSize: 10, color: 'var(--studio-secondary)', width: 50 }}>Solid:</span>
+                                            {colorPresets.map(color => (
+                                                <button
+                                                    key={color.hex}
+                                                    type="button"
+                                                    className={styles.swatch}
+                                                    style={{
+                                                        backgroundColor: color.hex,
+                                                        outline: formData.accent === color.hex ? '2px solid var(--studio-red)' : 'none',
+                                                        outlineOffset: 2,
+                                                        width: 26,
+                                                        height: 26,
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    title={color.label}
+                                                    onClick={() => updateField('accent', color.hex)}
+                                                />
+                                            ))}
+                                        </div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                                            <span style={{ fontSize: 10, color: 'var(--studio-secondary)', width: 50 }}>Gradient:</span>
+                                            {gradientPresets.map(grad => (
+                                                <button
+                                                    key={grad.value}
+                                                    type="button"
+                                                    className={styles.swatch}
+                                                    style={{
+                                                        background: grad.value,
+                                                        outline: formData.accent === grad.value ? '2px solid var(--studio-red)' : 'none',
+                                                        outlineOffset: 2,
+                                                        width: 26,
+                                                        height: 26,
+                                                        cursor: 'pointer',
+                                                    }}
+                                                    title={grad.label}
+                                                    onClick={() => updateField('accent', grad.value)}
+                                                />
+                                            ))}
+                                        </div>
                                         <input
                                             className={styles.input}
-                                            style={{ width: 100, minHeight: 38, padding: 6 }}
+                                            style={{ width: '100%', minHeight: 34, padding: '4px 8px', fontSize: 11, fontFamily: 'monospace' }}
+                                            placeholder="#B71C1C or linear-gradient(...)"
                                             value={formData.accent || '#B71C1C'}
                                             onChange={e => updateField('accent', e.target.value)}
                                         />

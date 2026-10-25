@@ -1,5 +1,80 @@
 import type { PostDesign, PostFormat } from "./types";
 import { defaultPostDesign } from "./types";
+import { storyGradients, storyColors } from "./story-backgrounds";
+
+/**
+ * Sanitizes and normalizes the accent input from JSON, Markdown, or user entry.
+ * Supports:
+ * - CSS Gradients: linear-gradient(...), radial-gradient(...)
+ * - Hex colors: #B71C1C, #1E3A8A, #fff, etc.
+ * - CSS colors: rgb(...), hsl(...)
+ * - Story Preset IDs or Labels: "crimson-noir", "Midnight Navy", "Leaders Crimson", etc.
+ */
+export function sanitizeAccentInput(rawAccent?: string | null): string {
+    const val = String(rawAccent || "").trim();
+    if (!val) return "#B71C1C";
+
+    // 1. CSS gradient
+    if (/^(linear|radial|conic)-gradient\(/i.test(val)) {
+        return val;
+    }
+
+    // 2. Hex color (#rgb, #rrggbb, #rrggbbaa)
+    if (/^#[\da-f]{3,8}$/i.test(val)) {
+        return val;
+    }
+
+    // 3. rgb/hsl
+    if (/^(rgb|hsl)a?\(.+?\)$/i.test(val)) {
+        return val;
+    }
+
+    // 4. Story Gradient ID or Label match
+    const gradientMatch = storyGradients.find(
+        g => g.id.toLowerCase() === val.toLowerCase() || g.label.toLowerCase() === val.toLowerCase()
+    );
+    if (gradientMatch) return gradientMatch.value;
+
+    // 5. Story Color ID or Label match
+    const colorMatch = storyColors.find(
+        c => c.id.toLowerCase() === val.toLowerCase() || c.label.toLowerCase() === val.toLowerCase()
+    );
+    if (colorMatch) return colorMatch.value;
+
+    return "#B71C1C";
+}
+
+/**
+ * Resolves the accent background configuration for book review slides.
+ * Uses the accent gradient or solid color as the default background for each slide.
+ */
+export function resolveAccentBackground(rawAccent?: string | null): {
+    accent: string;
+    backgroundColor: string | null;
+    backgroundGradient: string | null;
+} {
+    const sanitized = sanitizeAccentInput(rawAccent);
+
+    // If it's a CSS gradient:
+    if (/^(linear|radial|conic)-gradient\(/i.test(sanitized)) {
+        // Extract the first hex color found in the gradient to serve as accent bar/tag color
+        const hexMatch = sanitized.match(/#[\da-f]{6}/i);
+        const accentHex = hexMatch ? hexMatch[0] : "#B71C1C";
+        return {
+            accent: accentHex,
+            backgroundGradient: sanitized,
+            backgroundColor: null,
+        };
+    }
+
+    // If it's a solid color (hex, rgb, etc.):
+    return {
+        accent: sanitized,
+        backgroundColor: sanitized,
+        backgroundGradient: null,
+    };
+}
+
 
 export interface BookReviewInput {
     title: string;
@@ -79,7 +154,7 @@ export const bookReviewPresets: { name: string; description: string; data: BookR
 ];
 
 export function generateBookReviewDrafts(input: BookReviewInput, format: PostFormat = "portrait") {
-    const accent = input.accent || "#B71C1C";
+    const { accent, backgroundColor, backgroundGradient } = resolveAccentBackground(input.accent);
     const tag = (input.tag || "BOOK REVIEW").toUpperCase();
     const cleanTitle = input.title.trim();
     const cleanAuthor = input.author.trim();
@@ -97,6 +172,8 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
         summary: `CENTRAL THESIS:\n${input.centralThesis.trim()}`,
         author: `By ${cleanAuthor} · Review by The Leaders`,
         accent,
+        backgroundColor,
+        backgroundGradient,
         imageUri,
         imageTone: "ink",
         headlineScale: 0.95,
@@ -113,6 +190,8 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
         summary: `PURPOSE:\n${input.purpose.trim()}\n\nARGUMENT & EVIDENCE:\n${input.argumentEvidence.trim()}`,
         author: `${cleanTitle} · ${cleanAuthor}`,
         accent,
+        backgroundColor,
+        backgroundGradient,
         imageUri: null,
         headlineScale: 0.88,
     };
@@ -128,6 +207,8 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
         summary: `ASSUMPTIONS & IDEOLOGY:\n${input.assumptionIdeology.trim()}`,
         author: `The Leaders Analytical Archive`,
         accent,
+        backgroundColor,
+        backgroundGradient,
         imageUri: null,
         headlineScale: 0.88,
     };
@@ -143,6 +224,8 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
         summary: `RELEVANCE TODAY:\n${input.relevanceApplication.trim()}\n\nKEY TAKEAWAYS:\n${input.keyTakeaways.trim()}`,
         author: `Ideas for Modern Governance`,
         accent,
+        backgroundColor,
+        backgroundGradient,
         imageUri: null,
         headlineScale: 0.88,
     };
@@ -162,6 +245,8 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
         summary: `WHY DOES IT MATTER:\n${input.whyItMatters.trim()}`,
         author: `The Leaders Book Review · Rated ${rating}`,
         accent,
+        backgroundColor,
+        backgroundGradient,
         imageUri,
         imageTone: "warm",
         headlineScale: 0.86,
@@ -180,7 +265,7 @@ export function generateBookReviewDrafts(input: BookReviewInput, format: PostFor
 }
 
 export function generateBookReviewSummaryDraft(input: BookReviewInput, format: PostFormat = "portrait") {
-    const accent = input.accent || "#B71C1C";
+    const { accent, backgroundColor, backgroundGradient } = resolveAccentBackground(input.accent);
     const tag = (input.tag || "BOOK REVIEW").toUpperCase();
     const cleanTitle = input.title.trim();
     const cleanAuthor = input.author.trim();
@@ -197,6 +282,8 @@ export function generateBookReviewSummaryDraft(input: BookReviewInput, format: P
         summary: `CENTRAL THESIS: ${input.centralThesis.trim()}\n\nWHY IT MATTERS: ${input.whyItMatters.trim()}`,
         author: `By ${cleanAuthor} · Review by The Leaders`,
         accent,
+        backgroundColor,
+        backgroundGradient,
         imageUri: input.imageUri || null,
         headlineScale: 0.92,
     };
@@ -289,7 +376,9 @@ Return a SINGLE valid JSON object with EXACTLY these 12 fields and character len
 GUIDELINES FOR QUALITY:
 1. Tone: Deeply intellectual, analytical, and authoritative. Avoid generic book summary fluff.
 2. Precision: Ensure each string's character length strictly obeys the character ranges specified above.
-3. Color Accent: Pick one appropriate hex: #B71C1C (Crimson/urgent), #C5A059 (Gold/historical), #1E3A8A (Navy/institutional), #0D5C3A (Green/republic), or #27272A (Graphite/philosophical).
+3. Color Accent & Slide Background: Pick an appropriate solid color hex OR Instagram Story gradient string for the slide background:
+   - Solid Colors: #B71C1C (Crimson/urgent), #C5A059 (Gold/historical), #1E3A8A (Navy/institutional), #0D5C3A (Green/republic), or #27272A (Graphite/philosophical).
+   - Or Story Gradients: e.g. "linear-gradient(135deg, #4a0000 0%, #8B0000 50%, #1a0000 100%)" (Leaders Crimson), "linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)" (Midnight Navy), "linear-gradient(135deg, #062b1a 0%, #0d5c3a 50%, #10b981 100%)" (Emerald Aurora), "linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%)" (Instagram Sunset).
 
 Output ONLY the JSON block.`;
 }
@@ -392,7 +481,7 @@ export function parseBookReviewResponse(rawText: string): {
                 keyTakeaways,
                 whyItMatters,
                 criticSays,
-                accent: /^#[\da-f]{6}$/i.test(accent) ? accent : "#B71C1C",
+                accent: sanitizeAccentInput(accent),
             },
             detectedCount: count,
             error: count < 3 ? "Could not extract enough book review fields from the JSON." : undefined,
@@ -422,6 +511,8 @@ export function parseBookReviewResponse(rawText: string): {
     const keyTakeaways = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Key\s+Takeaways|Takeaways)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
     const whyItMatters = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Why\s+It\s+Matters|Why\s+Does\s+It\s+Matter)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
     const criticSays = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Critic\s+Says|Critic|Verdict)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const rawAccent = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Accent|Color|Theme|Background)\s*:\s*([^\n]+)/i]);
+    const accent = sanitizeAccentInput(rawAccent);
 
     const count = [
         title,
@@ -453,10 +544,11 @@ export function parseBookReviewResponse(rawText: string): {
             keyTakeaways,
             whyItMatters,
             criticSays,
-            accent: "#B71C1C",
+            accent,
         },
         detectedCount: count,
         error: count < 3 ? "Could not parse review data from the text. Make sure to paste the AI's JSON or Markdown output." : undefined,
     };
 }
+
 

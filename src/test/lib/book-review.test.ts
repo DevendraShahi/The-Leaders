@@ -231,5 +231,86 @@ Critic Says: “A merciless dissection of power stripped of moral disguise.”
         expect(parsed.data.tag).toBe("REALPOLITIK & STATECRAFT");
         expect(parsed.data.criticSays).toContain("merciless dissection");
     });
+
+    it('applies solid color accent as default backgroundColor across all 5 slides and summary draft', () => {
+        const slides = generateBookReviewDrafts(sampleBook, 'portrait');
+        expect(slides).toHaveLength(5);
+        for (const slide of slides) {
+            expect(slide.design.backgroundColor).toBe('#C5A059');
+            expect(slide.design.backgroundGradient).toBeNull();
+            expect(slide.design.accent).toBe('#C5A059');
+        }
+
+        const summary = generateBookReviewSummaryDraft(sampleBook, 'portrait');
+        expect(summary.design.backgroundColor).toBe('#C5A059');
+        expect(summary.design.backgroundGradient).toBeNull();
+    });
+
+    it('applies gradient accent as default backgroundGradient across all 5 slides and summary draft', () => {
+        const gradientAccent = 'linear-gradient(135deg, #4a0000 0%, #8B0000 50%, #1a0000 100%)';
+        const bookWithGradient: BookReviewInput = {
+            ...sampleBook,
+            accent: gradientAccent,
+        };
+
+        const slides = generateBookReviewDrafts(bookWithGradient, 'portrait');
+        expect(slides).toHaveLength(5);
+        for (const slide of slides) {
+            expect(slide.design.backgroundGradient).toBe(gradientAccent);
+            expect(slide.design.backgroundColor).toBeNull();
+            expect(slide.design.accent).toBe('#4a0000');
+        }
+
+        const summary = generateBookReviewSummaryDraft(bookWithGradient, 'portrait');
+        expect(summary.design.backgroundGradient).toBe(gradientAccent);
+        expect(summary.design.backgroundColor).toBeNull();
+    });
+
+    it('resolves named story gradient and color presets when passed as accent', async () => {
+        const { sanitizeAccentInput, resolveAccentBackground } = await import('@/lib/post-studio/book-review');
+        
+        // Named preset from story gradients
+        const gradientSanitized = sanitizeAccentInput('Midnight Navy');
+        expect(gradientSanitized).toContain('linear-gradient');
+        const resolvedGrad = resolveAccentBackground('Midnight Navy');
+        expect(resolvedGrad.backgroundGradient).toContain('linear-gradient');
+
+        // Named preset from story colors
+        const colorSanitized = sanitizeAccentInput('Republic Emerald');
+        expect(colorSanitized).toBe('#064e3b');
+        const resolvedColor = resolveAccentBackground('Republic Emerald');
+        expect(resolvedColor.backgroundColor).toBe('#064e3b');
+    });
+
+    it('parses JSON with a gradient accent string into BookReviewInput', async () => {
+        const { parseBookReviewResponse } = await import('@/lib/post-studio/book-review');
+        const jsonWithGradient = `\`\`\`json
+{
+  "title": "Development as Freedom",
+  "author": "Amartya Sen",
+  "tag": "DEVELOPMENT ECONOMICS",
+  "rating": "★★★★★ 5.0",
+  "centralThesis": "Development is the expansion of substantive human freedoms rather than mere GDP growth.",
+  "purpose": "To reorient economic policymaking towards human capability and democratic agency.",
+  "argumentEvidence": "Comparative empirical studies of famine mortality in democracies vs dictatorships.",
+  "assumptionIdeology": "Capability approach and democratic welfare economics.",
+  "relevanceApplication": "Refocuses Nepal's national budget from elite infrastructure rents to public health and schooling.",
+  "keyTakeaways": "1. Freedom is the primary end of development.\\n2. Free press prevents famines.\\n3. Capabilities empower citizens.",
+  "whyItMatters": "Transformed human development theory and founded modern capability ethics.",
+  "criticSays": "“One of the most consequential economic works of our era.”",
+  "accent": "linear-gradient(135deg, #062b1a 0%, #0d5c3a 50%, #10b981 100%)"
+}
+\`\`\``;
+
+        const parsed = parseBookReviewResponse(jsonWithGradient);
+        expect(parsed.success).toBe(true);
+        expect(parsed.data.accent).toBe("linear-gradient(135deg, #062b1a 0%, #0d5c3a 50%, #10b981 100%)");
+
+        // Verify draft generation with this parsed book review
+        const slides = generateBookReviewDrafts(parsed.data, 'portrait');
+        for (const slide of slides) {
+            expect(slide.design.backgroundGradient).toBe("linear-gradient(135deg, #062b1a 0%, #0d5c3a 50%, #10b981 100%)");
+        }
+    });
 });
 
