@@ -85,8 +85,18 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [notice, setNotice] = useState('');
     const [imageIssue, setImageIssue] = useState('');
     const [overflow, setOverflow] = useState(false);
+    const [alertDismissed, setAlertDismissed] = useState(false);
     const [exporting, setExporting] = useState(false);
     const [history, setHistory] = useState({ undo: 0, redo: 0 });
+
+    // Auto-dismiss success notification banner after 3.5 seconds
+    useEffect(() => {
+        if (!notice) return;
+        const timer = setTimeout(() => {
+            setNotice('');
+        }, 3500);
+        return () => clearTimeout(timer);
+    }, [notice]);
 
     const undoRef = useRef<PostDesign[]>([]), redoRef = useRef<PostDesign[]>([]), interaction = useRef<PostDesign | null>(null);
     const stageRef = useRef<HTMLDivElement>(null), exportRef = useRef<HTMLDivElement>(null), previewRef = useRef<HTMLDivElement>(null), fileRef = useRef<HTMLInputElement>(null);
@@ -219,6 +229,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         setDesign(nextSlide.design);
         setHistory({ undo: 0, redo: 0 });
         setSaveState('saved');
+        setAlertDismissed(false);
+        setIssue('');
     };
 
     // Carousel Slide Actions
@@ -305,9 +317,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
     const [outputW, outputH] = postOutputDimensions[design.format];
     const referenceH = 360 * outputH / outputW;
-    const availableW = Math.max(260, stageSize.width - (slides.length > 1 ? 120 : 48));
-    const availableH = Math.max(260, stageSize.height - 84);
-    const scale = Math.max(.2, Math.min(availableW / 360, availableH / referenceH, 1.85));
+    const isMobileStage = stageSize.width < 640;
+    const availableW = Math.max(180, stageSize.width - (slides.length > 1 ? (isMobileStage ? 64 : 100) : (isMobileStage ? 20 : 40)));
+    const availableH = Math.max(180, stageSize.height - (isMobileStage ? 56 : 76));
+    const maxScale = isMobileStage ? 1.4 : 1.85;
+    const scale = Math.max(.2, Math.min(availableW / 360, availableH / referenceH, maxScale));
     const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : 'text'); setReposition(false); };
     const locked = design.lockedLayers.includes(selected);
     const mediaDisabled = !design.imageUri || design.lockedLayers.includes('visual') || design.hiddenLayers.includes('visual');
@@ -461,46 +475,52 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         const nodes = exportRef.current?.querySelectorAll<HTMLElement>('[data-line-limit]');
         if (!nodes) return;
 
-        let hasHeadlineOverflow = false;
-        let hasSupportingOverflow = false;
+        let headlineRatio = 1;
+        let supportingRatio = 1;
 
         for (const node of Array.from(nodes)) {
             const limit = Number(node.dataset.lineLimit);
             const lh = parseFloat(getComputedStyle(node).lineHeight);
-            if (node.scrollHeight > lh * limit + 1) {
+            const maxAllowed = lh * limit + 1;
+            if (node.scrollHeight > maxAllowed) {
+                const ratio = maxAllowed / node.scrollHeight;
                 if (node.dataset.testid === 'artwork-headline') {
-                    hasHeadlineOverflow = true;
+                    headlineRatio = Math.min(headlineRatio, ratio);
                 } else {
-                    hasSupportingOverflow = true;
+                    supportingRatio = Math.min(supportingRatio, ratio);
                 }
             }
         }
 
-        if (hasHeadlineOverflow) {
-            apply(current => ({
-                ...current,
-                headlineScale: Math.max(0.6, Number((current.headlineScale * 0.9).toFixed(2))),
-            }));
-            setNotice('Headline scaled down to fit within line limit.');
-        } else if (hasSupportingOverflow) {
-            apply(current => {
+        apply(current => {
+            let next = { ...current };
+            if (headlineRatio < 1) {
+                const newScale = Math.max(0.55, Math.floor(current.headlineScale * headlineRatio * 0.95 * 100) / 100);
+                next = { ...next, headlineScale: newScale };
+            }
+            if (supportingRatio < 1) {
                 const currentSize = current.textTypography?.supporting?.size ?? 100;
                 const currentSpacing = current.textTypography?.supporting?.lineSpacing ?? 100;
-                return setTextTypography(current, 'supporting', {
-                    size: Math.max(60, Math.round(currentSize * 0.9)),
-                    lineSpacing: Math.max(90, Math.round(currentSpacing * 0.96)),
+                const newSize = Math.max(55, Math.floor(currentSize * supportingRatio * 0.95));
+                const newSpacing = Math.max(88, Math.floor(currentSpacing * Math.max(0.92, supportingRatio)));
+                next = setTextTypography(next, 'supporting', {
+                    size: newSize,
+                    lineSpacing: newSpacing,
                 });
-            });
-            setNotice('Summary text size and line spacing adjusted to fit.');
-        } else {
-            apply(current => {
+            } else if (headlineRatio >= 1 && supportingRatio >= 1) {
                 const currentSize = current.textTypography?.supporting?.size ?? 100;
-                return setTextTypography(current, 'supporting', {
-                    size: Math.max(60, Math.round(currentSize * 0.9)),
+                next = setTextTypography(next, 'supporting', {
+                    size: Math.max(55, Math.round(currentSize * 0.85)),
                 });
-            });
-            setNotice('Text size auto-fitted.');
-        }
+            }
+            return next;
+        });
+
+        setOverflow(false);
+        setIssue('');
+        setImageIssue('');
+        setAlertDismissed(true);
+        setNotice('Text auto-fitted to format line limits.');
     };
 
     // Keyboard navigation shortcuts
@@ -652,23 +672,38 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         </header>
 
         {/* Global Warning / Notification Banner */}
-        {(issue || imageIssue || overflow) && (
+        {Boolean(issue || imageIssue || (overflow && !alertDismissed)) && (
             <div className={styles.alertBanner} role="alert">
                 <div className={styles.alertMessage}>
                     <AlertCircle size={15} />
                     <span>{issue || imageIssue || 'Text exceeds this format’s line limit. It may be clipped on export.'}</span>
                 </div>
-                {overflow && (
+                <div className={styles.alertActionsGroup}>
+                    {overflow && (
+                        <button
+                            type="button"
+                            className={styles.autoFitBtn}
+                            onClick={handleAutoFitText}
+                            title="Automatically adjust font size and line spacing to fit"
+                        >
+                            <Sparkles size={13} />
+                            Auto-fit Text Size
+                        </button>
+                    )}
                     <button
                         type="button"
-                        className={styles.autoFitBtn}
-                        onClick={handleAutoFitText}
-                        title="Automatically adjust font size and line spacing to fit"
+                        className={styles.bannerCloseBtn}
+                        onClick={() => {
+                            setAlertDismissed(true);
+                            setIssue('');
+                            setImageIssue('');
+                        }}
+                        aria-label="Dismiss warning"
+                        title="Dismiss warning"
                     >
-                        <Sparkles size={13} />
-                        Auto-fit Text Size
+                        <X size={14} />
                     </button>
-                )}
+                </div>
             </div>
         )}
 
@@ -809,20 +844,105 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             <div className={styles.between}>
                                 <span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span>
                                 <span className={styles.subtle} style={{ fontSize: 11 }}>
-                                    {design[field.key].length} chars · {design[field.key].split('\n').filter(Boolean).length} paras
+                                    {(design[field.key] ?? '').length} chars · {(design[field.key] ?? '').split('\n').filter(Boolean).length} paras
                                 </span>
                             </div>
-                            <textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={5} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} />
+                            <textarea
+                                className={styles.input}
+                                aria-label={`Edit ${field.label.toLowerCase()}`}
+                                rows={4}
+                                disabled={textLocked}
+                                value={design[field.key] ?? ''}
+                                onChange={event => {
+                                    setAlertDismissed(false);
+                                    setIssue('');
+                                    update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value);
+                                }}
+                            />
                         </label>
-                        {field.layer === 'kicker' && <label className={styles.field}><span>Category / Tag</span><input className={styles.input} aria-label="Edit category" disabled={textLocked} value={design.category} onChange={event => update('category', event.target.value.toUpperCase())} /></label>}
-                        <Section title="Typography"><div className={styles.row}>{(['auto', 'onest', 'hind'] as const).map(font => choice(font === 'auto' ? 'Auto' : font === 'onest' ? 'Onest' : 'Hind', design.textTypography[field.layer].font === font, () => apply(current => setTextTypography(current, field.layer, { font })), textLocked))}</div><p className={styles.subtle}>Nepali uses Hind to keep vowel marks and joined letters intact.</p>
-                            {([{ key: 'size', label: 'size', min: 60, max: 160 }, { key: 'lineSpacing', label: 'line spacing', min: 90, max: 180 }, { key: 'shadow', label: 'shadow', min: 0, max: 100 }] as const).map(setting => <div key={setting.key}>{slider(`${field.label} ${setting.label}`, setting.key === 'size' && field.layer === 'headline' ? design.headlineScale * 100 : design.textTypography[field.layer][setting.key], setting.min, setting.max, value => current => setTextTypography(current, field.layer, { [setting.key]: value }), textLocked)}</div>)}
+                        {field.layer === 'kicker' && (
+                            <label className={styles.field}>
+                                <span>Category / Tag</span>
+                                <input
+                                    className={styles.input}
+                                    aria-label="Edit category"
+                                    disabled={textLocked}
+                                    value={design.category ?? ''}
+                                    onChange={event => {
+                                        setAlertDismissed(false);
+                                        setIssue('');
+                                        update('category', event.target.value.toUpperCase());
+                                    }}
+                                />
+                            </label>
+                        )}
+                        <Section title="Typography">
+                            <div className={styles.row}>
+                                {(['auto', 'onest', 'hind'] as const).map(font =>
+                                    choice(
+                                        font === 'auto' ? 'Auto' : font === 'onest' ? 'Onest' : 'Hind',
+                                        (design.textTypography?.[field.layer]?.font ?? 'auto') === font,
+                                        () => apply(current => setTextTypography(current, field.layer, { font })),
+                                        textLocked
+                                    )
+                                )}
+                            </div>
+                            <p className={styles.subtle}>Nepali uses Hind to keep vowel marks and joined letters intact.</p>
+                            {([{ key: 'size', label: 'size', min: 60, max: 160 }, { key: 'lineSpacing', label: 'line spacing', min: 90, max: 180 }, { key: 'shadow', label: 'shadow', min: 0, max: 100 }] as const).map(setting => (
+                                <div key={setting.key}>
+                                    {slider(
+                                        `${field.label} ${setting.label}`,
+                                        setting.key === 'size' && field.layer === 'headline'
+                                            ? (design.headlineScale ?? 1) * 100
+                                            : (design.textTypography?.[field.layer]?.[setting.key] ?? 100),
+                                        setting.min,
+                                        setting.max,
+                                        value => current => setTextTypography(current, field.layer, { [setting.key]: value }),
+                                        textLocked
+                                    )}
+                                </div>
+                            ))}
                         </Section>
-                        <Section title="Font color"><ColorPicker key={`${field.layer}-${design.textColors[field.layer]}`} label={field.label} color={design.textColors[field.layer]} disabled={textLocked} onChange={color => apply(current => setTextColor(current, field.layer, color))} /></Section>
-                        <Section title="Position"><button className={styles.button} disabled={textLocked} onClick={() => apply(current => positionText(current, field.layer, { x: 0, y: 0 }))}>Reset position</button><label className={styles.row}><input type="checkbox" checked={snap} onChange={event => setSnap(event.target.checked)} />Snap to template position</label><button className={styles.button} disabled={textLocked || design.hiddenLayers.includes(field.layer)} aria-pressed={reposition} onClick={() => setReposition(!reposition)}>{reposition ? 'Done repositioning' : 'Reposition on canvas'}</button>
-                            {(['x', 'y'] as const).map(axis => <div key={axis}>{slider(`${field.label} ${axis === 'x' ? 'horizontal' : 'vertical'} position`, design.textPositions[field.layer][axis], -50, 50, value => current => positionText(current, field.layer, { [axis]: value }), textLocked, axis === 'y')}</div>)}
+                        <Section title="Font color">
+                            <ColorPicker
+                                key={`${field.layer}-${design.textColors?.[field.layer] ?? '#ffffff'}`}
+                                label={field.label}
+                                color={design.textColors?.[field.layer] ?? '#ffffff'}
+                                disabled={textLocked}
+                                onChange={color => apply(current => setTextColor(current, field.layer, color))}
+                            />
                         </Section>
-                        <div className={styles.field}><span>Alignment</span><div className={styles.row}>{(['left', 'center'] as const).map(alignment => choice(alignment === 'left' ? 'Align left' : 'Align center', design.textAlign === alignment, () => update('textAlign', alignment), textLocked))}</div></div>
+                        <Section title="Position">
+                            <button className={styles.button} disabled={textLocked} onClick={() => apply(current => positionText(current, field.layer, { x: 0, y: 0 }))}>Reset position</button>
+                            <label className={styles.row}><input type="checkbox" checked={snap} onChange={event => setSnap(event.target.checked)} />Snap to template position</label>
+                            <button className={styles.button} disabled={textLocked || design.hiddenLayers.includes(field.layer)} aria-pressed={reposition} onClick={() => setReposition(!reposition)}>{reposition ? 'Done repositioning' : 'Reposition on canvas'}</button>
+                            {(['x', 'y'] as const).map(axis => (
+                                <div key={axis}>
+                                    {slider(
+                                        `${field.label} ${axis === 'x' ? 'horizontal' : 'vertical'} position`,
+                                        design.textPositions?.[field.layer]?.[axis] ?? 0,
+                                        -50,
+                                        50,
+                                        value => current => positionText(current, field.layer, { [axis]: value }),
+                                        textLocked,
+                                        axis === 'y'
+                                    )}
+                                </div>
+                            ))}
+                        </Section>
+                        <div className={styles.field}>
+                            <span>Alignment</span>
+                            <div className={styles.row}>
+                                {(['left', 'center'] as const).map(alignment =>
+                                    choice(
+                                        alignment === 'left' ? 'Align left' : 'Align center',
+                                        design.textAlign === alignment,
+                                        () => update('textAlign', alignment),
+                                        textLocked
+                                    )
+                                )}
+                            </div>
+                        </div>
                     </>}
 
                     {tool === 'layout' && <>
