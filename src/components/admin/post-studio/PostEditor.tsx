@@ -89,6 +89,18 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [alertDismissed, setAlertDismissed] = useState(false);
     const [exporting, setExporting] = useState(false);
     const [history, setHistory] = useState({ undo: 0, redo: 0 });
+    const [mediaSubTab, setMediaSubTab] = useState<'photo' | 'gradient'>(
+        !draft.design.imageUri && (draft.design.backgroundGradient || draft.design.backgroundColor) ? 'gradient' : 'photo'
+    );
+    const [applyAllDismissed, setApplyAllDismissed] = useState(false);
+
+    // Carousel missing images detection: exactly 1 slide has an image while other slides are missing visuals
+    const slidesWithImages = slides.filter(s => Boolean(s.design.imageUri));
+    const isSingleImageAcrossCarousel = slides.length > 1 && slidesWithImages.length === 1;
+    const otherSlidesMissingImages = isSingleImageAcrossCarousel && Boolean(design.imageUri);
+    const showApplyAllPrompt = otherSlidesMissingImages && !applyAllDismissed;
+    const singleImageSlideIndex = isSingleImageAcrossCarousel ? slides.findIndex(s => Boolean(s.design.imageUri)) : -1;
+
 
     // Auto-dismiss success notification banner after 3.5 seconds
     useEffect(() => {
@@ -385,6 +397,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             });
             apply(current => replaceImage(current, uri, keepAdjustments));
             setNotice('Photo uploaded and applied to canvas');
+            setApplyAllDismissed(false);
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add photo.'); }
     };
 
@@ -406,6 +419,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             apply(current => replaceImage(current, data.dataUri, keepAdjustments));
             setQuickImageUrl('');
             setNotice('Web image applied to canvas');
+            setApplyAllDismissed(false);
         } catch (err) {
             setIssue(err instanceof Error ? err.message : 'Could not load image from URL.');
         } finally {
@@ -474,6 +488,34 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             // Keep in-memory sync
         }
     };
+
+    // Confirm apply all from optional question
+    const handleConfirmApplyAllSlides = async () => {
+        await handleApplyBackgroundToAllSlides();
+        setApplyAllDismissed(true);
+    };
+
+    // Reuse another slide's visual for current slide
+    const handleReuseSlideImage = (sourceIndex: number) => {
+        const sourceDesign = slides[sourceIndex]?.design;
+        if (!sourceDesign?.imageUri) return;
+        apply(current => ({
+            ...current,
+            imageUri: sourceDesign.imageUri,
+            imageFit: sourceDesign.imageFit,
+            imageTone: sourceDesign.imageTone,
+            imageZoom: sourceDesign.imageZoom,
+            imageOffsetX: sourceDesign.imageOffsetX,
+            imageOffsetY: sourceDesign.imageOffsetY,
+            imageBlur: sourceDesign.imageBlur,
+            imageVintage: sourceDesign.imageVintage,
+            imageFeather: sourceDesign.imageFeather,
+            backgroundColor: sourceDesign.backgroundColor,
+            backgroundGradient: sourceDesign.backgroundGradient,
+        }));
+        setNotice(`Applied visual from Slide ${sourceIndex + 1} to current slide`);
+    };
+
 
     // Export single slide
     const exportPost = async (slideIdx = activeSlideIndex) => {
@@ -766,6 +808,38 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             </div>
         )}
 
+        {/* Optional question banner if other slides in carousel are missing images */}
+        {showApplyAllPrompt && (
+            <div className={styles.applyAllBanner} role="status">
+                <div className={styles.alertMessage}>
+                    <Sparkles size={15} color="var(--studio-red)" />
+                    <span>
+                        Only Slide {activeSlideIndex + 1} has an image ({slides.length - 1} other {slides.length - 1 === 1 ? 'slide is' : 'slides are'} missing images). Apply this image to all slides?
+                    </span>
+                </div>
+                <div className={styles.alertActionsGroup}>
+                    <button
+                        type="button"
+                        className={styles.autoFitBtn}
+                        onClick={handleConfirmApplyAllSlides}
+                    >
+                        <Check size={13} />
+                        Yes, Apply to All Slides
+                    </button>
+                    <button
+                        type="button"
+                        className={styles.bannerCloseBtn}
+                        onClick={() => setApplyAllDismissed(true)}
+                        aria-label="Keep on this slide only"
+                        title="Keep on this slide only"
+                    >
+                        <X size={14} />
+                    </button>
+                </div>
+            </div>
+        )}
+
+
         <div className={styles.body}>
             <div ref={stageRef} className={styles.stage}>
                 <div className={styles.stageMetaPill}>
@@ -999,215 +1073,426 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     </>}
 
                     {tool === 'media' && <>
-                        <div className={styles.field}>
-                            <strong>{design.imageUri ? 'Background Visual' : 'Add Post Visual'}</strong>
-                            <p className={styles.subtle}>
-                                {design.imageUri
-                                    ? 'Reposition, zoom, style or replace with web archives & Google search.'
-                                    : 'Search web archives, paste any Google image URL, or upload from your device.'}
-                            </p>
-                            <div className={styles.row}>
-                                <button
-                                    type="button"
-                                    className={styles.primary}
-                                    style={{ flex: 1 }}
-                                    disabled={design.lockedLayers.includes('visual')}
-                                    onClick={() => setMediaModalOpen(true)}
-                                >
-                                    <Globe size={16} />
-                                    {design.imageUri ? 'Browse / Replace Web Media' : 'Browse & Search Web Media'}
-                                </button>
-                                <button
-                                    type="button"
-                                    className={styles.button}
-                                    disabled={design.lockedLayers.includes('visual')}
-                                    onClick={() => fileRef.current?.click()}
-                                    title="Upload file from device"
-                                >
-                                    <Upload size={16} />
-                                    Upload
-                                </button>
+                        {/* 1. Optional Question Card if other slides in carousel are missing images */}
+                        {showApplyAllPrompt && (
+                            <div className={styles.applyAllPromptCard}>
+                                <div className={styles.applyAllPromptContent}>
+                                    <div className={styles.applyAllPromptIconBadge}>
+                                        <Sparkles size={16} />
+                                    </div>
+                                    <div className={styles.applyAllPromptInfo}>
+                                        <strong className={styles.applyAllPromptTitle}>
+                                            Apply this image across all {slides.length} slides?
+                                        </strong>
+                                        <p className={styles.applyAllPromptDesc}>
+                                            Only Slide {activeSlideIndex + 1} has an image, and {slides.length - 1} other {slides.length - 1 === 1 ? 'slide is' : 'slides are'} missing visuals.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className={styles.applyAllPromptActions}>
+                                    <button
+                                        type="button"
+                                        className={styles.applyAllPromptYesBtn}
+                                        onClick={handleConfirmApplyAllSlides}
+                                    >
+                                        <Check size={14} />
+                                        <span>Yes, Apply to All Slides</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.applyAllPromptNoBtn}
+                                        onClick={() => setApplyAllDismissed(true)}
+                                    >
+                                        <span>Keep on this slide only</span>
+                                    </button>
+                                </div>
                             </div>
-                            {slides.length > 1 && (
+                        )}
+
+                        {/* 2. Slide Missing Visual Prompt: If current slide has no image, but another single slide in carousel HAS an image */}
+                        {!design.imageUri && singleImageSlideIndex >= 0 && singleImageSlideIndex !== activeSlideIndex && (
+                            <div className={styles.missingSlidePromptCard}>
+                                <div className={styles.missingSlidePromptInfo}>
+                                    <Sparkles size={15} color="var(--studio-red)" />
+                                    <span>Slide {singleImageSlideIndex + 1} has an image. Use that visual here?</span>
+                                </div>
                                 <button
                                     type="button"
-                                    className={styles.applyAllSlidesBtn}
-                                    onClick={handleApplyBackgroundToAllSlides}
-                                    title="Apply current slide's background image, adjustments, and colors across all carousel slides"
+                                    className={styles.applyAllPromptYesBtn}
+                                    onClick={() => handleReuseSlideImage(singleImageSlideIndex)}
                                 >
                                     <Copy size={13} />
-                                    <span>Apply Background to All Slides ({slides.length})</span>
-                                </button>
-                            )}
-                        </div>
-
-                        <div className={styles.field}>
-                            <span>Quick Paste Web or Google Image URL</span>
-                            <div className={styles.quickUrlBar}>
-                                <input
-                                    type="url"
-                                    className={styles.quickUrlInput}
-                                    placeholder="Paste Google or web image URL…"
-                                    value={quickImageUrl}
-                                    onChange={e => setQuickImageUrl(e.target.value)}
-                                    disabled={design.lockedLayers.includes('visual') || quickUrlLoading}
-                                    onKeyDown={e => {
-                                        if (e.key === 'Enter') {
-                                            e.preventDefault();
-                                            void handleApplyQuickUrl();
-                                        }
-                                    }}
-                                />
-                                <button
-                                    type="button"
-                                    className={styles.quickUrlSubmitBtn}
-                                    disabled={!quickImageUrl.trim() || design.lockedLayers.includes('visual') || quickUrlLoading}
-                                    onClick={() => { void handleApplyQuickUrl(); }}
-                                >
-                                    {quickUrlLoading ? 'Loading…' : 'Load URL'}
-                                </button>
-                            </div>
-                        </div>
-
-                        {design.imageUri && (
-                            <div className={styles.row}>
-                                <button
-                                    type="button"
-                                    className={styles.button}
-                                    style={{ flex: 1 }}
-                                    onClick={handleCopyActiveVisual}
-                                    title="Copy image URL or Data URI"
-                                >
-                                    {mediaCopied ? <Check size={15} color="var(--studio-green)" /> : <Copy size={15} />}
-                                    {mediaCopied ? 'Copied' : 'Copy Image'}
-                                </button>
-                                <button
-                                    type="button"
-                                    className={styles.button}
-                                    style={{ flex: 1 }}
-                                    onClick={handleDownloadActiveVisual}
-                                    title="Download current artwork image"
-                                >
-                                    <Download size={15} />
-                                    Download Image
+                                    <span>Use Slide {singleImageSlideIndex + 1}&apos;s Visual</span>
                                 </button>
                             </div>
                         )}
 
-                        <label className={styles.row}>
-                            <input type="checkbox" checked={keepAdjustments} onChange={event => setKeepAdjustments(event.target.checked)} />
-                            Keep adjustments on replace
-                        </label>
-
-                        <div className={styles.field}><span>Image crop</span><div className={styles.row}>{choice('Fill canvas', design.imageFit === 'cover', () => apply(current => setImageFit(current, 'cover')), mediaDisabled)}{choice('Fit whole photo', design.imageFit === 'contain', () => apply(current => setImageFit(current, 'contain')), mediaDisabled)}</div></div>
-                        <div className={styles.field}><span>Image position</span><div ref={ballRef} role="group" aria-label="Image scroll ball" aria-disabled={mediaDisabled} className={styles.ball}
-                            onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
-                            onPointerMove={event => { const previous = ballDrag.current; if (!previous) return; live(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y)); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
-                            onPointerUp={() => { ballDrag.current = null; end(); }} onPointerCancel={() => { ballDrag.current = null; end(); }}><i style={{ transform: `rotate(${design.imageOffsetX * 2}deg) translate(${design.imageOffsetX / 12}px, ${design.imageOffsetY / 12}px)` }} /></div>
-                            <div className={styles.dPadRow}>
-                                {([{ label: 'Move image left', dx: -2, dy: 0, Icon: ArrowLeft }, { label: 'Move image up', dx: 0, dy: -2, Icon: ArrowUp }, { label: 'Move image down', dx: 0, dy: 2, Icon: ArrowDown }, { label: 'Move image right', dx: 2, dy: 0, Icon: ArrowRight }]).map(({ label, dx, dy, Icon }) => (
-                                    <button
-                                        key={label}
-                                        type="button"
-                                        className={styles.dPadBtn}
-                                        aria-label={label}
-                                        title={label}
-                                        disabled={mediaDisabled}
-                                        onClick={() => apply(current => moveImage(current, dx, dy))}
-                                    >
-                                        <Icon size={16} />
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                        {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
-                        
-                        {/* Story Backgrounds & Gradients (Instagram Feature) */}
-                        <Section title="Story Backgrounds (Gradients & Colors)">
-                            <p className={styles.subtle} style={{ fontSize: 11, margin: '0 0 10px' }}>
-                                Instagram story-style vibrant gradients and editorial solid colors.
-                            </p>
-
-                            {/* Gradients Row */}
-                            <div className={styles.storySectionTitle}>
-                                <span>STORY GRADIENTS</span>
+                        {/* 3. Media Sub-Tab Segmented Selector: Photo & Media vs Story Gradients & Colors */}
+                        <div className={styles.mediaSegmentedNav} role="tablist" aria-label="Media background type">
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={mediaSubTab === 'photo'}
+                                className={`${styles.mediaSegmentedBtn} ${mediaSubTab === 'photo' ? styles.mediaSegmentedBtnActive : ''}`}
+                                onClick={() => setMediaSubTab('photo')}
+                            >
+                                <ImagePlus size={15} />
+                                <span>Photo & Media</span>
+                                {design.imageUri && <span className={styles.activePillBadge}>Photo</span>}
+                            </button>
+                            <button
+                                type="button"
+                                role="tab"
+                                aria-selected={mediaSubTab === 'gradient'}
+                                className={`${styles.mediaSegmentedBtn} ${mediaSubTab === 'gradient' ? styles.mediaSegmentedBtnActive : ''}`}
+                                onClick={() => setMediaSubTab('gradient')}
+                            >
+                                <Sparkles size={15} />
+                                <span>Gradients & Colors</span>
                                 {(design.backgroundGradient || design.backgroundColor) && (
+                                    <span className={styles.activePillBadge} style={{ background: 'var(--studio-red)' }}>Active</span>
+                                )}
+                            </button>
+                        </div>
+
+                        {/* TAB 1: STORY GRADIENTS & COLORS */}
+                        {mediaSubTab === 'gradient' && (
+                            <>
+                                {/* Active background status card */}
+                                <div className={styles.activeBgCard}>
+                                    <div className={styles.activeBgIndicator}>
+                                        <div 
+                                            className={styles.activeBgPreviewBubble} 
+                                            style={{ background: design.backgroundGradient || design.backgroundColor || '#111318' }} 
+                                        />
+                                        <div className={styles.activeBgText}>
+                                            <small>Active Background</small>
+                                            <span>
+                                                {design.backgroundGradient 
+                                                    ? (storyGradients.find(g => g.value === design.backgroundGradient)?.label || 'Story Gradient')
+                                                    : design.backgroundColor 
+                                                        ? (storyColors.find(c => c.value === design.backgroundColor)?.label || design.backgroundColor)
+                                                        : 'Default Dark (#111318)'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    {(design.backgroundGradient || design.backgroundColor) && (
+                                        <button
+                                            type="button"
+                                            className={styles.clearBgBtn}
+                                            onClick={() => apply(current => ({ ...current, backgroundGradient: null, backgroundColor: null }))}
+                                            title="Reset to default dark background"
+                                        >
+                                            Reset Default
+                                        </button>
+                                    )}
+                                </div>
+
+                                {slides.length > 1 && (
                                     <button
                                         type="button"
-                                        className={styles.clearBgBtn}
-                                        onClick={() => apply(current => ({ ...current, backgroundGradient: null, backgroundColor: null }))}
-                                        title="Reset to default dark background"
+                                        className={styles.applyAllSlidesBtn}
+                                        onClick={handleApplyBackgroundToAllSlides}
+                                        title="Apply current background across all carousel slides"
                                     >
-                                        Reset Default
+                                        <Copy size={13} />
+                                        <span>Apply Gradient / Color to All Slides ({slides.length})</span>
                                     </button>
                                 )}
-                            </div>
-                            <div className={styles.storyGradientGrid}>
-                                {storyGradients.map(preset => {
-                                    const isActive = design.backgroundGradient === preset.value;
-                                    return (
-                                        <button
-                                            key={preset.id}
-                                            type="button"
-                                            className={`${styles.storyGradientCircle} ${isActive ? styles.storyGradientCircleActive : ''}`}
-                                            style={{ background: preset.value }}
-                                            onClick={() => {
-                                                apply(current => ({
-                                                    ...current,
-                                                    backgroundGradient: preset.value,
-                                                    backgroundColor: null,
-                                                }));
-                                            }}
-                                            title={preset.label}
-                                            aria-label={preset.label}
-                                        >
-                                            {isActive && <Check size={14} color="#fff" strokeWidth={3} />}
-                                        </button>
-                                    );
-                                })}
-                            </div>
 
-                            {/* Solid Colors Row */}
-                            <div className={styles.storySectionTitle} style={{ marginTop: 14 }}>
-                                <span>SOLID COLORS</span>
-                            </div>
-                            <div className={styles.storyColorGrid}>
-                                {storyColors.map(preset => {
-                                    const isActive = design.backgroundColor === preset.value && !design.backgroundGradient;
-                                    return (
-                                        <button
-                                            key={preset.id}
-                                            type="button"
-                                            className={`${styles.storyColorCircle} ${isActive ? styles.storyColorCircleActive : ''}`}
-                                            style={{ background: preset.value }}
-                                            onClick={() => {
-                                                apply(current => ({
-                                                    ...current,
-                                                    backgroundColor: preset.value,
-                                                    backgroundGradient: null,
-                                                }));
-                                            }}
-                                            title={preset.label}
-                                            aria-label={preset.label}
-                                        >
-                                            {isActive && <Check size={14} color={preset.value === '#ffffff' ? '#000' : '#fff'} strokeWidth={3} />}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                                <Section title="Instagram Story Gradients">
+                                    <p className={styles.subtle} style={{ fontSize: 11, margin: '0 0 10px' }}>
+                                        Curated high-contrast color transitions designed for maximum readability and visual impact.
+                                    </p>
+                                    <div className={styles.storyGradientGrid}>
+                                        {storyGradients.map(preset => {
+                                            const isActive = design.backgroundGradient === preset.value;
+                                            return (
+                                                <button
+                                                    key={preset.id}
+                                                    type="button"
+                                                    className={`${styles.storyGradientCircle} ${isActive ? styles.storyGradientCircleActive : ''}`}
+                                                    style={{ background: preset.value }}
+                                                    onClick={() => {
+                                                        apply(current => ({
+                                                            ...current,
+                                                            backgroundGradient: preset.value,
+                                                            backgroundColor: null,
+                                                        }));
+                                                    }}
+                                                    title={preset.label}
+                                                    aria-label={preset.label}
+                                                >
+                                                    {isActive && <Check size={14} color="#fff" strokeWidth={3} />}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </Section>
 
-                            {design.imageUri && (design.backgroundGradient || design.backgroundColor) && (
-                                <div className={styles.bgPhotoNotice}>
-                                    <Sparkles size={13} color="var(--studio-red)" />
-                                    <span>Photo is active. Set crop to &quot;Fit whole photo&quot; to reveal background around photo, or remove photo to showcase gradient full-screen.</span>
+                                <Section title="Story Solid Colors">
+                                    <p className={styles.subtle} style={{ fontSize: 11, margin: '0 0 10px' }}>
+                                        Classic editorial solids inspired by modern newsroom stories.
+                                    </p>
+                                    <div className={styles.storyColorGrid}>
+                                        {storyColors.map(preset => {
+                                            const isActive = design.backgroundColor === preset.value && !design.backgroundGradient;
+                                            return (
+                                                <button
+                                                    key={preset.id}
+                                                    type="button"
+                                                    className={`${styles.storyColorCircle} ${isActive ? styles.storyColorCircleActive : ''}`}
+                                                    style={{ background: preset.value }}
+                                                    onClick={() => {
+                                                        apply(current => ({
+                                                            ...current,
+                                                            backgroundColor: preset.value,
+                                                            backgroundGradient: null,
+                                                        }));
+                                                    }}
+                                                    title={preset.label}
+                                                    aria-label={preset.label}
+                                                >
+                                                    {isActive && <Check size={14} color={preset.value === '#ffffff' ? '#000' : '#fff'} strokeWidth={3} />}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </Section>
+
+                                <Section title="Custom Background Color">
+                                    <ColorPicker
+                                        key={`custom-bg-${design.backgroundColor || '#111318'}`}
+                                        label="Custom Color"
+                                        color={design.backgroundColor || '#111318'}
+                                        reset="#111318"
+                                        onChange={color => apply(current => ({
+                                            ...current,
+                                            backgroundColor: color,
+                                            backgroundGradient: null,
+                                        }))}
+                                    />
+                                </Section>
+
+                                {design.imageUri && (
+                                    <div className={styles.bgPhotoNotice}>
+                                        <Sparkles size={14} color="var(--studio-red)" style={{ flexShrink: 0, marginTop: 2 }} />
+                                        <div style={{ flex: 1 }}>
+                                            <strong>A photo is active on this slide.</strong>
+                                            <p style={{ margin: '4px 0 8px', fontSize: 11 }}>
+                                                The photo sits over this background. Set crop to &quot;Fit whole photo&quot; to reveal the background, or remove the photo to showcase the gradient full-screen.
+                                            </p>
+                                            <div className={styles.row}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.button}
+                                                    style={{ flex: 1, fontSize: 11 }}
+                                                    onClick={() => apply(current => setImageFit(current, 'contain'))}
+                                                >
+                                                    Fit whole photo
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.button}
+                                                    style={{ flex: 1, fontSize: 11 }}
+                                                    onClick={() => update('imageUri', null)}
+                                                >
+                                                    Remove photo
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <button
+                                    type="button"
+                                    className={styles.subtleLinkBtn}
+                                    onClick={() => setMediaSubTab('photo')}
+                                >
+                                    <ImagePlus size={14} />
+                                    <span>Switch to Photo & Media Settings →</span>
+                                </button>
+                            </>
+                        )}
+
+                        {/* TAB 2: PHOTO & MEDIA */}
+                        {mediaSubTab === 'photo' && (
+                            <>
+                                {/* Quick Story Gradients strip */}
+                                <div className={styles.quickGradientBarWrap}>
+                                    <div className={styles.quickGradientBarHeader}>
+                                        <span>QUICK STORY GRADIENTS</span>
+                                        <button
+                                            type="button"
+                                            className={styles.clearBgBtn}
+                                            onClick={() => setMediaSubTab('gradient')}
+                                        >
+                                            View all 21 presets →
+                                        </button>
+                                    </div>
+                                    <div className={styles.quickGradientBar}>
+                                        {storyGradients.slice(0, 6).map(preset => {
+                                            const isActive = design.backgroundGradient === preset.value;
+                                            return (
+                                                <button
+                                                    key={preset.id}
+                                                    type="button"
+                                                    className={`${styles.quickGradientCircle} ${isActive ? styles.quickGradientCircleActive : ''}`}
+                                                    style={{ background: preset.value }}
+                                                    onClick={() => {
+                                                        apply(current => ({
+                                                            ...current,
+                                                            backgroundGradient: preset.value,
+                                                            backgroundColor: null,
+                                                        }));
+                                                    }}
+                                                    title={preset.label}
+                                                >
+                                                    {isActive && <Check size={12} color="#fff" strokeWidth={3} />}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
-                            )}
-                        </Section>
 
-                        <Section title="Image effects"><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>Reset image effects</button>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}</Section>
-                        <div className={styles.field}><span>Image tone</span><div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div></div>
-                        <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>
-                        <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
+                                <div className={styles.field}>
+                                    <strong>{design.imageUri ? 'Background Visual' : 'Add Post Visual'}</strong>
+                                    <p className={styles.subtle}>
+                                        {design.imageUri
+                                            ? 'Reposition, zoom, style or replace with web archives & Google search.'
+                                            : 'Search web archives, paste any Google image URL, or upload from your device.'}
+                                    </p>
+                                    <div className={styles.row}>
+                                        <button
+                                            type="button"
+                                            className={styles.primary}
+                                            style={{ flex: 1 }}
+                                            disabled={design.lockedLayers.includes('visual')}
+                                            onClick={() => setMediaModalOpen(true)}
+                                        >
+                                            <Globe size={16} />
+                                            {design.imageUri ? 'Browse / Replace Web Media' : 'Browse & Search Web Media'}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={styles.button}
+                                            disabled={design.lockedLayers.includes('visual')}
+                                            onClick={() => fileRef.current?.click()}
+                                            title="Upload file from device"
+                                        >
+                                            <Upload size={16} />
+                                            Upload
+                                        </button>
+                                    </div>
+                                    {slides.length > 1 && (
+                                        <button
+                                            type="button"
+                                            className={styles.applyAllSlidesBtn}
+                                            onClick={handleApplyBackgroundToAllSlides}
+                                            title="Apply current slide's background image, adjustments, and colors across all carousel slides"
+                                        >
+                                            <Copy size={13} />
+                                            <span>Apply Background to All Slides ({slides.length})</span>
+                                        </button>
+                                    )}
+                                </div>
+
+                                <div className={styles.field}>
+                                    <span>Quick Paste Web or Google Image URL</span>
+                                    <div className={styles.quickUrlBar}>
+                                        <input
+                                            type="url"
+                                            className={styles.quickUrlInput}
+                                            placeholder="Paste Google or web image URL…"
+                                            value={quickImageUrl}
+                                            onChange={e => setQuickImageUrl(e.target.value)}
+                                            disabled={design.lockedLayers.includes('visual') || quickUrlLoading}
+                                            onKeyDown={e => {
+                                                if (e.key === 'Enter') {
+                                                    e.preventDefault();
+                                                    void handleApplyQuickUrl();
+                                                }
+                                            }}
+                                        />
+                                        <button
+                                            type="button"
+                                            className={styles.quickUrlSubmitBtn}
+                                            disabled={!quickImageUrl.trim() || design.lockedLayers.includes('visual') || quickUrlLoading}
+                                            onClick={() => { void handleApplyQuickUrl(); }}
+                                        >
+                                            {quickUrlLoading ? 'Loading…' : 'Load URL'}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {design.imageUri && (
+                                    <div className={styles.row}>
+                                        <button
+                                            type="button"
+                                            className={styles.button}
+                                            style={{ flex: 1 }}
+                                            onClick={handleCopyActiveVisual}
+                                            title="Copy image URL or Data URI"
+                                        >
+                                            {mediaCopied ? <Check size={15} color="var(--studio-green)" /> : <Copy size={15} />}
+                                            {mediaCopied ? 'Copied' : 'Copy Image'}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={styles.button}
+                                            style={{ flex: 1 }}
+                                            onClick={handleDownloadActiveVisual}
+                                            title="Download current artwork image"
+                                        >
+                                            <Download size={15} />
+                                            Download Image
+                                        </button>
+                                    </div>
+                                )}
+
+                                <label className={styles.row}>
+                                    <input type="checkbox" checked={keepAdjustments} onChange={event => setKeepAdjustments(event.target.checked)} />
+                                    Keep adjustments on replace
+                                </label>
+
+                                <div className={styles.field}><span>Image crop</span><div className={styles.row}>{choice('Fill canvas', design.imageFit === 'cover', () => apply(current => setImageFit(current, 'cover')), mediaDisabled)}{choice('Fit whole photo', design.imageFit === 'contain', () => apply(current => setImageFit(current, 'contain')), mediaDisabled)}</div></div>
+                                <div className={styles.field}><span>Image position</span><div ref={ballRef} role="group" aria-label="Image scroll ball" aria-disabled={mediaDisabled} className={styles.ball}
+                                    onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
+                                    onPointerMove={event => { const previous = ballDrag.current; if (!previous) return; live(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y)); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
+                                    onPointerUp={() => { ballDrag.current = null; end(); }} onPointerCancel={() => { ballDrag.current = null; end(); }}><i style={{ transform: `rotate(${design.imageOffsetX * 2}deg) translate(${design.imageOffsetX / 12}px, ${design.imageOffsetY / 12}px)` }} /></div>
+                                    <div className={styles.dPadRow}>
+                                        {([{ label: 'Move image left', dx: -2, dy: 0, Icon: ArrowLeft }, { label: 'Move image up', dx: 0, dy: -2, Icon: ArrowUp }, { label: 'Move image down', dx: 0, dy: 2, Icon: ArrowDown }, { label: 'Move image right', dx: 2, dy: 0, Icon: ArrowRight }]).map(({ label, dx, dy, Icon }) => (
+                                            <button
+                                                key={label}
+                                                type="button"
+                                                className={styles.dPadBtn}
+                                                aria-label={label}
+                                                title={label}
+                                                disabled={mediaDisabled}
+                                                onClick={() => apply(current => moveImage(current, dx, dy))}
+                                            >
+                                                <Icon size={16} />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
+
+                                <Section title="Image effects"><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>Reset image effects</button>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}</Section>
+                                <div className={styles.field}><span>Image tone</span><div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div></div>
+                                <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>
+                                <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
+
+                                <button
+                                    type="button"
+                                    className={styles.subtleLinkBtn}
+                                    onClick={() => setMediaSubTab('gradient')}
+                                >
+                                    <Sparkles size={14} />
+                                    <span>Open Story Gradients & Background Colors Studio →</span>
+                                </button>
+                            </>
+                        )}
                     </>}
 
                     {tool === 'carousel' && (
@@ -1473,6 +1758,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     apply(current => replaceImage(current, uri, keepAdjustments));
                     setMediaModalOpen(false);
                     setNotice('Web image applied to canvas');
+                    setApplyAllDismissed(false);
                 }}
                 initialQuery={design.headline ? design.headline.slice(0, 40) : (design.category || "Nepal politics")}
             />

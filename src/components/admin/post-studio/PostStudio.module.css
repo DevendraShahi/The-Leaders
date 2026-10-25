@@ -219,6 +219,50 @@
 .storyColorCircleActive{outline:2px solid var(--studio-red);outline-offset:2px;transform:scale(1.08)}
 .bgPhotoNotice{display:flex;align-items:flex-start;gap:8px;background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:6px;padding:8px 10px;margin-top:10px;font-size:11px;color:var(--studio-secondary);line-height:1.35}
 
+/* Apply Image to All Slides Prompt Card & Banner */
+.applyAllPromptCard{background:rgba(183,28,28,.04);border:1px solid rgba(183,28,28,.2);border-radius:8px;padding:12px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px;box-shadow:0 2px 8px rgba(183,28,28,.06)}
+.applyAllPromptContent{display:flex;align-items:flex-start;gap:10px}
+.applyAllPromptIconBadge{width:26px;height:26px;border-radius:50%;background:rgba(183,28,28,.12);color:var(--studio-red);display:grid;place-items:center;flex-shrink:0;margin-top:1px}
+.applyAllPromptInfo{flex:1;line-height:1.3}
+.applyAllPromptTitle{display:block;font-size:12px;font-family:Onest_700Bold,sans-serif;color:var(--studio-text)}
+.applyAllPromptDesc{margin:3px 0 0;font-size:11px;color:var(--studio-secondary);line-height:1.35}
+.applyAllPromptActions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.applyAllPromptYesBtn{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 12px;background:var(--studio-red);color:#fff;border:none;border-radius:6px;font-size:11px;font-family:Onest_600SemiBold,sans-serif;cursor:pointer;transition:background .15s ease}
+.applyAllPromptYesBtn:hover{background:#9a1515}
+.applyAllPromptNoBtn{height:30px;padding:0 10px;background:var(--studio-surface);color:var(--studio-secondary);border:1px solid var(--studio-border);border-radius:6px;font-size:11px;cursor:pointer;transition:all .15s ease}
+.applyAllPromptNoBtn:hover{background:var(--studio-muted);color:var(--studio-text)}
+
+.applyAllBanner{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:rgba(183,28,28,.06);border-bottom:1px solid rgba(183,28,28,.18);font-size:12px;color:var(--studio-text);gap:12px;animation:slideDown .2s ease-out}
+.missingSlidePromptCard{background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:10px 12px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.missingSlidePromptInfo{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--studio-text);flex:1;min-width:180px}
+
+/* Media Segmented Navigation */
+.mediaSegmentedNav{display:flex;align-items:center;gap:4px;background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:3px;margin-bottom:12px}
+.mediaSegmentedBtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;border-radius:6px;border:none;background:transparent;color:var(--studio-secondary);font-size:11px;font-family:Onest_600SemiBold,sans-serif;cursor:pointer;transition:all .15s ease;position:relative}
+.mediaSegmentedBtnActive{background:var(--studio-surface);color:var(--studio-text);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.activePillBadge{display:inline-block;padding:1px 6px;border-radius:999px;font-size:9px;line-height:1.2;background:var(--studio-red);color:#fff;font-weight:700}
+
+/* Quick Story Gradient Bar in Photo Mode */
+.quickGradientBarWrap{background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:10px;margin-bottom:12px}
+.quickGradientBarHeader{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-family:Onest_700Bold,sans-serif;color:var(--studio-secondary);letter-spacing:.5px;margin-bottom:8px}
+.quickGradientBar{display:flex;align-items:center;gap:8px;overflow-x:auto;padding-bottom:2px}
+.quickGradientCircle{width:30px;height:30px;border-radius:50%;border:2px solid transparent;flex-shrink:0;cursor:pointer;display:grid;place-items:center;transition:all .15s ease;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.quickGradientCircle:hover{transform:scale(1.15)}
+.quickGradientCircleActive{outline:2px solid var(--studio-red);outline-offset:2px}
+
+/* Subtle link button to jump between tabs */
+.subtleLinkBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:8px 12px;border-radius:6px;border:1px dashed var(--studio-border);background:var(--studio-muted);color:var(--studio-secondary);font-size:11px;cursor:pointer;transition:all .15s ease;margin-top:10px}
+.subtleLinkBtn:hover{background:var(--studio-surface);color:var(--studio-text);border-color:var(--studio-secondary)}
+
+/* Active Background Card */
+.activeBgCard{display:flex;align-items:center;justify-content:space-between;background:var(--studio-surface);border:1px solid var(--studio-border);border-radius:8px;padding:8px 12px;margin-bottom:12px}
+.activeBgIndicator{display:flex;align-items:center;gap:10px}
+.activeBgPreviewBubble{width:24px;height:24px;border-radius:50%;border:1px solid rgba(255,255,255,.2);box-shadow:0 1px 3px rgba(0,0,0,.15);flex-shrink:0}
+.activeBgText{display:flex;flex-direction:column;line-height:1.2}
+.activeBgText small{font-size:10px;color:var(--studio-secondary);text-transform:uppercase;letter-spacing:.4px}
+.activeBgText span{font-size:11px;font-family:Onest_600SemiBold,sans-serif;color:var(--studio-text)}
+
+
 /* Instagram Live Simulator Modal */
 .instagramPhoneMobile{border-radius:12px!important;box-shadow:0 4px 20px rgba(0,0,0,.25)!important;border:1px solid var(--studio-border)!important;width:100%!important;max-width:400px!important}
 .instagramModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:grid;place-items:center;z-index:9999;padding:16px;overflow-y:auto}
