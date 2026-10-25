@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
 import { 
+    AlertCircle,
     ArrowDown, 
     ArrowLeft, 
     ArrowRight, 
@@ -26,6 +27,7 @@ import {
     MoveRight, 
     Plus, 
     Redo2, 
+    Sparkles,
     Trash2, 
     Type, 
     Undo2, 
@@ -42,7 +44,7 @@ import { setTextTypography } from '@/lib/post-studio/typography';
 import { imageEffectControls, setImageEffect } from '@/lib/post-studio/image-effects';
 import { moveImage, replaceImage, resetImageAdjustments, setImageFit, wheelMovement } from '@/lib/post-studio/image-positioning';
 import { artworkBytes, download } from '@/lib/post-studio/export';
-import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip } from '@/lib/post-studio/carousel';
+import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip, generateInstagramCaption } from '@/lib/post-studio/carousel';
 import { Artwork } from './Artwork';
 import { ColorPicker, Section, Slider } from './Controls';
 import BookReviewModal from './BookReviewModal';
@@ -50,9 +52,8 @@ import StudioMediaModal from './StudioMediaModal';
 import InstagramPreviewModal from './InstagramPreviewModal';
 import styles from './PostStudio.module.css';
 
-type Tool = 'text' | 'layout' | 'media' | 'layers';
+type Tool = 'text' | 'layout' | 'media' | 'carousel';
 type Change = PostDesign | ((current: PostDesign) => PostDesign);
-const layers: { key: PostLayer; label: string }[] = [{ key: 'visual', label: 'Visual' }, { key: 'kicker', label: 'Kicker' }, { key: 'headline', label: 'Headline' }, { key: 'supporting', label: 'Supporting' }, { key: 'footer', label: 'Byline' }];
 const fields = [{ layer: 'headline', key: 'headline', label: 'Headline' }, { layer: 'supporting', key: 'summary', label: 'Summary' }, { layer: 'kicker', key: 'eyebrow', label: 'Kicker' }, { layer: 'footer', key: 'author', label: 'Byline' }] as const;
 
 export default function PostEditor({ scope, draft, onClose, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; canExport?: boolean }) {
@@ -71,6 +72,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [quickImageUrl, setQuickImageUrl] = useState('');
     const [quickUrlLoading, setQuickUrlLoading] = useState(false);
     const [mediaCopied, setMediaCopied] = useState(false);
+    const [captionCopied, setCaptionCopied] = useState(false);
 
     // Editor tools & UI state
     const [tool, setTool] = useState<Tool>('text');
@@ -254,15 +256,15 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         }
     };
 
-    const handleDeleteSlide = async () => {
+    const handleDeleteSlide = async (targetIndex = activeSlideIndex) => {
         if (slides.length <= 1) return;
-        const toDelete = slides[activeSlideIndex];
+        const toDelete = slides[targetIndex];
         if (!toDelete) return;
         try {
             await setDraftTrashed(scope, toDelete.id, true);
-            const remaining = slides.filter((_, idx) => idx !== activeSlideIndex);
+            const remaining = slides.filter((_, idx) => idx !== targetIndex);
             setSlides(remaining);
-            const nextIdx = Math.max(0, activeSlideIndex - 1);
+            const nextIdx = Math.min(targetIndex, remaining.length - 1);
             setActiveSlideIndex(nextIdx);
             designRef.current = remaining[nextIdx].design;
             setDesign(remaining[nextIdx].design);
@@ -273,21 +275,39 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         }
     };
 
-    const handleMoveSlide = (direction: -1 | 1) => {
-        const targetIdx = activeSlideIndex + direction;
+    const handleMoveSlide = (fromIdx: number, direction: -1 | 1) => {
+        const targetIdx = fromIdx + direction;
         if (targetIdx < 0 || targetIdx >= slides.length) return;
         const reordered = [...slides];
-        const temp = reordered[activeSlideIndex];
-        reordered[activeSlideIndex] = reordered[targetIdx];
+        const temp = reordered[fromIdx];
+        reordered[fromIdx] = reordered[targetIdx];
         reordered[targetIdx] = temp;
         setSlides(reordered);
-        setActiveSlideIndex(targetIdx);
+        if (activeSlideIndex === fromIdx) {
+            setActiveSlideIndex(targetIdx);
+        } else if (activeSlideIndex === targetIdx) {
+            setActiveSlideIndex(fromIdx);
+        }
         setNotice(`Slide moved to position ${targetIdx + 1}`);
+    };
+
+    const handleCopyCaption = async () => {
+        try {
+            const caption = generateInstagramCaption(slides);
+            await navigator.clipboard.writeText(caption);
+            setCaptionCopied(true);
+            setTimeout(() => setCaptionCopied(false), 2500);
+            setNotice('Instagram caption copied to clipboard!');
+        } catch {
+            setIssue('Could not copy caption to clipboard.');
+        }
     };
 
     const [outputW, outputH] = postOutputDimensions[design.format];
     const referenceH = 360 * outputH / outputW;
-    const scale = Math.max(.1, Math.min((stageSize.width - 32) / 360, (stageSize.height - 120) / referenceH, 1.25));
+    const availableW = Math.max(260, stageSize.width - (slides.length > 1 ? 120 : 48));
+    const availableH = Math.max(260, stageSize.height - 84);
+    const scale = Math.max(.2, Math.min(availableW / 360, availableH / referenceH, 1.85));
     const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : 'text'); setReposition(false); };
     const locked = design.lockedLayers.includes(selected);
     const mediaDisabled = !design.imageUri || design.lockedLayers.includes('visual') || design.hiddenLayers.includes('visual');
@@ -436,6 +456,95 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         }
     };
 
+    // Auto-fit overflowing text to slide line limit
+    const handleAutoFitText = () => {
+        const nodes = exportRef.current?.querySelectorAll<HTMLElement>('[data-line-limit]');
+        if (!nodes) return;
+
+        let hasHeadlineOverflow = false;
+        let hasSupportingOverflow = false;
+
+        for (const node of Array.from(nodes)) {
+            const limit = Number(node.dataset.lineLimit);
+            const lh = parseFloat(getComputedStyle(node).lineHeight);
+            if (node.scrollHeight > lh * limit + 1) {
+                if (node.dataset.testid === 'artwork-headline') {
+                    hasHeadlineOverflow = true;
+                } else {
+                    hasSupportingOverflow = true;
+                }
+            }
+        }
+
+        if (hasHeadlineOverflow) {
+            apply(current => ({
+                ...current,
+                headlineScale: Math.max(0.6, Number((current.headlineScale * 0.9).toFixed(2))),
+            }));
+            setNotice('Headline scaled down to fit within line limit.');
+        } else if (hasSupportingOverflow) {
+            apply(current => {
+                const currentSize = current.textTypography?.supporting?.size ?? 100;
+                const currentSpacing = current.textTypography?.supporting?.lineSpacing ?? 100;
+                return setTextTypography(current, 'supporting', {
+                    size: Math.max(60, Math.round(currentSize * 0.9)),
+                    lineSpacing: Math.max(90, Math.round(currentSpacing * 0.96)),
+                });
+            });
+            setNotice('Summary text size and line spacing adjusted to fit.');
+        } else {
+            apply(current => {
+                const currentSize = current.textTypography?.supporting?.size ?? 100;
+                return setTextTypography(current, 'supporting', {
+                    size: Math.max(60, Math.round(currentSize * 0.9)),
+                });
+            });
+            setNotice('Text size auto-fitted.');
+        }
+    };
+
+    // Keyboard navigation shortcuts
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const activeEl = document.activeElement;
+            const isTyping = activeEl && (
+                activeEl.tagName === 'INPUT' ||
+                activeEl.tagName === 'TEXTAREA' ||
+                activeEl.tagName === 'SELECT' ||
+                (activeEl as HTMLElement).isContentEditable
+            );
+            if (isTyping) return;
+
+            if (e.key === 'ArrowLeft' || e.key === '[') {
+                if (slides.length > 1 && activeSlideIndex > 0) {
+                    e.preventDefault();
+                    void switchSlide(activeSlideIndex - 1);
+                }
+            } else if (e.key === 'ArrowRight' || e.key === ']') {
+                if (slides.length > 1 && activeSlideIndex < slides.length - 1) {
+                    e.preventDefault();
+                    void switchSlide(activeSlideIndex + 1);
+                }
+            } else if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
+                e.preventDefault();
+                if (e.shiftKey) {
+                    if (history.redo) undo(true);
+                } else {
+                    if (history.undo) undo();
+                }
+            } else if ((e.metaKey || e.ctrlKey) && e.key === 'y') {
+                e.preventDefault();
+                if (history.redo) undo(true);
+            } else if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault();
+                void persist();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [slides.length, activeSlideIndex, history, undo, persist]);
+
     const field = fields.find(item => item.layer === selected) || fields[0];
     const textLocked = design.lockedLayers.includes(field.layer);
     const slider = (label: string, value: number, min: number, max: number, change: (value: number) => Change, disabled = false, vertical = false) => <Slider label={label} value={value} min={min} max={max} disabled={disabled} vertical={vertical} onStart={begin} onChange={value => live(change(value))} onEnd={end} />;
@@ -445,236 +554,265 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const currentCraft = getStudioCraft(design.template);
 
     return <div className={`${styles.studio} ${styles.editor}`}>
-        <header className={styles.header}>
-            <div className={styles.row}>
-                <button className={styles.iconButton} aria-label="Close editor" onClick={async () => { if (await persist()) onClose(); }}><X /></button>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <h1 className={styles.grow} style={{ margin: 0, fontSize: 16 }}>
-                        {slides.length > 1 ? `${getCarouselBaseTitle(activeSlide.name)} · Slide ${activeSlideIndex + 1}/${slides.length}` : activeSlide.name}
+        {/* Top Professional Toolbar */}
+        <header className={styles.topToolbar}>
+            <div className={styles.toolbarLeft}>
+                <button
+                    type="button"
+                    className={styles.toolbarCloseBtn}
+                    aria-label="Close editor"
+                    onClick={async () => { if (await persist()) onClose(); }}
+                    title="Close editor and return to drafts"
+                >
+                    <X size={18} />
+                </button>
+                <div className={styles.toolbarTitleGroup}>
+                    <h1 className={styles.toolbarTitle} title={activeSlide.name}>
+                        {getCarouselBaseTitle(activeSlide.name)}
                     </h1>
+                    {slides.length > 1 && (
+                        <span className={styles.toolbarSlideBadge}>
+                            Slide {activeSlideIndex + 1} of {slides.length}
+                        </span>
+                    )}
                 </div>
-                <div className={styles.row} style={{ gap: 8 }}>
+                <button
+                    type="button"
+                    className={styles.toolbarSaveBtn}
+                    onClick={() => { void persist(); }}
+                    title="Click to save changes now"
+                >
+                    <span className={`${styles.saveDot} ${saveState === 'saving' ? styles.saving : saveState === 'error' ? styles.failed : ''}`} />
+                    <span className={styles.saveStatusText}>
+                        {saveState === 'saved' ? 'Saved' : saveState === 'saving' ? 'Saving…' : 'Save failed'}
+                    </span>
+                </button>
+            </div>
+
+            <div className={styles.toolbarCenter}>
+                <button
+                    type="button"
+                    className={styles.instagramPreviewBtn}
+                    onClick={() => setInstagramPreviewOpen(true)}
+                    title="Open live Instagram feed simulator"
+                >
+                    <Instagram size={15} />
+                    <span>Instagram Preview</span>
+                </button>
+            </div>
+
+            <div className={styles.toolbarRight}>
+                <div className={styles.historyGroup}>
                     <button
                         type="button"
-                        className={styles.button}
-                        style={{ borderColor: '#E1306C', color: '#E1306C', gap: 6 }}
-                        onClick={() => setInstagramPreviewOpen(true)}
-                        title="Simulate Instagram Feed and Carousel"
+                        className={styles.toolbarIconBtn}
+                        aria-label="Undo"
+                        title="Undo (Ctrl+Z)"
+                        disabled={!history.undo}
+                        onClick={() => undo()}
                     >
-                        <Instagram size={15} />
-                        Instagram Preview
+                        <Undo2 size={16} />
                     </button>
-                    {slides.length > 1 && (
-                        <button
-                            type="button"
-                            className={styles.button}
-                            disabled={exporting || !canExport}
-                            onClick={exportAllCarousel}
-                            title="Export all slides in a ZIP file"
-                        >
-                            <Download size={15} />
-                            Export ZIP ({slides.length})
-                        </button>
-                    )}
-                    <button 
-                        className={styles.primary} 
-                        disabled={exporting || !canExport || Boolean(imageIssue && !design.hiddenLayers.includes('visual'))} 
-                        onClick={() => { void exportPost(activeSlideIndex); }}
+                    <button
+                        type="button"
+                        className={styles.toolbarIconBtn}
+                        aria-label="Redo"
+                        title="Redo (Ctrl+Y)"
+                        disabled={!history.redo}
+                        onClick={() => undo(true)}
+                    >
+                        <Redo2 size={16} />
+                    </button>
+                </div>
+
+                {slides.length > 1 && (
+                    <button
+                        type="button"
+                        className={styles.toolbarSecondaryBtn}
+                        disabled={exporting || !canExport}
+                        onClick={exportAllCarousel}
+                        title="Export all carousel slides as a ZIP file"
                     >
                         <Download size={15} />
-                        {exporting ? 'Exporting…' : slides.length > 1 ? `Export Slide ${activeSlideIndex + 1}` : 'Export PNG'}
+                        <span>Export ZIP ({slides.length})</span>
                     </button>
-                </div>
-            </div>
-            <div className={styles.between}>
-                <button className={styles.saveState} onClick={() => { void persist(); }}>
-                    <span className={`${styles.saveDot} ${saveState === 'saving' ? styles.saving : saveState === 'error' ? styles.failed : ''}`} />
-                    {saveState === 'saved' ? 'All changes saved' : saveState === 'saving' ? 'Saving changes…' : 'Save failed · click to retry'}
+                )}
+
+                <button
+                    type="button"
+                    className={styles.toolbarPrimaryBtn}
+                    disabled={exporting || !canExport || Boolean(imageIssue && !design.hiddenLayers.includes('visual'))}
+                    onClick={() => { void exportPost(activeSlideIndex); }}
+                    title="Export current slide as high-res PNG"
+                >
+                    <Download size={15} />
+                    <span>{exporting ? 'Exporting…' : slides.length > 1 ? `Export Slide ${activeSlideIndex + 1}` : 'Export PNG'}</span>
                 </button>
-                <div className={styles.row}>
-                    <button className={styles.iconButton} aria-label="Undo" disabled={!history.undo} onClick={() => undo()}><Undo2 /></button>
-                    <button className={styles.iconButton} aria-label="Redo" disabled={!history.redo} onClick={() => undo(true)}><Redo2 /></button>
-                </div>
             </div>
-            {(issue || imageIssue || overflow) && <p className={styles.error} role="alert">{issue || imageIssue || 'Text exceeds this format’s line limit. Shorten it or reduce size/spacing before export.'}</p>}
-            {notice && <p className={styles.notice} role="status">{notice}</p>}
         </header>
+
+        {/* Global Warning / Notification Banner */}
+        {(issue || imageIssue || overflow) && (
+            <div className={styles.alertBanner} role="alert">
+                <div className={styles.alertMessage}>
+                    <AlertCircle size={15} />
+                    <span>{issue || imageIssue || 'Text exceeds this format’s line limit. It may be clipped on export.'}</span>
+                </div>
+                {overflow && (
+                    <button
+                        type="button"
+                        className={styles.autoFitBtn}
+                        onClick={handleAutoFitText}
+                        title="Automatically adjust font size and line spacing to fit"
+                    >
+                        <Sparkles size={13} />
+                        Auto-fit Text Size
+                    </button>
+                )}
+            </div>
+        )}
+
+        {notice && (
+            <div className={styles.noticeBanner} role="status">
+                <div className={styles.alertMessage}>
+                    <Check size={14} />
+                    <span>{notice}</span>
+                </div>
+                <button type="button" className={styles.bannerCloseBtn} onClick={() => setNotice('')}>
+                    <X size={12} />
+                </button>
+            </div>
+        )}
 
         <div className={styles.body}>
             <div ref={stageRef} className={styles.stage}>
-                <div className={styles.canvasMeta}>
-                    <span>{reposition ? 'Drag selected text' : design.format[0].toUpperCase() + design.format.slice(1)}</span>
-                    <span>{outputW} × {outputH}</span>
+                <div className={styles.stageMetaPill}>
+                    <span className={styles.stageMetaDimension}>{outputW} × {outputH}</span>
+                    <span className={styles.stageMetaDivider}>•</span>
+                    <span className={styles.stageMetaFormat}>{reposition ? 'Drag to Reposition' : design.format.toUpperCase()}</span>
+                    {slides.length > 1 && (
+                        <>
+                            <span className={styles.stageMetaDivider}>•</span>
+                            <span className={styles.stageMetaSlide}>Slide {activeSlideIndex + 1} of {slides.length}</span>
+                        </>
+                    )}
                 </div>
 
-                <div 
-                    className={styles.canvasShell} 
-                    style={{ width: 360 * scale, height: referenceH * scale, position: 'relative' }} 
-                    onPointerDown={canvasDown} 
-                    onPointerMove={canvasMove} 
-                    onPointerUp={canvasEnd} 
-                    onPointerCancel={canvasEnd}
-                >
-                    <div className={styles.scaledArtwork} style={{ transform: `scale(${scale})` }}>
-                        <Artwork 
-                            ref={previewRef} 
-                            design={design} 
-                            selected={selected} 
-                            guides={reposition} 
-                            onSelect={reposition ? undefined : select} 
-                            onChooseImage={() => setMediaModalOpen(true)} 
-                        />
-                    </div>
-
-                    {/* Instagram Carousel Badge on Canvas */}
+                {/* Stage Canvas Wrap with Navigation Chevrons Outside the Artwork */}
+                <div className={styles.stageCanvasWrap}>
                     {slides.length > 1 && (
-                        <div className={styles.carouselCanvasCounter}>
-                            {activeSlideIndex + 1}/{slides.length}
-                        </div>
-                    )}
-
-                    {/* Quick Canvas Navigation Chevrons */}
-                    {slides.length > 1 && activeSlideIndex > 0 && (
                         <button
                             type="button"
-                            className={`${styles.carouselNavBtn} ${styles.carouselNavLeft}`}
+                            className={styles.stageNavBtn}
+                            disabled={activeSlideIndex === 0}
                             onClick={() => switchSlide(activeSlideIndex - 1)}
                             aria-label="Previous Slide"
-                            title="Previous Slide"
+                            title="Previous Slide (← or [)"
                         >
-                            <ChevronLeft size={20} />
+                            <ChevronLeft size={22} />
                         </button>
                     )}
-                    {slides.length > 1 && activeSlideIndex < slides.length - 1 && (
+
+                    <div 
+                        className={styles.canvasShell} 
+                        style={{ width: 360 * scale, height: referenceH * scale, position: 'relative' }} 
+                        onPointerDown={canvasDown} 
+                        onPointerMove={canvasMove} 
+                        onPointerUp={canvasEnd} 
+                        onPointerCancel={canvasEnd}
+                    >
+                        <div className={styles.scaledArtwork} style={{ transform: `scale(${scale})` }}>
+                            <Artwork 
+                                ref={previewRef} 
+                                design={design} 
+                                selected={selected} 
+                                guides={reposition} 
+                                onSelect={reposition ? undefined : select} 
+                                onChooseImage={() => setMediaModalOpen(true)} 
+                            />
+                        </div>
+
+                        {/* Clean Instagram Carousel Counter Badge on Canvas */}
+                        {slides.length > 1 && (
+                            <div className={styles.carouselCanvasCounter}>
+                                {activeSlideIndex + 1}/{slides.length}
+                            </div>
+                        )}
+                    </div>
+
+                    {slides.length > 1 && (
                         <button
                             type="button"
-                            className={`${styles.carouselNavBtn} ${styles.carouselNavRight}`}
+                            className={styles.stageNavBtn}
+                            disabled={activeSlideIndex === slides.length - 1}
                             onClick={() => switchSlide(activeSlideIndex + 1)}
                             aria-label="Next Slide"
-                            title="Next Slide"
+                            title="Next Slide (→ or ])"
                         >
-                            <ChevronRight size={20} />
+                            <ChevronRight size={22} />
                         </button>
                     )}
                 </div>
 
-                {/* Carousel Navigation Strip Docked in Stage */}
-                <div className={styles.carouselBar}>
-                    <div className={styles.carouselBarHeader}>
-                        <div className={styles.row} style={{ gap: 8 }}>
-                            <span className={styles.carouselBadgePill}>
-                                <Layers3 size={13} color="var(--studio-red)" />
-                                {slides.length > 1 ? `Carousel (${slides.length} Slides)` : 'Single Post · Carousel Ready'}
-                            </span>
-                            <span className={styles.subtle} style={{ fontSize: 11 }}>
-                                Slide {activeSlideIndex + 1} of {slides.length}
-                            </span>
-                        </div>
-                        <div className={styles.row} style={{ gap: 6 }}>
+                {/* Pagination Dots below Canvas */}
+                {slides.length > 1 && (
+                    <div className={styles.stageDotsRow} role="tablist" aria-label="Slides pagination">
+                        {slides.map((_, idx) => (
                             <button
+                                key={idx}
                                 type="button"
-                                className={styles.button}
-                                style={{ fontSize: 11, padding: '4px 8px', borderColor: '#E1306C', color: '#E1306C' }}
-                                onClick={() => setInstagramPreviewOpen(true)}
-                            >
-                                <Instagram size={13} />
-                                Instagram Preview
-                            </button>
-                            <button
-                                type="button"
-                                className={styles.button}
-                                style={{ fontSize: 11, padding: '4px 8px' }}
-                                onClick={handleAddSlide}
-                            >
-                                <Plus size={13} />
-                                Add Slide
-                            </button>
-                            <button
-                                type="button"
-                                className={styles.button}
-                                style={{ fontSize: 11, padding: '4px 8px' }}
-                                onClick={handleDuplicateSlide}
-                                title="Duplicate current slide"
-                            >
-                                <Copy size={13} />
-                                Duplicate
-                            </button>
-                            {slides.length > 1 && (
-                                <>
-                                    <button
-                                        type="button"
-                                        className={styles.iconButton}
-                                        style={{ width: 28, height: 28 }}
-                                        disabled={activeSlideIndex === 0}
-                                        onClick={() => handleMoveSlide(-1)}
-                                        title="Move slide left"
-                                    >
-                                        <MoveLeft size={13} />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={styles.iconButton}
-                                        style={{ width: 28, height: 28 }}
-                                        disabled={activeSlideIndex === slides.length - 1}
-                                        onClick={() => handleMoveSlide(1)}
-                                        title="Move slide right"
-                                    >
-                                        <MoveRight size={13} />
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={styles.iconButton}
-                                        style={{ width: 28, height: 28, color: 'var(--studio-red)' }}
-                                        onClick={handleDeleteSlide}
-                                        title="Delete current slide"
-                                    >
-                                        <Trash2 size={13} />
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                                className={`${styles.stageDot} ${idx === activeSlideIndex ? styles.stageDotActive : ''}`}
+                                onClick={() => switchSlide(idx)}
+                                aria-label={`Jump to slide ${idx + 1}`}
+                                title={`Slide ${idx + 1}`}
+                            />
+                        ))}
                     </div>
-
-                    {/* Slide Thumbnail Cards Strip */}
-                    <div className={styles.carouselStrip}>
-                        {slides.map((s, idx) => {
-                            const isCurrent = idx === activeSlideIndex;
-                            const title = s.design.headline || s.name;
-                            return (
-                                <button
-                                    key={s.id}
-                                    type="button"
-                                    className={`${styles.carouselSlideCard} ${isCurrent ? styles.carouselSlideCardActive : ''}`}
-                                    onClick={() => switchSlide(idx)}
-                                >
-                                    <span className={styles.carouselSlideBadge}>{idx + 1}</span>
-                                    <span>{title.slice(0, 18)}</span>
-                                </button>
-                            );
-                        })}
-                    </div>
-                </div>
+                )}
             </div>
 
             <aside className={styles.inspector}>
                 <div className={styles.tabs} role="tablist" aria-label="Editor tools">
-                    {([{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Layout', Icon: LayoutTemplate }, { key: 'media', label: 'Media', Icon: ImagePlus }, { key: 'layers', label: 'Layers', Icon: Layers3 }] as const).map(({ key, label, Icon }) => (
+                    {([{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Layout', Icon: LayoutTemplate }, { key: 'media', label: 'Media', Icon: ImagePlus }, { key: 'carousel', label: 'Carousel', Icon: Layers3 }] as const).map(({ key, label, Icon }) => (
                         <button key={key} role="tab" aria-selected={tool === key} className={styles.tab} onClick={() => { setTool(key); setReposition(false); if (key === 'media') setSelected('visual'); else if (key === 'text' && selected === 'visual') setSelected('headline'); }}>
-                            <Icon />
-                            {label}
+                            <div className={styles.tabIconWrap}>
+                                <Icon size={18} />
+                                {key === 'carousel' && slides.length > 1 && (
+                                    <span className={styles.tabCountBadge}>{slides.length}</span>
+                                )}
+                            </div>
+                            <span>{label}</span>
                         </button>
                     ))}
                 </div>
 
                 <div className={styles.panel} role="tabpanel" aria-label={`${tool} controls`} key={tool}>
                     {tool === 'text' && <>
-                        <div className={styles.row}>{fields.map(item => {
+                        <div className={styles.layerGrid}>{fields.map(item => {
                             const cl = currentCraft.layers.find(l => l.key === item.layer);
-                            return choice(cl ? cl.label : item.label, selected === item.layer, () => select(item.layer));
+                            const isSelected = selected === item.layer;
+                            const label = cl ? cl.label : item.label;
+                            const role = cl ? cl.role : item.layer.toUpperCase();
+                            return (
+                                <button
+                                    key={item.layer}
+                                    type="button"
+                                    className={`${styles.layerChoiceCard} ${isSelected ? styles.layerChoiceCardActive : ''}`}
+                                    onClick={() => select(item.layer)}
+                                >
+                                    <span className={styles.layerChoiceRole}>{role}</span>
+                                    <span className={styles.layerChoiceLabel} title={label}>{label}</span>
+                                </button>
+                            );
                         })}</div>
                         <label className={styles.field}>
-                            <span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span>
-                            <textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} />
+                            <div className={styles.between}>
+                                <span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span>
+                                <span className={styles.subtle} style={{ fontSize: 11 }}>
+                                    {design[field.key].length} chars · {design[field.key].split('\n').filter(Boolean).length} paras
+                                </span>
+                            </div>
+                            <textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={5} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value)} />
                         </label>
                         {field.layer === 'kicker' && <label className={styles.field}><span>Category / Tag</span><input className={styles.input} aria-label="Edit category" disabled={textLocked} value={design.category} onChange={event => update('category', event.target.value.toUpperCase())} /></label>}
                         <Section title="Typography"><div className={styles.row}>{(['auto', 'onest', 'hind'] as const).map(font => choice(font === 'auto' ? 'Auto' : font === 'onest' ? 'Onest' : 'Hind', design.textTypography[field.layer].font === font, () => apply(current => setTextTypography(current, field.layer, { font })), textLocked))}</div><p className={styles.subtle}>Nepali uses Hind to keep vowel marks and joined letters intact.</p>
@@ -727,11 +865,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
 
                         <div className={styles.field}>
                             <span>Quick Paste Web or Google Image URL</span>
-                            <div className={styles.row}>
+                            <div className={styles.quickUrlBar}>
                                 <input
                                     type="url"
-                                    className={styles.input}
-                                    placeholder="https://... image address"
+                                    className={styles.quickUrlInput}
+                                    placeholder="Paste Google or web image URL…"
                                     value={quickImageUrl}
                                     onChange={e => setQuickImageUrl(e.target.value)}
                                     disabled={design.lockedLayers.includes('visual') || quickUrlLoading}
@@ -744,11 +882,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 />
                                 <button
                                     type="button"
-                                    className={styles.button}
+                                    className={styles.quickUrlSubmitBtn}
                                     disabled={!quickImageUrl.trim() || design.lockedLayers.includes('visual') || quickUrlLoading}
                                     onClick={() => { void handleApplyQuickUrl(); }}
                                 >
-                                    {quickUrlLoading ? 'Loading…' : 'Load'}
+                                    {quickUrlLoading ? 'Loading…' : 'Load URL'}
                                 </button>
                             </div>
                         </div>
@@ -788,7 +926,21 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
                             onPointerMove={event => { const previous = ballDrag.current; if (!previous) return; live(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y)); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
                             onPointerUp={() => { ballDrag.current = null; end(); }} onPointerCancel={() => { ballDrag.current = null; end(); }}><i style={{ transform: `rotate(${design.imageOffsetX * 2}deg) translate(${design.imageOffsetX / 12}px, ${design.imageOffsetY / 12}px)` }} /></div>
-                            <div className={styles.row} style={{ justifyContent: 'center' }}>{([{ label: 'Move image left', dx: -1, dy: 0, Icon: ArrowLeft }, { label: 'Move image up', dx: 0, dy: -1, Icon: ArrowUp }, { label: 'Move image down', dx: 0, dy: 1, Icon: ArrowDown }, { label: 'Move image right', dx: 1, dy: 0, Icon: ArrowRight }]).map(({ label, dx, dy, Icon }) => <button key={label} className={styles.iconButton} aria-label={label} disabled={mediaDisabled} onClick={() => apply(current => moveImage(current, dx, dy))}><Icon /></button>)}</div>
+                            <div className={styles.dPadRow}>
+                                {([{ label: 'Move image left', dx: -2, dy: 0, Icon: ArrowLeft }, { label: 'Move image up', dx: 0, dy: -2, Icon: ArrowUp }, { label: 'Move image down', dx: 0, dy: 2, Icon: ArrowDown }, { label: 'Move image right', dx: 2, dy: 0, Icon: ArrowRight }]).map(({ label, dx, dy, Icon }) => (
+                                    <button
+                                        key={label}
+                                        type="button"
+                                        className={styles.dPadBtn}
+                                        aria-label={label}
+                                        title={label}
+                                        disabled={mediaDisabled}
+                                        onClick={() => apply(current => moveImage(current, dx, dy))}
+                                    >
+                                        <Icon size={16} />
+                                    </button>
+                                ))}
+                            </div>
                         </div>
                         {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
                         <Section title="Image effects"><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>Reset image effects</button>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}</Section>
@@ -797,126 +949,194 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                         <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
                     </>}
 
-                    {tool === 'layers' && (
-                        <div className={styles.craftContainer}>
-                            <div className={styles.craftHeader}>
+                    {tool === 'carousel' && (
+                        <div className={styles.carouselInspector}>
+                            {/* Deck Header & Quick Actions */}
+                            <div className={styles.carouselDeckCard}>
                                 <div className={styles.between}>
-                                    <span className={styles.craftBadge}>{currentCraft.badge}</span>
-                                    <span className={styles.subtle} style={{ fontSize: 11, textTransform: 'uppercase' }}>
-                                        {design.format} · {outputW} × {outputH}
-                                    </span>
+                                    <div className={styles.carouselDeckInfo}>
+                                        <span className={styles.carouselDeckBadge}>
+                                            <Layers3 size={13} />
+                                            CAROUSEL DECK
+                                        </span>
+                                        <strong className={styles.carouselDeckTitle}>
+                                            {slides.length} {slides.length === 1 ? 'Slide' : 'Slides'} Total
+                                        </strong>
+                                    </div>
+                                    <div className={styles.carouselTopActions}>
+                                        <button
+                                            type="button"
+                                            className={styles.carouselAddBtn}
+                                            onClick={handleAddSlide}
+                                            title="Add a new blank slide"
+                                        >
+                                            <Plus size={14} />
+                                            <span>Add Slide</span>
+                                        </button>
+                                        <button
+                                            type="button"
+                                            className={styles.carouselDuplicateBtn}
+                                            onClick={handleDuplicateSlide}
+                                            title="Duplicate current slide"
+                                        >
+                                            <Copy size={13} />
+                                            <span>Duplicate</span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <h3 className={styles.craftTitle}>{currentCraft.name}</h3>
-                                <p className={styles.subtle} style={{ fontSize: 12 }}>{currentCraft.description}</p>
                             </div>
 
-                            {currentCraft.archetypes && (
-                                <div className={styles.craftArchetypes}>
-                                    <span className={styles.subtle} style={{ fontSize: 11, fontWeight: 600 }}>CRAFT SLIDE / ARCHETYPE:</span>
-                                    <div className={styles.row}>
-                                        {currentCraft.archetypes.map(arch => (
-                                            <button
-                                                key={arch.key}
-                                                type="button"
-                                                className={`${styles.craftArchetypePill} ${design.template === arch.key ? styles.active : ''}`}
-                                                onClick={() => {
-                                                    const matched = postTemplates.find(t => t.key === arch.key);
-                                                    if (matched) {
-                                                        apply(current => ({
-                                                            ...current,
-                                                            template: arch.key,
-                                                            category: matched.patch.category ?? current.category,
-                                                            eyebrow: matched.patch.eyebrow ?? current.eyebrow,
-                                                            accent: matched.patch.accent ?? current.accent,
-                                                            summary: matched.patch.summary ?? current.summary,
-                                                            author: matched.patch.author ?? current.author,
-                                                        }));
-                                                    }
-                                                }}
+                            {/* Vertical Slide Sequence List */}
+                            <div className={styles.carouselSlideSection}>
+                                <div className={styles.between} style={{ marginBottom: 4 }}>
+                                    <span className={styles.inspectorSectionLabel}>SLIDES SEQUENCE</span>
+                                    <span className={styles.subtle} style={{ fontSize: 11 }}>
+                                        Active: Slide {activeSlideIndex + 1}
+                                    </span>
+                                </div>
+
+                                <div className={styles.carouselSlideList}>
+                                    {slides.map((s, idx) => {
+                                        const isCurrent = idx === activeSlideIndex;
+                                        const title = s.design.headline || s.name || `Slide ${idx + 1}`;
+                                        const archetypeLabel = s.design.template === 'book-review' ? 'Cover / Thesis'
+                                            : s.design.template === 'book-analysis' ? 'Analysis & Proof'
+                                            : s.design.template === 'book-takeaways' ? 'Key Takeaways'
+                                            : s.design.template === 'book-verdict' ? 'Verdict & Quote'
+                                            : s.design.template.replace(/^book-/, '');
+
+                                        return (
+                                            <div
+                                                key={s.id}
+                                                className={`${styles.carouselSlideItem} ${isCurrent ? styles.carouselSlideItemActive : ''}`}
                                             >
-                                                {arch.label}
-                                            </button>
-                                        ))}
+                                                <button
+                                                    type="button"
+                                                    className={styles.carouselSlideMainBtn}
+                                                    onClick={() => switchSlide(idx)}
+                                                    title={`Switch to Slide ${idx + 1}: ${title}`}
+                                                >
+                                                    <div className={styles.carouselSlideNumber}>
+                                                        {idx + 1}
+                                                    </div>
+                                                    <div className={styles.carouselSlideMeta}>
+                                                        <span className={styles.carouselSlideArchetypeTag}>{archetypeLabel}</span>
+                                                        <strong className={styles.carouselSlideHeadline}>{title}</strong>
+                                                    </div>
+                                                </button>
+
+                                                <div className={styles.carouselSlideItemActions}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.carouselMiniActionBtn}
+                                                        disabled={idx === 0}
+                                                        onClick={(e) => { e.stopPropagation(); handleMoveSlide(idx, -1); }}
+                                                        title="Move slide up"
+                                                        aria-label="Move slide up"
+                                                    >
+                                                        <ArrowUp size={13} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.carouselMiniActionBtn}
+                                                        disabled={idx === slides.length - 1}
+                                                        onClick={(e) => { e.stopPropagation(); handleMoveSlide(idx, 1); }}
+                                                        title="Move slide down"
+                                                        aria-label="Move slide down"
+                                                    >
+                                                        <ArrowDown size={13} />
+                                                    </button>
+                                                    {slides.length > 1 && (
+                                                        <button
+                                                            type="button"
+                                                            className={`${styles.carouselMiniActionBtn} ${styles.carouselDeleteBtn}`}
+                                                            onClick={(e) => { e.stopPropagation(); handleDeleteSlide(idx); }}
+                                                            title="Delete this slide"
+                                                            aria-label="Delete this slide"
+                                                        >
+                                                            <Trash2 size={13} />
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            {/* Current Slide Archetype Switcher */}
+                            {currentCraft.archetypes && (
+                                <div className={styles.archetypeBox}>
+                                    <div className={styles.between}>
+                                        <span className={styles.inspectorSectionLabel}>
+                                            SLIDE {activeSlideIndex + 1} ARCHETYPE
+                                        </span>
+                                        <span className={styles.subtle} style={{ fontSize: 11 }}>
+                                            {design.template}
+                                        </span>
+                                    </div>
+                                    <div className={styles.archetypeGrid}>
+                                        {currentCraft.archetypes.map(arch => {
+                                            const isActive = design.template === arch.key;
+                                            return (
+                                                <button
+                                                    key={arch.key}
+                                                    type="button"
+                                                    className={`${styles.archetypePill} ${isActive ? styles.archetypePillActive : ''}`}
+                                                    onClick={() => {
+                                                        const matched = postTemplates.find(t => t.key === arch.key);
+                                                        if (matched) {
+                                                            apply(current => ({
+                                                                ...current,
+                                                                template: arch.key,
+                                                                category: matched.patch.category ?? current.category,
+                                                                eyebrow: matched.patch.eyebrow ?? current.eyebrow,
+                                                                accent: matched.patch.accent ?? current.accent,
+                                                                summary: matched.patch.summary ?? current.summary,
+                                                                author: matched.patch.author ?? current.author,
+                                                            }));
+                                                        }
+                                                    }}
+                                                >
+                                                    {arch.label}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             )}
 
-                            <div className={styles.craftLayerList}>
-                                <div className={styles.between} style={{ padding: '4px 0' }}>
-                                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--studio-secondary)' }}>STUDIO CRAFT LAYERS</span>
-                                    <span style={{ fontSize: 11, color: 'var(--studio-secondary)' }}>{currentCraft.layers.length} layers</span>
+                            {/* Instagram Caption Section with 1-Click Copy */}
+                            <div className={styles.carouselCaptionCard}>
+                                <div className={styles.between}>
+                                    <span className={styles.inspectorSectionLabel}>INSTAGRAM CAPTION</span>
+                                    <button
+                                        type="button"
+                                        className={styles.captionCopyBtn}
+                                        onClick={handleCopyCaption}
+                                        title="Copy Instagram caption to clipboard"
+                                    >
+                                        {captionCopied ? (
+                                            <>
+                                                <Check size={13} color="#10B981" />
+                                                <span style={{ color: '#10B981' }}>Copied!</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Copy size={13} />
+                                                <span>Copy Caption</span>
+                                            </>
+                                        )}
+                                    </button>
                                 </div>
-
-                                {currentCraft.layers.map(layer => {
-                                    const isSelected = selected === layer.key;
-                                    const isHidden = design.hiddenLayers.includes(layer.key);
-                                    const isLocked = design.lockedLayers.includes(layer.key);
-                                    const previewText = layer.getPreview(design);
-
-                                    return (
-                                        <div
-                                            key={layer.key}
-                                            className={`${styles.craftLayerCard} ${isSelected ? styles.craftLayerSelected : ''}`}
-                                        >
-                                            <div className={styles.craftLayerHeader}>
-                                                <button
-                                                    type="button"
-                                                    className={styles.craftLayerSelectBtn}
-                                                    onClick={() => {
-                                                        select(layer.key);
-                                                        if (layer.key === 'visual') setTool('media');
-                                                        else setTool('text');
-                                                    }}
-                                                >
-                                                    <div className={styles.row} style={{ gap: 6 }}>
-                                                        <span className={styles.craftRoleBadge}>{layer.role}</span>
-                                                        <strong style={{ fontSize: 13 }}>{layer.label}</strong>
-                                                    </div>
-                                                    <span className={styles.craftLayerSubtle}>{layer.description}</span>
-                                                </button>
-
-                                                <div className={styles.craftLayerActions}>
-                                                    <button
-                                                        type="button"
-                                                        className={styles.iconButton}
-                                                        style={{ width: 34, height: 34, padding: 6 }}
-                                                        aria-label={`${isHidden ? 'Show' : 'Hide'} ${layer.label}`}
-                                                        title={isHidden ? 'Show layer' : 'Hide layer'}
-                                                        onClick={() => toggle('hiddenLayers', layer.key)}
-                                                    >
-                                                        {isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className={styles.iconButton}
-                                                        style={{ width: 34, height: 34, padding: 6 }}
-                                                        aria-label={`${isLocked ? 'Unlock' : 'Lock'} ${layer.label}`}
-                                                        title={isLocked ? 'Unlock layer' : 'Lock layer'}
-                                                        onClick={() => toggle('lockedLayers', layer.key)}
-                                                    >
-                                                        {isLocked ? <Lock size={16} /> : <LockOpen size={16} />}
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                            {previewText && (
-                                                <div
-                                                    className={styles.craftLayerPreview}
-                                                    onClick={() => {
-                                                        select(layer.key);
-                                                        setTool(layer.key === 'visual' ? 'media' : 'text');
-                                                    }}
-                                                >
-                                                    <code>{previewText}</code>
-                                                </div>
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                                <div className={styles.captionPreviewBox}>
+                                    {generateInstagramCaption(slides)}
+                                </div>
                             </div>
 
-                            {isBookTemplate && (
-                                <div className={styles.craftFooterActions}>
+                            {/* Footer Actions: Book Review Master Generator, Instagram Simulator, ZIP Export */}
+                            <div className={styles.carouselFooterActions}>
+                                {isBookTemplate && (
                                     <button
                                         type="button"
                                         className={styles.button}
@@ -924,10 +1144,29 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                         onClick={() => setBookModalOpen(true)}
                                     >
                                         <BookOpen size={16} />
-                                        Book Review Data Craft (12 Fields)
+                                        AI Prompt & Data Generator
                                     </button>
-                                </div>
-                            )}
+                                )}
+                                <button
+                                    type="button"
+                                    className={styles.button}
+                                    style={{ width: '100%' }}
+                                    onClick={() => setInstagramPreviewOpen(true)}
+                                >
+                                    <Instagram size={16} color="#E1306C" />
+                                    Open Instagram Simulator
+                                </button>
+                                <button
+                                    type="button"
+                                    className={styles.primary}
+                                    style={{ width: '100%' }}
+                                    disabled={exporting || !canExport}
+                                    onClick={exportAllCarousel}
+                                >
+                                    <Download size={16} />
+                                    {exporting ? 'Exporting Carousel...' : `Download All ${slides.length} Slides (ZIP)`}
+                                </button>
+                            </div>
                         </div>
                     )}
                 </div>

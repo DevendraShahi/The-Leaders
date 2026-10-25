@@ -115,11 +115,11 @@ describe('Book Review Templates & Generator', () => {
         // Standard templates allow 3 lines for supporting in portrait
         expect(textLineLimit('portrait', 'supporting', 'breaking')).toBe(3);
 
-        // Book review templates allow up to 6 lines for in-depth analysis
-        expect(textLineLimit('portrait', 'supporting', 'book-review')).toBe(6);
-        expect(textLineLimit('portrait', 'supporting', 'book-analysis')).toBe(6);
-        expect(textLineLimit('portrait', 'supporting', 'book-takeaways')).toBe(6);
-        expect(textLineLimit('portrait', 'supporting', 'book-verdict')).toBe(6);
+        // Book review templates allow up to 8-14 lines for in-depth analysis
+        expect(textLineLimit('portrait', 'supporting', 'book-review')).toBe(8);
+        expect(textLineLimit('portrait', 'supporting', 'book-analysis')).toBe(14);
+        expect(textLineLimit('portrait', 'supporting', 'book-takeaways')).toBe(14);
+        expect(textLineLimit('portrait', 'supporting', 'book-verdict')).toBe(8);
     });
 
     it('provides rich studio craft layer specifications for all book review templates', async () => {
@@ -154,4 +154,82 @@ describe('Book Review Templates & Generator', () => {
             'book-verdict',
         ]);
     });
+
+    it('generates master prompt with target book title, author, context, and exact length rules', async () => {
+        const { generateBookReviewMasterPrompt } = await import('@/lib/post-studio/book-review');
+        const prompt = generateBookReviewMasterPrompt(
+            "The Republic",
+            "Plato",
+            "Justice and political leadership in modern democracies"
+        );
+
+        expect(prompt).toContain('Book: "The Republic"');
+        expect(prompt).toContain('Author: "Plato"');
+        expect(prompt).toContain('Justice and political leadership');
+        expect(prompt).toContain('EXACTLY 140–185 characters');
+        expect(prompt).toContain('EXACTLY 120–175 characters');
+        expect(prompt).toContain('centralThesis');
+        expect(prompt).toContain('keyTakeaways');
+        expect(prompt).toContain('criticSays');
+    });
+
+    it('parses valid JSON response from AI code block into BookReviewInput', async () => {
+        const { parseBookReviewResponse } = await import('@/lib/post-studio/book-review');
+        const aiResponse = `Here is the requested book review:
+\`\`\`json
+{
+  "title": "The Federalist Papers",
+  "author": "Alexander Hamilton, James Madison & John Jay",
+  "tag": "CONSTITUTIONALISM",
+  "rating": "★★★★★ 5.0",
+  "centralThesis": "A strong constitutional union with checks and balances prevents tyranny and secures enduring liberty.",
+  "purpose": "To persuade New York citizens to ratify the proposed United States Constitution.",
+  "argumentEvidence": "Historical analysis of confederacies, factional perils, and separated branches of power.",
+  "assumptionIdeology": "Classical Republicanism and liberal institutionalism assuming factions are inherent to human nature.",
+  "relevanceApplication": "Provides the foundational blueprint for multi-tier constitutional checks in fragile democracies.",
+  "keyTakeaways": "1. Factions must be checked by institutional design.\\n2. Executive energy balances legislative power.\\n3. Independent judiciary safeguards the rule of law.",
+  "whyItMatters": "The definitive philosophical defense of constitutional democracy and institutional equilibrium.",
+  "criticSays": "“The most profound treatise on governance produced in the modern political era.”",
+  "accent": "#1E3A8A"
+}
+\`\`\`
+Hope this fits your studio!`;
+
+        const parsed = parseBookReviewResponse(aiResponse);
+        expect(parsed.success).toBe(true);
+        expect(parsed.detectedCount).toBe(12);
+        expect(parsed.data.title).toBe("The Federalist Papers");
+        expect(parsed.data.author).toContain("Hamilton");
+        expect(parsed.data.tag).toBe("CONSTITUTIONALISM");
+        expect(parsed.data.rating).toBe("★★★★★ 5.0");
+        expect(parsed.data.accent).toBe("#1E3A8A");
+    });
+
+    it('parses Markdown key-value fallback format into BookReviewInput', async () => {
+        const { parseBookReviewResponse } = await import('@/lib/post-studio/book-review');
+        const markdownResponse = `
+### Book Review Breakdown
+Title: The Prince
+Author: Niccolò Machiavelli
+Tag: REALPOLITIK & STATECRAFT
+Rating: ★★★★½ 4.8
+Central Thesis: Effective statehood requires pragmatic adaptation to political fortune rather than unbending moral idealism.
+Purpose: To guide a ruler on acquiring, maintaining, and defending state power against domestic and foreign ruin.
+Argument & Evidence: Case studies of Cesare Borgia, Roman emperors, and Italian city-state vulnerabilities.
+Assumption & Ideology: Political realism. Assumes self-interest and instability dominate human affairs.
+Relevance & Application: Crucial analytical antidote to naive governance assumptions in competitive party politics.
+Key Takeaways: 1. Adapt methods to circumstance.\n2. Cruelty poorly used destroys power.\n3. Institutional arms must be domestic.
+Why It Matters: Founded modern political science by separating practical governance from theological dogma.
+Critic Says: “A merciless dissection of power stripped of moral disguise.”
+        `;
+
+        const parsed = parseBookReviewResponse(markdownResponse);
+        expect(parsed.success).toBe(true);
+        expect(parsed.detectedCount).toBeGreaterThanOrEqual(10);
+        expect(parsed.data.title).toBe("The Prince");
+        expect(parsed.data.author).toBe("Niccolò Machiavelli");
+        expect(parsed.data.tag).toBe("REALPOLITIK & STATECRAFT");
+        expect(parsed.data.criticSays).toContain("merciless dissection");
+    });
 });
+

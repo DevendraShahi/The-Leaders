@@ -232,3 +232,231 @@ Swipe through for the complete 5-slide breakdown of this book's arguments, ideol
 
 #TheLeaders #BookReview #NepalPolitics #DemocraticThought #CivicArchive #PoliticalEconomy #BookReview`;
 }
+
+export const BOOK_REVIEW_LENGTH_GUIDE = {
+    title: { min: 10, max: 70, label: "Title" },
+    author: { min: 5, max: 50, label: "Author" },
+    tag: { min: 6, max: 28, label: "Tag / Category" },
+    rating: { min: 3, max: 15, label: "Rating" },
+    centralThesis: { min: 100, max: 190, label: "Central Thesis" },
+    purpose: { min: 100, max: 180, label: "Purpose" },
+    argumentEvidence: { min: 110, max: 190, label: "Argument & Evidence" },
+    assumptionIdeology: { min: 100, max: 180, label: "Assumptions & Ideology" },
+    relevanceApplication: { min: 110, max: 190, label: "Relevance & Application" },
+    keyTakeaways: { min: 120, max: 220, label: "Key Takeaways" },
+    whyItMatters: { min: 100, max: 180, label: "Why It Matters" },
+    criticSays: { min: 60, max: 160, label: "Critic Says / Verdict" },
+} as const;
+
+export function generateBookReviewMasterPrompt(bookName: string, author = "", analyticalContext = ""): string {
+    const cleanBook = bookName.trim() || "[Insert Book Title]";
+    const cleanAuthor = author.trim() ? `Author: "${author.trim()}"` : `Author: [Identify the author(s) of this book]`;
+    const cleanContext = analyticalContext.trim()
+        ? `Analytical Context: "${analyticalContext.trim()}"`
+        : `Analytical Context: Modern democratic governance, institutional reform, and civic accountability in South Asia / Nepal.`;
+
+    return `You are a senior literary critic and institutional scholar for "The Leaders" (theleaders.com.np) — an intellectual publication dedicated to statehood, democratic philosophy, and political economy.
+
+TASK:
+Produce an exacting, publication-grade analytical book review for:
+Book: "${cleanBook}"
+${cleanAuthor}
+${cleanContext}
+
+CRITICAL REQUIREMENT — VISUAL CAROUSEL CHARACTER LIMITS:
+This output is directly imported into The Leaders Post Studio to auto-generate a 5-slide visual carousel for Instagram and digital distribution. Each field has STRICT length limits to ensure typographic balance and prevent layout overflow.
+
+Return a SINGLE valid JSON object with EXACTLY these 12 fields and character lengths:
+
+\`\`\`json
+{
+  "title": "${cleanBook.length > 60 ? cleanBook.slice(0, 58) + '…' : cleanBook}",
+  "author": "Author full name(s) (15–45 characters)",
+  "tag": "UPPERCASE CATEGORY (e.g. POLITICAL ECONOMY, DEMOCRATIC THOUGHT, CONSTITUTIONAL LAW) (12–24 characters)",
+  "rating": "★★★★★ 5.0 or ★★★★½ 4.8",
+  "centralThesis": "The core thesis or foundational claim in 1-2 punchy sentences. (EXACTLY 140–185 characters. Do not exceed 190 chars)",
+  "purpose": "Why the book was written and the intellectual/historical dilemma it solves. (EXACTLY 120–175 characters)",
+  "argumentEvidence": "The decisive empirical, archival, or theoretical evidence presented. (EXACTLY 130–185 characters)",
+  "assumptionIdeology": "The underlying philosophical world-view or theoretical school. (EXACTLY 120–175 characters)",
+  "relevanceApplication": "Direct civic relevance to contemporary governance, policy, or Nepal. (EXACTLY 130–185 characters)",
+  "keyTakeaways": "1. First insight.\\n2. Second insight.\\n3. Third insight. (EXACTLY 150–210 characters total)",
+  "whyItMatters": "Why every democratic leader, policy thinker, and citizen must know this. (EXACTLY 120–175 characters)",
+  "criticSays": "A memorable, authoritative critical quote or verdict in quotes. (EXACTLY 80–150 characters)",
+  "accent": "#B71C1C"
+}
+\`\`\`
+
+GUIDELINES FOR QUALITY:
+1. Tone: Deeply intellectual, analytical, and authoritative. Avoid generic book summary fluff.
+2. Precision: Ensure each string's character length strictly obeys the character ranges specified above.
+3. Color Accent: Pick one appropriate hex: #B71C1C (Crimson/urgent), #C5A059 (Gold/historical), #1E3A8A (Navy/institutional), #0D5C3A (Green/republic), or #27272A (Graphite/philosophical).
+
+Output ONLY the JSON block.`;
+}
+
+export function parseBookReviewResponse(rawText: string): {
+    success: boolean;
+    data: BookReviewInput;
+    error?: string;
+    detectedCount: number;
+} {
+    const text = rawText.trim();
+    if (!text) {
+        return {
+            success: false,
+            data: {
+                title: "",
+                author: "",
+                tag: "POLITICAL THOUGHT",
+                rating: "★★★★★ 5.0",
+                centralThesis: "",
+                purpose: "",
+                argumentEvidence: "",
+                assumptionIdeology: "",
+                relevanceApplication: "",
+                keyTakeaways: "",
+                whyItMatters: "",
+                criticSays: "",
+                accent: "#B71C1C",
+            },
+            error: "Please paste a JSON or Markdown response.",
+            detectedCount: 0,
+        };
+    }
+
+    let parsedJson: any = null;
+
+    // Try finding JSON inside markdown code blocks
+    const codeBlockMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+    const jsonCandidate = codeBlockMatch ? codeBlockMatch[1] : text;
+
+    try {
+        parsedJson = JSON.parse(jsonCandidate);
+    } catch {
+        // Try finding outermost brackets { ... }
+        const start = text.indexOf("{");
+        const end = text.lastIndexOf("}");
+        if (start !== -1 && end > start) {
+            try {
+                parsedJson = JSON.parse(text.slice(start, end + 1));
+            } catch {
+                // Not valid JSON, will fallback to Markdown parser
+            }
+        }
+    }
+
+    if (parsedJson && typeof parsedJson === "object" && !Array.isArray(parsedJson)) {
+        const title = String(parsedJson.title || parsedJson.bookTitle || "").trim();
+        const author = String(parsedJson.author || parsedJson.authors || "").trim();
+        const tag = String(parsedJson.tag || parsedJson.category || "POLITICAL THOUGHT").trim().toUpperCase();
+        const rating = String(parsedJson.rating || "★★★★★ 5.0").trim();
+        const centralThesis = String(parsedJson.centralThesis || parsedJson.thesis || "").trim();
+        const purpose = String(parsedJson.purpose || "").trim();
+        const argumentEvidence = String(parsedJson.argumentEvidence || parsedJson.evidence || "").trim();
+        const assumptionIdeology = String(parsedJson.assumptionIdeology || parsedJson.ideology || "").trim();
+        const relevanceApplication = String(parsedJson.relevanceApplication || parsedJson.relevance || "").trim();
+        const keyTakeaways = Array.isArray(parsedJson.keyTakeaways)
+            ? parsedJson.keyTakeaways.join("\n").trim()
+            : String(parsedJson.keyTakeaways || "").trim();
+        const whyItMatters = String(parsedJson.whyItMatters || "").trim();
+        const criticSays = String(parsedJson.criticSays || parsedJson.verdict || "").trim();
+        const accent = String(parsedJson.accent || "#B71C1C").trim();
+
+        const count = [
+            title,
+            author,
+            tag,
+            rating,
+            centralThesis,
+            purpose,
+            argumentEvidence,
+            assumptionIdeology,
+            relevanceApplication,
+            keyTakeaways,
+            whyItMatters,
+            criticSays,
+        ].filter(Boolean).length;
+
+        return {
+            success: count >= 3,
+            data: {
+                title,
+                author,
+                tag,
+                rating,
+                centralThesis,
+                purpose,
+                argumentEvidence,
+                assumptionIdeology,
+                relevanceApplication,
+                keyTakeaways,
+                whyItMatters,
+                criticSays,
+                accent: /^#[\da-f]{6}$/i.test(accent) ? accent : "#B71C1C",
+            },
+            detectedCount: count,
+            error: count < 3 ? "Could not extract enough book review fields from the JSON." : undefined,
+        };
+    }
+
+    // Markdown / Key-Value fallback parser
+    const extractField = (patterns: RegExp[]): string => {
+        for (const pattern of patterns) {
+            const match = text.match(pattern);
+            if (match && match[1]) {
+                return match[1].trim();
+            }
+        }
+        return "";
+    };
+
+    const title = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Book\s+)?Title\s*:\s*([^\n]+)/i]);
+    const author = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Author|Authors|By)\s*:\s*([^\n]+)/i]);
+    const tag = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Tag|Category|Topic)\s*:\s*([^\n]+)/i]).toUpperCase() || "POLITICAL THOUGHT";
+    const rating = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Rating)\s*:\s*([^\n]+)/i]) || "★★★★★ 5.0";
+    const centralThesis = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Central\s+Thesis|Thesis)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const purpose = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Purpose)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const argumentEvidence = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Argument\s*&\s*Evidence|Arguments|Evidence)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const assumptionIdeology = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Assumption\s*&\s*Ideology|Assumptions|Ideology)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const relevanceApplication = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Relevance\s*&\s*Application|Relevance|Application)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const keyTakeaways = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Key\s+Takeaways|Takeaways)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const whyItMatters = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Why\s+It\s+Matters|Why\s+Does\s+It\s+Matter)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+    const criticSays = extractField([/(?:^|\n)\s*(?:#+\s*)?(?:Critic\s+Says|Critic|Verdict)\s*:\s*([\s\S]+?)(?=\n\s*(?:[A-Z][a-zA-Z\s]{2,}:|#)|$)/i]);
+
+    const count = [
+        title,
+        author,
+        tag,
+        rating,
+        centralThesis,
+        purpose,
+        argumentEvidence,
+        assumptionIdeology,
+        relevanceApplication,
+        keyTakeaways,
+        whyItMatters,
+        criticSays,
+    ].filter(Boolean).length;
+
+    return {
+        success: count >= 3,
+        data: {
+            title,
+            author,
+            tag,
+            rating,
+            centralThesis,
+            purpose,
+            argumentEvidence,
+            assumptionIdeology,
+            relevanceApplication,
+            keyTakeaways,
+            whyItMatters,
+            criticSays,
+            accent: "#B71C1C",
+        },
+        detectedCount: count,
+        error: count < 3 ? "Could not parse review data from the text. Make sure to paste the AI's JSON or Markdown output." : undefined,
+    };
+}
+
