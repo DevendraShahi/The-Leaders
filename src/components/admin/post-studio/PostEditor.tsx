@@ -45,6 +45,7 @@ import { imageEffectControls, setImageEffect } from '@/lib/post-studio/image-eff
 import { moveImage, replaceImage, resetImageAdjustments, setImageFit, wheelMovement } from '@/lib/post-studio/image-positioning';
 import { artworkBytes, download } from '@/lib/post-studio/export';
 import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip, generateInstagramCaption } from '@/lib/post-studio/carousel';
+import { storyGradients, storyColors } from '@/lib/post-studio/story-backgrounds';
 import { Artwork } from './Artwork';
 import { ColorPicker, Section, Slider } from './Controls';
 import BookReviewModal from './BookReviewModal';
@@ -139,7 +140,13 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         designRef.current = next; dirty.current = true;
         setDesign(next); setSaveState('saving'); setIssue(''); setNotice('');
         setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
-    }, []);
+        setSlides(prevSlides => {
+            if (!prevSlides.length || !prevSlides[activeSlideIndex]) return prevSlides;
+            const updated = [...prevSlides];
+            updated[activeSlideIndex] = { ...updated[activeSlideIndex], design: next };
+            return updated;
+        });
+    }, [activeSlideIndex]);
     const begin = useCallback(() => { if (!interaction.current) interaction.current = designRef.current; }, []);
     const end = useCallback(() => {
         const next = commitInteraction(interaction.current, designRef.current, undoRef.current);
@@ -371,10 +378,13 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             if (!file.type.startsWith('image/') || file.type === 'image/svg+xml') throw new Error('Choose a PNG, JPEG, WebP or another raster photo.');
             if (file.size > 25 * 1024 * 1024) throw new Error('Choose an image smaller than 25 MB.');
             const uri = await new Promise<string>((resolve, reject) => {
-                const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = () => reject(new Error('Could not read photo.')); reader.readAsDataURL(file);
+                const reader = new FileReader(); 
+                reader.onload = () => resolve(String(reader.result)); 
+                reader.onerror = () => reject(new Error('Could not read photo.')); 
+                reader.readAsDataURL(file);
             });
-            const image = new Image(); image.src = uri; await image.decode();
             apply(current => replaceImage(current, uri, keepAdjustments));
+            setNotice('Photo uploaded and applied to canvas');
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add photo.'); }
     };
 
@@ -426,6 +436,43 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         document.body.appendChild(link);
         link.click();
         link.remove();
+    };
+
+    // Apply current slide's background image, adjustments, and gradient/color across all carousel slides
+    const handleApplyBackgroundToAllSlides = async () => {
+        if (!slides.length) return;
+        const bgProps: Partial<PostDesign> = {
+            imageUri: design.imageUri,
+            imageFit: design.imageFit,
+            imageTone: design.imageTone,
+            imageZoom: design.imageZoom,
+            imageOffsetX: design.imageOffsetX,
+            imageOffsetY: design.imageOffsetY,
+            imageBlur: design.imageBlur,
+            imageVintage: design.imageVintage,
+            imageFeather: design.imageFeather,
+            backgroundColor: design.backgroundColor ?? null,
+            backgroundGradient: design.backgroundGradient ?? null,
+        };
+
+        const updated = slides.map(s => ({
+            ...s,
+            design: {
+                ...s.design,
+                ...bgProps,
+            },
+        }));
+
+        setSlides(updated);
+        dirty.current = true;
+        setNotice(`Background applied to all ${slides.length} slides!`);
+        try {
+            await Promise.all(
+                updated.map(s => updateDraft(scope, s.id, { design: s.design }))
+            );
+        } catch {
+            // Keep in-memory sync
+        }
     };
 
     // Export single slide
@@ -981,6 +1028,17 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                     Upload
                                 </button>
                             </div>
+                            {slides.length > 1 && (
+                                <button
+                                    type="button"
+                                    className={styles.applyAllSlidesBtn}
+                                    onClick={handleApplyBackgroundToAllSlides}
+                                    title="Apply current slide's background image, adjustments, and colors across all carousel slides"
+                                >
+                                    <Copy size={13} />
+                                    <span>Apply Background to All Slides ({slides.length})</span>
+                                </button>
+                            )}
                         </div>
 
                         <div className={styles.field}>
@@ -1063,6 +1121,89 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             </div>
                         </div>
                         {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
+                        
+                        {/* Story Backgrounds & Gradients (Instagram Feature) */}
+                        <Section title="Story Backgrounds (Gradients & Colors)">
+                            <p className={styles.subtle} style={{ fontSize: 11, margin: '0 0 10px' }}>
+                                Instagram story-style vibrant gradients and editorial solid colors.
+                            </p>
+
+                            {/* Gradients Row */}
+                            <div className={styles.storySectionTitle}>
+                                <span>STORY GRADIENTS</span>
+                                {(design.backgroundGradient || design.backgroundColor) && (
+                                    <button
+                                        type="button"
+                                        className={styles.clearBgBtn}
+                                        onClick={() => apply(current => ({ ...current, backgroundGradient: null, backgroundColor: null }))}
+                                        title="Reset to default dark background"
+                                    >
+                                        Reset Default
+                                    </button>
+                                )}
+                            </div>
+                            <div className={styles.storyGradientGrid}>
+                                {storyGradients.map(preset => {
+                                    const isActive = design.backgroundGradient === preset.value;
+                                    return (
+                                        <button
+                                            key={preset.id}
+                                            type="button"
+                                            className={`${styles.storyGradientCircle} ${isActive ? styles.storyGradientCircleActive : ''}`}
+                                            style={{ background: preset.value }}
+                                            onClick={() => {
+                                                apply(current => ({
+                                                    ...current,
+                                                    backgroundGradient: preset.value,
+                                                    backgroundColor: null,
+                                                }));
+                                            }}
+                                            title={preset.label}
+                                            aria-label={preset.label}
+                                        >
+                                            {isActive && <Check size={14} color="#fff" strokeWidth={3} />}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Solid Colors Row */}
+                            <div className={styles.storySectionTitle} style={{ marginTop: 14 }}>
+                                <span>SOLID COLORS</span>
+                            </div>
+                            <div className={styles.storyColorGrid}>
+                                {storyColors.map(preset => {
+                                    const isActive = design.backgroundColor === preset.value && !design.backgroundGradient;
+                                    return (
+                                        <button
+                                            key={preset.id}
+                                            type="button"
+                                            className={`${styles.storyColorCircle} ${isActive ? styles.storyColorCircleActive : ''}`}
+                                            style={{ background: preset.value }}
+                                            onClick={() => {
+                                                apply(current => ({
+                                                    ...current,
+                                                    backgroundColor: preset.value,
+                                                    backgroundGradient: null,
+                                                }));
+                                            }}
+                                            title={preset.label}
+                                            aria-label={preset.label}
+                                        >
+                                            {isActive && <Check size={14} color={preset.value === '#ffffff' ? '#000' : '#fff'} strokeWidth={3} />}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+
+                            {design.imageUri && (design.backgroundGradient || design.backgroundColor) && (
+                                <div className={styles.bgPhotoNotice}>
+                                    <Sparkles size={13} color="var(--studio-red)" />
+                                    <span>Photo is active. Set crop to &quot;Fit whole photo&quot; to reveal background around photo, or remove photo to showcase gradient full-screen.</span>
+                                </div>
+                            )}
+                        </Section>
+
                         <Section title="Image effects"><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>Reset image effects</button>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}</Section>
                         <div className={styles.field}><span>Image tone</span><div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div></div>
                         <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>

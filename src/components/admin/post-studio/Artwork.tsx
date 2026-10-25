@@ -59,11 +59,12 @@ export const Artwork = forwardRef<HTMLDivElement, {
         onClick: () => onSelect(layer), onKeyDown: (event: React.KeyboardEvent) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(layer); } },
     } : {};
     const selectedClass = (layer: PostLayer) => onSelect && selected === layer ? styles.selected : '';
-    return <div ref={ref} className={styles.artwork} style={{ width: 360, height }} data-testid="post-artwork">
+    const backgroundStyle = design.backgroundGradient || design.backgroundColor || '#111318';
+    return <div ref={ref} className={styles.artwork} style={{ width: 360, height, background: backgroundStyle }} data-testid="post-artwork">
         <Photo design={design} height={height} />
-        {!hidden('visual') && <div className={styles.tint} style={{ background: design.imageTone === 'clear' ? 'rgba(7,9,13,.18)' : design.imageTone === 'warm' ? 'rgba(61,28,14,.38)' : 'rgba(5,7,10,.52)' }} />}
+        {!hidden('visual') && design.imageUri && <div className={styles.tint} style={{ background: design.imageTone === 'clear' ? 'rgba(7,9,13,.18)' : design.imageTone === 'warm' ? 'rgba(61,28,14,.38)' : 'rgba(5,7,10,.52)' }} />}
         {onSelect && <div className={styles.visualHit} {...select('visual')} />}
-        {!design.imageUri && !hidden('visual') && onChooseImage && <button className={styles.addPhoto} onClick={onChooseImage}>＋ ADD VISUAL</button>}
+        {!design.imageUri && !design.backgroundGradient && !design.backgroundColor && !hidden('visual') && onChooseImage && <button className={styles.addPhoto} onClick={onChooseImage}>＋ ADD VISUAL</button>}
         <div className={styles.artworkAccent} style={{ background: design.accent }} />
         <div className={styles.artworkContent}>
             <div className={styles.artworkTop}>

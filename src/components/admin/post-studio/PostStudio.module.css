@@ -201,7 +201,26 @@
 .dPadBtn:disabled{opacity:.35;cursor:not-allowed}
 
 
+/* Apply Background Across Carousel Slides Button */
+.applyAllSlidesBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;width:100%;height:34px;padding:0 12px;border-radius:6px;border:1px dashed var(--studio-red);background:rgba(183,28,28,.04);color:var(--studio-red);font-size:11px;font-family:Onest_600SemiBold,sans-serif;cursor:pointer;transition:all .15s ease}
+.applyAllSlidesBtn:hover{background:rgba(183,28,28,.1);border-style:solid}
+
+/* Story Backgrounds & Gradients */
+.storySectionTitle{display:flex;align-items:center;justify-content:space-between;font-size:10px;font-family:Onest_700Bold,sans-serif;color:var(--studio-secondary);letter-spacing:.6px;margin-bottom:8px}
+.clearBgBtn{background:none;border:none;color:var(--studio-secondary);font-size:10px;cursor:pointer;padding:2px 4px;text-decoration:underline}
+.clearBgBtn:hover{color:var(--studio-red)}
+.storyGradientGrid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.storyGradientCircle{width:38px;height:38px;border-radius:50%;border:2px solid transparent;cursor:pointer;display:grid;place-items:center;transition:all .15s ease;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.storyGradientCircle:hover{transform:scale(1.1);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.storyGradientCircleActive{outline:2px solid var(--studio-red);outline-offset:2px;transform:scale(1.05)}
+.storyColorGrid{display:grid;grid-template-columns:repeat(9,1fr);gap:6px}
+.storyColorCircle{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.2);cursor:pointer;display:grid;place-items:center;transition:all .15s ease;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.15)}
+.storyColorCircle:hover{transform:scale(1.15)}
+.storyColorCircleActive{outline:2px solid var(--studio-red);outline-offset:2px;transform:scale(1.08)}
+.bgPhotoNotice{display:flex;align-items:flex-start;gap:8px;background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:6px;padding:8px 10px;margin-top:10px;font-size:11px;color:var(--studio-secondary);line-height:1.35}
+
 /* Instagram Live Simulator Modal */
+.instagramPhoneMobile{border-radius:12px!important;box-shadow:0 4px 20px rgba(0,0,0,.25)!important;border:1px solid var(--studio-border)!important;width:100%!important;max-width:400px!important}
 .instagramModalOverlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:grid;place-items:center;z-index:9999;padding:16px;overflow-y:auto}
 .instagramModalShell{position:relative;max-width:880px;width:100%;max-height:94vh;display:flex;flex-direction:column;align-items:center}
 .instagramModalClose{position:absolute;top:-8px;right:-8px;width:38px;height:38px;border-radius:999px;background:var(--studio-surface);border:1px solid var(--studio-border);color:var(--studio-text);display:grid;place-items:center;cursor:pointer;z-index:10;box-shadow:0 4px 12px #00000030}
@@ -333,8 +352,18 @@
     /* Modals & Dialogs */
     .bookModalDialog{padding:14px;gap:10px;max-height:94dvh}
     .mediaModalDialog{padding:14px;gap:10px;max-height:94dvh}
-    .instagramContentRow{flex-direction:column;align-items:center}
-    .instagramSideControls{width:100%;max-width:350px}
+    .instagramModalOverlay{padding:8px 6px}
+    .instagramModalShell{max-height:98dvh;width:100%}
+    .instagramModalClose{top:6px;right:6px;width:32px;height:32px;background:rgba(0,0,0,.7);color:#fff;border:none}
+    .instagramContentRow{flex-direction:column;align-items:center;gap:12px}
+    .instagramPhone{border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.25);border:1px solid var(--studio-border);width:100%;max-width:390px}
+    .phoneDynamicIsland{display:none!important}
+    .instagramStatusBar{display:none!important}
+    .instagramSideControls{width:100%;max-width:390px;padding:12px;gap:12px}
+    .storyGradientGrid{grid-template-columns:repeat(6,1fr);gap:6px}
+    .storyGradientCircle{width:32px;height:32px}
+    .storyColorGrid{grid-template-columns:repeat(9,1fr);gap:4px}
+    .storyColorCircle{width:24px;height:24px}
     .alertBanner{padding:6px 10px;font-size:11px;gap:6px}
     .alertMessage{font-size:11px;gap:6px}
     .alertActionsGroup{gap:4px}

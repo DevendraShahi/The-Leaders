@@ -47,6 +47,8 @@ export type PostDesign = {
   textPositions: TextPositions;
   textColors: TextColors;
   textTypography: Record<PostTextLayer, TextTypography>;
+  backgroundColor?: string | null;
+  backgroundGradient?: string | null;
 };
 
 export const defaultPostDesign: PostDesign = {
@@ -74,6 +76,8 @@ export const defaultPostDesign: PostDesign = {
   textPositions: defaultTextPositions(),
   textColors: defaultTextColors(),
   textTypography: defaultTextTypography(),
+  backgroundColor: null,
+  backgroundGradient: null,
 };
 
 export const postTemplates: { key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }[] = [

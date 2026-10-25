@@ -20,6 +20,8 @@ export const postDesignSchema = z.object({
     imageBlur: z.number().min(0).max(100).default(0),
     imageVintage: z.number().min(0).max(100).default(0),
     imageFeather: z.number().min(0).max(100).default(0),
+    backgroundColor: z.string().nullable().optional(),
+    backgroundGradient: z.string().nullable().optional(),
 });
 const draftSchema = z.object({ id: z.string().min(1), name: z.string().trim().min(1).max(100), createdAt: z.string().datetime(), updatedAt: z.string().datetime(), trashedAt: z.string().datetime().nullable(), design: postDesignSchema });
 const librarySchema = z.object({ version: z.literal(1), drafts: z.array(draftSchema) });

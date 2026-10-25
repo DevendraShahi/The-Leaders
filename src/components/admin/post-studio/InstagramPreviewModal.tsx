@@ -20,6 +20,7 @@ import {
     BatteryMedium 
 } from "lucide-react";
 import type { PostDraft } from "@/lib/post-studio/drafts";
+import { postOutputDimensions } from "@/lib/post-studio/types";
 import { Artwork } from "./Artwork";
 import { generateInstagramCaption } from "@/lib/post-studio/carousel";
 import styles from "./PostStudio.module.css";
@@ -95,13 +96,30 @@ export default function InstagramPreviewModal({
         setTouchStart(null);
     };
 
-    // Calculate dimensions
-    const phoneWidth = 350;
-    const isPortrait = design.format === "portrait";
-    const isSquare = design.format === "square";
-    const isStory = design.format === "story";
-    const mediaHeight = isStory ? 520 : isPortrait ? 438 : isSquare ? 350 : 260;
-    const scale = phoneWidth / 360;
+    const [isMobile, setIsMobile] = useState(false);
+    const [stageWidth, setStageWidth] = useState(350);
+
+    useEffect(() => {
+        const updateWidth = () => {
+            const mobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+            setIsMobile(mobile);
+            if (mobile) {
+                const available = Math.min(380, Math.max(280, window.innerWidth - 32));
+                setStageWidth(available);
+            } else {
+                setStageWidth(350);
+            }
+        };
+        updateWidth();
+        window.addEventListener("resize", updateWidth);
+        return () => window.removeEventListener("resize", updateWidth);
+    }, []);
+
+    // Calculate dimensions proportionally to prevent preview getting out of frame
+    const [w, h] = postOutputDimensions[design.format];
+    const aspectRatio = h / w;
+    const mediaHeight = Math.round(stageWidth * aspectRatio);
+    const scale = stageWidth / 360;
 
     return (
         <div className={styles.instagramModalOverlay} role="dialog" aria-modal="true" aria-label="Instagram Feed Simulator">
@@ -117,20 +135,22 @@ export default function InstagramPreviewModal({
                 </button>
 
                 <div className={styles.instagramContentRow}>
-                    {/* The Realistic Phone Mockup */}
+                    {/* The Realistic Phone Mockup on Desktop / Clean Responsive Card on Mobile */}
                     <div className={styles.instagramPhoneWrapper}>
-                        <div className={styles.instagramPhone}>
-                            {/* Phone Notch / Island */}
-                            <div className={styles.phoneDynamicIsland} />
+                        <div className={`${styles.instagramPhone} ${isMobile ? styles.instagramPhoneMobile : ''}`}>
+                            {/* Phone Notch / Island - Desktop Only */}
+                            {!isMobile && <div className={styles.phoneDynamicIsland} />}
 
-                            {/* Phone Status Bar */}
-                            <div className={styles.instagramStatusBar}>
-                                <span>9:41</span>
-                                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                    <Wifi size={13} />
-                                    <BatteryMedium size={15} />
+                            {/* Phone Status Bar - Desktop Only */}
+                            {!isMobile && (
+                                <div className={styles.instagramStatusBar}>
+                                    <span>9:41</span>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                        <Wifi size={13} />
+                                        <BatteryMedium size={15} />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             {/* Instagram App Header */}
                             <div className={styles.instagramAppHeader}>
@@ -164,7 +184,7 @@ export default function InstagramPreviewModal({
                             {/* Post Media Stage with Carousel */}
                             <div 
                                 className={styles.instagramMediaStage}
-                                style={{ width: phoneWidth, height: mediaHeight }}
+                                style={{ width: stageWidth, height: mediaHeight }}
                                 onTouchStart={handleTouchStart}
                                 onTouchEnd={handleTouchEnd}
                             >
