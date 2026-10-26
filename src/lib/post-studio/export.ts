@@ -50,10 +50,45 @@ export async function artworkBytes(node: HTMLElement, format: PostFormat) {
     const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('Could not create PNG.')), 'image/png'));
     return new Uint8Array(await blob.arrayBuffer());
 }
-export function download(bytes: Uint8Array, filename: string, type = 'image/png') {
-    const url = URL.createObjectURL(new Blob([bytes as BlobPart], { type }));
-    const link = document.createElement('a');
-    link.href = url; link.download = filename;
-    document.body.appendChild(link); link.click(); link.remove();
+export function isMobileDevice(): boolean {
+    if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;
+    const ua = navigator.userAgent || '';
+    const mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+    const touchPoints = typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 0;
+    const narrowScreen = typeof window.innerWidth === 'number' && window.innerWidth <= 820;
+    return mobileUA || (narrowScreen && touchPoints);
+}
+
+export function canNativeShareFile(file: File): boolean {
+    if (typeof navigator === 'undefined') return false;
+    if (typeof navigator.share !== 'function' || typeof navigator.canShare !== 'function') return false;
+    try {
+        return navigator.canShare({ files: [file] });
+    } catch {
+        return false;
+    }
+}
+
+export function bytesToFile(bytes: Uint8Array, filename: string, type = 'image/png'): File {
+    return new File([bytes as BlobPart], filename, { type });
+}
+
+export function download(bytes: Uint8Array, filename: string, type = 'image/png'): string {
+    const blob = new Blob([bytes as BlobPart], { type });
+    const url = URL.createObjectURL(blob);
+    try {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.rel = 'noopener';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    } catch {
+        if (typeof window !== 'undefined') {
+            window.open(url, '_blank');
+        }
+    }
     setTimeout(() => URL.revokeObjectURL(url), 60000);
+    return url;
 }

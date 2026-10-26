@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, Share2, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
+import { AlertTriangle, ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Info, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, RotateCcw, Share2, ShieldAlert, Sparkles, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
 import { createDraft, listDrafts, saveDraftCollection, setDraftTrashed, type PostDraft } from '@/lib/post-studio/drafts';
 import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer, type PlacedImage, type PlacedImagePlacement, type PlacedImageLayer } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
@@ -11,7 +11,7 @@ import { setTextColor } from '@/lib/post-studio/text-colors';
 import { setTextTypography } from '@/lib/post-studio/typography';
 import { imageEffectControls, setImageEffect } from '@/lib/post-studio/image-effects';
 import { moveImage, replaceImage, resetImageAdjustments, setImageFit, wheelMovement } from '@/lib/post-studio/image-positioning';
-import { artworkBytes, download } from '@/lib/post-studio/export';
+import { artworkBytes, download, isMobileDevice, canNativeShareFile, bytesToFile } from '@/lib/post-studio/export';
 import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip, generateInstagramCaption } from '@/lib/post-studio/carousel';
 import { storyGradients, storyColors } from '@/lib/post-studio/story-backgrounds';
 import { Artwork } from './Artwork';
@@ -58,6 +58,19 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saved');
     const [issue, setIssue] = useState(''), [notice, setNotice] = useState(''), [imageIssue, setImageIssue] = useState('');
     const [overflow, setOverflow] = useState(false), [exporting, setExporting] = useState(false);
+    const [exportAlert, setExportAlert] = useState<{
+        title: string;
+        message: string;
+        type?: 'warning' | 'error' | 'info' | 'permission';
+        action?: 'fitText' | 'retryLoading' | 'retrySave' | 'goToMedia';
+        actionLabel?: string;
+    } | null>(null);
+    const [mobileExportResult, setMobileExportResult] = useState<{
+        previewUrl: string;
+        file: File;
+        filename: string;
+        caption: string;
+    } | null>(null);
     const [mediaModalOpen, setMediaModalOpen] = useState(false), [previewOpen, setPreviewOpen] = useState(false);
     const [mediaSearchQuery, setMediaSearchQuery] = useState('');
     const [instagramShareOpen, setInstagramShareOpen] = useState(false);
@@ -96,6 +109,66 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [outputW, outputH] = postOutputDimensions[design.format];
     const referenceH = 360 * outputH / outputW;
     const scale = Math.max(.05, Math.min((stageSize.width - 16) / 360, (stageSize.height - 16) / referenceH, 3));
+
+    const getExportBlockReason = (options?: { isAll?: boolean }): {
+        title: string;
+        message: string;
+        type?: 'warning' | 'error' | 'info' | 'permission';
+        action?: 'fitText' | 'retryLoading' | 'retrySave' | 'goToMedia';
+        actionLabel?: string;
+    } | null => {
+        if (!ready) {
+            return {
+                title: 'Editor Still Loading',
+                message: 'Slide components, offscreen renderers, and typography fonts are still preparing. Please wait a moment or tap Retry.',
+                type: 'info',
+                action: 'retryLoading',
+                actionLabel: 'Retry Loading'
+            };
+        }
+        if (busy) {
+            return {
+                title: 'Editor Busy',
+                message: 'Draft changes are currently saving to storage. Please wait a moment before exporting.',
+                type: 'info',
+                action: 'retrySave',
+                actionLabel: 'Check Save Status'
+            };
+        }
+        if (exporting) {
+            return {
+                title: 'Export in Progress',
+                message: 'An export process is already running. Please allow it to finish before starting another.',
+                type: 'info'
+            };
+        }
+        if (!canExport) {
+            return {
+                title: 'Export Access Restricted',
+                message: 'Your account has permission to view and edit drafts, but social post graphic export is restricted. Contact a superadmin or administrator to enable export rights.',
+                type: 'permission'
+            };
+        }
+        if (!options?.isAll && imageIssue) {
+            return {
+                title: 'Image Unavailable',
+                message: imageIssue || 'A background photo or overlay image on this slide failed to load. Please replace it in the Media tab before exporting.',
+                type: 'error',
+                action: 'goToMedia',
+                actionLabel: 'Open Media Tab'
+            };
+        }
+        if (!options?.isAll && overflow) {
+            return {
+                title: 'Content Text Overflow',
+                message: 'The text on this slide exceeds safe boundary or line limits. If exported now, words will be clipped or cut off. Auto-fit will automatically adjust font sizing to fit safely.',
+                type: 'warning',
+                action: 'fitText',
+                actionLabel: 'Auto-fit Text Now'
+            };
+        }
+        return null;
+    };
 
     useEffect(() => {
         let active = true;
@@ -387,26 +460,112 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         finally { operation.current = false; setBusy(false); }
     };
     const exportPost = async (index = activeSlideIndex) => {
+        const blocker = getExportBlockReason();
+        if (blocker) {
+            setExportAlert(blocker);
+            return;
+        }
         const item = slides[index], node = item?.id === activeId ? exportRef.current : exportNodes.current.get(item?.id);
-        if (!item || !node || exporting || !canExport) return;
+        if (!item) {
+            setExportAlert({
+                title: 'Slide Unavailable',
+                message: `Slide ${index + 1} could not be located in the carousel. Please reselect the slide and try again.`,
+                type: 'error'
+            });
+            return;
+        }
+        if (!node) {
+            setExportAlert({
+                title: 'Slide Renderer Preparing',
+                message: `The visual renderer for Slide ${index + 1} is still preparing. Please retry in a few seconds.`,
+                type: 'info',
+                action: 'retryLoading',
+                actionLabel: 'Retry'
+            });
+            return;
+        }
         setExporting(true); setIssue('');
         try {
-            if (!await persist()) return;
+            const saved = await persist();
+            if (!saved) {
+                setExportAlert({
+                    title: 'Save Required Before Export',
+                    message: 'Your recent draft changes could not be saved to storage before exporting. Please check your connection and retry.',
+                    type: 'error',
+                    action: 'retrySave',
+                    actionLabel: 'Retry Save'
+                });
+                return;
+            }
             const bytes = await artworkBytes(node, item.design.format);
-            download(bytes, `the-leaders-page-${index + 1}.png`); setNotice(`Page ${index + 1} downloaded.`);
-        } catch (error) { setIssue(error instanceof Error ? error.message : 'Export failed.'); }
-        finally { setExporting(false); }
+            const filename = `the-leaders-page-${index + 1}.png`;
+            const file = bytesToFile(bytes, filename, 'image/png');
+            const caption = generateInstagramCaption(slidesRef.current);
+
+            if (isMobileDevice()) {
+                const previewUrl = URL.createObjectURL(new Blob([bytes as BlobPart], { type: 'image/png' }));
+                setMobileExportResult({
+                    previewUrl,
+                    file,
+                    filename,
+                    caption
+                });
+                setNotice(`Page ${index + 1} exported. Ready for mobile saving.`);
+            } else {
+                download(bytes, filename);
+                setNotice(`Page ${index + 1} downloaded.`);
+            }
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Export failed.';
+            setIssue(message);
+            setExportAlert({
+                title: 'Export Failed',
+                message,
+                type: 'error',
+                action: message.toLowerCase().includes('clipped') || message.toLowerCase().includes('overflow') ? 'fitText' : undefined,
+                actionLabel: message.toLowerCase().includes('clipped') || message.toLowerCase().includes('overflow') ? 'Auto-fit Text Now' : undefined
+            });
+        } finally {
+            setExporting(false);
+        }
     };
     const exportAll = async () => {
-        if (exporting || !canExport) return;
+        const blocker = getExportBlockReason({ isAll: true });
+        if (blocker) {
+            setExportAlert(blocker);
+            return;
+        }
         setExporting(true); setIssue('');
         try {
-            if (!await persist()) return;
+            const saved = await persist();
+            if (!saved) {
+                setExportAlert({
+                    title: 'Save Required Before Export',
+                    message: 'Your recent draft changes could not be saved before exporting all slides.',
+                    type: 'error',
+                    action: 'retrySave',
+                    actionLabel: 'Retry Save'
+                });
+                return;
+            }
             const nodes = slides.map(item => exportNodes.current.get(item.id));
-            if (nodes.some(node => !node)) throw new Error('Pages are still preparing. Retry export.');
-            await exportCarouselZip(nodes as HTMLDivElement[], slides, 'the-leaders-carousel.zip'); setNotice('Carousel ZIP downloaded.');
-        } catch (error) { setIssue(error instanceof Error ? error.message : 'Carousel export failed.'); }
-        finally { setExporting(false); }
+            const missingIndex = nodes.findIndex(node => !node);
+            if (missingIndex !== -1) {
+                throw new Error(`Slide ${missingIndex + 1} is still preparing. Please retry in a few moments.`);
+            }
+            await exportCarouselZip(nodes as HTMLDivElement[], slides, 'the-leaders-carousel.zip');
+            setNotice('Carousel ZIP downloaded.');
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Carousel export failed.';
+            setIssue(message);
+            setExportAlert({
+                title: 'Carousel Export Failed',
+                message,
+                type: 'error'
+            });
+        } finally {
+            setExporting(false);
+        }
     };
     const copyCaption = async () => {
         try { await navigator.clipboard.writeText(generateInstagramCaption(slidesRef.current)); setNotice('Caption copied.'); }
@@ -532,19 +691,60 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     <Instagram size={16} />
                     <span className={styles.actionLabel}>Preview</span>
                 </button>
-                {slides.length > 1 && <button className={styles.button} aria-label="Export carousel ZIP" disabled={!ready || busy || exporting || !canExport} onClick={() => void exportAll()}>
+                {slides.length > 1 && <button
+                    className={`${styles.button} ${!canExport ? styles.btnActionBlocked : ''}`}
+                    aria-label="Export carousel ZIP"
+                    title={!canExport ? 'Export restricted: permissions required' : 'Export carousel ZIP'}
+                    disabled={exporting}
+                    onClick={() => {
+                        const blocker = getExportBlockReason({ isAll: true });
+                        if (blocker) setExportAlert(blocker);
+                        else void exportAll();
+                    }}
+                >
                     <Layers3 size={16} />
                     <span>Export all</span>
                 </button>}
-                <button className={styles.button} aria-label="Share to Instagram" title="Share to Instagram" aria-expanded={instagramShareOpen} disabled={!ready || busy || exporting || !canExport} onClick={() => setInstagramShareOpen(value => !value)}>
+                <button
+                    className={`${styles.button} ${!canExport ? styles.btnActionBlocked : ''}`}
+                    aria-label="Share to Instagram"
+                    title={!canExport ? 'Export restricted: permissions required' : 'Share to Instagram'}
+                    aria-expanded={instagramShareOpen}
+                    disabled={exporting}
+                    onClick={() => {
+                        if (!canExport) {
+                            setExportAlert({
+                                title: 'Export Permission Required',
+                                message: 'Your account does not have social post export permissions. Contact an administrator to enable sharing.',
+                                type: 'permission'
+                            });
+                            return;
+                        }
+                        setInstagramShareOpen(value => !value);
+                    }}
+                >
                     <Share2 size={16} /><span className={styles.actionLabel}>Share</span>
                 </button>
-                <button className={styles.primary} aria-label="Export current page PNG" disabled={!ready || busy || exporting || !canExport || Boolean(imageIssue) || overflow} onClick={() => void exportPost()}>
+                <button
+                    className={`${styles.primary} ${(overflow || !canExport || Boolean(imageIssue) || !ready || busy) ? styles.btnActionBlocked : ''}`}
+                    aria-label="Export current page PNG"
+                    title={overflow ? 'Content overflowing - tap to fix' : !canExport ? 'Export restricted' : 'Export PNG'}
+                    disabled={exporting}
+                    onClick={() => {
+                        const blocker = getExportBlockReason();
+                        if (blocker) setExportAlert(blocker);
+                        else void exportPost();
+                    }}
+                >
                     <Download size={16} />
                     <span>{exporting ? 'Exporting…' : 'Export PNG'}</span>
                 </button>
             </div>
         </header>
+        {!canExport && <div className={styles.permissionAlertBanner} role="status">
+            <ShieldAlert size={15} />
+            <span>Exporting is restricted for this account (View & Edit only). Tap export anytime to view details or contact an admin.</span>
+        </div>}
         {instagramShareOpen && <InstagramSharePanel slides={slides} activeIndex={activeSlideIndex}
             getNode={id => exportNodes.current.get(id)} persist={persist}
             disabled={!ready || busy || exporting || !canExport} setPreparing={setExporting} onClose={() => setInstagramShareOpen(false)} />}
@@ -1737,7 +1937,15 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 <button className={styles.button} onClick={() => void copyCaption()}>
                                     <Copy size={14} />Copy carousel caption</button>
                                 <p className={styles.captionPreviewBox}>{generateInstagramCaption(slides)}</p>
-                                <button className={styles.primary} disabled={!canExport} onClick={() => void exportAll()}>
+                                <button
+                                    className={`${styles.primary} ${!canExport ? styles.btnActionBlocked : ''}`}
+                                    disabled={exporting}
+                                    onClick={() => {
+                                        const blocker = getExportBlockReason({ isAll: true });
+                                        if (blocker) setExportAlert(blocker);
+                                        else void exportAll();
+                                    }}
+                                >
                                     <Download size={15} />Download carousel ZIP</button>
                             </Section>
                         </>}
@@ -1786,5 +1994,182 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             setAddAsOverlay(false);
         }} initialQuery={mediaSearchQuery || design.headline.slice(0, 40) || design.category} />}
         {previewOpen && <InstagramPreviewModal slides={slides} activeSlideIndex={activeSlideIndex} onSelectSlide={switchSlide} onClose={() => setPreviewOpen(false)} onExportCurrent={exportPost} onExportAll={slides.length > 1 ? exportAll : undefined} />}
+        {exportAlert && <Modal labelledBy="export-alert-title" onClose={() => setExportAlert(null)}>
+            <div className={styles.exportAlertModal}>
+                <div className={styles.exportAlertHeader}>
+                    <div className={`${styles.exportAlertIcon} ${exportAlert.type === 'permission' ? styles.alertIconPermission : exportAlert.type === 'error' ? styles.alertIconError : styles.alertIconWarning}`}>
+                        {exportAlert.type === 'permission' ? <ShieldAlert size={22} /> : exportAlert.type === 'info' ? <Info size={22} /> : <AlertTriangle size={22} />}
+                    </div>
+                    <div>
+                        <h2 id="export-alert-title">{exportAlert.title}</h2>
+                        <span className={styles.exportAlertBadge}>
+                            {exportAlert.type === 'permission' ? 'Permission Required' : exportAlert.type === 'warning' ? 'Action Needed' : 'Notice'}
+                        </span>
+                    </div>
+                </div>
+                <p className={styles.exportAlertMessage}>{exportAlert.message}</p>
+                <div className={styles.exportAlertActions}>
+                    {exportAlert.action === 'fitText' && (
+                        <button
+                            className={styles.primary}
+                            onClick={() => {
+                                fitText();
+                                setExportAlert(null);
+                                setNotice('Text font sizes adjusted to fit safe line boundaries.');
+                            }}
+                        >
+                            <Sparkles size={15} />
+                            <span>{exportAlert.actionLabel || 'Auto-fit Text Now'}</span>
+                        </button>
+                    )}
+                    {exportAlert.action === 'goToMedia' && (
+                        <button
+                            className={styles.primary}
+                            onClick={() => {
+                                setTool('media');
+                                setExportAlert(null);
+                            }}
+                        >
+                            <Upload size={15} />
+                            <span>Open Media Tab</span>
+                        </button>
+                    )}
+                    {exportAlert.action === 'retryLoading' && (
+                        <button
+                            className={styles.primary}
+                            onClick={() => {
+                                setExportAlert(null);
+                                setLoadAttempt(v => v + 1);
+                            }}
+                        >
+                            <RotateCcw size={15} />
+                            <span>Retry Loading</span>
+                        </button>
+                    )}
+                    {exportAlert.action === 'retrySave' && (
+                        <button
+                            className={styles.primary}
+                            onClick={async () => {
+                                setExportAlert(null);
+                                await persist();
+                            }}
+                        >
+                            <RotateCcw size={15} />
+                            <span>Retry Save</span>
+                        </button>
+                    )}
+                    <button className={styles.button} onClick={() => setExportAlert(null)}>
+                        Dismiss
+                    </button>
+                </div>
+            </div>
+        </Modal>}
+        {mobileExportResult && (
+            <Modal labelledBy="mobile-export-title" onClose={() => {
+                URL.revokeObjectURL(mobileExportResult.previewUrl);
+                setMobileExportResult(null);
+            }}>
+                <div className={styles.mobileExportDialog}>
+                    <div className={styles.mobileExportHeader}>
+                        <div className={styles.mobileExportTitleGroup}>
+                            <div className={styles.mobileExportBadge}>
+                                <Check size={16} />
+                            </div>
+                            <div>
+                                <h2 id="mobile-export-title">Artwork Ready</h2>
+                                <span className={styles.subtle}>{mobileExportResult.filename}</span>
+                            </div>
+                        </div>
+                        <button
+                            type="button"
+                            className={styles.iconButton}
+                            aria-label="Close export dialog"
+                            onClick={() => {
+                                URL.revokeObjectURL(mobileExportResult.previewUrl);
+                                setMobileExportResult(null);
+                            }}
+                        >
+                            <X size={20} />
+                        </button>
+                    </div>
+
+                    <div className={styles.mobileExportPreviewContainer}>
+                        <img
+                            src={mobileExportResult.previewUrl}
+                            alt={mobileExportResult.filename}
+                            className={styles.mobileExportPreviewImg}
+                        />
+                    </div>
+
+                    <div className={styles.mobileExportInstruction}>
+                        <Sparkles size={14} color="var(--studio-red)" />
+                        <span>
+                            <strong>Mobile Tip:</strong> Tap and hold the image to save directly to Photos, or use the share and download options below.
+                        </span>
+                    </div>
+
+                    <div className={styles.mobileExportActionsStack}>
+                        {canNativeShareFile(mobileExportResult.file) && (
+                            <button
+                                type="button"
+                                className={styles.primary}
+                                style={{ width: '100%' }}
+                                onClick={async () => {
+                                    try {
+                                        await navigator.share({
+                                            files: [mobileExportResult.file],
+                                            title: mobileExportResult.filename
+                                        });
+                                        setNotice('Shared successfully.');
+                                    } catch (err) {
+                                        if (err && typeof err === 'object' && 'name' in err && err.name === 'AbortError') return;
+                                        setNotice('Native sharing unavailable. Use download button below.');
+                                    }
+                                }}
+                            >
+                                <Share2 size={16} />
+                                <span>Share / Save to Photos</span>
+                            </button>
+                        )}
+
+                        <button
+                            type="button"
+                            className={styles.button}
+                            style={{ width: '100%' }}
+                            onClick={() => {
+                                const link = document.createElement('a');
+                                link.href = mobileExportResult.previewUrl;
+                                link.download = mobileExportResult.filename;
+                                link.rel = 'noopener';
+                                document.body.appendChild(link);
+                                link.click();
+                                link.remove();
+                                setNotice('PNG download triggered.');
+                            }}
+                        >
+                            <Download size={16} />
+                            <span>Download PNG File</span>
+                        </button>
+
+                        <button
+                            type="button"
+                            className={styles.button}
+                            style={{ width: '100%' }}
+                            onClick={async () => {
+                                try {
+                                    await navigator.clipboard.writeText(mobileExportResult.caption);
+                                    setNotice('Instagram caption copied.');
+                                } catch {
+                                    setNotice('Could not copy caption.');
+                                }
+                            }}
+                        >
+                            <Copy size={16} />
+                            <span>Copy Instagram Caption</span>
+                        </button>
+                    </div>
+                </div>
+            </Modal>
+        )}
     </div>;
 }

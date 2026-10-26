@@ -880,3 +880,35 @@
 .layerAddBtn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;border-radius:6px;border:1px dashed var(--studio-border);background:var(--studio-muted);color:var(--studio-text);font-size:11px;font-family:Onest_600SemiBold,sans-serif;cursor:pointer;transition:all .15s ease}
 .layerAddBtn:hover{border-color:var(--studio-red);color:var(--studio-red);border-style:solid}
 
+/* Permission Alert Banner */
+.permissionAlertBanner{display:flex;align-items:center;gap:10px;padding:8px 16px;background:rgba(234,179,8,.09);border-bottom:1px solid rgba(234,179,8,.25);color:#b45309;font-size:12px;line-height:1.4}
+:global([data-theme=dark]) .permissionAlertBanner{background:rgba(234,179,8,.12);border-bottom-color:rgba(234,179,8,.3);color:#fbbf24}
+.permissionAlertBanner svg{flex-shrink:0;color:#d97706}
+
+/* Action Blocked Visual State (Non-disabled so clicks are captured with actionable feedback) */
+.btnActionBlocked{opacity:.8;position:relative}
+.btnActionBlocked:hover{opacity:1}
+
+/* Export Blocker Alert Modal */
+.exportAlertModal{display:flex;flex-direction:column;gap:16px;max-width:480px;width:min(480px,calc(100vw - 32px));padding:20px}
+.exportAlertHeader{display:flex;align-items:center;gap:12px}
+.exportAlertIcon{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.alertIconWarning{background:rgba(234,179,8,.15);color:#d97706}
+.alertIconError{background:rgba(239,68,68,.15);color:var(--studio-red)}
+.alertIconPermission{background:rgba(168,85,247,.15);color:#9333ea}
+.exportAlertHeader h2{margin:0;font-size:17px;font-family:Onest_600SemiBold,sans-serif}
+.exportAlertBadge{display:inline-block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--studio-secondary);margin-top:2px}
+.exportAlertMessage{font-size:13px;line-height:1.5;color:var(--studio-secondary);margin:0}
+.exportAlertActions{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--studio-border)}
+
+/* Mobile Export Result Modal */
+.mobileExportDialog{display:flex;flex-direction:column;gap:14px;max-width:440px;width:min(440px,calc(100vw - 32px));padding:18px}
+.mobileExportHeader{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mobileExportTitleGroup{display:flex;align-items:center;gap:10px;min-width:0}
+.mobileExportBadge{width:32px;height:32px;border-radius:50%;background:#10b98120;color:#10b981;display:grid;place-items:center;flex-shrink:0}
+.mobileExportHeader h2{margin:0;font-size:16px;font-family:Onest_600SemiBold,sans-serif}
+.mobileExportPreviewContainer{max-height:48dvh;overflow:hidden;border-radius:10px;border:1px solid var(--studio-border);display:grid;place-items:center;background:#09090b}
+.mobileExportPreviewImg{width:100%;max-height:48dvh;object-fit:contain;display:block;user-select:none;-webkit-touch-callout:default}
+.mobileExportInstruction{display:flex;align-items:flex-start;gap:8px;background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--studio-secondary);line-height:1.35}
+.mobileExportActionsStack{display:flex;flex-direction:column;gap:8px}
+

@@ -4,6 +4,7 @@ import { defaultCricketData } from '@/lib/post-studio/cricket-data';
 import { postDesignSchema, placedImageSchema } from '@/lib/post-studio/drafts';
 import { textLineLimit } from '@/lib/post-studio/text-overflow';
 import { setTextTypography } from '@/lib/post-studio/typography';
+import { isMobileDevice, canNativeShareFile, bytesToFile, download } from '@/lib/post-studio/export';
 import SocialPost from '@/models/SocialPost';
 
 describe('Studio Enhancements: Summary, Multiple Placed Images & Cricket Logos', () => {
@@ -139,6 +140,75 @@ describe('Studio Enhancements: Summary, Multiple Placed Images & Cricket Logos',
             const validated = postDesignSchema.parse(design);
             expect(validated.cricket?.logoScale).toBe(150);
             expect(validated.cricket?.showTeamNameUnderLogo).toBe(false);
+        });
+    });
+
+    describe('Mobile export & error handling enhancements', () => {
+        it('detects mobile devices based on User-Agent or touch screen capabilities', () => {
+            const originalNavigator = globalThis.navigator;
+            const originalWindow = globalThis.window;
+
+            // Test Android UA
+            Object.defineProperty(globalThis, 'navigator', {
+                value: { userAgent: 'Mozilla/5.0 (Linux; Android 13; SM-S901B) AppleWebKit/537.36', maxTouchPoints: 5 },
+                configurable: true,
+            });
+            expect(isMobileDevice()).toBe(true);
+
+            // Test iPhone UA
+            Object.defineProperty(globalThis, 'navigator', {
+                value: { userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X)', maxTouchPoints: 5 },
+                configurable: true,
+            });
+            expect(isMobileDevice()).toBe(true);
+
+            // Test Desktop UA with 0 touch points and wide screen
+            Object.defineProperty(globalThis, 'navigator', {
+                value: { userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)', maxTouchPoints: 0 },
+                configurable: true,
+            });
+            Object.defineProperty(globalThis, 'window', {
+                value: { innerWidth: 1440 },
+                configurable: true,
+            });
+            expect(isMobileDevice()).toBe(false);
+
+            // Restore
+            Object.defineProperty(globalThis, 'navigator', { value: originalNavigator, configurable: true });
+            Object.defineProperty(globalThis, 'window', { value: originalWindow, configurable: true });
+        });
+
+        it('checks native share capability for files safely', () => {
+            const file = bytesToFile(new Uint8Array([1, 2, 3]), 'test.png', 'image/png');
+            expect(file).toBeInstanceOf(File);
+            expect(file.name).toBe('test.png');
+            expect(file.type).toBe('image/png');
+
+            // When navigator has no share/canShare
+            const originalNavigator = globalThis.navigator;
+            Object.defineProperty(globalThis, 'navigator', {
+                value: {},
+                configurable: true,
+            });
+            expect(canNativeShareFile(file)).toBe(false);
+
+            // When navigator.canShare returns true
+            Object.defineProperty(globalThis, 'navigator', {
+                value: {
+                    share: () => Promise.resolve(),
+                    canShare: ({ files }: { files?: File[] }) => Boolean(files && files.length > 0),
+                },
+                configurable: true,
+            });
+            expect(canNativeShareFile(file)).toBe(true);
+
+            Object.defineProperty(globalThis, 'navigator', { value: originalNavigator, configurable: true });
+        });
+
+        it('download creates an anchor, clicks it, and revokes the URL without throwing', () => {
+            const bytes = new Uint8Array([137, 80, 78, 71]);
+            const url = download(bytes, 'output.png', 'image/png');
+            expect(url).toMatch(/^blob:/);
         });
     });
 });
