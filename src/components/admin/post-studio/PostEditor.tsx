@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { AlertTriangle, ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Info, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, RotateCcw, Share2, ShieldAlert, Sparkles, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
+import { AlertTriangle, ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Info, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, RotateCcw, Share2, Shield, ShieldAlert, Sparkles, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
 import { createDraft, listDrafts, saveDraftCollection, setDraftTrashed, type PostDraft } from '@/lib/post-studio/drafts';
 import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer, type PlacedImage, type PlacedImagePlacement, type PlacedImageLayer } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
@@ -22,6 +22,7 @@ import InstagramSharePanel from './InstagramSharePanel';
 import styles from './PostStudio.module.css';
 import CricketInspector from './CricketInspector';
 import CricketPlayerLibrary from './CricketPlayerLibrary';
+import CricketLogoLibrary from './CricketLogoLibrary';
 import { playerPhotoCredit, type NplPlayer } from '@/lib/post-studio/cricket-players';
 import { blankCricketData } from '@/lib/post-studio/cricket-data';
 import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
@@ -77,7 +78,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [canvasFocused, setCanvasFocused] = useState(false);
     const [quickUrl, setQuickUrl] = useState(''), [urlLoading, setUrlLoading] = useState(false);
     const [keepAdjustments, setKeepAdjustments] = useState(true), [reposition, setReposition] = useState(false), [snap, setSnap] = useState(true);
-    const [backgroundTab, setBackgroundTab] = useState<'photo' | 'color' | 'players'>('photo');
+    const [backgroundTab, setBackgroundTab] = useState<'photo' | 'color' | 'players' | 'logos'>('photo');
+    const [mediaModalDefaultTab, setMediaModalDefaultTab] = useState<'search' | 'url' | 'upload' | 'logos'>('search');
     const [history, setHistory] = useState({ undo: 0, redo: 0 });
     const undoRef = useRef<Snapshot[]>([]), redoRef = useRef<Snapshot[]>([]), interaction = useRef<Snapshot | null>(null);
     const dirty = useRef(false), revision = useRef(0), mounted = useRef(true), operation = useRef(false);
@@ -901,10 +903,28 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             </Section>
                         </>}
                         {tool === 'media' && <>
-                            <div className={styles.segmented} role="group" aria-label="Background type">{choice('Photo', backgroundTab === 'photo', () => setBackgroundTab('photo'))}{design.template === 'cricket' && choice('Player photos', backgroundTab === 'players', () => setBackgroundTab('players'))}{choice('Color & gradient', backgroundTab === 'color', () => setBackgroundTab('color'))}</div>
+                            <div className={styles.segmented} role="group" aria-label="Background type">
+                                {choice('Photo', backgroundTab === 'photo', () => setBackgroundTab('photo'))}
+                                {choice('Team & NPL logos', backgroundTab === 'logos', () => setBackgroundTab('logos'))}
+                                {design.template === 'cricket' && choice('Player photos', backgroundTab === 'players', () => setBackgroundTab('players'))}
+                                {choice('Color & gradient', backgroundTab === 'color', () => setBackgroundTab('color'))}
+                            </div>
                             {mediaLocked && <p className={styles.helpText}>This visual is locked. Unlock it below to make changes.</p>}
-                            {backgroundTab === 'players' ? <CricketPlayerLibrary key={`${activeId}-${design.cricket?.teamId}`} initialTeam={design.cricket?.teamId || 'janakpur'} disabled={mediaLocked || !ready || busy || exporting} onSelect={selectPlayerPhoto}
-                                onSearch={name => { setMediaSearchQuery(`${name} cricket`); setMediaModalOpen(true); }} /> : backgroundTab === 'photo' ? <>
+                            {backgroundTab === 'logos' ? (
+                                <CricketLogoLibrary
+                                    disabled={mediaLocked || !ready || busy || exporting}
+                                    currentImageUri={design.imageUri}
+                                    onSelectBackground={(url, name) => {
+                                        apply(current => replaceImage(current, url, keepAdjustments));
+                                        setNotice(`${name} set as background visual.`);
+                                    }}
+                                    onAddOverlay={(url, name) => {
+                                        addOverlayImage(url, name);
+                                        setNotice(`${name} added as image overlay.`);
+                                    }}
+                                />
+                            ) : backgroundTab === 'players' ? <CricketPlayerLibrary key={`${activeId}-${design.cricket?.teamId}`} initialTeam={design.cricket?.teamId || 'janakpur'} disabled={mediaLocked || !ready || busy || exporting} onSelect={selectPlayerPhoto}
+                                onSearch={name => { setMediaSearchQuery(`${name} cricket`); setMediaModalDefaultTab('search'); setMediaModalOpen(true); }} /> : backgroundTab === 'photo' ? <>
                                 <div className={styles.imageWell}>{design.imageUri ? <img src={design.imageUri} alt="Current page photo" /> : <>
                                     <ImagePlus size={30} />
                                     <span>Add a photo to this page</span>
@@ -912,7 +932,10 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 <div className={styles.row}>
                                     <button className={styles.button} disabled={mediaLocked} onClick={() => fileRef.current?.click()}>
                                         <Upload size={15} />{design.imageUri ? 'Replace photo' : 'Upload photo'}</button>
-                                    <button className={styles.button} disabled={mediaLocked} onClick={() => { setMediaSearchQuery(''); setMediaModalOpen(true); }}>Search library / web</button>
+                                    <button className={styles.button} disabled={mediaLocked} onClick={() => { setMediaSearchQuery(''); setMediaModalDefaultTab('search'); setMediaModalOpen(true); }}>Search library / web</button>
+                                    <button className={styles.button} disabled={mediaLocked} onClick={() => setBackgroundTab('logos')}>
+                                        <Shield size={15} />Team & NPL logos
+                                    </button>
                                 </div>
                                 <Section title="Use an image URL">
                                     <label className={styles.field}>
@@ -1080,8 +1103,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                         <button className={styles.button} disabled={mediaLocked} onClick={() => overlayFileRef.current?.click()}>
                                             <Upload size={14} />Upload overlay
                                         </button>
-                                        <button className={styles.button} disabled={mediaLocked} onClick={() => { setAddAsOverlay(true); setMediaSearchQuery(''); setMediaModalOpen(true); }}>
+                                        <button className={styles.button} disabled={mediaLocked} onClick={() => { setAddAsOverlay(true); setMediaSearchQuery(''); setMediaModalDefaultTab('search'); setMediaModalOpen(true); }}>
                                             Search library / web
+                                        </button>
+                                        <button className={styles.button} disabled={mediaLocked} onClick={() => { setAddAsOverlay(true); setMediaModalDefaultTab('logos'); setMediaModalOpen(true); }}>
+                                            <Shield size={14} />Team / NPL logo
                                         </button>
                                         {design.template === 'cricket' && (
                                             <button className={styles.button} disabled={mediaLocked} onClick={() => { setAddAsOverlay(true); setBackgroundTab('players'); }}>
@@ -1983,13 +2009,17 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 <p className={styles.helpText}>{editAll ? 'New changes to selected styles update every page. Undo restores the whole carousel.' : 'Apply once above, or choose All pages to keep editing together.'}</p>
             </div>
         </Modal>}
-        {mediaModalOpen && <StudioMediaModal onClose={() => { setMediaModalOpen(false); setAddAsOverlay(false); }} onApplyImage={uri => {
+        {mediaModalOpen && <StudioMediaModal defaultTab={mediaModalDefaultTab} onClose={() => { setMediaModalOpen(false); setAddAsOverlay(false); }} onApplyImage={uri => {
             if (addAsOverlay) {
                 addOverlayImage(uri);
             } else {
                 apply(current => replaceImage(current, uri, keepAdjustments));
                 setBackgroundTab('photo');
             }
+            setMediaModalOpen(false);
+            setAddAsOverlay(false);
+        }} onApplyOverlay={(uri, name) => {
+            addOverlayImage(uri, name);
             setMediaModalOpen(false);
             setAddAsOverlay(false);
         }} initialQuery={mediaSearchQuery || design.headline.slice(0, 40) || design.category} />}

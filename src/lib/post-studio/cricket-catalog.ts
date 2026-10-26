@@ -22,6 +22,173 @@ export const nplTeam = (id: NplTeamId): NplTeam => nplTeams.find(team => team.id
 export const teamName = (team: NplTeam, language: CricketLanguage) => language === 'ne' ? team.nameNe : team.name;
 export const teamLogo = (id: NplTeamId) => `/studio/cricket/${id}.png`;
 
+/** Official Nepal Premier League (NPL) tournament visual assets */
+export const nplTournamentLogo = '/studio/cricket/npl.png';
+export const nplTournamentIcon = '/studio/cricket/npl-icon.png';
+
+export interface CricketBrandAsset {
+    id: string;
+    name: string;
+    nameNe: string;
+    type: 'league' | 'team';
+    category: 'NPL Official' | 'Franchise';
+    url: string;
+    thumbnailUrl: string;
+    description: string;
+    dimensions: string;
+    accentColor: string;
+    teamId?: NplTeamId;
+}
+
+export const cricketBrandAssets: CricketBrandAsset[] = [
+    {
+        id: 'npl-logo',
+        name: 'Nepal Premier League (Full Logo)',
+        nameNe: 'नेपाल प्रिमियर लिग (पूर्ण लोगो)',
+        type: 'league',
+        category: 'NPL Official',
+        url: nplTournamentLogo,
+        thumbnailUrl: nplTournamentLogo,
+        description: 'Official Nepal Premier League tournament mark with full typography and solar emblem',
+        dimensions: '1200 × 621 · Full HD',
+        accentColor: '#DC2626',
+    },
+    {
+        id: 'npl-icon',
+        name: 'Nepal Premier League (Icon / Emblem)',
+        nameNe: 'नेपाल प्रिमियर लिग (प्रतीक / आइकन)',
+        type: 'league',
+        category: 'NPL Official',
+        url: nplTournamentIcon,
+        thumbnailUrl: nplTournamentIcon,
+        description: 'Official NPL circular crest featuring the cricket bat wing and national solar emblem',
+        dimensions: '512 × 512 · HD Badge',
+        accentColor: '#DC2626',
+    },
+    {
+        id: 'biratnagar',
+        name: 'Biratnagar Kings',
+        nameNe: 'विराटनगर किङ्स',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/biratnagar.png',
+        thumbnailUrl: '/studio/cricket/biratnagar.png',
+        description: 'Official mountain-and-crown crest in gold and blue with transparent background',
+        dimensions: '946 × 1200 · Full HD',
+        accentColor: '#F5C542',
+        teamId: 'biratnagar',
+    },
+    {
+        id: 'chitwan',
+        name: 'Chitwan Rhinos',
+        nameNe: 'चितवन राइनोज',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/chitwan.png',
+        thumbnailUrl: '/studio/cricket/chitwan.png',
+        description: 'Official rhinoceros warrior crest in vibrant orange and gold with transparent background',
+        dimensions: '1057 × 1200 · Full HD',
+        accentColor: '#F08A27',
+        teamId: 'chitwan',
+    },
+    {
+        id: 'janakpur',
+        name: 'Janakpur Bolts',
+        nameNe: 'जनकपुर बोल्ट्स',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/janakpur.png',
+        thumbnailUrl: '/studio/cricket/janakpur.png',
+        description: 'Official Janaki temple arch and lightning bolt crest with white-letter typography',
+        dimensions: '1200 × 800 · Full HD',
+        accentColor: '#EB247B',
+        teamId: 'janakpur',
+    },
+    {
+        id: 'karnali',
+        name: 'Karnali Yaks',
+        nameNe: 'कर्णाली याक्स',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/karnali.png',
+        thumbnailUrl: '/studio/cricket/karnali.png',
+        description: 'Official mountain yak crest in navy and gold with transparent background',
+        dimensions: '923 × 1024 · Full HD',
+        accentColor: '#F5C547',
+        teamId: 'karnali',
+    },
+    {
+        id: 'kathmandu',
+        name: 'Kathmandu Gorkhas',
+        nameNe: 'काठमाडौं गोर्खाज',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/kathmandu.png',
+        thumbnailUrl: '/studio/cricket/kathmandu.png',
+        description: 'Official rebranded Kathmandu Gorkhas crest with Kathmandu Valley landmarks',
+        dimensions: '1019 × 1024 · Full HD',
+        accentColor: '#F5D247',
+        teamId: 'kathmandu',
+    },
+    {
+        id: 'lumbini',
+        name: 'Lumbini Lions',
+        nameNe: 'लुम्बिनी लायन्स',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/lumbini.png',
+        thumbnailUrl: '/studio/cricket/lumbini.png',
+        description: 'Official royal roaring lion and palace fortress crest in burgundy and gold',
+        dimensions: '981 × 1024 · Full HD',
+        accentColor: '#F1C64C',
+        teamId: 'lumbini',
+    },
+    {
+        id: 'pokhara',
+        name: 'Pokhara Avengers',
+        nameNe: 'पोखरा एभेन्जर्स',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/pokhara.png',
+        thumbnailUrl: '/studio/cricket/pokhara.png',
+        description: 'Official Pokhara Avengers emblem with Machapuchare peak and flying falcon wing',
+        dimensions: '1024 × 660 · Full HD',
+        accentColor: '#E9CB7D',
+        teamId: 'pokhara',
+    },
+    {
+        id: 'sudurpaschim',
+        name: 'Sudurpaschim Royals',
+        nameNe: 'सुदूरपश्चिम रोयल्स',
+        type: 'team',
+        category: 'Franchise',
+        url: '/studio/cricket/sudurpaschim.png',
+        thumbnailUrl: '/studio/cricket/sudurpaschim.png',
+        description: 'Official crowned lion and cricket ball shield mark in navy and royal gold',
+        dimensions: '895 × 1200 · Full HD',
+        accentColor: '#FFCC39',
+        teamId: 'sudurpaschim',
+    },
+];
+
+export const getCricketBrandAsset = (id: string) => cricketBrandAssets.find(asset => asset.id === id);
+
+export const findCricketBrandAssets = (category?: 'all' | 'league' | 'team', query = '') => {
+    const q = query.trim().toLowerCase();
+    return cricketBrandAssets.filter(asset => {
+        if (category && category !== 'all' && asset.type !== category) return false;
+        if (!q) return true;
+        return (
+            asset.id.toLowerCase().includes(q) ||
+            asset.name.toLowerCase().includes(q) ||
+            asset.nameNe.toLowerCase().includes(q) ||
+            asset.description.toLowerCase().includes(q) ||
+            (asset.teamId && asset.teamId.toLowerCase().includes(q))
+        );
+    });
+};
+
+
 export const cricketTemplateIds = ['matchday', 'fixtures', 'head-to-head', 'toss', 'playing-xi', 'team', 'score', 'four', 'six', 'wicket', 'powerplay', 'partnership', 'innings', 'target', 'dls', 'rain', 'fifty', 'century', 'batting', 'bowling', 'five-for', 'hat-trick', 'player-of-match', 'result', 'scorecard', 'points-table', 'qualified', 'champions'] as const;
 export type CricketTemplateId = typeof cricketTemplateIds[number];
 export type CricketLayout = 'versus' | 'fixtures' | 'lineup' | 'event' | 'score' | 'batter' | 'bowler' | 'table' | 'result' | 'team';

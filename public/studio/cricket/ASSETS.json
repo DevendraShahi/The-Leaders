@@ -1,6 +1,22 @@
 {
-  "description": "NPL franchise marks for editorial cricket templates. Team trademarks remain with their owners; no blanket reuse licence was identified. Palettes are editorial interpretations, not official brand guidelines.",
+  "description": "NPL tournament brand marks and franchise crests for editorial cricket templates and media resources. Trademarks remain with their owners. Transparent margins normalized and optimized for Full HD graphic studio exports.",
   "assets": [
+    {
+      "id": "npl-logo",
+      "file": "npl.png",
+      "sourcePage": "https://en.wikipedia.org/wiki/Nepal_Premier_League",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/en/4/4b/Nepal_Premier_League_official_logo.png",
+      "retrievedAt": "2026-10-26",
+      "note": "Official Nepal Premier League tournament mark; Full HD transparent PNG (1200x621)."
+    },
+    {
+      "id": "npl-icon",
+      "file": "npl-icon.png",
+      "sourcePage": "https://en.wikipedia.org/wiki/Nepal_Premier_League",
+      "sourceUrl": "https://upload.wikimedia.org/wikipedia/en/4/4b/Nepal_Premier_League_official_logo.png",
+      "retrievedAt": "2026-10-26",
+      "note": "Official NPL circular emblem/crest badge variant (512x512 transparent PNG)."
+    },
     {
       "teamId": "biratnagar",
       "file": "biratnagar.png",

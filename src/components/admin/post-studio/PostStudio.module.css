@@ -111,6 +111,11 @@
 .mediaCardTitle{font-size:11px;line-height:1.3;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:var(--studio-text)}
 .mediaCardAuthor{font-size:10px;color:var(--studio-secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mediaCardActions{padding:6px 10px 10px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--studio-border);background:var(--studio-muted)}
+.mediaLogoThumb{position:relative;height:120px;background:repeating-conic-gradient(rgba(0,0,0,.03) 0% 25%, transparent 0% 50%) 50% / 12px 12px, var(--studio-muted);display:grid;place-items:center;overflow:hidden;padding:10px}
+.mediaLogoThumb img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.15));transition:transform .2s ease}
+.mediaCard:hover .mediaLogoThumb img{transform:scale(1.08)}
+.mediaResolutionBadge{display:inline-block;font-size:9px;color:var(--studio-secondary);font-family:Onest_600SemiBold,sans-serif;margin-top:2px}
+
 .mediaUrlStack{display:flex;flex-direction:column;gap:16px;padding:8px 0}
 .mediaUrlPreviewCard{display:flex;gap:16px;border:1px solid var(--studio-border);border-radius:8px;padding:14px;background:var(--studio-surface)}
 .mediaUrlPreviewThumb{width:160px;height:160px;border-radius:6px;overflow:hidden;background:var(--studio-muted);flex-shrink:0}

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { Check, Copy, Download, Globe, ImagePlus, Link2, Loader2, Search, Sparkles, Upload, X } from "lucide-react";
+import { Check, Copy, Download, Globe, ImagePlus, Layers, Link2, Loader2, Search, Shield, Sparkles, Trophy, Upload, X } from "lucide-react";
+import { cricketBrandAssets, findCricketBrandAssets, type CricketBrandAsset } from "@/lib/post-studio/cricket-catalog";
 import styles from "./PostStudio.module.css";
 
 export interface StudioMediaItem {
@@ -21,7 +22,9 @@ export interface StudioMediaItem {
 interface StudioMediaModalProps {
     onClose: () => void;
     onApplyImage: (dataUri: string) => void;
+    onApplyOverlay?: (dataUri: string, name?: string) => void;
     initialQuery?: string;
+    defaultTab?: "search" | "url" | "upload" | "logos";
 }
 
 const suggestions = [
@@ -35,10 +38,12 @@ const suggestions = [
     { label: "Himalayas", query: "Nepal Himalayas mountains" },
 ];
 
-export default function StudioMediaModal({ onClose, onApplyImage, initialQuery = "" }: StudioMediaModalProps) {
-    const [tab, setTab] = useState<"search" | "url" | "upload">("search");
+export default function StudioMediaModal({ onClose, onApplyImage, onApplyOverlay, initialQuery = "", defaultTab = "search" }: StudioMediaModalProps) {
+    const [tab, setTab] = useState<"search" | "url" | "upload" | "logos">(defaultTab);
     const [query, setQuery] = useState(initialQuery || "Nepal politics history leaders");
     const [source, setSource] = useState<"all" | "wikimedia" | "library">("all");
+    const [logoCategory, setLogoCategory] = useState<"all" | "league" | "team">("all");
+    const [logoSearch, setLogoSearch] = useState("");
     const [results, setResults] = useState<StudioMediaItem[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -209,6 +214,14 @@ export default function StudioMediaModal({ onClose, onApplyImage, initialQuery =
                     >
                         <Upload size={14} style={{ display: "inline", marginRight: 6 }} />
                         Upload File
+                    </button>
+                    <button
+                        type="button"
+                        className={`${styles.bookTab} ${tab === "logos" ? styles.activeBookTab : ""}`}
+                        onClick={() => setTab("logos")}
+                    >
+                        <Shield size={14} style={{ display: "inline", marginRight: 6 }} />
+                        NPL & Team Logos
                     </button>
                 </div>
 
@@ -420,6 +433,129 @@ export default function StudioMediaModal({ onClose, onApplyImage, initialQuery =
                             accept="image/png,image/jpeg,image/webp,image/avif,image/gif"
                             onChange={e => handleFileUpload(e.target.files?.[0])}
                         />
+                    </div>
+                )}
+
+                {/* TAB 4: NPL & Team Logos */}
+                {tab === "logos" && (
+                    <div className={styles.mediaSearchStack}>
+                        <div className={styles.row} style={{ justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
+                            <div className={styles.row}>
+                                {(
+                                    [
+                                        { key: "all", label: `All Logos (${cricketBrandAssets.length})` },
+                                        { key: "league", label: "NPL Official (2)" },
+                                        { key: "team", label: "Franchise Teams (8)" },
+                                    ] as const
+                                ).map(item => (
+                                    <button
+                                        key={item.key}
+                                        type="button"
+                                        className={`${styles.button} ${logoCategory === item.key ? styles.active : ""}`}
+                                        style={{ minHeight: 32, padding: "4px 10px", fontSize: 12 }}
+                                        onClick={() => setLogoCategory(item.key)}
+                                    >
+                                        {item.label}
+                                    </button>
+                                ))}
+                            </div>
+                            <span className={styles.subtle} style={{ fontSize: 12 }}>
+                                {findCricketBrandAssets(logoCategory, logoSearch).length} assets available · 100% Full HD
+                            </span>
+                        </div>
+
+                        {/* Search input for logos */}
+                        <div className={styles.mediaSearchBar}>
+                            <input
+                                className={styles.input}
+                                placeholder="Search logos by team or keyword (e.g. Biratnagar, Bolts, Rhinos, NPL)..."
+                                value={logoSearch}
+                                onChange={e => setLogoSearch(e.target.value)}
+                            />
+                            {logoSearch && (
+                                <button type="button" className={styles.button} onClick={() => setLogoSearch("")}>
+                                    Clear
+                                </button>
+                            )}
+                        </div>
+
+                        {/* Logos Grid */}
+                        <div className={styles.mediaResultsGrid}>
+                            {findCricketBrandAssets(logoCategory, logoSearch).map(asset => (
+                                <div key={asset.id} className={styles.mediaCard}>
+                                    <div className={styles.mediaLogoThumb}>
+                                        <img src={asset.thumbnailUrl} alt={asset.name} loading="lazy" />
+                                        <span className={styles.mediaSourceBadge} style={{ background: asset.accentColor }}>
+                                            {asset.type === "league" ? "NPL OFFICIAL" : "TEAM CREST"}
+                                        </span>
+                                    </div>
+                                    <div className={styles.mediaCardBody}>
+                                        <strong className={styles.mediaCardTitle} title={asset.name}>
+                                            {asset.name}
+                                        </strong>
+                                        <span className={styles.mediaCardAuthor} title={asset.nameNe}>
+                                            {asset.nameNe}
+                                        </span>
+                                        <span className={styles.mediaResolutionBadge}>
+                                            {asset.dimensions}
+                                        </span>
+                                        <small className={styles.subtle} style={{ fontSize: 10, marginTop: 2, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>
+                                            {asset.description}
+                                        </small>
+                                    </div>
+                                    <div className={styles.mediaCardActions}>
+                                        <button
+                                            type="button"
+                                            className={styles.primary}
+                                            style={{ minHeight: 32, fontSize: 11, padding: "4px 8px", width: "100%" }}
+                                            onClick={() => {
+                                                onApplyImage(asset.url);
+                                                onClose();
+                                            }}
+                                        >
+                                            <ImagePlus size={13} style={{ display: "inline", marginRight: 4 }} />
+                                            Apply as Post Visual
+                                        </button>
+                                        {onApplyOverlay && (
+                                            <button
+                                                type="button"
+                                                className={styles.button}
+                                                style={{ minHeight: 30, fontSize: 11, padding: "4px 8px", width: "100%", background: "var(--studio-surface)" }}
+                                                onClick={() => {
+                                                    onApplyOverlay(asset.url, asset.name);
+                                                    onClose();
+                                                }}
+                                            >
+                                                <Layers size={13} style={{ display: "inline", marginRight: 4 }} />
+                                                Add as Layer Overlay
+                                            </button>
+                                        )}
+                                        <div className={styles.row} style={{ width: "100%", justifyContent: "space-between" }}>
+                                            <button
+                                                type="button"
+                                                className={styles.button}
+                                                style={{ minHeight: 28, fontSize: 10, padding: "2px 6px", flex: 1 }}
+                                                title="Copy Image URL"
+                                                onClick={() => handleCopyUrl(asset.url, asset.id)}
+                                            >
+                                                {copiedIndex === asset.id ? <Check size={12} color="#287344" /> : <Copy size={12} />}
+                                                {copiedIndex === asset.id ? "Copied" : "Copy Link"}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.button}
+                                                style={{ minHeight: 28, fontSize: 10, padding: "2px 6px", flex: 1 }}
+                                                title="Download Full HD PNG"
+                                                onClick={() => handleDownloadUrl(asset.url, `${asset.id}.png`)}
+                                            >
+                                                <Download size={12} />
+                                                Download
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>
