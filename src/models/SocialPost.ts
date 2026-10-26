@@ -25,7 +25,7 @@ export interface ISocialPost {
 }
 
 const localizedCopy = {
-    headline: { type: String, default: "", maxlength: 180 }, deck: { type: String, default: "", maxlength: 360 },
+    headline: { type: String, default: "", maxlength: 180 }, deck: { type: String, default: "", maxlength: 2000 },
     category: { type: String, default: "NEWS", maxlength: 48 }, eyebrow: { type: String, default: "", maxlength: 72 },
     quoteSpeaker: { type: String, default: "", maxlength: 120 }, quoteContext: { type: String, default: "", maxlength: 180 },
     statisticValue: { type: String, default: "", maxlength: 48 }, statisticLabel: { type: String, default: "", maxlength: 120 }, statisticAsOf: { type: String, default: "", maxlength: 80 },

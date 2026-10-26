@@ -32,6 +32,8 @@ export const cricketDataSchema = z.object({
     sourceUrl: z.string().refine(value => value === '' || /^https?:\/\/[^\s]+$/.test(value), 'Use a source URL beginning with https://.'),
     updatedAt: z.string().refine(value => value === '' || !Number.isNaN(Date.parse(value)), 'Use a valid update timestamp.'),
     teamLogoUri: z.string().nullable(), opponentLogoUri: z.string().nullable(),
+    logoScale: z.number().min(30).max(300).default(100).optional(),
+    showTeamNameUnderLogo: z.boolean().default(true).optional(),
 }).superRefine((data, context) => {
     if (data.teamId === data.opponentId) context.addIssue({ code: 'custom', path: ['opponentId'], message: 'Choose two different teams.' });
     if (new Set(data.standings.map(row => row.teamId)).size !== data.standings.length) context.addIssue({ code: 'custom', path: ['standings'], message: 'Each team can appear only once in the standings.' });
@@ -57,6 +59,7 @@ export function defaultCricketData(template: CricketTemplateId = 'matchday'): Cr
         fixtures: [{ teamId: 'lumbini', opponentId: 'sudurpaschim', when: 'Add verified date · NPT', venue: 'Kirtipur' }, { teamId: 'biratnagar', opponentId: 'chitwan', when: 'Add verified date · NPT', venue: 'Kirtipur' }],
         statRows: [{ label: 'Matches', value: '—' }, { label: 'Wins', value: '—' }, { label: 'Recent form', value: '—' }],
         sourceUrl: '', updatedAt: '', teamLogoUri: null, opponentLogoUri: null,
+        logoScale: 100, showTeamNameUnderLogo: true,
     });
 }
 export const runRate = (runs: number | null, overs: string) => {

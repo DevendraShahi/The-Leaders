@@ -12,7 +12,16 @@ export function textLineLimit(format: PostFormat, layer: "headline" | "supportin
         }
         return format === "landscape" ? 5 : format === "story" ? 12 : 8;
     }
-    return layer === "headline" ? format === "landscape" ? 3 : format === "story" ? 6 : 4 : format === "landscape" ? 2 : format === "story" ? 4 : 3;
+    if (layer === "headline") {
+        return format === "landscape" ? 3 : format === "story" ? 6 : 4;
+    }
+    if (template === "cricket") {
+        return format === "landscape" ? 6 : format === "story" ? 18 : 12;
+    }
+    if (template === "explainer") {
+        return format === "landscape" ? 5 : format === "story" ? 12 : 8;
+    }
+    return format === "landscape" ? 2 : format === "story" ? 4 : 3;
 }
 
 export function exceedsTextLines(height: number, lineHeight: number, limit: number) {

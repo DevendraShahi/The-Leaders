@@ -2,11 +2,26 @@
 import AsyncStorage from "./storage";
 import { z } from "zod";
 import { cricketDataSchema } from './cricket-data';
-import { defaultPostDesign, defaultTextPositions, defaultTextColors, defaultTextTypography, type PostDesign } from "./types";
+import { defaultPostDesign, defaultTextPositions, defaultTextColors, defaultTextTypography, type PostDesign, type PlacedImage } from "./types";
 
 const layer = z.enum(["visual", "kicker", "headline", "supporting", "footer"]);
 const position = z.object({ x: z.number().min(-50).max(50), y: z.number().min(-50).max(50) });
-const typographySettings = z.object({ font: z.enum(["auto", "onest", "hind"]), size: z.number().min(60).max(160), lineSpacing: z.number().min(90).max(180), shadow: z.number().min(0).max(100) });
+const typographySettings = z.object({ font: z.enum(["auto", "onest", "hind"]), size: z.number().min(40).max(180), lineSpacing: z.number().min(90).max(180), shadow: z.number().min(0).max(100) });
+export const placedImageSchema: z.ZodType<PlacedImage> = z.object({
+    id: z.string(),
+    uri: z.string(),
+    x: z.number(),
+    y: z.number(),
+    scale: z.number(),
+    rotation: z.number().optional(),
+    opacity: z.number().optional(),
+    borderRadius: z.number().optional(),
+    fit: z.enum(['cover', 'contain']).optional(),
+    width: z.number().optional(),
+    height: z.number().optional(),
+    placement: z.enum(['custom', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'center', 'split-left', 'split-right']).optional(),
+    credit: z.string().optional(),
+});
 export const postDesignSchema = z.object({
     template: z.enum(["breaking", "explainer", "quote", "book-review", "book-analysis", "book-takeaways", "book-verdict", "cricket"]), format: z.enum(["square", "portrait", "story", "landscape"]),
     category: z.string(), eyebrow: z.string(), headline: z.string(), summary: z.string(), author: z.string(),
@@ -17,13 +32,14 @@ export const postDesignSchema = z.object({
     textColors: z.object({ kicker: z.string().regex(/^#[\da-f]{6}$/i).nullable(), headline: z.string().regex(/^#[\da-f]{6}$/i).nullable(), supporting: z.string().regex(/^#[\da-f]{6}$/i).nullable(), footer: z.string().regex(/^#[\da-f]{6}$/i).nullable() }).default(defaultTextColors),
     textTypography: z.object({ headline: typographySettings, supporting: typographySettings, kicker: typographySettings, footer: typographySettings }).default(defaultTextTypography),
     imageFit: z.enum(["cover", "contain"]).default("cover"),
-    imageZoom: z.number().min(1).max(3).default(1.08),
+    imageZoom: z.number().min(0.1).max(10).default(1.08),
     imageBlur: z.number().min(0).max(100).default(0),
     imageVintage: z.number().min(0).max(100).default(0),
     imageFeather: z.number().min(0).max(100).default(0),
     backgroundColor: z.string().nullable().optional(),
     backgroundGradient: z.string().nullable().optional(),
     cricket: cricketDataSchema.optional(),
+    placedImages: z.array(placedImageSchema).optional(),
 });
 const draftSchema = z.object({ id: z.string().min(1), name: z.string().trim().min(1).max(100), createdAt: z.string().datetime(), updatedAt: z.string().datetime(), trashedAt: z.string().datetime().nullable(), design: postDesignSchema,
     carouselId: z.string().min(1).optional(), carouselOrder: z.number().int().nonnegative().optional(),

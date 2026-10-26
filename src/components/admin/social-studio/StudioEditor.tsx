@@ -197,7 +197,7 @@ export default function StudioEditor({ api, user, onExit }: { api: StudioApi; us
         if (tool === 'text') return <div className={s.fields}>
             <Field label="Draft name"><Input value={post.title} maxLength={160} onChange={event => patch({ title: event.target.value })} /></Field>
             <Field label="Artwork language"><StudioSelect label="Artwork language" value={post.outputLanguage} disabled={locked || !can('edit')} onValueChange={value => { patch({ outputLanguage: value as StudioPost['outputLanguage'] }); setSuggestion(null); }} options={[{ value: 'ne', label: 'नेपाली' }, { value: 'en', label: 'English' }]} /><small>Each language keeps its own copy.</small></Field>
-            {textField('headline', 'Headline', 180, true)}{textField('deck', 'Supporting text', 360, true)}
+            {textField('headline', 'Headline', 180, true)}{textField('deck', 'Supporting text', 2000, true)}
             <div className={s.split}>{textField('category', 'Category', 48)}{textField('eyebrow', 'Eyebrow', 72)}</div>
             {post.templateId === 'quote' && <>{textField('quoteSpeaker', 'Speaker', 120)}{textField('quoteContext', 'Speaker context', 180)}</>}
             {post.templateId === 'data' && <>{textField('statisticValue', 'Data value', 48)}{textField('statisticLabel', 'Data label', 120)}{textField('statisticAsOf', 'As of', 80)}</>}

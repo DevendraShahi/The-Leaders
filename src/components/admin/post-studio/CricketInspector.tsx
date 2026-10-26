@@ -5,7 +5,7 @@ import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
 import { cricketTemplates, cricketTemplate, nplTeams, nplTeam, teamLogo, type NplTeamId, type CricketTemplateId } from '@/lib/post-studio/cricket-catalog';
 import { blankCricketData, oversToBalls, type CricketData } from '@/lib/post-studio/cricket-data';
 import type { PostDesign } from '@/lib/post-studio/types';
-import { Section } from './Controls';
+import { Section, Slider } from './Controls';
 import css from './CricketStudio.module.css';
 import styles from './PostStudio.module.css';
 
@@ -270,7 +270,27 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
             </div>
         </Section>
         <Section title="Team logos">
-            <p className={css.fieldHint}>The eight franchise logos are bundled for export. Upload a newer or approved variant if needed.</p>{(['teamLogoUri', 'opponentLogoUri'] as const).map(key => <div className={css.logoUpload} key={key}>
+            <p className={css.fieldHint}>The eight franchise logos are bundled for export. Scale the logos to fit your layout or toggle team names.</p>
+            <Slider
+                label="Logo size"
+                value={data.logoScale ?? 100}
+                min={50}
+                max={200}
+                disabled={design.lockedLayers.includes('visual')}
+                onStart={() => {}}
+                onChange={value => field('logoScale', value)}
+                onEnd={() => {}}
+            />
+            <label className={css.checkLabel} style={{ marginTop: 8, marginBottom: 12 }}>
+                <input
+                    type="checkbox"
+                    checked={data.showTeamNameUnderLogo !== false}
+                    disabled={design.lockedLayers.includes('visual')}
+                    onChange={event => field('showTeamNameUnderLogo', event.target.checked)}
+                />
+                Show team name under logo
+            </label>
+            {(['teamLogoUri', 'opponentLogoUri'] as const).map(key => <div className={css.logoUpload} key={key}>
                 <label className={css.kitLabel}>
                     <span>{key === 'teamLogoUri' ? 'Featured team logo' : 'Opponent logo'}</span>
                     <input type="file" aria-label={key === 'teamLogoUri' ? 'Upload featured team logo' : 'Upload opponent logo'} accept="image/png,image/jpeg,image/webp" disabled={design.lockedLayers.includes('visual')} onChange={event => { void uploadLogo(event.target.files?.[0], key); event.target.value = ''; }} />

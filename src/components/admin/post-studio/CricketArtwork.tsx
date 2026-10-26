@@ -3,16 +3,19 @@
 import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import { hasDevanagari } from '@/lib/post-studio/typography';
 import { artworkTextStyle } from '@/lib/post-studio/artwork-text';
+import { textLineLimit } from '@/lib/post-studio/text-overflow';
 import { cricketTemplate, nplTeam, teamLogo, teamName, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
 import { chaseEquation, cricketNumber, cricketScore, blankCricketData, runRate, strikeRate } from '@/lib/post-studio/cricket-data';
 import { postOutputDimensions, type PostDesign, type PostLayer, type PostTextLayer } from '@/lib/post-studio/types';
 import { ArtworkPhoto } from './ArtworkPhoto';
+import { ArtworkPlacedImages } from './ArtworkPlacedImages';
 import css from './CricketStudio.module.css';
 
 export const CricketArtwork = forwardRef<HTMLDivElement, {
     design: PostDesign; selected?: PostLayer; guides?: boolean;
     onSelect?: (layer: PostLayer) => void; onChooseImage?: () => void;
-}>(({ design, selected, guides, onSelect, onChooseImage }, ref) => {
+    selectedPlacedImageId?: string; onSelectPlacedImage?: (id: string) => void;
+}>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
     const data = design.cricket ?? blankCricketData(), baseSpec = cricketTemplate(data.template);
     const spec = data.template === 'player-of-match' && data.awardPerformance === 'bowling' ? { ...baseSpec, layout: 'bowler' as const } : baseSpec;
     const team = nplTeam(data.teamId), opponent = nplTeam(data.opponentId);
@@ -21,6 +24,8 @@ export const CricketArtwork = forwardRef<HTMLDivElement, {
     const t = (en: string, ne: string) => data.language === 'ne' ? ne : en;
     const n = (value: number | string | null) => cricketNumber(value, data.language);
     const hidden = (layer: PostLayer) => design.hiddenLayers.includes(layer);
+    const logoScale = Math.max(0.3, Math.min(3, (data.logoScale ?? 100) / 100));
+    const showTeamName = data.showTeamNameUnderLogo !== false;
     const textStyle = (layer: PostTextLayer, size: number, content?: string): CSSProperties => {
         const base = artworkTextStyle(design, layer, content ?? (data.language === 'ne' ? 'नेपाली' : undefined));
         const scale = layer === 'headline' ? design.headlineScale : design.textTypography[layer].size / 100;
@@ -33,8 +38,14 @@ export const CricketArtwork = forwardRef<HTMLDivElement, {
         onClick: () => onSelect(layer), onKeyDown: (event: React.KeyboardEvent) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onSelect(layer); } },
     } : {};
     const selectedClass = (layer: PostLayer) => onSelect && selected === layer ? css.selected : '';
-    const logo = (id: NplTeamId, size = 56) => <img className={css.teamLogo} src={id === data.teamId ? data.teamLogoUri || teamLogo(id) : id === data.opponentId ? data.opponentLogoUri || teamLogo(id) : teamLogo(id)} alt={nplTeam(id).name} width={size} height={size} style={{ '--logo-size': `${size}px` } as CSSProperties} />;
-    const teamBadge = (id: NplTeamId, size = 64) => <div className={css.teamBadge}>{logo(id, size)}<strong data-export-fit>{teamName(nplTeam(id), data.language)}</strong>
+    const logo = (id: NplTeamId, size = 56) => {
+        const finalSize = Math.max(16, Math.round(size * logoScale));
+        const src = id === data.teamId ? data.teamLogoUri || teamLogo(id) : id === data.opponentId ? data.opponentLogoUri || teamLogo(id) : teamLogo(id);
+        return <img className={css.teamLogo} src={src} alt={nplTeam(id).name} width={finalSize} height={finalSize} style={{ '--logo-size': `${finalSize}px`, width: finalSize, height: finalSize } as CSSProperties} />;
+    };
+    const teamBadge = (id: NplTeamId, size = 64) => <div className={css.teamBadge}>
+        {logo(id, size)}
+        {showTeamName && <strong data-export-fit>{teamName(nplTeam(id), data.language)}</strong>}
     </div>;
     const score = n(cricketScore(data.runs, data.wickets));
     const otherScore = n(cricketScore(data.opponentRuns, data.opponentWickets));
@@ -218,6 +229,7 @@ export const CricketArtwork = forwardRef<HTMLDivElement, {
     const updateTime = data.updatedAt ? new Date(data.updatedAt).toLocaleTimeString(data.language === 'ne' ? 'ne-NP' : 'en-GB', { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: false }) : '';
     return <div ref={ref} data-testid="post-artwork" data-cricket-template={data.template} className={`${css.artwork} ${landscape ? css.landscape : ''} ${compact ? css.square : ''} ${design.format === 'story' ? css.story : ''}`} style={{ width: 360, height, background: design.backgroundGradient || design.backgroundColor || team.dark, '--cricket-accent': design.accent, '--cricket-secondary': team.secondary, textAlign: design.textAlign, fontFamily: data.language === 'ne' ? 'Hind_400Regular,sans-serif' : 'Onest_400Regular,sans-serif' } as CSSProperties}>
         <ArtworkPhoto design={design} height={height} />
+        <ArtworkPlacedImages images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         <div className={css.atmosphere} style={data.theme === 'split' ? { background: `linear-gradient(125deg,${team.dark}b0 45%,${opponent.dark}d9 45%)` } : undefined} />
         {design.imageUri && !hidden('visual') && <div className={css.photoShade} style={{ background: design.imageTone === 'clear' ? 'linear-gradient(0deg,#030713dd,transparent 85%)' : design.imageTone === 'warm' ? 'linear-gradient(0deg,#251408ee,#25140855)' : 'linear-gradient(0deg,#030713f5,#03071366)' }} />}
         <div className={css.pitchLines} aria-hidden="true">
@@ -236,7 +248,7 @@ export const CricketArtwork = forwardRef<HTMLDivElement, {
                 <span>{data.matchLabel}</span>
                 <span>{team.short} <i>×</i> {opponent.short}</span>
             </div>
-            <div className={`${css.body} ${css['layout' + spec.layout]}`} data-export-fit>{renderBody()}{!hidden('supporting') && design.summary && <div {...select('supporting')} className={`${css.note} ${selectedClass('supporting')}`} style={textStyle('supporting', landscape ? 8 : 10, design.summary)} data-line-limit={landscape ? 2 : 3}>{design.summary}</div>}</div>
+            <div className={`${css.body} ${css['layout' + spec.layout]}`} data-export-fit>{renderBody()}{!hidden('supporting') && design.summary && <div {...select('supporting')} className={`${css.note} ${selectedClass('supporting')}`} style={textStyle('supporting', landscape ? 8 : 10, design.summary)} data-line-limit={textLineLimit(design.format, 'supporting', 'cricket')}>{design.summary}</div>}</div>
             {!hidden('footer') && <footer {...select('footer')} className={`${css.footer} ${selectedClass('footer')}`} style={textStyle('footer', landscape ? 5 : 6, design.author)}>
                 <span>{design.author}</span>
                 <span>{updateTime ? `${updateTime} NPT` : data.matchDate || 'NPL'}{sourceHost ? ` · ${sourceHost}` : ''}</span>

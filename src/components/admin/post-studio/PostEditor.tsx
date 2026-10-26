@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
 import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Instagram, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, Share2, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
 import { createDraft, listDrafts, saveDraftCollection, setDraftTrashed, type PostDraft } from '@/lib/post-studio/drafts';
-import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer } from '@/lib/post-studio/types';
+import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer, type PlacedImage, type PlacedImagePlacement } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
 import { shareStyles, sharedStyleOptions, type SharedStyle } from '@/lib/post-studio/shared-styles';
 import { positionText, snapTextPosition } from '@/lib/post-studio/positioning';
@@ -44,6 +44,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [loadAttempt, setLoadAttempt] = useState(0);
     const [tool, setTool] = useState<Tool>(draft.design.template === 'cricket' ? 'cricket' : 'text');
     const [selected, setSelected] = useState<PostLayer>('headline');
+    const [selectedOverlayId, setSelectedOverlayId] = useState<string | null>(null);
+    const [addAsOverlay, setAddAsOverlay] = useState(false);
     const [editAll, setEditAll] = useState(false);
     const [sharedGroups, setSharedGroups] = useState<SharedStyle[]>(['typography', 'alignment']);
     const [scopeDetails, setScopeDetails] = useState(false);
@@ -61,11 +63,21 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const undoRef = useRef<Snapshot[]>([]), redoRef = useRef<Snapshot[]>([]), interaction = useRef<Snapshot | null>(null);
     const dirty = useRef(false), revision = useRef(0), mounted = useRef(true), operation = useRef(false);
     const stageRef = useRef<HTMLDivElement>(null), exportRef = useRef<HTMLDivElement>(null), fileRef = useRef<HTMLInputElement>(null);
+    const overlayFileRef = useRef<HTMLInputElement>(null);
     const exportNodes = useRef(new Map<string, HTMLDivElement>());
     const [stageSize, setStageSize] = useState({ width: 600, height: 600 });
     const drag = useRef<{ x: number; y: number; design: PostDesign } | null>(null);
     const wheelTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
     const ballDrag = useRef<{ x: number; y: number } | null>(null);
+    const overlayGimbalDrag = useRef<{ x: number; y: number } | null>(null);
+    const activePointers = useRef(new Map<number, { x: number; y: number }>());
+    const pinchStart = useRef<{
+        distance: number;
+        zoom: number;
+        overlayId: string | null;
+        overlayScale: number;
+        initialDesign: PostDesign;
+    } | null>(null);
     const activeSlideIndex = Math.max(0, slides.findIndex(item => item.id === activeId));
     const activeSlide = slides[activeSlideIndex], design = activeSlide.design;
     const tools = design.template === 'cricket' ? [{ key: 'cricket' as const, label: 'Match', Icon: Trophy }, ...baseTools] : baseTools;
@@ -239,6 +251,44 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         end();[list[index], list[target]] = [list[target], list[index]];
         commit(list.map((item, order) => ({ ...item, carouselOrder: order })));
     };
+    const addOverlayImage = (uri: string, credit = '') => {
+        const newImg: PlacedImage = {
+            id: `img-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`,
+            uri,
+            x: 0,
+            y: 0,
+            scale: 1,
+            rotation: 0,
+            opacity: 1,
+            borderRadius: 8,
+            fit: 'contain',
+            width: 140,
+            height: 140,
+            placement: 'custom',
+            credit,
+        };
+        apply(current => ({
+            ...current,
+            placedImages: [...(current.placedImages || []), newImg],
+        }));
+        setSelectedOverlayId(newImg.id);
+        setTool('media');
+        setNotice('Image overlay added.');
+    };
+    const updateOverlayImage = (id: string, patch: Partial<PlacedImage>) => {
+        apply(current => ({
+            ...current,
+            placedImages: (current.placedImages || []).map(img => img.id === id ? { ...img, ...patch } : img),
+        }));
+    };
+    const removeOverlayImage = (id: string) => {
+        apply(current => ({
+            ...current,
+            placedImages: (current.placedImages || []).filter(img => img.id !== id),
+        }));
+        if (selectedOverlayId === id) setSelectedOverlayId(null);
+        setNotice('Image overlay removed.');
+    };
     const chooseFile = async (file?: File) => {
         if (!file || mediaLocked || !ready || busy || exporting || operation.current) return;
         operation.current = true; setBusy(true);
@@ -252,6 +302,19 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add photo.'); }
         finally { operation.current = false; setBusy(false); }
     };
+    const chooseOverlayFile = async (file?: File) => {
+        if (!file || mediaLocked || !ready || busy || exporting || operation.current) return;
+        operation.current = true; setBusy(true);
+        try {
+            if (!file.type.startsWith('image/') || file.type === 'image/svg+xml') throw new Error('Choose a raster image such as PNG, JPEG or WebP.');
+            if (file.size > 25 * 1024 * 1024) throw new Error('Choose an image smaller than 25 MB.');
+            const uri = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = () => reject(new Error('Could not read photo.')); reader.readAsDataURL(file);
+            });
+            addOverlayImage(uri);
+        } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add overlay photo.'); }
+        finally { operation.current = false; setBusy(false); }
+    };
     const applyUrl = async () => {
         if (!quickUrl.trim() || mediaLocked || urlLoading || operation.current) return;
         operation.current = true; setBusy(true); setUrlLoading(true);
@@ -259,7 +322,13 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             const response = await fetch('/api/admin/studio/media-search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: quickUrl.trim() }) });
             const data = await response.json();
             if (!response.ok || !data.dataUri) throw new Error(data.error || 'Could not load image.');
-            apply(current => replaceImage(current, data.dataUri, keepAdjustments)); setQuickUrl('');
+            if (addAsOverlay) {
+                addOverlayImage(data.dataUri);
+                setAddAsOverlay(false);
+            } else {
+                apply(current => replaceImage(current, data.dataUri, keepAdjustments));
+            }
+            setQuickUrl('');
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not load image.'); }
         finally { operation.current = false; setBusy(false); setUrlLoading(false); }
     };
@@ -274,7 +343,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             const uri = await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = () => reject(new Error('Could not read player photo.')); reader.readAsDataURL(blob);
             });
-            apply(current => ({ ...replaceImage(current, uri, keepAdjustments), imageCredit: playerPhotoCredit(player) }));
+            if (addAsOverlay) {
+                addOverlayImage(uri, playerPhotoCredit(player));
+                setAddAsOverlay(false);
+            } else {
+                apply(current => ({ ...replaceImage(current, uri, keepAdjustments), imageCredit: playerPhotoCredit(player) }));
+            }
             setBackgroundTab('photo'); setNotice(`${player.name} photo inserted.`);
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not insert player photo.'); }
         finally { operation.current = false; setBusy(false); }
@@ -312,16 +386,75 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const canvasDown = (event: PointerEvent<HTMLDivElement>) => {
         if (!ready || exporting || busy || (!reposition && tool !== 'media') || locked || design.hiddenLayers.includes(selected) || (selected === 'visual' && !design.imageUri)) return;
         if (event.target instanceof HTMLElement && event.target.closest('button')) return;
-        event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin();
-        drag.current = { x: event.clientX, y: event.clientY, design: currentDesign() };
+        event.preventDefault();
+        event.currentTarget.setPointerCapture(event.pointerId);
+        activePointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        begin();
+        if (activePointers.current.size === 1) {
+            drag.current = { x: event.clientX, y: event.clientY, design: currentDesign() };
+        } else if (activePointers.current.size === 2) {
+            const [p1, p2] = Array.from(activePointers.current.values());
+            const curr = currentDesign();
+            const activeOverlay = selectedOverlayId ? curr.placedImages?.find(img => img.id === selectedOverlayId) : null;
+            pinchStart.current = {
+                distance: Math.hypot(p2.x - p1.x, p2.y - p1.y),
+                zoom: curr.imageZoom,
+                overlayId: activeOverlay ? activeOverlay.id : null,
+                overlayScale: activeOverlay ? activeOverlay.scale : 1,
+                initialDesign: curr,
+            };
+        }
     };
     const canvasMove = (event: PointerEvent) => {
+        if (activePointers.current.has(event.pointerId)) {
+            activePointers.current.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        }
+        if (activePointers.current.size >= 2 && pinchStart.current) {
+            const [p1, p2] = Array.from(activePointers.current.values());
+            const currDist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+            const ratio = currDist / (pinchStart.current.distance || 1);
+            if (pinchStart.current.overlayId) {
+                const targetId = pinchStart.current.overlayId;
+                const newScale = Math.max(0.2, Math.min(3.0, pinchStart.current.overlayScale * ratio));
+                apply(curr => ({
+                    ...curr,
+                    placedImages: (curr.placedImages || []).map(img =>
+                        img.id === targetId ? { ...img, scale: Number(newScale.toFixed(2)) } : img
+                    ),
+                }));
+            } else {
+                const newZoom = Math.max(0.2, Math.min(4.0, pinchStart.current.zoom * ratio));
+                apply(curr => ({ ...curr, imageZoom: Number(newZoom.toFixed(2)) }));
+            }
+            return;
+        }
         const origin = drag.current; if (!origin) return;
         const dx = (event.clientX - origin.x) / scale, dy = (event.clientY - origin.y) / scale;
-        if (selected === 'visual') apply(() => moveImage(origin.design, dx, dy));
+        if (selectedOverlayId) {
+            const initialOverlay = origin.design.placedImages?.find(i => i.id === selectedOverlayId);
+            apply(current => ({
+                ...current,
+                placedImages: (current.placedImages || []).map(img =>
+                    img.id === selectedOverlayId ? {
+                        ...img,
+                        x: Math.round((initialOverlay?.x || 0) + dx),
+                        y: Math.round((initialOverlay?.y || 0) + dy),
+                    } : img
+                ),
+            }));
+        } else if (selected === 'visual') apply(() => moveImage(origin.design, dx, dy));
         else apply(current => positionText(current, selected, { x: snapTextPosition(origin.design.textPositions[selected].x + dx / 360 * 100, snap), y: snapTextPosition(origin.design.textPositions[selected].y + dy / referenceH * 100, snap) }));
     };
-    const canvasEnd = () => { if (drag.current) { drag.current = null; end(); } };
+    const canvasEnd = (event?: PointerEvent) => {
+        if (event) activePointers.current.delete(event.pointerId);
+        if (activePointers.current.size < 2 && pinchStart.current) {
+            pinchStart.current = null;
+            end();
+        }
+        if (activePointers.current.size === 0) {
+            if (drag.current) { drag.current = null; end(); }
+        }
+    };
     const changeTool = (next: Tool) => { end(); setTool(next); setReposition(false); if (next === 'media') setSelected('visual'); else if (next === 'text' && selected === 'visual') setSelected('headline'); };
     const lockedLabel = textLocked ? ' · Locked' : '';
     const fitText = () => {
@@ -333,7 +466,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 const available = parseFloat(getComputedStyle(node).lineHeight) * Number(node.dataset.lineLimit);
                 if (node.scrollHeight <= available + 1) continue;
                 const layer = node.dataset.testid === 'artwork-headline' ? 'headline' : 'supporting';
-                const size = Math.max(60, Math.floor(current.textTypography[layer].size * available / node.scrollHeight * .96));
+                const size = Math.max(40, Math.floor(current.textTypography[layer].size * available / node.scrollHeight * .96));
                 next = setTextTypography(next, layer, { size });
             }
             return next;
@@ -402,9 +535,39 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     </div>
                 </div>
                 <div ref={stageRef} className={styles.stageSurface}>
-                    <div className={styles.canvasShell} style={{ width: 360 * scale, height: referenceH * scale }} onPointerDown={canvasDown} onPointerMove={canvasMove} onPointerUp={canvasEnd} onPointerCancel={canvasEnd}>
+                    <div
+                        className={styles.canvasShell}
+                        style={{ width: 360 * scale, height: referenceH * scale }}
+                        onPointerDown={canvasDown}
+                        onPointerMove={canvasMove}
+                        onPointerUp={canvasEnd}
+                        onPointerCancel={canvasEnd}
+                        onWheel={event => {
+                            if (mediaDisabled && !selectedOverlayId) return;
+                            if (event.ctrlKey) {
+                                event.preventDefault();
+                                begin();
+                                const factor = event.deltaY < 0 ? 1.05 : 0.95;
+                                if (selectedOverlayId) {
+                                    apply(current => ({
+                                        ...current,
+                                        placedImages: (current.placedImages || []).map(img =>
+                                            img.id === selectedOverlayId ? { ...img, scale: Math.max(0.2, Math.min(3.0, Number((img.scale * factor).toFixed(2)))) } : img
+                                        ),
+                                    }));
+                                } else {
+                                    apply(current => ({
+                                        ...current,
+                                        imageZoom: Math.max(0.2, Math.min(4.0, Number((current.imageZoom * factor).toFixed(2))))
+                                    }));
+                                }
+                                clearTimeout(wheelTimer.current);
+                                wheelTimer.current = setTimeout(end, 180);
+                            }
+                        }}
+                    >
                         <div className={styles.scaledArtwork} style={{ transform: `scale(${scale})` }}>
-                            <Artwork design={design} selected={selected} guides={reposition} onSelect={select} onChooseImage={() => { select('visual'); fileRef.current?.click(); }} />
+                            <Artwork design={design} selected={selected} guides={reposition} onSelect={select} onChooseImage={() => { select('visual'); fileRef.current?.click(); }} selectedPlacedImageId={selectedOverlayId || undefined} onSelectPlacedImage={id => { setSelectedOverlayId(id); setTool('media'); }} />
                         </div>
                     </div>
                 </div>
@@ -456,8 +619,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             <div className={styles.layerGrid} role="group" aria-label="Text layers">{fields.map(item => <button key={item.layer} className={`${styles.choice} ${selected === item.layer ? styles.active : ''}`} aria-pressed={selected === item.layer} onClick={() => select(item.layer)}>{item.label}</button>)}</div>
                             <label className={styles.field}>
                                 <span>{craft.layers.find(layer => layer.key === field.layer)?.label ?? field.label}{lockedLabel}</span>
-                                <textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, event.target.value)} />
-                                <small className={styles.helpText}>Copy is always specific to this page.</small>
+                                <textarea className={styles.input} style={{ minHeight: field.key === 'summary' ? 140 : 80, resize: 'vertical' }} aria-label={`Edit ${field.label.toLowerCase()}`} rows={field.key === 'summary' ? 6 : 3} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, event.target.value)} />
+                                <div className={styles.row} style={{ justifyContent: 'space-between', fontSize: '11px', color: 'var(--studio-secondary)' }}>
+                                    <span>Copy is specific to this page.</span>
+                                    {field.key === 'summary' && <span>{design.summary.length} characters · {design.summary.trim() ? design.summary.trim().split(/\s+/).length : 0} words</span>}
+                                </div>
                             </label>
                             {field.layer === 'kicker' && <label className={styles.field}>
                                 <span>Category / tag</span>
@@ -466,7 +632,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             <div className={styles.toolSection}>
                                 <h3>Typography</h3>
                                 <div className={styles.row}>{(['auto', 'onest', 'hind'] as const).map(font => choice(font === 'auto' ? 'Auto font' : font === 'onest' ? 'Onest' : 'Hind', design.textTypography[field.layer].font === font, () => apply(current => setTextTypography(current, field.layer, { font })), textLocked))}</div>
-                                {slider('Type size', design.textTypography[field.layer].size, 60, 160, value => current => setTextTypography(current, field.layer, { size: value }), textLocked)}
+                                {slider('Type size', design.textTypography[field.layer].size, 40, 180, value => current => setTextTypography(current, field.layer, { size: value }), textLocked)}
                                 {slider('Line spacing', design.textTypography[field.layer].lineSpacing, 90, 180, value => current => setTextTypography(current, field.layer, { lineSpacing: value }), textLocked)}
                                 <div className={styles.row}>{(['left', 'center'] as const).map(value => choice(value === 'left' ? 'Align left' : 'Align center', design.textAlign === value, () => update('textAlign', value), textLocked))}</div>
                             </div>
@@ -527,26 +693,433 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 <div className={styles.toolSection}>
                                     <h3>Fit & crop</h3>
                                     <div className={styles.row}>{choice('Fill frame', design.imageFit === 'cover', () => apply(current => setImageFit(current, 'cover')), mediaDisabled)}{choice('Fit image', design.imageFit === 'contain', () => apply(current => setImageFit(current, 'contain')), mediaDisabled)}</div>
-                                    {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
-                                    <div className={styles.field}><span>Image position</span>
-                                        <div className={styles.ball} role="group" aria-label="Image scroll ball" aria-describedby="image-ball-help" aria-disabled={mediaDisabled} tabIndex={mediaDisabled ? -1 : 0}
-                                            onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.focus(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
-                                            onPointerMove={event => { const previous = ballDrag.current; if (!previous || mediaDisabled) return; apply(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y)); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
-                                            onPointerUp={() => { ballDrag.current = null; end(); }} onPointerCancel={() => { ballDrag.current = null; end(); }} onLostPointerCapture={() => { ballDrag.current = null; end(); }}
-                                            onKeyDown={event => {
-                                                if (mediaDisabled || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
-                                                event.preventDefault(); begin(); const step = event.shiftKey ? 10 : 2;
-                                                apply(current => event.key === 'Home' ? { ...current, imageOffsetX: 0, imageOffsetY: 0 } : moveImage(current, event.key === 'ArrowLeft' ? -step : event.key === 'ArrowRight' ? step : 0, event.key === 'ArrowUp' ? -step : event.key === 'ArrowDown' ? step : 0));
-                                            }} onKeyUp={end} onBlur={() => { ballDrag.current = null; end(); }}
-                                            onWheel={event => {
-                                                if (mediaDisabled) return; begin(); const movement = wheelMovement(event.deltaX, event.deltaY, event.deltaMode, event.shiftKey); apply(current => moveImage(current, movement.x, movement.y)); clearTimeout(wheelTimer.current); wheelTimer.current = setTimeout(end, 180);
-                                            }}>
-                                            <i aria-hidden="true" style={{ transform: `rotate(${design.imageOffsetX * 2}deg) translate(${Math.max(-12, Math.min(12, design.imageOffsetX / 12))}px, ${Math.max(-12, Math.min(12, design.imageOffsetY / 12))}px)` }} />
+                                    {slider('Image zoom', Math.round(design.imageZoom * 100), 20, 400, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
+                                    <p className={styles.helpText} style={{ marginTop: -4 }}>Tip: Use the slider above or pinch with two fingers on the canvas to scale.</p>
+                                    <div className={styles.field}>
+                                        <span>Gimbal image placement</span>
+                                        <div className={styles.gimbalBox}>
+                                            <div className={styles.gimbalHUD}>
+                                                <span>Offset</span>
+                                                <span className={styles.gimbalCoordinates}>
+                                                    X: {design.imageOffsetX > 0 ? `+${design.imageOffsetX}` : design.imageOffsetX}px · Y: {design.imageOffsetY > 0 ? `+${design.imageOffsetY}` : design.imageOffsetY}px
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    className={styles.gimbalResetBtn}
+                                                    disabled={mediaDisabled || (design.imageOffsetX === 0 && design.imageOffsetY === 0)}
+                                                    onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}
+                                                >
+                                                    Reset
+                                                </button>
+                                            </div>
+
+                                            <div
+                                                className={`${styles.ball} ${styles.gimbalRing}`}
+                                                role="group"
+                                                aria-label="Image scroll ball"
+                                                aria-describedby="image-ball-help"
+                                                aria-disabled={mediaDisabled}
+                                                tabIndex={mediaDisabled ? -1 : 0}
+                                                onPointerDown={event => {
+                                                    if (mediaDisabled) return;
+                                                    event.preventDefault();
+                                                    event.currentTarget.focus();
+                                                    event.currentTarget.setPointerCapture(event.pointerId);
+                                                    begin();
+                                                    ballDrag.current = { x: event.clientX, y: event.clientY };
+                                                }}
+                                                onPointerMove={event => {
+                                                    const previous = ballDrag.current;
+                                                    if (!previous || mediaDisabled) return;
+                                                    apply(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y));
+                                                    ballDrag.current = { x: event.clientX, y: event.clientY };
+                                                }}
+                                                onPointerUp={() => { ballDrag.current = null; end(); }}
+                                                onPointerCancel={() => { ballDrag.current = null; end(); }}
+                                                onLostPointerCapture={() => { ballDrag.current = null; end(); }}
+                                                onKeyDown={event => {
+                                                    if (mediaDisabled || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
+                                                    event.preventDefault();
+                                                    begin();
+                                                    const step = event.shiftKey ? 10 : 2;
+                                                    apply(current => event.key === 'Home'
+                                                        ? { ...current, imageOffsetX: 0, imageOffsetY: 0 }
+                                                        : moveImage(current, event.key === 'ArrowLeft' ? -step : event.key === 'ArrowRight' ? step : 0, event.key === 'ArrowUp' ? -step : event.key === 'ArrowDown' ? step : 0)
+                                                    );
+                                                }}
+                                                onKeyUp={end}
+                                                onBlur={() => { ballDrag.current = null; end(); }}
+                                                onWheel={event => {
+                                                    if (mediaDisabled) return;
+                                                    begin();
+                                                    const movement = wheelMovement(event.deltaX, event.deltaY, event.deltaMode, event.shiftKey);
+                                                    apply(current => moveImage(current, movement.x, movement.y));
+                                                    clearTimeout(wheelTimer.current);
+                                                    wheelTimer.current = setTimeout(end, 180);
+                                                }}
+                                            >
+                                                <div className={styles.gimbalCrosshairH} />
+                                                <div className={styles.gimbalCrosshairV} />
+                                                <div className={styles.gimbalInnerRing} />
+                                                <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalN}`}>▲ N</span>
+                                                <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalS}`}>▼ S</span>
+                                                <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalW}`}>◀ W</span>
+                                                <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalE}`}>▶ E</span>
+
+                                                {(() => {
+                                                    const maxR = 36;
+                                                    const tx = Math.max(-maxR, Math.min(maxR, design.imageOffsetX / 8));
+                                                    const ty = Math.max(-maxR, Math.min(maxR, design.imageOffsetY / 8));
+                                                    return (
+                                                        <div
+                                                            className={styles.gimbalThumb}
+                                                            style={{
+                                                                transform: `translate(${tx}px, ${ty}px)`,
+                                                            }}
+                                                        >
+                                                            <div className={styles.gimbalThumbPip} />
+                                                        </div>
+                                                    );
+                                                })()}
+                                            </div>
+
+                                            <div className={styles.gimbalNudgeBar}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.gimbalNudgeBtn}
+                                                    disabled={mediaDisabled}
+                                                    onClick={() => apply(current => moveImage(current, -5, 0))}
+                                                    aria-label="Nudge left"
+                                                    title="Nudge left 5px"
+                                                >
+                                                    ◀
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.gimbalNudgeBtn}
+                                                    disabled={mediaDisabled}
+                                                    onClick={() => apply(current => moveImage(current, 0, -5))}
+                                                    aria-label="Nudge up"
+                                                    title="Nudge up 5px"
+                                                >
+                                                    ▲
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.gimbalNudgeBtn}
+                                                    disabled={mediaDisabled}
+                                                    onClick={() => apply(current => moveImage(current, 0, 5))}
+                                                    aria-label="Nudge down"
+                                                    title="Nudge down 5px"
+                                                >
+                                                    ▼
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.gimbalNudgeBtn}
+                                                    disabled={mediaDisabled}
+                                                    onClick={() => apply(current => moveImage(current, 5, 0))}
+                                                    aria-label="Nudge right"
+                                                    title="Nudge right 5px"
+                                                >
+                                                    ▶
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    className={styles.button}
+                                                    disabled={mediaDisabled}
+                                                    onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}
+                                                    style={{ minHeight: 28, fontSize: 11, padding: '2px 10px', marginLeft: 4 }}
+                                                >
+                                                    Center photo
+                                                </button>
+                                            </div>
+
+                                            <p id="image-ball-help" className={styles.helpText} style={{ textAlign: 'center', margin: 0 }}>
+                                                Drag the gimbal thumb or canvas to position photo. Arrow keys nudge; Shift for faster pan. Home centers.
+                                            </p>
                                         </div>
-                                        <p id="image-ball-help" className={styles.helpText}>Drag or scroll the ball to pan the full photo. Arrow keys fine-tune; Shift moves faster. Home centers it. You can also drag directly on the canvas.</p>
-                                        <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Center photo</button>
                                     </div>
                                 </div>
+                                <Section title={`Multiple images & overlays (${design.placedImages?.length || 0})`}>
+                                    <p className={styles.helpText}>Add multiple visual overlays, badges, and player portraits with placement and scaling.</p>
+                                    <div className={styles.row}>
+                                        <button className={styles.button} disabled={mediaLocked} onClick={() => overlayFileRef.current?.click()}>
+                                            <Upload size={14} />Upload overlay
+                                        </button>
+                                        <button className={styles.button} disabled={mediaLocked} onClick={() => { setAddAsOverlay(true); setMediaSearchQuery(''); setMediaModalOpen(true); }}>
+                                            Search library / web
+                                        </button>
+                                        {design.template === 'cricket' && (
+                                            <button className={styles.button} disabled={mediaLocked} onClick={() => { setAddAsOverlay(true); setBackgroundTab('players'); }}>
+                                                Player photo
+                                            </button>
+                                        )}
+                                    </div>
+                                    {design.placedImages && design.placedImages.length > 0 && (
+                                        <div style={{ display: 'grid', gap: 10, marginTop: 10 }}>
+                                            <div style={{ display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 4 }}>
+                                                {design.placedImages.map((img, i) => {
+                                                    const isSelected = img.id === (selectedOverlayId || design.placedImages![0].id);
+                                                    return (
+                                                        <button
+                                                            key={img.id}
+                                                            type="button"
+                                                            className={`${styles.button} ${isSelected ? styles.active : ''}`}
+                                                            style={{ padding: '4px 8px', minHeight: 34, display: 'inline-flex', alignItems: 'center', gap: 6 }}
+                                                            onClick={() => setSelectedOverlayId(img.id)}
+                                                        >
+                                                            <img src={img.uri} alt="" style={{ width: 20, height: 20, objectFit: 'contain', borderRadius: 2 }} />
+                                                            <span>Overlay {i + 1}</span>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                            {(() => {
+                                                const activeImg = design.placedImages.find(img => img.id === selectedOverlayId) || design.placedImages[0];
+                                                if (!activeImg) return null;
+                                                const updateActive = (patch: Partial<PlacedImage>) => updateOverlayImage(activeImg.id, patch);
+                                                const placements: { key: PlacedImagePlacement; label: string }[] = [
+                                                    { key: 'custom', label: 'Custom' },
+                                                    { key: 'center', label: 'Center' },
+                                                    { key: 'top-left', label: 'Top Left' },
+                                                    { key: 'top-right', label: 'Top Right' },
+                                                    { key: 'bottom-left', label: 'Bottom Left' },
+                                                    { key: 'bottom-right', label: 'Bottom Right' },
+                                                    { key: 'split-left', label: 'Left Half' },
+                                                    { key: 'split-right', label: 'Right Half' },
+                                                ];
+                                                return (
+                                                    <div style={{ display: 'grid', gap: 10, padding: 10, background: 'var(--studio-muted)', borderRadius: 8, border: '1px solid var(--studio-border)' }}>
+                                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                            <strong style={{ fontSize: 12 }}>Overlay Placement & Scaling</strong>
+                                                            <button
+                                                                className={styles.button}
+                                                                style={{ padding: '3px 8px', minHeight: 28, fontSize: 11 }}
+                                                                onClick={() => removeOverlayImage(activeImg.id)}
+                                                            >
+                                                                <Trash2 size={13} /> Remove
+                                                            </button>
+                                                        </div>
+                                                        <div className={styles.field}>
+                                                            <span style={{ fontSize: 11, fontWeight: 600 }}>Preset placement</span>
+                                                            <div className={styles.row} style={{ gap: 4 }}>
+                                                                {placements.map(p => (
+                                                                    <button
+                                                                        key={p.key}
+                                                                        type="button"
+                                                                        className={`${styles.choice} ${(activeImg.placement || 'custom') === p.key ? styles.active : ''}`}
+                                                                        style={{ minHeight: 30, padding: '3px 6px', fontSize: 11 }}
+                                                                        onClick={() => updateActive({ placement: p.key })}
+                                                                    >
+                                                                        {p.label}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                        {slider('Overlay scale', Math.round((activeImg.scale ?? 1) * 100), 20, 300, value => current => ({
+                                                            ...current,
+                                                            placedImages: (current.placedImages || []).map(img => img.id === activeImg.id ? { ...img, scale: value / 100 } : img),
+                                                        }))}
+                                                        <p className={styles.helpText} style={{ marginTop: -4 }}>Tip: Use the scale slider or pinch with two fingers on the canvas to resize.</p>
+                                                        <div className={styles.field}>
+                                                            <span style={{ fontSize: 11, fontWeight: 600 }}>Gimbal overlay placement</span>
+                                                            <div className={styles.gimbalBox}>
+                                                                <div className={styles.gimbalHUD}>
+                                                                    <span>Offset</span>
+                                                                    <span className={styles.gimbalCoordinates}>
+                                                                        X: {(activeImg.x || 0) > 0 ? `+${activeImg.x}` : activeImg.x || 0}px · Y: {(activeImg.y || 0) > 0 ? `+${activeImg.y}` : activeImg.y || 0}px
+                                                                    </span>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.gimbalResetBtn}
+                                                                        disabled={mediaLocked || (!activeImg.x && !activeImg.y)}
+                                                                        onClick={() => updateActive({ x: 0, y: 0 })}
+                                                                    >
+                                                                        Reset
+                                                                    </button>
+                                                                </div>
+
+                                                                <div
+                                                                    className={styles.gimbalRing}
+                                                                    role="group"
+                                                                    aria-label="Overlay gimbal thumb"
+                                                                    tabIndex={0}
+                                                                    onPointerDown={event => {
+                                                                        if (mediaLocked) return;
+                                                                        event.preventDefault();
+                                                                        event.currentTarget.focus();
+                                                                        event.currentTarget.setPointerCapture(event.pointerId);
+                                                                        begin();
+                                                                        overlayGimbalDrag.current = { x: event.clientX, y: event.clientY };
+                                                                    }}
+                                                                    onPointerMove={event => {
+                                                                        const prev = overlayGimbalDrag.current;
+                                                                        if (!prev || mediaLocked) return;
+                                                                        const dx = event.clientX - prev.x;
+                                                                        const dy = event.clientY - prev.y;
+                                                                        updateActive({
+                                                                            x: Math.round((activeImg.x || 0) + dx * 1.5),
+                                                                            y: Math.round((activeImg.y || 0) + dy * 1.5),
+                                                                        });
+                                                                        overlayGimbalDrag.current = { x: event.clientX, y: event.clientY };
+                                                                    }}
+                                                                    onPointerUp={() => { overlayGimbalDrag.current = null; end(); }}
+                                                                    onPointerCancel={() => { overlayGimbalDrag.current = null; end(); }}
+                                                                    onLostPointerCapture={() => { overlayGimbalDrag.current = null; end(); }}
+                                                                    onKeyDown={event => {
+                                                                        if (mediaLocked || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
+                                                                        event.preventDefault();
+                                                                        begin();
+                                                                        const step = event.shiftKey ? 10 : 2;
+                                                                        if (event.key === 'Home') updateActive({ x: 0, y: 0 });
+                                                                        else if (event.key === 'ArrowLeft') updateActive({ x: (activeImg.x || 0) - step });
+                                                                        else if (event.key === 'ArrowRight') updateActive({ x: (activeImg.x || 0) + step });
+                                                                        else if (event.key === 'ArrowUp') updateActive({ y: (activeImg.y || 0) - step });
+                                                                        else if (event.key === 'ArrowDown') updateActive({ y: (activeImg.y || 0) + step });
+                                                                    }}
+                                                                    onKeyUp={end}
+                                                                    onBlur={() => { overlayGimbalDrag.current = null; end(); }}
+                                                                    onWheel={event => {
+                                                                        if (mediaLocked) return;
+                                                                        begin();
+                                                                        updateActive({
+                                                                            x: Math.round((activeImg.x || 0) - event.deltaX / 4),
+                                                                            y: Math.round((activeImg.y || 0) - event.deltaY / 4),
+                                                                        });
+                                                                        clearTimeout(wheelTimer.current);
+                                                                        wheelTimer.current = setTimeout(end, 180);
+                                                                    }}
+                                                                >
+                                                                    <div className={styles.gimbalCrosshairH} />
+                                                                    <div className={styles.gimbalCrosshairV} />
+                                                                    <div className={styles.gimbalInnerRing} />
+                                                                    <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalN}`}>▲ N</span>
+                                                                    <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalS}`}>▼ S</span>
+                                                                    <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalW}`}>◀ W</span>
+                                                                    <span className={`${styles.gimbalCardinal} ${styles.gimbalCardinalE}`}>▶ E</span>
+
+                                                                    {(() => {
+                                                                        const maxR = 36;
+                                                                        const tx = Math.max(-maxR, Math.min(maxR, (activeImg.x || 0) / 4));
+                                                                        const ty = Math.max(-maxR, Math.min(maxR, (activeImg.y || 0) / 4));
+                                                                        return (
+                                                                            <div
+                                                                                className={styles.gimbalThumb}
+                                                                                style={{
+                                                                                    transform: `translate(${tx}px, ${ty}px)`,
+                                                                                }}
+                                                                            >
+                                                                                <div className={styles.gimbalThumbPip} />
+                                                                            </div>
+                                                                        );
+                                                                    })()}
+                                                                </div>
+
+                                                                <div className={styles.gimbalNudgeBar}>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.gimbalNudgeBtn}
+                                                                        disabled={mediaLocked}
+                                                                        onClick={() => updateActive({ x: (activeImg.x || 0) - 5 })}
+                                                                        aria-label="Nudge overlay left"
+                                                                        title="Nudge left 5px"
+                                                                    >
+                                                                        ◀
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.gimbalNudgeBtn}
+                                                                        disabled={mediaLocked}
+                                                                        onClick={() => updateActive({ y: (activeImg.y || 0) - 5 })}
+                                                                        aria-label="Nudge overlay up"
+                                                                        title="Nudge up 5px"
+                                                                    >
+                                                                        ▲
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.gimbalNudgeBtn}
+                                                                        disabled={mediaLocked}
+                                                                        onClick={() => updateActive({ y: (activeImg.y || 0) + 5 })}
+                                                                        aria-label="Nudge overlay down"
+                                                                        title="Nudge down 5px"
+                                                                    >
+                                                                        ▼
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.gimbalNudgeBtn}
+                                                                        disabled={mediaLocked}
+                                                                        onClick={() => updateActive({ x: (activeImg.x || 0) + 5 })}
+                                                                        aria-label="Nudge overlay right"
+                                                                        title="Nudge right 5px"
+                                                                    >
+                                                                        ▶
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.button}
+                                                                        disabled={mediaLocked}
+                                                                        onClick={() => updateActive({ x: 0, y: 0 })}
+                                                                        style={{ minHeight: 28, fontSize: 11, padding: '2px 10px', marginLeft: 4 }}
+                                                                    >
+                                                                        Center overlay
+                                                                    </button>
+                                                                </div>
+                                                                <p className={styles.helpText} style={{ textAlign: 'center', margin: 0 }}>
+                                                                    Drag gimbal thumb or canvas to position overlay. Arrow keys nudge; Shift for faster pan.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                                                            {slider('Rotation', activeImg.rotation || 0, -180, 180, value => current => ({
+                                                                ...current,
+                                                                placedImages: (current.placedImages || []).map(img => img.id === activeImg.id ? { ...img, rotation: value } : img),
+                                                            }))}
+                                                            {slider('Opacity', Math.round((activeImg.opacity ?? 1) * 100), 10, 100, value => current => ({
+                                                                ...current,
+                                                                placedImages: (current.placedImages || []).map(img => img.id === activeImg.id ? { ...img, opacity: value / 100 } : img),
+                                                            }))}
+                                                        </div>
+                                                        <div className={styles.row} style={{ gap: 6 }}>
+                                                            <span style={{ fontSize: 11, fontWeight: 600 }}>Shape:</span>
+                                                            {[
+                                                                { label: 'Sharp', radius: 0 },
+                                                                { label: 'Rounded', radius: 12 },
+                                                                { label: 'Circle', radius: 999 },
+                                                            ].map(shape => (
+                                                                <button
+                                                                    key={shape.label}
+                                                                    type="button"
+                                                                    className={`${styles.choice} ${(activeImg.borderRadius || 0) === shape.radius ? styles.active : ''}`}
+                                                                    style={{ minHeight: 28, padding: '2px 8px', fontSize: 11 }}
+                                                                    onClick={() => updateActive({ borderRadius: shape.radius })}
+                                                                >
+                                                                    {shape.label}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                        <div className={styles.row} style={{ gap: 6 }}>
+                                                            <span style={{ fontSize: 11, fontWeight: 600 }}>Fit:</span>
+                                                            {(['contain', 'cover'] as const).map(fitMode => (
+                                                                <button
+                                                                    key={fitMode}
+                                                                    type="button"
+                                                                    className={`${styles.choice} ${(activeImg.fit || 'contain') === fitMode ? styles.active : ''}`}
+                                                                    style={{ minHeight: 28, padding: '2px 8px', fontSize: 11 }}
+                                                                    onClick={() => updateActive({ fit: fitMode })}
+                                                                >
+                                                                    {fitMode === 'contain' ? 'Fit' : 'Crop / Cover'}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })()}
+                                        </div>
+                                    )}
+                                </Section>
                                 <Section title="Image effects">
                                     <div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}<button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset image adjustments</button>
                                 </Section>
@@ -610,6 +1183,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             </aside>
         </div>
         <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" hidden ref={fileRef} aria-label="Upload studio photo" onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
+        <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" hidden ref={overlayFileRef} aria-label="Upload overlay photo" onChange={event => { void chooseOverlayFile(event.target.files?.[0]); event.target.value = ''; }} />
         <div className={styles.offscreen} aria-hidden="true">
             <Artwork ref={exportRef} design={design} />{slides.map(item => <Artwork key={item.id} ref={node => { if (node) exportNodes.current.set(item.id, node); else exportNodes.current.delete(item.id); }} design={item.design} />)}</div>
         {scopeDetails && <Modal labelledBy="shared-style-title" onClose={() => setScopeDetails(false)}>
@@ -634,7 +1208,16 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 <p className={styles.helpText}>{editAll ? 'New changes to selected styles update every page. Undo restores the whole carousel.' : 'Apply once above, or choose All pages to keep editing together.'}</p>
             </div>
         </Modal>}
-        {mediaModalOpen && <StudioMediaModal onClose={() => setMediaModalOpen(false)} onApplyImage={uri => { apply(current => replaceImage(current, uri, keepAdjustments)); setMediaModalOpen(false); setBackgroundTab('photo'); }} initialQuery={mediaSearchQuery || design.headline.slice(0, 40) || design.category} />}
+        {mediaModalOpen && <StudioMediaModal onClose={() => { setMediaModalOpen(false); setAddAsOverlay(false); }} onApplyImage={uri => {
+            if (addAsOverlay) {
+                addOverlayImage(uri);
+            } else {
+                apply(current => replaceImage(current, uri, keepAdjustments));
+                setBackgroundTab('photo');
+            }
+            setMediaModalOpen(false);
+            setAddAsOverlay(false);
+        }} initialQuery={mediaSearchQuery || design.headline.slice(0, 40) || design.category} />}
         {previewOpen && <InstagramPreviewModal slides={slides} activeSlideIndex={activeSlideIndex} onSelectSlide={switchSlide} onClose={() => setPreviewOpen(false)} onExportCurrent={exportPost} onExportAll={slides.length > 1 ? exportAll : undefined} />}
     </div>;
 }

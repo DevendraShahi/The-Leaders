@@ -6,6 +6,7 @@ import { postOutputDimensions, type PostDesign, type PostLayer } from '@/lib/pos
 import styles from './PostStudio.module.css';
 import { artworkTextStyle } from '@/lib/post-studio/artwork-text';
 import { ArtworkPhoto } from './ArtworkPhoto';
+import { ArtworkPlacedImages } from './ArtworkPlacedImages';
 import { CricketArtwork } from './CricketArtwork';
 export { artworkTextStyle } from '@/lib/post-studio/artwork-text';
 
@@ -13,8 +14,9 @@ export { artworkTextStyle } from '@/lib/post-studio/artwork-text';
 export const Artwork = forwardRef<HTMLDivElement, {
     design: PostDesign; selected?: PostLayer; guides?: boolean;
     onSelect?: (layer: PostLayer) => void; onChooseImage?: () => void;
-}>(({ design, selected, guides, onSelect, onChooseImage }, ref) => {
-    if (design.template === 'cricket') return <CricketArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} />;
+    selectedPlacedImageId?: string; onSelectPlacedImage?: (id: string) => void;
+}>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
+    if (design.template === 'cricket') return <CricketArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     const [w, h] = postOutputDimensions[design.format];
     const height = 360 * h / w;
     const hidden = (layer: PostLayer) => design.hiddenLayers.includes(layer);
@@ -26,6 +28,7 @@ export const Artwork = forwardRef<HTMLDivElement, {
     const backgroundStyle = design.backgroundGradient || design.backgroundColor || '#111318';
     return <div ref={ref} className={styles.artwork} style={{ width: 360, height, background: backgroundStyle }} data-testid="post-artwork">
         <ArtworkPhoto design={design} height={height} />
+        <ArtworkPlacedImages images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         {!hidden('visual') && design.imageUri && <div className={styles.tint} style={{ background: design.imageTone === 'clear' ? 'rgba(7,9,13,.18)' : design.imageTone === 'warm' ? 'rgba(61,28,14,.38)' : 'rgba(5,7,10,.52)' }} />}
         {onSelect && <div className={styles.visualHit} {...select('visual')} />}
         {!design.imageUri && !design.backgroundGradient && !design.backgroundColor && !hidden('visual') && onChooseImage && <button className={styles.addPhoto} onClick={onChooseImage}>＋ ADD VISUAL</button>}

@@ -6,7 +6,7 @@ export function setTextTypography(design: PostDesign, layer: PostTextLayer, patc
     if (design.lockedLayers.includes(layer)) return design;
     const settings = { ...(design.textTypography?.[layer] ?? defaultTextTypography()[layer]), ...patch };
     const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, Number.isFinite(value) ? value : 100));
-    settings.size = clamp(settings.size, 60, 160);
+    settings.size = clamp(settings.size, 40, 180);
     settings.lineSpacing = clamp(settings.lineSpacing, 90, 180);
     settings.shadow = clamp(settings.shadow, 0, 100);
     return { ...design, ...(layer === "headline" && patch.size !== undefined ? { headlineScale: settings.size / 100 } : {}), textTypography: { ...(design.textTypography ?? defaultTextTypography()), [layer]: settings } };

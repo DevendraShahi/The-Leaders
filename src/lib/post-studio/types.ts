@@ -23,6 +23,24 @@ export const postOutputDimensions: Record<PostFormat, readonly [number, number]>
 
 export const postExportReferenceWidth = 360;
 
+export type PlacedImagePlacement = 'custom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center' | 'split-left' | 'split-right';
+
+export type PlacedImage = {
+  id: string;
+  uri: string;
+  x: number;
+  y: number;
+  scale: number;
+  rotation?: number;
+  opacity?: number;
+  borderRadius?: number;
+  fit?: 'cover' | 'contain';
+  width?: number;
+  height?: number;
+  placement?: PlacedImagePlacement;
+  credit?: string;
+};
+
 export type PostDesign = {
   template: PostTemplate;
   format: PostFormat;
@@ -52,6 +70,7 @@ export type PostDesign = {
   backgroundColor?: string | null;
   backgroundGradient?: string | null;
   cricket?: CricketData;
+  placedImages?: PlacedImage[];
 };
 
 export const defaultPostDesign: PostDesign = {
@@ -82,6 +101,7 @@ export const defaultPostDesign: PostDesign = {
   textTypography: defaultTextTypography(),
   backgroundColor: null,
   backgroundGradient: null,
+  placedImages: [],
 };
 
 export const postTemplates: { key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }[] = [
