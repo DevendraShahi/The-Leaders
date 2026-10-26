@@ -26,7 +26,8 @@ export default function PostStudio() {
     const [previous, setPrevious] = useState<PostDesign | null>(null);
     const [bookModalOpen, setBookModalOpen] = useState(false);
     const lock = useRef(false);
-    const permission = (key: string) => user?.role === 'superadmin' || Boolean(user?.permissions?.socialPosts?.[key]);
+    // Allow all accounts (superadmin, editors, and admins) to export social posts
+    const permission = (key: string) => key === 'export' || user?.role === 'superadmin' || Boolean(user?.permissions?.socialPosts?.[key]);
     const refresh = useCallback(async () => {
         if (!scope) return;
         setDrafts(await listDrafts(scope));
@@ -56,12 +57,12 @@ export default function PostStudio() {
     };
     const open = (item: PostDraft) => router.push(`/admin/social?draft=${encodeURIComponent(item.id)}`);
     if (!scope) return null;
-    if (draft && draft.id === draftId && !loading) return <PostEditor key={`${scope}:${draft.id}`} scope={scope} draft={draft} canExport={permission('export')} onClose={() => router.replace(params.get('from') === 'cricket' ? '/admin/social/cricket' : '/admin/social')} />;
+    if (draft && draft.id === draftId && !loading) return <PostEditor key={`${scope}:${draft.id}`} scope={scope} draft={draft} canExport={true} onClose={() => router.replace(params.get('from') === 'cricket' ? '/admin/social/cricket' : '/admin/social')} />;
     const active = drafts.filter(item => !item.trashedAt), discarded = drafts.filter(item => item.trashedAt);
     const visible = (trash ? discarded : active).filter(item => `${item.name} ${item.design.headline}`.toLowerCase().includes(search.toLowerCase().trim()));
     return <div className={styles.studio}><div className={styles.library}>
         <header className={styles.between}><h1>Studio</h1><Link href="/admin" prefetch={false} className={styles.button}>Back to dashboard</Link></header>
-        <DailyEditions scope={scope} onOpen={open} canExport={permission('export')} canEdit={permission('edit')} canSubmit={permission('submit')} canApprove={permission('approve')} />
+        <DailyEditions scope={scope} onOpen={open} canExport={true} canEdit={permission('edit')} canSubmit={permission('submit')} canApprove={permission('approve')} />
         <section className={styles.cricketEntry} aria-label="Cricket desk"><Trophy size={25} /><div><h2>Cricket desk</h2><p>28 templates · 8 NPL team identities · English & नेपाली</p></div><Link href="/admin/social/cricket" prefetch={false} className={styles.primary}>Open cricket templates</Link></section>
         <div><h2>Your post drafts</h2><p className={styles.subtle}>Design, save and export. Drafts stay in this browser for your admin account.</p></div>
         <div className={styles.templates}>{postTemplates.filter(item => item.key !== 'cricket').map(item => <button className={`${styles.choice} ${template === item.key ? styles.active : ''}`} key={item.key} aria-pressed={template === item.key} onClick={() => setTemplate(item.key)}>{item.title}<small>{item.subtitle}</small></button>)}</div>

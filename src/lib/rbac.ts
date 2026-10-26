@@ -19,7 +19,7 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             return {
                 pageAccess: { dashboard: true, content: false, media: true, messages: true, settings: true, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
-                socialPosts: { create: false, edit: false, submit: false, approve: false, export: false },
+                socialPosts: { create: false, edit: false, submit: false, approve: false, export: true },
                 settings: { view: true, modify: true },
                 users: { view: false, manage: false },
                 analytics: { view: true, viewAll: false },
@@ -46,11 +46,11 @@ export function getDefaultPermissions(role: IAdmin['role']): IPermissions {
             };
 
         default:
-            // Fallback - no permissions
+            // Fallback - allow export by default
             return {
                 pageAccess: { dashboard: false, content: false, media: false, messages: false, settings: false, users: false },
                 articles: { create: false, edit: false, delete: false, publish: false },
-                socialPosts: { create: false, edit: false, submit: false, approve: false, export: false },
+                socialPosts: { create: false, edit: false, submit: false, approve: false, export: true },
                 settings: { view: false, modify: false },
                 users: { view: false, manage: false },
                 analytics: { view: false, viewAll: false },

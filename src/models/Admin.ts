@@ -73,7 +73,7 @@ const PermissionsSchema = new Schema<IPermissions>({
         edit: { type: Boolean, default: false },
         submit: { type: Boolean, default: false },
         approve: { type: Boolean, default: false },
-        export: { type: Boolean, default: false },
+        export: { type: Boolean, default: true },
     },
     settings: {
         view: { type: Boolean, default: false },

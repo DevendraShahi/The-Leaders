@@ -54,7 +54,8 @@ function normalizePageAccess(permissions?: IPermissions) {
 function normalizeSocialAccess(permissions?: IPermissions): IPermissions['socialPosts'] {
     return {
         create: Boolean(permissions?.socialPosts?.create), edit: Boolean(permissions?.socialPosts?.edit),
-        submit: Boolean(permissions?.socialPosts?.submit), approve: Boolean(permissions?.socialPosts?.approve), export: Boolean(permissions?.socialPosts?.export),
+        submit: Boolean(permissions?.socialPosts?.submit), approve: Boolean(permissions?.socialPosts?.approve),
+        export: permissions?.socialPosts?.export !== undefined ? Boolean(permissions.socialPosts.export) : true,
     };
 }
 

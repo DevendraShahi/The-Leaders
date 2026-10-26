@@ -5,6 +5,7 @@ import { postDesignSchema, placedImageSchema } from '@/lib/post-studio/drafts';
 import { textLineLimit } from '@/lib/post-studio/text-overflow';
 import { setTextTypography } from '@/lib/post-studio/typography';
 import { isMobileDevice, canNativeShareFile, bytesToFile, download } from '@/lib/post-studio/export';
+import { hasSocialPostPermission } from '@/lib/social-access';
 import SocialPost from '@/models/SocialPost';
 
 describe('Studio Enhancements: Summary, Multiple Placed Images & Cricket Logos', () => {
@@ -209,6 +210,16 @@ describe('Studio Enhancements: Summary, Multiple Placed Images & Cricket Logos',
             const bytes = new Uint8Array([137, 80, 78, 71]);
             const url = download(bytes, 'output.png', 'image/png');
             expect(url).toMatch(/^blob:/);
+        });
+
+        it('allows all editor and user accounts to export social graphics regardless of role or permissions', () => {
+            const editorUser: any = { userId: 'editor-1', role: 'editorial', permissions: { socialPosts: { export: false } } };
+            const ctoUser: any = { userId: 'cto-1', role: 'cto', permissions: {} };
+            const fallbackUser: any = { userId: 'unknown-1', role: 'writer' };
+
+            expect(hasSocialPostPermission(editorUser, 'export')).toBe(true);
+            expect(hasSocialPostPermission(ctoUser, 'export')).toBe(true);
+            expect(hasSocialPostPermission(fallbackUser, 'export')).toBe(true);
         });
     });
 });

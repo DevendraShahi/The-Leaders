@@ -57,7 +57,7 @@ export default function StudioEditor({ api, user, onExit }: { api: StudioApi; us
     const savedRef = useRef(baseline); savedRef.current = baseline;
     const lock = useRef(false);
     const [canvasSize, setCanvasSize] = useState({ width: 400, height: 500 });
-    const can = (permission: 'create' | 'edit' | 'submit' | 'approve' | 'export') => user.role === 'superadmin' || Boolean(user.permissions?.socialPosts?.[permission]);
+    const can = (permission: 'create' | 'edit' | 'submit' | 'approve' | 'export') => permission === 'export' || user.role === 'superadmin' || Boolean(user.permissions?.socialPosts?.[permission]);
     const dirty = Boolean(post && baseline && fingerprint(post) !== fingerprint(baseline));
     const copy = post?.copy[post.outputLanguage] || {};
     const mediaId = idOf(post?.media?.mediaId);
