@@ -10,6 +10,7 @@ interface ArtworkPlacedImagesProps {
     selectedId?: string;
     onSelectImage?: (id: string) => void;
     isInteractive?: boolean;
+    layerFilter?: 'back' | 'middle' | 'front' | 'all';
 }
 
 export function ArtworkPlacedImages({
@@ -19,8 +20,20 @@ export function ArtworkPlacedImages({
     selectedId,
     onSelectImage,
     isInteractive = false,
+    layerFilter = 'all',
 }: ArtworkPlacedImagesProps) {
     if (!images || images.length === 0) return null;
+
+    const filtered = images.filter((img) => {
+        if (img.hidden) return false;
+        if (layerFilter === 'all') return true;
+        const imgLayer = img.layer || 'back';
+        return imgLayer === layerFilter;
+    });
+
+    if (filtered.length === 0) return null;
+
+    const containerZIndex = layerFilter === 'front' ? 10 : layerFilter === 'middle' ? 4 : 1;
 
     return (
         <div
@@ -28,14 +41,14 @@ export function ArtworkPlacedImages({
                 position: 'absolute',
                 inset: 0,
                 pointerEvents: isInteractive ? 'auto' : 'none',
-                zIndex: 3,
+                zIndex: containerZIndex,
                 overflow: 'hidden',
             }}
             aria-hidden="true"
         >
-            {images.map((img) => {
-                const baseWidth = img.width ?? 120;
-                const baseHeight = img.height ?? 120;
+            {filtered.map((img) => {
+                const baseWidth = img.width ?? 140;
+                const baseHeight = img.height ?? 140;
                 const scale = img.scale ?? 1;
                 const renderWidth = baseWidth * scale;
                 const renderHeight = baseHeight * scale;
@@ -61,11 +74,11 @@ export function ArtworkPlacedImages({
                         originY = canvasHeight - renderHeight - 32;
                         break;
                     case 'split-left':
-                        originX = 0;
+                        originX = -renderWidth * 0.15;
                         originY = (canvasHeight - renderHeight) / 2;
                         break;
                     case 'split-right':
-                        originX = canvasWidth - renderWidth;
+                        originX = canvasWidth - renderWidth * 0.85;
                         originY = (canvasHeight - renderHeight) / 2;
                         break;
                     case 'center':
@@ -89,10 +102,10 @@ export function ArtworkPlacedImages({
                     transform: img.rotation ? `rotate(${img.rotation}deg)` : undefined,
                     opacity: img.opacity ?? 1,
                     cursor: isInteractive ? 'pointer' : 'default',
-                    outline: isSelected ? '2px solid #b71c1c' : undefined,
-                    outlineOffset: isSelected ? '3px' : undefined,
+                    outline: isSelected ? '1.5px solid #00e5ff' : 'none',
+                    outlineOffset: isSelected ? '1px' : undefined,
                     borderRadius: `${img.borderRadius ?? 0}px`,
-                    boxShadow: isSelected ? '0 0 12px rgba(183, 28, 28, 0.4)' : undefined,
+                    boxShadow: isSelected ? '0 0 10px rgba(0, 229, 255, 0.45)' : undefined,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -121,6 +134,14 @@ export function ArtworkPlacedImages({
                         }}
                     >
                         <img src={img.uri} alt="" style={imgStyle} />
+                        {isSelected && (
+                            <>
+                                <span style={{ position: 'absolute', top: -4, left: -4, width: 7, height: 7, background: '#ffffff', border: '1.5px solid #00e5ff', borderRadius: 1.5, pointerEvents: 'none' }} />
+                                <span style={{ position: 'absolute', top: -4, right: -4, width: 7, height: 7, background: '#ffffff', border: '1.5px solid #00e5ff', borderRadius: 1.5, pointerEvents: 'none' }} />
+                                <span style={{ position: 'absolute', bottom: -4, left: -4, width: 7, height: 7, background: '#ffffff', border: '1.5px solid #00e5ff', borderRadius: 1.5, pointerEvents: 'none' }} />
+                                <span style={{ position: 'absolute', bottom: -4, right: -4, width: 7, height: 7, background: '#ffffff', border: '1.5px solid #00e5ff', borderRadius: 1.5, pointerEvents: 'none' }} />
+                            </>
+                        )}
                     </div>
                 );
             })}

@@ -28,11 +28,12 @@ export const Artwork = forwardRef<HTMLDivElement, {
     const backgroundStyle = design.backgroundGradient || design.backgroundColor || '#111318';
     return <div ref={ref} className={styles.artwork} style={{ width: 360, height, background: backgroundStyle }} data-testid="post-artwork">
         <ArtworkPhoto design={design} height={height} />
-        <ArtworkPlacedImages images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
+        <ArtworkPlacedImages layerFilter="back" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         {!hidden('visual') && design.imageUri && <div className={styles.tint} style={{ background: design.imageTone === 'clear' ? 'rgba(7,9,13,.18)' : design.imageTone === 'warm' ? 'rgba(61,28,14,.38)' : 'rgba(5,7,10,.52)' }} />}
         {onSelect && <div className={styles.visualHit} {...select('visual')} />}
         {!design.imageUri && !design.backgroundGradient && !design.backgroundColor && !hidden('visual') && onChooseImage && <button className={styles.addPhoto} onClick={onChooseImage}>＋ ADD VISUAL</button>}
         <div className={styles.artworkAccent} style={{ background: design.accent }} />
+        <ArtworkPlacedImages layerFilter="middle" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         <div className={styles.artworkContent}>
             <div className={styles.artworkTop}>
                 <img src="/studio/leaders.png" alt="The Leaders" width={design.format === 'landscape' ? 32 : 40} height={design.format === 'landscape' ? 32 : 40} />
@@ -45,6 +46,7 @@ export const Artwork = forwardRef<HTMLDivElement, {
             </div>
             {!hidden('footer') && <div {...select('footer')} className={`${styles.artworkFooter} ${selectedClass('footer')}`} style={artworkTextStyle(design, 'footer')}><span>{design.author || 'THE LEADERS DESK'}</span><span>TODAY</span></div>}
         </div>
+        <ArtworkPlacedImages layerFilter="front" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         {guides && <div className={styles.guides} aria-hidden="true"><div /><i /><b /></div>}
     </div>;
 });

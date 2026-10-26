@@ -229,14 +229,15 @@ export const CricketArtwork = forwardRef<HTMLDivElement, {
     const updateTime = data.updatedAt ? new Date(data.updatedAt).toLocaleTimeString(data.language === 'ne' ? 'ne-NP' : 'en-GB', { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: false }) : '';
     return <div ref={ref} data-testid="post-artwork" data-cricket-template={data.template} className={`${css.artwork} ${landscape ? css.landscape : ''} ${compact ? css.square : ''} ${design.format === 'story' ? css.story : ''}`} style={{ width: 360, height, background: design.backgroundGradient || design.backgroundColor || team.dark, '--cricket-accent': design.accent, '--cricket-secondary': team.secondary, textAlign: design.textAlign, fontFamily: data.language === 'ne' ? 'Hind_400Regular,sans-serif' : 'Onest_400Regular,sans-serif' } as CSSProperties}>
         <ArtworkPhoto design={design} height={height} />
-        <ArtworkPlacedImages images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         <div className={css.atmosphere} style={data.theme === 'split' ? { background: `linear-gradient(125deg,${team.dark}b0 45%,${opponent.dark}d9 45%)` } : undefined} />
         {design.imageUri && !hidden('visual') && <div className={css.photoShade} style={{ background: design.imageTone === 'clear' ? 'linear-gradient(0deg,#030713dd,transparent 85%)' : design.imageTone === 'warm' ? 'linear-gradient(0deg,#251408ee,#25140855)' : 'linear-gradient(0deg,#030713f5,#03071366)' }} />}
+        <ArtworkPlacedImages layerFilter="back" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         <div className={css.pitchLines} aria-hidden="true">
             <i />
             <i />
             <i />
         </div>
+        <ArtworkPlacedImages layerFilter="middle" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         <div className={css.inner}>
             <header className={css.masthead}>
                 <img src="/studio/leaders.png" width={landscape ? 24 : 30} height={landscape ? 24 : 30} alt="The Leaders" />
@@ -254,6 +255,7 @@ export const CricketArtwork = forwardRef<HTMLDivElement, {
                 <span>{updateTime ? `${updateTime} NPT` : data.matchDate || 'NPL'}{sourceHost ? ` · ${sourceHost}` : ''}</span>
             </footer>}
         </div>
+        <ArtworkPlacedImages layerFilter="front" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         {guides && <div className={css.safeGuides} aria-hidden="true" />}
         {onChooseImage && !design.imageUri && <button className={css.photoButton} onClick={onChooseImage} aria-label="Add cricket photo">＋ {t('PHOTO', 'फोटो')}</button>}
     </div>;

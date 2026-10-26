@@ -25,6 +25,8 @@ export const postExportReferenceWidth = 360;
 
 export type PlacedImagePlacement = 'custom' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'center' | 'split-left' | 'split-right';
 
+export type PlacedImageLayer = 'back' | 'middle' | 'front';
+
 export type PlacedImage = {
   id: string;
   uri: string;
@@ -38,7 +40,10 @@ export type PlacedImage = {
   width?: number;
   height?: number;
   placement?: PlacedImagePlacement;
+  layer?: PlacedImageLayer;
   credit?: string;
+  hidden?: boolean;
+  locked?: boolean;
 };
 
 export type PostDesign = {

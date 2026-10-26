@@ -92,6 +92,30 @@ describe('Studio Enhancements: Summary, Multiple Placed Images & Cricket Logos',
             expect(validated.placedImages?.[0].placement).toBe('top-left');
             expect(validated.placedImages?.[1].scale).toBe(1.8);
         });
+
+        it('supports layer depth options (back, middle, front) and hidden/locked flags', () => {
+            const overlay: PlacedImage = {
+                id: 'player-cutout',
+                uri: 'data:image/png;base64,sample',
+                x: 0,
+                y: 0,
+                scale: 1.2,
+                layer: 'middle',
+                hidden: false,
+                locked: true,
+            };
+
+            const parsed = placedImageSchema.parse(overlay);
+            expect(parsed.layer).toBe('middle');
+            expect(parsed.hidden).toBe(false);
+            expect(parsed.locked).toBe(true);
+
+            const frontParsed = placedImageSchema.parse({ ...overlay, layer: 'front' });
+            expect(frontParsed.layer).toBe('front');
+
+            const backParsed = placedImageSchema.parse({ ...overlay, layer: 'back' });
+            expect(backParsed.layer).toBe('back');
+        });
     });
 
     describe('Cricket format logo scaling & team name under logo toggle', () => {

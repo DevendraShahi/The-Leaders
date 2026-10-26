@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Instagram, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, Share2, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
+import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, Share2, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
 import { createDraft, listDrafts, saveDraftCollection, setDraftTrashed, type PostDraft } from '@/lib/post-studio/drafts';
-import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer, type PlacedImage, type PlacedImagePlacement } from '@/lib/post-studio/types';
+import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer, type PlacedImage, type PlacedImagePlacement, type PlacedImageLayer } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
 import { shareStyles, sharedStyleOptions, type SharedStyle } from '@/lib/post-studio/shared-styles';
 import { positionText, snapTextPosition } from '@/lib/post-studio/positioning';
@@ -26,14 +26,20 @@ import { playerPhotoCredit, type NplPlayer } from '@/lib/post-studio/cricket-pla
 import { blankCricketData } from '@/lib/post-studio/cricket-data';
 import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
 
-type Tool = 'text' | 'layout' | 'media' | 'pages' | 'cricket';
+type Tool = 'text' | 'layout' | 'media' | 'layers' | 'pages' | 'cricket';
 type Change = PostDesign | ((current: PostDesign) => PostDesign);
 type Snapshot = { slides: PostDraft[]; activeId: string };
 const fields: { layer: PostTextLayer; key: 'headline' | 'summary' | 'eyebrow' | 'author'; label: string }[] = [
     { layer: 'headline', key: 'headline', label: 'Headline' }, { layer: 'supporting', key: 'summary', label: 'Summary' },
     { layer: 'kicker', key: 'eyebrow', label: 'Kicker' }, { layer: 'footer', key: 'author', label: 'Byline' },
 ];
-const baseTools = [{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Design', Icon: LayoutTemplate }, { key: 'media', label: 'Image', Icon: ImagePlus }, { key: 'pages', label: 'Pages', Icon: Layers3 }] as const;
+const baseTools = [
+    { key: 'text', label: 'Text', Icon: Type },
+    { key: 'layout', label: 'Design', Icon: LayoutTemplate },
+    { key: 'media', label: 'Image', Icon: ImagePlus },
+    { key: 'layers', label: 'Layers', Icon: Layers },
+    { key: 'pages', label: 'Pages', Icon: Layers3 },
+] as const;
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
 export default function PostEditor({ scope, draft, onClose, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; canExport?: boolean }) {
@@ -260,11 +266,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             scale: 1,
             rotation: 0,
             opacity: 1,
-            borderRadius: 8,
+            borderRadius: 0,
             fit: 'contain',
             width: 140,
             height: 140,
             placement: 'custom',
+            layer: 'middle',
             credit,
         };
         apply(current => ({
@@ -279,6 +286,32 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         apply(current => ({
             ...current,
             placedImages: (current.placedImages || []).map(img => img.id === id ? { ...img, ...patch } : img),
+        }));
+    };
+    const moveOverlayDepth = (id: string, delta: -1 | 1) => {
+        apply(current => {
+            const list = [...(current.placedImages || [])];
+            const index = list.findIndex(img => img.id === id);
+            if (index < 0) return current;
+            const target = index + delta;
+            if (target < 0 || target >= list.length) return current;
+            [list[index], list[target]] = [list[target], list[index]];
+            return { ...current, placedImages: list };
+        });
+    };
+    const setOverlayLayer = (id: string, layer: PlacedImageLayer) => {
+        updateOverlayImage(id, { layer });
+    };
+    const toggleOverlayHidden = (id: string) => {
+        apply(current => ({
+            ...current,
+            placedImages: (current.placedImages || []).map(img => img.id === id ? { ...img, hidden: !img.hidden } : img),
+        }));
+    };
+    const toggleOverlayLocked = (id: string) => {
+        apply(current => ({
+            ...current,
+            placedImages: (current.placedImages || []).map(img => img.id === id ? { ...img, locked: !img.locked } : img),
         }));
     };
     const removeOverlayImage = (id: string) => {
@@ -611,8 +644,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     <div className={styles.panel} id={`studio-panel-${tool}`} role="tabpanel" aria-labelledby={`studio-tab-${tool}`} tabIndex={0} key={tool}>
                         <div className={styles.panelHeading}>
                             <span className={styles.workspaceEyebrow}>{tool === 'pages' ? 'CAROUSEL' : `PAGE ${activeSlideIndex + 1}`}</span>
-                            <h2>{tool === 'cricket' ? 'The cricket desk' : tool === 'text' ? 'Words & typography' : tool === 'layout' ? 'Canvas & design' : tool === 'media' ? 'Image & background' : 'Arrange your story'}</h2>
-                            <p>{tool === 'cricket' ? 'Teams, match data and every big moment.' : tool === 'text' ? 'Edit the copy, then refine its style.' : tool === 'layout' ? 'Set the format and visual identity.' : tool === 'media' ? 'Choose a visual and make it yours.' : 'Add, duplicate and reorder pages.'}</p>
+                            <h2>{tool === 'cricket' ? 'The cricket desk' : tool === 'text' ? 'Words & typography' : tool === 'layout' ? 'Canvas & design' : tool === 'media' ? 'Image & background' : tool === 'layers' ? 'Layer System & Stacking' : 'Arrange your story'}</h2>
+                            <p>{tool === 'cricket' ? 'Teams, match data and every big moment.' : tool === 'text' ? 'Edit the copy, then refine its style.' : tool === 'layout' ? 'Set the format and visual identity.' : tool === 'media' ? 'Choose a visual and make it yours.' : tool === 'layers' ? 'Control layer depth, stacking order, visibility and lock states across text and visuals.' : 'Add, duplicate and reorder pages.'}</p>
                         </div>
                         {tool === 'cricket' && <CricketInspector key={activeId} design={design} onChange={apply} />}
                         {tool === 'text' && <>
@@ -902,6 +935,27 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                                             </button>
                                                         </div>
                                                         <div className={styles.field}>
+                                                            <span style={{ fontSize: 11, fontWeight: 600 }}>Layer depth</span>
+                                                            <div className={styles.row} style={{ gap: 6 }}>
+                                                                <button
+                                                                    type="button"
+                                                                    className={`${styles.choice} ${(activeImg.layer || 'back') === 'back' ? styles.active : ''}`}
+                                                                    style={{ minHeight: 28, padding: '3px 8px', fontSize: 11, flex: 1 }}
+                                                                    onClick={() => updateActive({ layer: 'back' })}
+                                                                >
+                                                                    Behind graphics & text
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className={`${styles.choice} ${activeImg.layer === 'front' ? styles.active : ''}`}
+                                                                    style={{ minHeight: 28, padding: '3px 8px', fontSize: 11, flex: 1 }}
+                                                                    onClick={() => updateActive({ layer: 'front' })}
+                                                                >
+                                                                    In front of text
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className={styles.field}>
                                                             <span style={{ fontSize: 11, fontWeight: 600 }}>Preset placement</span>
                                                             <div className={styles.row} style={{ gap: 4 }}>
                                                                 {placements.map(p => (
@@ -1114,6 +1168,47 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                                                 </button>
                                                             ))}
                                                         </div>
+                                                        <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4 }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                                <span style={{ fontSize: 11, fontWeight: 600 }}>Layer depth:</span>
+                                                                <div style={{ display: 'flex', gap: 4 }}>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.layerIconBtn}
+                                                                        title="Send overlay backward in stack"
+                                                                        aria-label="Send overlay backward"
+                                                                        onClick={() => moveOverlayDepth(activeImg.id, -1)}
+                                                                    >
+                                                                        <ArrowDown size={14} />
+                                                                    </button>
+                                                                    <button
+                                                                        type="button"
+                                                                        className={styles.layerIconBtn}
+                                                                        title="Bring overlay forward in stack"
+                                                                        aria-label="Bring overlay forward"
+                                                                        onClick={() => moveOverlayDepth(activeImg.id, 1)}
+                                                                    >
+                                                                        <ArrowUp size={14} />
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <div className={styles.layerDepthGroup}>
+                                                                {([
+                                                                    { key: 'back' as const, label: 'Backdrop' },
+                                                                    { key: 'middle' as const, label: 'Behind text' },
+                                                                    { key: 'front' as const, label: 'In front' },
+                                                                ]).map(depth => (
+                                                                    <button
+                                                                        key={depth.key}
+                                                                        type="button"
+                                                                        className={`${styles.layerDepthBtn} ${(activeImg.layer || 'middle') === depth.key ? styles.layerDepthBtnActive : ''}`}
+                                                                        onClick={() => setOverlayLayer(activeImg.id, depth.key)}
+                                                                    >
+                                                                        {depth.label}
+                                                                    </button>
+                                                                ))}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 );
                                             })()}
@@ -1138,6 +1233,478 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             <div className={styles.row}>
                                 <button className={styles.button} aria-pressed={mediaLocked} onClick={() => toggleLayer('lockedLayers', 'visual')}>{mediaLocked ? <Lock /> : <LockOpen />}{mediaLocked ? 'Unlock visual' : 'Lock visual'}</button>
                                 <button className={styles.button} disabled={mediaLocked} aria-pressed={design.hiddenLayers.includes('visual')} onClick={() => toggleLayer('hiddenLayers', 'visual')}>{design.hiddenLayers.includes('visual') ? <Eye /> : <EyeOff />}{design.hiddenLayers.includes('visual') ? 'Show photo' : 'Hide photo'}</button>
+                            </div>
+                        </>}
+                        {tool === 'layers' && <>
+                            <div className={styles.toolSection}>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                                    <h3 style={{ margin: 0 }}>Stack order (top to bottom)</h3>
+                                    <span style={{ fontSize: 11, color: 'var(--studio-secondary)' }}>
+                                        {(design.placedImages?.length || 0) + 5} layers
+                                    </span>
+                                </div>
+                                <p className={styles.helpText} style={{ margin: '0 0 12px' }}>
+                                    Select any layer to edit. Control stacking depth, toggle visibility, and lock layers to prevent accidental changes.
+                                </p>
+
+                                <div className={styles.layerStack}>
+                                    {/* 1. Foreground Overlays (layer === 'front') */}
+                                    {(design.placedImages || [])
+                                        .map((img, originalIndex) => ({ img, originalIndex }))
+                                        .filter(({ img }) => img.layer === 'front')
+                                        .map(({ img, originalIndex }) => (
+                                            <div
+                                                key={img.id}
+                                                className={`${styles.layerCard} ${selectedOverlayId === img.id ? styles.layerCardSelected : ''} ${img.hidden ? styles.layerCardHidden : ''}`}
+                                                onClick={() => { setSelectedOverlayId(img.id); }}
+                                            >
+                                                <div className={styles.layerCardThumb}>
+                                                    <img src={img.uri} alt="Overlay cutout" />
+                                                </div>
+                                                <div className={styles.layerCardInfo}>
+                                                    <div className={styles.layerCardHeader}>
+                                                        <span className={styles.layerCardTitle}>{img.credit || `Overlay ${originalIndex + 1}`}</span>
+                                                        <span className={`${styles.layerBadge} ${styles.layerBadgeFront}`}>In Front</span>
+                                                    </div>
+                                                    <span className={styles.layerCardDesc}>{Math.round(img.scale * 100)}% scale · {img.placement || 'custom'}</span>
+                                                </div>
+                                                <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title="Send behind text"
+                                                        aria-label="Send behind text"
+                                                        onClick={() => setOverlayLayer(img.id, 'middle')}
+                                                    >
+                                                        <ArrowDown size={14} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title={img.hidden ? 'Show overlay' : 'Hide overlay'}
+                                                        aria-label={img.hidden ? 'Show overlay' : 'Hide overlay'}
+                                                        aria-pressed={img.hidden}
+                                                        onClick={() => toggleOverlayHidden(img.id)}
+                                                    >
+                                                        {img.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title={img.locked ? 'Unlock overlay' : 'Lock overlay'}
+                                                        aria-label={img.locked ? 'Unlock overlay' : 'Lock overlay'}
+                                                        aria-pressed={img.locked}
+                                                        onClick={() => toggleOverlayLocked(img.id)}
+                                                    >
+                                                        {img.locked ? <Lock size={14} /> : <LockOpen size={14} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={`${styles.layerIconBtn} ${styles.layerIconBtnDanger}`}
+                                                        title="Remove overlay"
+                                                        aria-label="Remove overlay"
+                                                        onClick={() => removeOverlayImage(img.id)}
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                    {/* 2. Series / Kicker */}
+                                    <div
+                                        className={`${styles.layerCard} ${selected === 'kicker' ? styles.layerCardSelected : ''} ${design.hiddenLayers.includes('kicker') ? styles.layerCardHidden : ''}`}
+                                        onClick={() => { setSelected('kicker'); setTool('text'); }}
+                                    >
+                                        <div className={styles.layerCardThumb}>
+                                            <Type size={18} />
+                                        </div>
+                                        <div className={styles.layerCardInfo}>
+                                            <div className={styles.layerCardHeader}>
+                                                <span className={styles.layerCardTitle}>Series / Kicker</span>
+                                                <span className={`${styles.layerBadge} ${styles.layerBadgeText}`}>Text</span>
+                                            </div>
+                                            <span className={styles.layerCardDesc}>{design.eyebrow || design.category || 'THE LEADERS'}</span>
+                                        </div>
+                                        <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.hiddenLayers.includes('kicker') ? 'Show kicker' : 'Hide kicker'}
+                                                aria-pressed={design.hiddenLayers.includes('kicker')}
+                                                onClick={() => toggleLayer('hiddenLayers', 'kicker')}
+                                            >
+                                                {design.hiddenLayers.includes('kicker') ? <EyeOff size={14} /> : <Eye size={14} />}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.lockedLayers.includes('kicker') ? 'Unlock kicker' : 'Lock kicker'}
+                                                aria-pressed={design.lockedLayers.includes('kicker')}
+                                                onClick={() => toggleLayer('lockedLayers', 'kicker')}
+                                            >
+                                                {design.lockedLayers.includes('kicker') ? <Lock size={14} /> : <LockOpen size={14} />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* 3. Headline Text */}
+                                    <div
+                                        className={`${styles.layerCard} ${selected === 'headline' ? styles.layerCardSelected : ''} ${design.hiddenLayers.includes('headline') ? styles.layerCardHidden : ''}`}
+                                        onClick={() => { setSelected('headline'); setTool('text'); }}
+                                    >
+                                        <div className={styles.layerCardThumb}>
+                                            <Type size={18} />
+                                        </div>
+                                        <div className={styles.layerCardInfo}>
+                                            <div className={styles.layerCardHeader}>
+                                                <span className={styles.layerCardTitle}>Headline</span>
+                                                <span className={`${styles.layerBadge} ${styles.layerBadgeText}`}>Text</span>
+                                            </div>
+                                            <span className={styles.layerCardDesc}>{design.headline || 'Your headline belongs here.'}</span>
+                                        </div>
+                                        <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.hiddenLayers.includes('headline') ? 'Show headline' : 'Hide headline'}
+                                                aria-pressed={design.hiddenLayers.includes('headline')}
+                                                onClick={() => toggleLayer('hiddenLayers', 'headline')}
+                                            >
+                                                {design.hiddenLayers.includes('headline') ? <EyeOff size={14} /> : <Eye size={14} />}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.lockedLayers.includes('headline') ? 'Unlock headline' : 'Lock headline'}
+                                                aria-pressed={design.lockedLayers.includes('headline')}
+                                                onClick={() => toggleLayer('lockedLayers', 'headline')}
+                                            >
+                                                {design.lockedLayers.includes('headline') ? <Lock size={14} /> : <LockOpen size={14} />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* 4. Supporting / Summary Text */}
+                                    <div
+                                        className={`${styles.layerCard} ${selected === 'supporting' ? styles.layerCardSelected : ''} ${design.hiddenLayers.includes('supporting') ? styles.layerCardHidden : ''}`}
+                                        onClick={() => { setSelected('supporting'); setTool('text'); }}
+                                    >
+                                        <div className={styles.layerCardThumb}>
+                                            <Type size={18} />
+                                        </div>
+                                        <div className={styles.layerCardInfo}>
+                                            <div className={styles.layerCardHeader}>
+                                                <span className={styles.layerCardTitle}>Summary / Notes</span>
+                                                <span className={`${styles.layerBadge} ${styles.layerBadgeText}`}>Text</span>
+                                            </div>
+                                            <span className={styles.layerCardDesc}>{design.summary || 'Summary copy'}</span>
+                                        </div>
+                                        <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.hiddenLayers.includes('supporting') ? 'Show summary' : 'Hide summary'}
+                                                aria-pressed={design.hiddenLayers.includes('supporting')}
+                                                onClick={() => toggleLayer('hiddenLayers', 'supporting')}
+                                            >
+                                                {design.hiddenLayers.includes('supporting') ? <EyeOff size={14} /> : <Eye size={14} />}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.lockedLayers.includes('supporting') ? 'Unlock summary' : 'Lock summary'}
+                                                aria-pressed={design.lockedLayers.includes('supporting')}
+                                                onClick={() => toggleLayer('lockedLayers', 'supporting')}
+                                            >
+                                                {design.lockedLayers.includes('supporting') ? <Lock size={14} /> : <LockOpen size={14} />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* 5. Midground Overlays (layer === 'middle') */}
+                                    {(design.placedImages || [])
+                                        .map((img, originalIndex) => ({ img, originalIndex }))
+                                        .filter(({ img }) => (img.layer || 'middle') === 'middle')
+                                        .map(({ img, originalIndex }) => (
+                                            <div
+                                                key={img.id}
+                                                className={`${styles.layerCard} ${selectedOverlayId === img.id ? styles.layerCardSelected : ''} ${img.hidden ? styles.layerCardHidden : ''}`}
+                                                onClick={() => { setSelectedOverlayId(img.id); }}
+                                            >
+                                                <div className={styles.layerCardThumb}>
+                                                    <img src={img.uri} alt="Overlay cutout" />
+                                                </div>
+                                                <div className={styles.layerCardInfo}>
+                                                    <div className={styles.layerCardHeader}>
+                                                        <span className={styles.layerCardTitle}>{img.credit || `Cutout / Overlay ${originalIndex + 1}`}</span>
+                                                        <span className={`${styles.layerBadge} ${styles.layerBadgeMiddle}`}>Behind Text</span>
+                                                    </div>
+                                                    <span className={styles.layerCardDesc}>{Math.round(img.scale * 100)}% scale · In front of logos, behind headline</span>
+                                                </div>
+                                                <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title="Bring to front"
+                                                        aria-label="Bring to front"
+                                                        onClick={() => setOverlayLayer(img.id, 'front')}
+                                                    >
+                                                        <ArrowUp size={14} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title="Send to backdrop"
+                                                        aria-label="Send to backdrop"
+                                                        onClick={() => setOverlayLayer(img.id, 'back')}
+                                                    >
+                                                        <ArrowDown size={14} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title={img.hidden ? 'Show overlay' : 'Hide overlay'}
+                                                        aria-label={img.hidden ? 'Show overlay' : 'Hide overlay'}
+                                                        aria-pressed={img.hidden}
+                                                        onClick={() => toggleOverlayHidden(img.id)}
+                                                    >
+                                                        {img.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title={img.locked ? 'Unlock overlay' : 'Lock overlay'}
+                                                        aria-label={img.locked ? 'Unlock overlay' : 'Lock overlay'}
+                                                        aria-pressed={img.locked}
+                                                        onClick={() => toggleOverlayLocked(img.id)}
+                                                    >
+                                                        {img.locked ? <Lock size={14} /> : <LockOpen size={14} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={`${styles.layerIconBtn} ${styles.layerIconBtnDanger}`}
+                                                        title="Remove overlay"
+                                                        aria-label="Remove overlay"
+                                                        onClick={() => removeOverlayImage(img.id)}
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                    {/* 6. Cricket Template Badges & Logos (if cricket) */}
+                                    {design.template === 'cricket' && design.cricket && (
+                                        <div
+                                            className={styles.layerCard}
+                                            onClick={() => setTool('cricket')}
+                                        >
+                                            <div className={styles.layerCardThumb}>
+                                                <Trophy size={18} />
+                                            </div>
+                                            <div className={styles.layerCardInfo}>
+                                                <div className={styles.layerCardHeader}>
+                                                    <span className={styles.layerCardTitle}>Team Badges & Logos</span>
+                                                    <span className={`${styles.layerBadge} ${styles.layerBadgeMatch}`}>Match Art</span>
+                                                </div>
+                                                <span className={styles.layerCardDesc}>
+                                                    {design.cricket.showTeamNameUnderLogo !== false ? 'Team names visible' : 'Team names hidden'} · {design.cricket.logoScale ?? 100}% scale
+                                                </span>
+                                            </div>
+                                            <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                                <button
+                                                    type="button"
+                                                    className={styles.layerIconBtn}
+                                                    title={design.cricket.showTeamNameUnderLogo !== false ? 'Hide team names' : 'Show team names'}
+                                                    aria-label={design.cricket.showTeamNameUnderLogo !== false ? 'Hide team names' : 'Show team names'}
+                                                    aria-pressed={design.cricket.showTeamNameUnderLogo === false}
+                                                    onClick={() => apply(current => ({
+                                                        ...current,
+                                                        cricket: {
+                                                            ...(current.cricket || blankCricketData()),
+                                                            showTeamNameUnderLogo: current.cricket?.showTeamNameUnderLogo === false,
+                                                        },
+                                                    }))}
+                                                >
+                                                    {design.cricket.showTeamNameUnderLogo === false ? <EyeOff size={14} /> : <Eye size={14} />}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* 7. Backdrop Overlays (layer === 'back') */}
+                                    {(design.placedImages || [])
+                                        .map((img, originalIndex) => ({ img, originalIndex }))
+                                        .filter(({ img }) => img.layer === 'back')
+                                        .map(({ img, originalIndex }) => (
+                                            <div
+                                                key={img.id}
+                                                className={`${styles.layerCard} ${selectedOverlayId === img.id ? styles.layerCardSelected : ''} ${img.hidden ? styles.layerCardHidden : ''}`}
+                                                onClick={() => { setSelectedOverlayId(img.id); }}
+                                            >
+                                                <div className={styles.layerCardThumb}>
+                                                    <img src={img.uri} alt="Overlay cutout" />
+                                                </div>
+                                                <div className={styles.layerCardInfo}>
+                                                    <div className={styles.layerCardHeader}>
+                                                        <span className={styles.layerCardTitle}>{img.credit || `Backdrop Overlay ${originalIndex + 1}`}</span>
+                                                        <span className={`${styles.layerBadge} ${styles.layerBadgeBack}`}>Backdrop</span>
+                                                    </div>
+                                                    <span className={styles.layerCardDesc}>Behind all graphics, logos, and text</span>
+                                                </div>
+                                                <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title="Bring behind text"
+                                                        aria-label="Bring behind text"
+                                                        onClick={() => setOverlayLayer(img.id, 'middle')}
+                                                    >
+                                                        <ArrowUp size={14} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title={img.hidden ? 'Show overlay' : 'Hide overlay'}
+                                                        aria-label={img.hidden ? 'Show overlay' : 'Hide overlay'}
+                                                        aria-pressed={img.hidden}
+                                                        onClick={() => toggleOverlayHidden(img.id)}
+                                                    >
+                                                        {img.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.layerIconBtn}
+                                                        title={img.locked ? 'Unlock overlay' : 'Lock overlay'}
+                                                        aria-label={img.locked ? 'Unlock overlay' : 'Lock overlay'}
+                                                        aria-pressed={img.locked}
+                                                        onClick={() => toggleOverlayLocked(img.id)}
+                                                    >
+                                                        {img.locked ? <Lock size={14} /> : <LockOpen size={14} />}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        className={`${styles.layerIconBtn} ${styles.layerIconBtnDanger}`}
+                                                        title="Remove overlay"
+                                                        aria-label="Remove overlay"
+                                                        onClick={() => removeOverlayImage(img.id)}
+                                                    >
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+
+                                    {/* 8. Footer / Byline */}
+                                    <div
+                                        className={`${styles.layerCard} ${selected === 'footer' ? styles.layerCardSelected : ''} ${design.hiddenLayers.includes('footer') ? styles.layerCardHidden : ''}`}
+                                        onClick={() => { setSelected('footer'); setTool('text'); }}
+                                    >
+                                        <div className={styles.layerCardThumb}>
+                                            <Type size={18} />
+                                        </div>
+                                        <div className={styles.layerCardInfo}>
+                                            <div className={styles.layerCardHeader}>
+                                                <span className={styles.layerCardTitle}>Byline / Footer</span>
+                                                <span className={`${styles.layerBadge} ${styles.layerBadgeText}`}>Text</span>
+                                            </div>
+                                            <span className={styles.layerCardDesc}>{design.author || 'THE LEADERS DESK'}</span>
+                                        </div>
+                                        <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.hiddenLayers.includes('footer') ? 'Show footer' : 'Hide footer'}
+                                                aria-pressed={design.hiddenLayers.includes('footer')}
+                                                onClick={() => toggleLayer('hiddenLayers', 'footer')}
+                                            >
+                                                {design.hiddenLayers.includes('footer') ? <EyeOff size={14} /> : <Eye size={14} />}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.lockedLayers.includes('footer') ? 'Unlock footer' : 'Lock footer'}
+                                                aria-pressed={design.lockedLayers.includes('footer')}
+                                                onClick={() => toggleLayer('lockedLayers', 'footer')}
+                                            >
+                                                {design.lockedLayers.includes('footer') ? <Lock size={14} /> : <LockOpen size={14} />}
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    {/* 9. Background Photo / Base Visual */}
+                                    <div
+                                        className={`${styles.layerCard} ${selected === 'visual' ? styles.layerCardSelected : ''} ${design.hiddenLayers.includes('visual') ? styles.layerCardHidden : ''}`}
+                                        onClick={() => { setSelected('visual'); setTool('media'); }}
+                                    >
+                                        <div className={styles.layerCardThumb}>
+                                            {design.imageUri ? (
+                                                <img src={design.imageUri} alt="Background visual" />
+                                            ) : (
+                                                <ImagePlus size={18} />
+                                            )}
+                                        </div>
+                                        <div className={styles.layerCardInfo}>
+                                            <div className={styles.layerCardHeader}>
+                                                <span className={styles.layerCardTitle}>Background Visual</span>
+                                                <span className={`${styles.layerBadge} ${styles.layerBadgeBack}`}>Base</span>
+                                            </div>
+                                            <span className={styles.layerCardDesc}>
+                                                {design.imageUri ? `Photo (${design.imageTone} tone, ${Math.round(design.imageZoom * 100)}% zoom)` : design.backgroundGradient ? 'Gradient canvas' : design.backgroundColor ? `Color ${design.backgroundColor}` : 'Default canvas'}
+                                            </span>
+                                        </div>
+                                        <div className={styles.layerCardActions} onClick={e => e.stopPropagation()}>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.hiddenLayers.includes('visual') ? 'Show visual' : 'Hide visual'}
+                                                aria-pressed={design.hiddenLayers.includes('visual')}
+                                                onClick={() => toggleLayer('hiddenLayers', 'visual')}
+                                            >
+                                                {design.hiddenLayers.includes('visual') ? <EyeOff size={14} /> : <Eye size={14} />}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className={styles.layerIconBtn}
+                                                aria-label={design.lockedLayers.includes('visual') ? 'Unlock visual' : 'Lock visual'}
+                                                aria-pressed={design.lockedLayers.includes('visual')}
+                                                onClick={() => toggleLayer('lockedLayers', 'visual')}
+                                            >
+                                                {design.lockedLayers.includes('visual') ? <Lock size={14} /> : <LockOpen size={14} />}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className={styles.layerAddRow}>
+                                    <button
+                                        type="button"
+                                        className={styles.layerAddBtn}
+                                        onClick={() => {
+                                            if (design.template === 'cricket') {
+                                                setBackgroundTab('players');
+                                                setTool('media');
+                                            } else {
+                                                overlayFileRef.current?.click();
+                                            }
+                                        }}
+                                    >
+                                        <Plus size={14} />
+                                        <span>Add Cutout / Overlay</span>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className={styles.layerAddBtn}
+                                        onClick={() => {
+                                            setTool('media');
+                                            fileRef.current?.click();
+                                        }}
+                                    >
+                                        <Upload size={14} />
+                                        <span>Replace Background</span>
+                                    </button>
+                                </div>
                             </div>
                         </>}
                         {tool === 'pages' && <>

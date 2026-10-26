@@ -20,7 +20,10 @@ export const placedImageSchema: z.ZodType<PlacedImage> = z.object({
     width: z.number().optional(),
     height: z.number().optional(),
     placement: z.enum(['custom', 'top-left', 'top-right', 'bottom-left', 'bottom-right', 'center', 'split-left', 'split-right']).optional(),
+    layer: z.enum(['back', 'middle', 'front']).optional(),
     credit: z.string().optional(),
+    hidden: z.boolean().optional(),
+    locked: z.boolean().optional(),
 });
 export const postDesignSchema = z.object({
     template: z.enum(["breaking", "explainer", "quote", "book-review", "book-analysis", "book-takeaways", "book-verdict", "cricket"]), format: z.enum(["square", "portrait", "story", "landscape"]),
