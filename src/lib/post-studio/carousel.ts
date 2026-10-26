@@ -1,3 +1,4 @@
+import { generateCricketCaption } from './cricket-caption';
 import type { DailyEdition } from './daily';
 import { defaultPostDesign, type PostDesign } from './types';
 import type { PostDraft } from './drafts';
@@ -57,12 +58,15 @@ export function editionCaption(edition: DailyEdition) {
 export function findCarouselSiblings(draft: PostDraft, allDrafts: PostDraft[]): PostDraft[] {
     const activeDrafts = allDrafts.filter(d => !d.trashedAt);
 
+    if (draft.carouselId) return activeDrafts.filter(item => item.carouselId === draft.carouselId)
+        .sort((a, b) => (a.carouselOrder ?? 0) - (b.carouselOrder ?? 0));
+
     // 1. Check ID pattern like book-slug-timestamp-1, book-slug-timestamp-2
     const idMatch = draft.id.match(/^(.*?)(\d+)$/);
     if (idMatch) {
         const prefix = idMatch[1];
         const matching = activeDrafts
-            .filter(d => d.id.startsWith(prefix) && /^\d+$/.test(d.id.slice(prefix.length)))
+            .filter(d => !d.carouselId && d.id.startsWith(prefix) && /^\d+$/.test(d.id.slice(prefix.length)))
             .sort((a, b) => Number(a.id.slice(prefix.length)) - Number(b.id.slice(prefix.length)));
         if (matching.length > 1) return matching;
     }
@@ -74,7 +78,7 @@ export function findCarouselSiblings(draft: PostDraft, allDrafts: PostDraft[]): 
         const matching = activeDrafts
             .filter(d => {
                 const m = d.name.match(/^(.*?)\s*·\s*(\d+)\/(\d+)/);
-                return m && m[1].trim() === titlePrefix;
+                return !d.carouselId && m && m[1].trim() === titlePrefix;
             })
             .sort((a, b) => {
                 const aIdx = Number(a.name.match(/^(.*?)\s*·\s*(\d+)\/(\d+)/)?.[2] || 0);
@@ -99,6 +103,7 @@ export function getCarouselBaseTitle(name: string): string {
  */
 export function generateInstagramCaption(slides: PostDraft[]): string {
     if (!slides.length) return "";
+    if (slides[0].design.template === 'cricket') return generateCricketCaption(slides);
     const first = slides[0].design;
     const cleanHeadline = first.headline || "The Leaders Analysis";
     const cleanEyebrow = first.eyebrow ? `${first.eyebrow}\n\n` : "";

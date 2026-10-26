@@ -27,6 +27,17 @@ const bookArchetypes: { key: PostTemplate; label: string }[] = [
 ];
 
 export const studioCraftRegistry: Record<PostTemplate, StudioCraftSpec> = {
+    cricket: {
+        template: 'cricket', name: 'Cricket coverage', badge: 'CRICKET', category: 'SPORTS',
+        description: 'NPL match moments, scorecards, player performances and tournament coverage.',
+        layers: [
+            { key: 'kicker', label: 'Series label', role: 'Competition', description: 'Editorial series label', fieldKey: 'eyebrow', getPreview: d => d.eyebrow },
+            { key: 'headline', label: 'Event headline', role: 'Headline', description: 'The moment in a headline', fieldKey: 'headline', getPreview: d => d.headline },
+            { key: 'supporting', label: 'Match note', role: 'Context', description: 'Additional match context', fieldKey: 'summary', getPreview: d => d.summary },
+            { key: 'footer', label: 'Sports desk byline', role: 'Attribution', description: 'Editorial attribution', fieldKey: 'author', getPreview: d => d.author },
+            { key: 'visual', label: 'Player / match photo', role: 'Visual', description: 'Optional editorial photo', getPreview: d => d.imageUri ? 'Photo attached' : 'Team theme' },
+        ],
+    },
     "book-review": {
         template: "book-review",
         name: "Book Review: Cover & Central Thesis",

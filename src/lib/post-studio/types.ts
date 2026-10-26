@@ -1,7 +1,8 @@
 // Ported from mobile/src/features/post-designer; keep artwork behavior in sync.
 import { brand } from "./tokens";
+import { blankCricketData, type CricketData } from './cricket-data';
 export type PostFormat = "square" | "portrait" | "story" | "landscape";
-export type PostTemplate = "breaking" | "explainer" | "quote" | "book-review" | "book-analysis" | "book-takeaways" | "book-verdict";
+export type PostTemplate = "breaking" | "explainer" | "quote" | "book-review" | "book-analysis" | "book-takeaways" | "book-verdict" | "cricket";
 export type TextAlignment = "left" | "center";
 export type ImageTone = "ink" | "clear" | "warm";
 export type PostLayer = "visual" | "kicker" | "headline" | "supporting" | "footer";
@@ -31,6 +32,7 @@ export type PostDesign = {
   summary: string;
   author: string;
   imageUri: string | null;
+  imageCredit: string;
   accent: string;
   headlineScale: number;
   textAlign: TextAlignment;
@@ -49,6 +51,7 @@ export type PostDesign = {
   textTypography: Record<PostTextLayer, TextTypography>;
   backgroundColor?: string | null;
   backgroundGradient?: string | null;
+  cricket?: CricketData;
 };
 
 export const defaultPostDesign: PostDesign = {
@@ -60,6 +63,7 @@ export const defaultPostDesign: PostDesign = {
   summary: "Give readers the useful context before they open the full report.",
   author: "The Leaders Desk",
   imageUri: null,
+  imageCredit: '',
   accent: brand.red,
   headlineScale: 1,
   textAlign: "left",
@@ -81,6 +85,7 @@ export const defaultPostDesign: PostDesign = {
 };
 
 export const postTemplates: { key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }[] = [
+  { key: 'cricket', title: 'Cricket', subtitle: 'NPL match coverage', patch: { cricket: blankCricketData(), category: 'NPL 2026', headline: 'MATCHDAY', summary: '', eyebrow: 'THE LEADERS / CRICKET', author: 'The Leaders Sports', format: 'portrait', accent: '#F1C64C', backgroundColor: '#321C30' } },
   {
     key: "breaking",
     title: "Breaking",

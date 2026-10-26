@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { BookOpen, Copy, Pencil, Plus, RotateCcw, Trash2 } from 'lucide-react';
+import { BookOpen, Copy, Pencil, Plus, RotateCcw, Trash2, Trophy } from 'lucide-react';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { createDraft, duplicateDraft, listDrafts, readDraft, readPreviousLocalDesign, setDraftTrashed, updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
 import { defaultPostDesign, postTemplates, type PostDesign, type PostTemplate } from '@/lib/post-studio/types';
@@ -56,14 +56,15 @@ export default function PostStudio() {
     };
     const open = (item: PostDraft) => router.push(`/admin/social?draft=${encodeURIComponent(item.id)}`);
     if (!scope) return null;
-    if (draft && draft.id === draftId && !loading) return <PostEditor key={`${scope}:${draft.id}`} scope={scope} draft={draft} canExport={permission('export')} onClose={() => router.replace('/admin/social')} />;
+    if (draft && draft.id === draftId && !loading) return <PostEditor key={`${scope}:${draft.id}`} scope={scope} draft={draft} canExport={permission('export')} onClose={() => router.replace(params.get('from') === 'cricket' ? '/admin/social/cricket' : '/admin/social')} />;
     const active = drafts.filter(item => !item.trashedAt), discarded = drafts.filter(item => item.trashedAt);
     const visible = (trash ? discarded : active).filter(item => `${item.name} ${item.design.headline}`.toLowerCase().includes(search.toLowerCase().trim()));
     return <div className={styles.studio}><div className={styles.library}>
         <header className={styles.between}><h1>Studio</h1><Link href="/admin" prefetch={false} className={styles.button}>Back to dashboard</Link></header>
         <DailyEditions scope={scope} onOpen={open} canExport={permission('export')} canEdit={permission('edit')} canSubmit={permission('submit')} canApprove={permission('approve')} />
+        <section className={styles.cricketEntry} aria-label="Cricket desk"><Trophy size={25} /><div><h2>Cricket desk</h2><p>28 templates · 8 NPL team identities · English & नेपाली</p></div><Link href="/admin/social/cricket" prefetch={false} className={styles.primary}>Open cricket templates</Link></section>
         <div><h2>Your post drafts</h2><p className={styles.subtle}>Design, save and export. Drafts stay in this browser for your admin account.</p></div>
-        <div className={styles.templates}>{postTemplates.map(item => <button className={`${styles.choice} ${template === item.key ? styles.active : ''}`} key={item.key} aria-pressed={template === item.key} onClick={() => setTemplate(item.key)}>{item.title}<small>{item.subtitle}</small></button>)}</div>
+        <div className={styles.templates}>{postTemplates.filter(item => item.key !== 'cricket').map(item => <button className={`${styles.choice} ${template === item.key ? styles.active : ''}`} key={item.key} aria-pressed={template === item.key} onClick={() => setTemplate(item.key)}>{item.title}<small>{item.subtitle}</small></button>)}</div>
         <div className={styles.row}>
             <button className={styles.primary} disabled={busy || loading || Boolean(error)} onClick={() => { void run(async () => { const selected = postTemplates.find(item => item.key === template)!; open(await createDraft(scope, `Untitled ${selected.title.toLowerCase()}`, { ...defaultPostDesign, ...selected.patch, template })); }); }}><Plus />New post</button>
             <button className={styles.button} style={{ borderColor: 'var(--studio-red)', color: 'var(--studio-red)' }} disabled={busy || loading} onClick={() => setBookModalOpen(true)}><BookOpen size={18} />New book review</button>

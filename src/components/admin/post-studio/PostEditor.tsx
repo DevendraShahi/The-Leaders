@@ -1,43 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { 
-    AlertCircle,
-    ArrowDown, 
-    ArrowLeft, 
-    ArrowRight, 
-    ArrowUp, 
-    BookOpen, 
-    Check, 
-    ChevronLeft, 
-    ChevronRight, 
-    Copy, 
-    Download, 
-    Eye, 
-    EyeOff, 
-    Globe, 
-    ImagePlus, 
-    Instagram, 
-    Layers3, 
-    LayoutTemplate, 
-    Link2, 
-    Lock, 
-    LockOpen, 
-    MoveLeft, 
-    MoveRight, 
-    Plus, 
-    Redo2, 
-    Sparkles,
-    Trash2, 
-    Type, 
-    Undo2, 
-    Upload, 
-    X 
-} from 'lucide-react';
-import { createDraft, listDrafts, setDraftTrashed, updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
-import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer } from '@/lib/post-studio/types';
+import { ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Instagram, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, Share2, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
+import { createDraft, listDrafts, saveDraftCollection, setDraftTrashed, type PostDraft } from '@/lib/post-studio/drafts';
+import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
-import { commitInteraction } from '@/lib/post-studio/history';
+import { shareStyles, sharedStyleOptions, type SharedStyle } from '@/lib/post-studio/shared-styles';
 import { positionText, snapTextPosition } from '@/lib/post-studio/positioning';
 import { setTextColor } from '@/lib/post-studio/text-colors';
 import { setTextTypography } from '@/lib/post-studio/typography';
@@ -47,1927 +15,626 @@ import { artworkBytes, download } from '@/lib/post-studio/export';
 import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip, generateInstagramCaption } from '@/lib/post-studio/carousel';
 import { storyGradients, storyColors } from '@/lib/post-studio/story-backgrounds';
 import { Artwork } from './Artwork';
-import { ColorPicker, Section, Slider } from './Controls';
-import BookReviewModal from './BookReviewModal';
+import { ColorPicker, Modal, Section, Slider } from './Controls';
 import StudioMediaModal from './StudioMediaModal';
 import InstagramPreviewModal from './InstagramPreviewModal';
+import InstagramSharePanel from './InstagramSharePanel';
 import styles from './PostStudio.module.css';
+import CricketInspector from './CricketInspector';
+import CricketPlayerLibrary from './CricketPlayerLibrary';
+import { playerPhotoCredit, type NplPlayer } from '@/lib/post-studio/cricket-players';
+import { blankCricketData } from '@/lib/post-studio/cricket-data';
+import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
 
-type Tool = 'text' | 'layout' | 'media' | 'carousel';
+type Tool = 'text' | 'layout' | 'media' | 'pages' | 'cricket';
 type Change = PostDesign | ((current: PostDesign) => PostDesign);
-const fields = [{ layer: 'headline', key: 'headline', label: 'Headline' }, { layer: 'supporting', key: 'summary', label: 'Summary' }, { layer: 'kicker', key: 'eyebrow', label: 'Kicker' }, { layer: 'footer', key: 'author', label: 'Byline' }] as const;
+type Snapshot = { slides: PostDraft[]; activeId: string };
+const fields: { layer: PostTextLayer; key: 'headline' | 'summary' | 'eyebrow' | 'author'; label: string }[] = [
+    { layer: 'headline', key: 'headline', label: 'Headline' }, { layer: 'supporting', key: 'summary', label: 'Summary' },
+    { layer: 'kicker', key: 'eyebrow', label: 'Kicker' }, { layer: 'footer', key: 'author', label: 'Byline' },
+];
+const baseTools = [{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Design', Icon: LayoutTemplate }, { key: 'media', label: 'Image', Icon: ImagePlus }, { key: 'pages', label: 'Pages', Icon: Layers3 }] as const;
+const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
 export default function PostEditor({ scope, draft, onClose, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; canExport?: boolean }) {
-    // Carousel state
     const [slides, setSlides] = useState<PostDraft[]>([draft]);
-    const [activeSlideIndex, setActiveSlideIndex] = useState(0);
-    const [instagramPreviewOpen, setInstagramPreviewOpen] = useState(false);
-
-    // Active design state
-    const [design, setDesign] = useState(draft.design);
-    const designRef = useRef(design);
-
-    // Media & Modals state
-    const [bookModalOpen, setBookModalOpen] = useState(false);
-    const [mediaModalOpen, setMediaModalOpen] = useState(false);
-    const [quickImageUrl, setQuickImageUrl] = useState('');
-    const [quickUrlLoading, setQuickUrlLoading] = useState(false);
-    const [mediaCopied, setMediaCopied] = useState(false);
-    const [captionCopied, setCaptionCopied] = useState(false);
-
-    // Editor tools & UI state
-    const [tool, setTool] = useState<Tool>('text');
+    const [activeId, setActiveId] = useState(draft.id);
+    const slidesRef = useRef(slides), activeIdRef = useRef(activeId);
+    const [ready, setReady] = useState(false), [busy, setBusy] = useState(false);
+    const [loadAttempt, setLoadAttempt] = useState(0);
+    const [tool, setTool] = useState<Tool>(draft.design.template === 'cricket' ? 'cricket' : 'text');
     const [selected, setSelected] = useState<PostLayer>('headline');
-    const [reposition, setReposition] = useState(false);
-    const [snap, setSnap] = useState(true);
-    const [keepAdjustments, setKeepAdjustments] = useState(true);
+    const [editAll, setEditAll] = useState(false);
+    const [sharedGroups, setSharedGroups] = useState<SharedStyle[]>(['typography', 'alignment']);
+    const [scopeDetails, setScopeDetails] = useState(false);
     const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saved');
-    const [issue, setIssue] = useState('');
-    const [notice, setNotice] = useState('');
-    const [imageIssue, setImageIssue] = useState('');
-    const [overflow, setOverflow] = useState(false);
-    const [alertDismissed, setAlertDismissed] = useState(false);
-    const [exporting, setExporting] = useState(false);
+    const [issue, setIssue] = useState(''), [notice, setNotice] = useState(''), [imageIssue, setImageIssue] = useState('');
+    const [overflow, setOverflow] = useState(false), [exporting, setExporting] = useState(false);
+    const [mediaModalOpen, setMediaModalOpen] = useState(false), [previewOpen, setPreviewOpen] = useState(false);
+    const [mediaSearchQuery, setMediaSearchQuery] = useState('');
+    const [instagramShareOpen, setInstagramShareOpen] = useState(false);
+    const [canvasFocused, setCanvasFocused] = useState(false);
+    const [quickUrl, setQuickUrl] = useState(''), [urlLoading, setUrlLoading] = useState(false);
+    const [keepAdjustments, setKeepAdjustments] = useState(true), [reposition, setReposition] = useState(false), [snap, setSnap] = useState(true);
+    const [backgroundTab, setBackgroundTab] = useState<'photo' | 'color' | 'players'>('photo');
     const [history, setHistory] = useState({ undo: 0, redo: 0 });
-    const [mediaSubTab, setMediaSubTab] = useState<'photo' | 'gradient'>(
-        !draft.design.imageUri && (draft.design.backgroundGradient || draft.design.backgroundColor) ? 'gradient' : 'photo'
-    );
-    const [applyAllDismissed, setApplyAllDismissed] = useState(false);
-
-    // Carousel missing images detection: exactly 1 slide has an image while other slides are missing visuals
-    const slidesWithImages = slides.filter(s => Boolean(s.design.imageUri));
-    const isSingleImageAcrossCarousel = slides.length > 1 && slidesWithImages.length === 1;
-    const otherSlidesMissingImages = isSingleImageAcrossCarousel && Boolean(design.imageUri);
-    const showApplyAllPrompt = otherSlidesMissingImages && !applyAllDismissed;
-    const singleImageSlideIndex = isSingleImageAcrossCarousel ? slides.findIndex(s => Boolean(s.design.imageUri)) : -1;
-
-
-    // Auto-dismiss success notification banner after 3.5 seconds
-    useEffect(() => {
-        if (!notice) return;
-        const timer = setTimeout(() => {
-            setNotice('');
-        }, 3500);
-        return () => clearTimeout(timer);
-    }, [notice]);
-
-    const undoRef = useRef<PostDesign[]>([]), redoRef = useRef<PostDesign[]>([]), interaction = useRef<PostDesign | null>(null);
-    const stageRef = useRef<HTMLDivElement>(null), exportRef = useRef<HTMLDivElement>(null), previewRef = useRef<HTMLDivElement>(null), fileRef = useRef<HTMLInputElement>(null);
-    const carouselExportRefs = useRef<(HTMLDivElement | null)[]>([]);
-    const [stageSize, setStageSize] = useState({ width: 360, height: 480 });
-    const mounted = useRef(true), dirty = useRef(false);
+    const undoRef = useRef<Snapshot[]>([]), redoRef = useRef<Snapshot[]>([]), interaction = useRef<Snapshot | null>(null);
+    const dirty = useRef(false), revision = useRef(0), mounted = useRef(true), operation = useRef(false);
+    const stageRef = useRef<HTMLDivElement>(null), exportRef = useRef<HTMLDivElement>(null), fileRef = useRef<HTMLInputElement>(null);
+    const exportNodes = useRef(new Map<string, HTMLDivElement>());
+    const [stageSize, setStageSize] = useState({ width: 600, height: 600 });
     const drag = useRef<{ x: number; y: number; design: PostDesign } | null>(null);
-    const ballDrag = useRef<{ x: number; y: number } | null>(null);
-    const ballRef = useRef<HTMLDivElement>(null);
     const wheelTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+    const ballDrag = useRef<{ x: number; y: number } | null>(null);
+    const activeSlideIndex = Math.max(0, slides.findIndex(item => item.id === activeId));
+    const activeSlide = slides[activeSlideIndex], design = activeSlide.design;
+    const tools = design.template === 'cricket' ? [{ key: 'cricket' as const, label: 'Match', Icon: Trophy }, ...baseTools] : baseTools;
+    const field = fields.find(item => item.layer === selected) ?? fields[0];
+    const craft = getStudioCraft(design.template);
+    const locked = design.lockedLayers.includes(selected);
+    const textLocked = design.lockedLayers.includes(field.layer);
+    const mediaLocked = design.lockedLayers.includes('visual');
+    const mediaDisabled = mediaLocked || !design.imageUri || design.hiddenLayers.includes('visual');
+    const [outputW, outputH] = postOutputDimensions[design.format];
+    const referenceH = 360 * outputH / outputW;
+    const scale = Math.max(.05, Math.min((stageSize.width - 16) / 360, (stageSize.height - 16) / referenceH, 3));
 
-    const slidesRef = useRef<PostDraft[]>(slides);
-    useEffect(() => { slidesRef.current = slides; }, [slides]);
-
-    const [syncBackgroundEffects, setSyncBackgroundEffects] = useState(true);
-    const syncBackgroundEffectsRef = useRef(true);
-    useEffect(() => { syncBackgroundEffectsRef.current = syncBackgroundEffects; }, [syncBackgroundEffects]);
-
-    // Discover sibling drafts in the same carousel pack
     useEffect(() => {
         let active = true;
-        void (async () => {
-            try {
-                const allDrafts = await listDrafts(scope);
-                if (!active) return;
-                const found = findCarouselSiblings(draft, allDrafts);
-                if (found.length > 0) {
-                    slidesRef.current = found;
-                    setSlides(found);
-                    const currentIdx = found.findIndex(s => s.id === draft.id);
-                    if (currentIdx >= 0) setActiveSlideIndex(currentIdx);
-                }
-            } catch {
-                // Keep default single slide
-            }
-        })();
+        void listDrafts(scope).then(all => {
+            if (!active) return;
+            const current = all.find(item => item.id === draft.id && !item.trashedAt);
+            if (!current) throw new Error('This page is unavailable. Return to the library to restore it from Trash.');
+            const found = findCarouselSiblings(current, all);
+            const carouselId = current.carouselId ?? `carousel:${draft.id}`;
+            const loaded = found.map((item, index) => ({ ...item, carouselId, carouselOrder: index }));
+            slidesRef.current = loaded; setSlides(loaded); setReady(true);
+        }).catch(error => { if (active) setIssue(error instanceof Error ? error.message : 'Could not load pages.'); });
         return () => { active = false; };
-    }, [scope, draft.id]);
+    }, [scope, draft.id, loadAttempt]);
 
-    const activeSlide = slides[activeSlideIndex] || draft;
-
+    const snapshot = (): Snapshot => ({ slides: slidesRef.current, activeId: activeIdRef.current });
+    const currentDesign = () => slidesRef.current.find(item => item.id === activeIdRef.current)!.design;
     const updateHistory = () => setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
-    const apply = useCallback((change: Change, record = true) => {
-        const previous = designRef.current;
+    const install = (next: PostDraft[], nextActive = activeIdRef.current) => {
+        slidesRef.current = next; activeIdRef.current = nextActive;
+        setSlides(next); setActiveId(nextActive);
+    };
+    const markDirty = () => { revision.current++; dirty.current = true; setSaveState('saving'); setIssue(''); };
+    const commit = (next: PostDraft[], record = true, nextActive = activeIdRef.current) => {
+        if (same(next, slidesRef.current)) return;
+        if (record) { undoRef.current = [...undoRef.current.slice(-39), snapshot()]; redoRef.current = []; }
+        install(next, nextActive); markDirty(); updateHistory();
+    };
+    const apply = (change: Change, record = !interaction.current) => {
+        const previous = currentDesign();
         const next = typeof change === 'function' ? change(previous) : change;
-        if (JSON.stringify(previous) === JSON.stringify(next)) return;
-        if (record) { undoRef.current = [...undoRef.current.slice(-39), previous]; redoRef.current = []; }
-        designRef.current = next; dirty.current = true;
-        setDesign(next); setSaveState('saving'); setIssue(''); setNotice('');
-        setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
-
-        const shouldSync = syncBackgroundEffectsRef.current;
-        const bgSyncKeys: (keyof PostDesign)[] = [
-            'imageUri', 'imageFit', 'imageTone', 'imageZoom', 'imageOffsetX', 'imageOffsetY',
-            'imageBlur', 'imageVintage', 'imageFeather', 'backgroundColor', 'backgroundGradient'
-        ];
-        const bgEffectChanged = shouldSync && bgSyncKeys.some(k => previous[k] !== next[k]);
-
-        setSlides(prevSlides => {
-            const currentList = prevSlides.length ? prevSlides : slidesRef.current;
-            if (!currentList.length || !currentList[activeSlideIndex]) return currentList;
-            const updated = currentList.map((s, idx) => {
-                if (idx === activeSlideIndex) {
-                    return { ...s, design: next };
-                }
-                if (bgEffectChanged) {
-                    const sharesSameImage = Boolean(next.imageUri && s.design.imageUri === next.imageUri);
-                    const sharesSameGradientOrColor = !next.imageUri && !s.design.imageUri && (
-                        Boolean(next.backgroundGradient && s.design.backgroundGradient === previous.backgroundGradient) ||
-                        Boolean(next.backgroundColor && s.design.backgroundColor === previous.backgroundColor)
-                    );
-
-                    if (sharesSameImage || sharesSameGradientOrColor) {
-                        return {
-                            ...s,
-                            design: {
-                                ...s.design,
-                                imageFit: next.imageFit,
-                                imageTone: next.imageTone,
-                                imageZoom: next.imageZoom,
-                                imageOffsetX: next.imageOffsetX,
-                                imageOffsetY: next.imageOffsetY,
-                                imageBlur: next.imageBlur,
-                                imageVintage: next.imageVintage,
-                                imageFeather: next.imageFeather,
-                                backgroundColor: next.backgroundColor,
-                                backgroundGradient: next.backgroundGradient,
-                            },
-                        };
-                    }
-                }
-                return s;
-            });
-            slidesRef.current = updated;
-            return updated;
-        });
-    }, [activeSlideIndex]);
-    const begin = useCallback(() => { if (!interaction.current) interaction.current = designRef.current; }, []);
-    const end = useCallback(() => {
-        const next = commitInteraction(interaction.current, designRef.current, undoRef.current);
-        if (next !== undoRef.current) { undoRef.current = next; redoRef.current = []; }
-        interaction.current = null; setHistory({ undo: undoRef.current.length, redo: redoRef.current.length });
-    }, []);
-    const live = useCallback((change: Change) => apply(change, !interaction.current), [apply]);
-
+        if (same(previous, next)) return;
+        commit(slidesRef.current.map(item => item.id === activeIdRef.current ? { ...item, design: next }
+            : editAll ? { ...item, design: shareStyles(item.design, next, sharedGroups, previous) } : item), record);
+    };
+    const begin = () => { if (!interaction.current) interaction.current = snapshot(); };
+    const end = () => {
+        if (interaction.current && !same(interaction.current.slides, slidesRef.current)) {
+            undoRef.current = [...undoRef.current.slice(-39), interaction.current]; redoRef.current = [];
+        }
+        interaction.current = null; updateHistory();
+    };
     const persist = useCallback(async () => {
         if (!dirty.current) return true;
-        const snapshot = designRef.current;
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
+        const version = revision.current;
+        const entries = slidesRef.current;
         try {
-            if (currentSlides.length > 1) {
-                await Promise.all(
-                    currentSlides.map(s => updateDraft(scope, s.id, {
-                        design: s.id === (currentSlides[activeSlideIndex]?.id || draft.id) ? snapshot : s.design,
-                    }))
-                );
-            } else {
-                const targetId = currentSlides[activeSlideIndex]?.id || draft.id;
-                await updateDraft(scope, targetId, { design: snapshot });
-            }
-            if (snapshot === designRef.current) { dirty.current = false; if (mounted.current) setSaveState('saved'); }
+            await saveDraftCollection(scope, entries);
+            if (version === revision.current) { dirty.current = false; if (mounted.current) setSaveState('saved'); }
             return true;
         } catch (error) {
-            if (mounted.current) { setSaveState('error'); setIssue(error instanceof Error ? error.message : 'Keep the editor open and retry saving.'); }
+            if (mounted.current) { setSaveState('error'); setIssue(error instanceof Error ? error.message : 'Save failed. Keep this editor open and retry.'); }
             return false;
         }
-    }, [scope, draft.id, slides, activeSlideIndex]);
-
-    useEffect(() => { const timer = setTimeout(() => { void persist(); }, 380); return () => clearTimeout(timer); }, [design, persist]);
+    }, [scope]);
+    useEffect(() => {
+        if (!ready) return;
+        const timer = setTimeout(() => { void persist(); }, 400);
+        return () => clearTimeout(timer);
+    }, [slides, ready, persist]);
     useEffect(() => {
         mounted.current = true;
         const unload = (event: BeforeUnloadEvent) => { if (dirty.current) { event.preventDefault(); event.returnValue = ''; void persist(); } };
         window.addEventListener('beforeunload', unload);
-        return () => { mounted.current = false; clearTimeout(wheelTimer.current); window.removeEventListener('beforeunload', unload); void persist(); };
+        return () => { mounted.current = false; window.removeEventListener('beforeunload', unload); clearTimeout(wheelTimer.current); void persist(); };
     }, [persist]);
-
     useEffect(() => {
         const node = stageRef.current;
         if (!node) return;
         const observer = new ResizeObserver(entries => { const { width, height } = entries[0].contentRect; setStageSize({ width, height }); });
         observer.observe(node); return () => observer.disconnect();
     }, []);
-
     useEffect(() => {
         setImageIssue('');
         if (!design.imageUri) return;
         let active = true;
         const image = new Image();
-        image.onerror = () => { if (active) setImageIssue('Photo unavailable. Replace it in Media before exporting.'); };
+        image.onerror = () => { if (active) setImageIssue('Photo unavailable. Replace it in Image before exporting.'); };
         image.src = design.imageUri;
         return () => { active = false; };
     }, [design.imageUri]);
-
     useEffect(() => {
         let active = true;
-        void document.fonts.ready.then(() => {
-            requestAnimationFrame(() => {
-                if (!active) return;
-                const nodes = exportRef.current?.querySelectorAll<HTMLElement>('[data-line-limit]');
-                setOverflow(Array.from(nodes || []).some(node => node.scrollHeight > parseFloat(getComputedStyle(node).lineHeight) * Number(node.dataset.lineLimit) + 1));
-            });
-        });
+        void document.fonts.ready.then(() => requestAnimationFrame(() => {
+            if (!active) return;
+            setOverflow(Boolean(exportRef.current && artworkFitIssues(exportRef.current).length));
+        }));
         return () => { active = false; };
     }, [design]);
-
-    // Carousel Slide Switcher
-    const switchSlide = async (targetIndex: number) => {
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-        if (targetIndex < 0 || targetIndex >= currentSlides.length || targetIndex === activeSlideIndex) return;
-        const currentSlide = currentSlides[activeSlideIndex];
-        if (currentSlide && dirty.current) {
-            try {
-                await updateDraft(scope, currentSlide.id, { design: designRef.current });
-            } catch {
-                // ignore
-            }
-        }
-        const updated = [...currentSlides];
-        if (updated[activeSlideIndex]) {
-            updated[activeSlideIndex] = {
-                ...updated[activeSlideIndex],
-                design: designRef.current,
-            };
-            slidesRef.current = updated;
-            setSlides(updated);
-        }
-        const nextSlide = updated[targetIndex];
-        if (!nextSlide) return;
-
-        let nextDesign = nextSlide.design;
-        // If syncing effects across slides with the same background:
-        if (syncBackgroundEffectsRef.current) {
-            const sameImage = Boolean(designRef.current.imageUri && nextDesign.imageUri === designRef.current.imageUri);
-            const sameGradient = !designRef.current.imageUri && !nextDesign.imageUri && (
-                Boolean(designRef.current.backgroundGradient && nextDesign.backgroundGradient) ||
-                Boolean(designRef.current.backgroundColor && nextDesign.backgroundColor)
-            );
-
-            if (sameImage || sameGradient) {
-                nextDesign = {
-                    ...nextDesign,
-                    imageFit: designRef.current.imageFit,
-                    imageTone: designRef.current.imageTone,
-                    imageZoom: designRef.current.imageZoom,
-                    imageOffsetX: designRef.current.imageOffsetX,
-                    imageOffsetY: designRef.current.imageOffsetY,
-                    imageBlur: designRef.current.imageBlur,
-                    imageVintage: designRef.current.imageVintage,
-                    imageFeather: designRef.current.imageFeather,
-                    backgroundColor: designRef.current.backgroundColor,
-                    backgroundGradient: designRef.current.backgroundGradient,
-                };
-                updated[targetIndex] = {
-                    ...nextSlide,
-                    design: nextDesign,
-                };
-                slidesRef.current = updated;
-                setSlides(updated);
-            }
-        }
-
-        dirty.current = false;
-        undoRef.current = [];
-        redoRef.current = [];
-        interaction.current = null;
-        setActiveSlideIndex(targetIndex);
-        designRef.current = nextDesign;
-        setDesign(nextDesign);
-        setHistory({ undo: 0, redo: 0 });
-        setSaveState('saved');
-        setAlertDismissed(false);
-        setIssue('');
-    };
-
-    // Carousel Slide Actions
-    const handleAddSlide = async () => {
-        try {
-            const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-            const baseTitle = getCarouselBaseTitle(currentSlides[0]?.name || draft.name);
-            const newIndex = currentSlides.length + 1;
-            const newDesign: PostDesign = {
-                ...designRef.current,
-                headline: `Key Point ${newIndex}`,
-                summary: `Add context, analysis, or quote for slide ${newIndex}.`,
-            };
-            const created = await createDraft(scope, `${baseTitle} · ${newIndex}/${newIndex}`, newDesign);
-            const nextSlides = [...currentSlides, created];
-            slidesRef.current = nextSlides;
-            setSlides(nextSlides);
-            await switchSlide(nextSlides.length - 1);
-            setNotice(`Slide ${newIndex} added to carousel`);
-        } catch (err) {
-            setIssue(err instanceof Error ? err.message : 'Could not add slide.');
-        }
-    };
-
-    const handleDuplicateSlide = async () => {
-        try {
-            const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-            const baseTitle = getCarouselBaseTitle(currentSlides[0]?.name || draft.name);
-            const newIndex = currentSlides.length + 1;
-            const duplicatedDesign = { ...designRef.current };
-            const created = await createDraft(scope, `${baseTitle} · ${newIndex}/${newIndex} (Copy)`, duplicatedDesign);
-            const nextSlides = [...currentSlides, created];
-            slidesRef.current = nextSlides;
-            setSlides(nextSlides);
-            await switchSlide(nextSlides.length - 1);
-            setNotice('Slide duplicated');
-        } catch (err) {
-            setIssue(err instanceof Error ? err.message : 'Could not duplicate slide.');
-        }
-    };
-
-    const handleDeleteSlide = async (targetIndex = activeSlideIndex) => {
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-        if (currentSlides.length <= 1) return;
-        const toDelete = currentSlides[targetIndex];
-        if (!toDelete) return;
-        try {
-            await setDraftTrashed(scope, toDelete.id, true);
-            const remaining = currentSlides.filter((_, idx) => idx !== targetIndex);
-            slidesRef.current = remaining;
-            setSlides(remaining);
-            const nextIdx = Math.min(targetIndex, remaining.length - 1);
-            setActiveSlideIndex(nextIdx);
-            designRef.current = remaining[nextIdx].design;
-            setDesign(remaining[nextIdx].design);
-            dirty.current = false;
-            setNotice('Slide removed from carousel');
-        } catch (err) {
-            setIssue(err instanceof Error ? err.message : 'Could not delete slide.');
-        }
-    };
-
-    const handleMoveSlide = (fromIdx: number, direction: -1 | 1) => {
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-        const targetIdx = fromIdx + direction;
-        if (targetIdx < 0 || targetIdx >= currentSlides.length) return;
-        const reordered = [...currentSlides];
-        const temp = reordered[fromIdx];
-        reordered[fromIdx] = reordered[targetIdx];
-        reordered[targetIdx] = temp;
-        slidesRef.current = reordered;
-        setSlides(reordered);
-        if (activeSlideIndex === fromIdx) {
-            setActiveSlideIndex(targetIdx);
-        } else if (activeSlideIndex === targetIdx) {
-            setActiveSlideIndex(fromIdx);
-        }
-        setNotice(`Slide moved to position ${targetIdx + 1}`);
-    };
-
-    const handleCopyCaption = async () => {
-        try {
-            const caption = generateInstagramCaption(slides);
-            await navigator.clipboard.writeText(caption);
-            setCaptionCopied(true);
-            setTimeout(() => setCaptionCopied(false), 2500);
-            setNotice('Instagram caption copied to clipboard!');
-        } catch {
-            setIssue('Could not copy caption to clipboard.');
-        }
-    };
-
-    const [outputW, outputH] = postOutputDimensions[design.format];
-    const referenceH = 360 * outputH / outputW;
-    const isMobileStage = stageSize.width < 640;
-    const availableW = Math.max(180, stageSize.width - (slides.length > 1 ? (isMobileStage ? 64 : 100) : (isMobileStage ? 20 : 40)));
-    const availableH = Math.max(180, stageSize.height - (isMobileStage ? 56 : 76));
-    const maxScale = isMobileStage ? 1.4 : 1.85;
-    const scale = Math.max(.2, Math.min(availableW / 360, availableH / referenceH, maxScale));
-    const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : 'text'); setReposition(false); };
-    const locked = design.lockedLayers.includes(selected);
-    const mediaDisabled = !design.imageUri || design.lockedLayers.includes('visual') || design.hiddenLayers.includes('visual');
-
     useEffect(() => {
-        const node = ballRef.current;
-        if (!node) return;
-        const wheel = (event: WheelEvent) => {
-            if (mediaDisabled) return;
-            event.preventDefault(); begin();
-            const movement = wheelMovement(event.deltaX, event.deltaY, event.deltaMode, event.shiftKey);
-            live(current => moveImage(current, movement.x, movement.y));
-            clearTimeout(wheelTimer.current); wheelTimer.current = setTimeout(end, 180);
-        };
-        node.addEventListener('wheel', wheel, { passive: false });
-        return () => node.removeEventListener('wheel', wheel);
-    }, [tool, mediaDisabled, begin, end, live]);
-
-    const update = <K extends keyof PostDesign>(key: K, value: PostDesign[K]) => apply(current => ({ ...current, [key]: value }));
-    const toggle = (key: 'hiddenLayers' | 'lockedLayers', layer: PostLayer) => apply(current => ({ ...current, [key]: current[key].includes(layer) ? current[key].filter(item => item !== layer) : [...current[key], layer] }));
+        if (!notice) return;
+        const timer = setTimeout(() => setNotice(''), 4000);
+        return () => clearTimeout(timer);
+    }, [notice]);
     const undo = (redo = false) => {
         end();
         const from = redo ? redoRef.current : undoRef.current, to = redo ? undoRef.current : redoRef.current;
-        const next = from.pop();
-        if (next) { to.push(designRef.current); apply(next, false); updateHistory(); }
+        const previous = from.pop();
+        if (!previous) return;
+        to.push(snapshot()); install(previous.slides, previous.activeId); markDirty(); updateHistory();
     };
+    useEffect(() => {
+        const keyboard = (event: KeyboardEvent) => {
+            if (!ready || busy || exporting) return;
+            if (event.target instanceof HTMLElement && event.target.closest('input,textarea,select,[contenteditable=true],dialog')) return;
+            if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'z') { event.preventDefault(); undo(event.shiftKey); }
+            if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'y') { event.preventDefault(); undo(true); }
+        };
+        window.addEventListener('keydown', keyboard);
+        return () => window.removeEventListener('keydown', keyboard);
+    });
+
+    const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : 'text'); setReposition(false); };
+    const switchSlide = (index: number) => {
+        const target = slidesRef.current[index];
+        if (!target || busy || exporting) return;
+        end(); install(slidesRef.current, target.id); setReposition(false);
+        if (tool === 'cricket' && target.design.template !== 'cricket') setTool('text');
+    };
+    const update = <K extends keyof PostDesign>(key: K, value: PostDesign[K]) => apply(current => ({ ...current, [key]: value }));
+    const toggleLayer = (key: 'hiddenLayers' | 'lockedLayers', layer: PostLayer) => apply(current => ({ ...current, [key]: current[key].includes(layer) ? current[key].filter(item => item !== layer) : [...current[key], layer] }));
+    const applyToAll = () => {
+        const source = currentDesign();
+        commit(slidesRef.current.map(item => item.id === activeIdRef.current ? item : { ...item, design: shareStyles(item.design, source, sharedGroups) }));
+        setNotice('Selected styles applied to all pages. Locked layers kept their settings.');
+    };
+    const runPageOperation = async (action: () => Promise<void>) => {
+        if (operation.current) return;
+        operation.current = true; setBusy(true); end();
+        try { if (await persist()) await action(); }
+        catch (error) { setIssue(error instanceof Error ? error.message : 'Could not update pages.'); }
+        finally { operation.current = false; setBusy(false); }
+    };
+    const addPage = (duplicate = false) => runPageOperation(async () => {
+        const current = currentDesign(), list = slidesRef.current;
+        const carouselId = list[0].carouselId ?? `carousel:${draft.id}`;
+        // Persist the original page's group before adding its first sibling.
+        const grouped = list.map((item, index) => ({ ...item, carouselId, carouselOrder: index }));
+        await saveDraftCollection(scope, grouped);
+        const title = getCarouselBaseTitle(draft.name).slice(0, 72);
+        const item = await createDraft(scope, `${title} · ${list.length + 1}/${list.length + 1}${duplicate ? ' (copy)' : ''}`, duplicate ? current : { ...current, headline: '', summary: '' }, { carouselId, carouselOrder: list.length });
+        undoRef.current = []; redoRef.current = [];
+        install([...grouped, item], item.id); updateHistory(); setSaveState('saved'); setTool('text');
+        setNotice(duplicate ? 'Page duplicated.' : 'New page added. Write its headline and summary.');
+    });
+    const deletePage = (id: string) => runPageOperation(async () => {
+        const list = slidesRef.current;
+        if (list.length < 2) return;
+        await setDraftTrashed(scope, id, true);
+        const index = list.findIndex(item => item.id === id);
+        const remaining = list.filter(item => item.id !== id).map((item, order) => ({ ...item, carouselOrder: order }));
+        install(remaining, activeIdRef.current === id ? remaining[Math.min(index, remaining.length - 1)].id : activeIdRef.current);
+        undoRef.current = []; redoRef.current = []; updateHistory(); markDirty();
+        setNotice('Page moved to Trash. Restore it from the draft library.');
+    });
+    const movePage = (index: number, direction: -1 | 1) => {
+        const list = [...slidesRef.current], target = index + direction;
+        if (target < 0 || target >= list.length) return;
+        end();[list[index], list[target]] = [list[target], list[index]];
+        commit(list.map((item, order) => ({ ...item, carouselOrder: order })));
+    };
+    const chooseFile = async (file?: File) => {
+        if (!file || mediaLocked || !ready || busy || exporting || operation.current) return;
+        operation.current = true; setBusy(true);
+        try {
+            if (!file.type.startsWith('image/') || file.type === 'image/svg+xml') throw new Error('Choose a raster image such as PNG, JPEG or WebP.');
+            if (file.size > 25 * 1024 * 1024) throw new Error('Choose an image smaller than 25 MB.');
+            const uri = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = () => reject(new Error('Could not read photo.')); reader.readAsDataURL(file);
+            });
+            apply(current => replaceImage(current, uri, keepAdjustments)); setBackgroundTab('photo');
+        } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add photo.'); }
+        finally { operation.current = false; setBusy(false); }
+    };
+    const applyUrl = async () => {
+        if (!quickUrl.trim() || mediaLocked || urlLoading || operation.current) return;
+        operation.current = true; setBusy(true); setUrlLoading(true);
+        try {
+            const response = await fetch('/api/admin/studio/media-search', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url: quickUrl.trim() }) });
+            const data = await response.json();
+            if (!response.ok || !data.dataUri) throw new Error(data.error || 'Could not load image.');
+            apply(current => replaceImage(current, data.dataUri, keepAdjustments)); setQuickUrl('');
+        } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not load image.'); }
+        finally { operation.current = false; setBusy(false); setUrlLoading(false); }
+    };
+    const selectPlayerPhoto = async (player: NplPlayer) => {
+        if (!player.photo?.url || mediaLocked || !ready || busy || exporting || operation.current) return;
+        operation.current = true; setBusy(true); setIssue('');
+        try {
+            const response = await fetch(player.photo.url);
+            if (!response.ok) throw new Error('Could not load this player photo. Try again.');
+            const blob = await response.blob();
+            if (!blob.type.startsWith('image/') || blob.size > 25 * 1024 * 1024) throw new Error('This photo could not be inserted. Choose another photo.');
+            const uri = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = () => reject(new Error('Could not read player photo.')); reader.readAsDataURL(blob);
+            });
+            apply(current => ({ ...replaceImage(current, uri, keepAdjustments), imageCredit: playerPhotoCredit(player) }));
+            setBackgroundTab('photo'); setNotice(`${player.name} photo inserted.`);
+        } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not insert player photo.'); }
+        finally { operation.current = false; setBusy(false); }
+    };
+    const exportPost = async (index = activeSlideIndex) => {
+        const item = slides[index], node = item?.id === activeId ? exportRef.current : exportNodes.current.get(item?.id);
+        if (!item || !node || exporting || !canExport) return;
+        setExporting(true); setIssue('');
+        try {
+            if (!await persist()) return;
+            const bytes = await artworkBytes(node, item.design.format);
+            download(bytes, `the-leaders-page-${index + 1}.png`); setNotice(`Page ${index + 1} downloaded.`);
+        } catch (error) { setIssue(error instanceof Error ? error.message : 'Export failed.'); }
+        finally { setExporting(false); }
+    };
+    const exportAll = async () => {
+        if (exporting || !canExport) return;
+        setExporting(true); setIssue('');
+        try {
+            if (!await persist()) return;
+            const nodes = slides.map(item => exportNodes.current.get(item.id));
+            if (nodes.some(node => !node)) throw new Error('Pages are still preparing. Retry export.');
+            await exportCarouselZip(nodes as HTMLDivElement[], slides, 'the-leaders-carousel.zip'); setNotice('Carousel ZIP downloaded.');
+        } catch (error) { setIssue(error instanceof Error ? error.message : 'Carousel export failed.'); }
+        finally { setExporting(false); }
+    };
+    const copyCaption = async () => {
+        try { await navigator.clipboard.writeText(generateInstagramCaption(slidesRef.current)); setNotice('Caption copied.'); }
+        catch { setIssue('Could not copy caption.'); }
+    };
+    const slider = (label: string, value: number, min: number, max: number, change: (value: number) => (current: PostDesign) => PostDesign, disabled = false) =>
+        <Slider label={label} value={value} min={min} max={max} disabled={disabled} onStart={begin} onEnd={end} onChange={value => apply(change(value))} />;
+    const choice = (label: string, active: boolean, action: () => void, disabled = false) =>
+        <button type="button" key={label} className={`${styles.choice} ${active ? styles.active : ''}`} aria-pressed={active} disabled={disabled} onClick={action}>{label}</button>;
     const canvasDown = (event: PointerEvent<HTMLDivElement>) => {
-        if (!(reposition || tool === 'media') || locked || design.hiddenLayers.includes(selected) || (selected === 'visual' && !design.imageUri)) return;
+        if (!ready || exporting || busy || (!reposition && tool !== 'media') || locked || design.hiddenLayers.includes(selected) || (selected === 'visual' && !design.imageUri)) return;
         if (event.target instanceof HTMLElement && event.target.closest('button')) return;
-        event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId);
-        begin(); drag.current = { x: event.clientX, y: event.clientY, design: designRef.current };
+        event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin();
+        drag.current = { x: event.clientX, y: event.clientY, design: currentDesign() };
     };
     const canvasMove = (event: PointerEvent) => {
         const origin = drag.current; if (!origin) return;
         const dx = (event.clientX - origin.x) / scale, dy = (event.clientY - origin.y) / scale;
-        if (selected === 'visual') live(() => moveImage(origin.design, dx, dy));
-        else {
-            const point = origin.design.textPositions[selected];
-            live(current => positionText(current, selected, { x: snapTextPosition(point.x + dx / 360 * 100, snap), y: snapTextPosition(point.y + dy / referenceH * 100, snap) }));
-        }
+        if (selected === 'visual') apply(() => moveImage(origin.design, dx, dy));
+        else apply(current => positionText(current, selected, { x: snapTextPosition(origin.design.textPositions[selected].x + dx / 360 * 100, snap), y: snapTextPosition(origin.design.textPositions[selected].y + dy / referenceH * 100, snap) }));
     };
     const canvasEnd = () => { if (drag.current) { drag.current = null; end(); } };
-
-    const chooseFile = async (file?: File) => {
-        if (!file || designRef.current.lockedLayers.includes('visual')) return;
-        try {
-            if (!file.type.startsWith('image/') || file.type === 'image/svg+xml') throw new Error('Choose a PNG, JPEG, WebP or another raster photo.');
-            if (file.size > 25 * 1024 * 1024) throw new Error('Choose an image smaller than 25 MB.');
-            const uri = await new Promise<string>((resolve, reject) => {
-                const reader = new FileReader(); 
-                reader.onload = () => resolve(String(reader.result)); 
-                reader.onerror = () => reject(new Error('Could not read photo.')); 
-                reader.readAsDataURL(file);
-            });
-            apply(current => replaceImage(current, uri, keepAdjustments));
-            setNotice('Photo uploaded and applied to canvas');
-            setApplyAllDismissed(false);
-        } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not add photo.'); }
-    };
-
-    // Quick Paste URL handler
-    const handleApplyQuickUrl = async () => {
-        if (!quickImageUrl.trim() || designRef.current.lockedLayers.includes('visual')) return;
-        setQuickUrlLoading(true);
-        setIssue('');
-        try {
-            const res = await fetch('/api/admin/studio/media-search', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ url: quickImageUrl.trim() }),
-            });
-            const data = await res.json();
-            if (!res.ok || !data.dataUri) {
-                throw new Error(data.error || 'Failed to fetch and process image URL.');
-            }
-            apply(current => replaceImage(current, data.dataUri, keepAdjustments));
-            setQuickImageUrl('');
-            setNotice('Web image applied to canvas');
-            setApplyAllDismissed(false);
-        } catch (err) {
-            setIssue(err instanceof Error ? err.message : 'Could not load image from URL.');
-        } finally {
-            setQuickUrlLoading(false);
-        }
-    };
-
-    // Copy visual URL or Data URI
-    const handleCopyActiveVisual = async () => {
-        if (!design.imageUri) return;
-        try {
-            await navigator.clipboard.writeText(design.imageUri);
-            setMediaCopied(true);
-            setTimeout(() => setMediaCopied(false), 2500);
-        } catch {
-            setIssue('Could not copy image to clipboard.');
-        }
-    };
-
-    // Download visual image file
-    const handleDownloadActiveVisual = () => {
-        if (!design.imageUri) return;
-        const link = document.createElement('a');
-        link.href = design.imageUri;
-        link.download = `${design.headline.slice(0, 24).toLowerCase().replace(/[^a-z0-9]+/g, '-') || 'visual'}.png`;
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-    };
-
-    // Apply current slide's background image, adjustments, and gradient/color across all carousel slides
-    const handleApplyBackgroundToAllSlides = async () => {
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-        if (!currentSlides.length) return;
-        const bgProps: Partial<PostDesign> = {
-            imageUri: design.imageUri,
-            imageFit: design.imageFit,
-            imageTone: design.imageTone,
-            imageZoom: design.imageZoom,
-            imageOffsetX: design.imageOffsetX,
-            imageOffsetY: design.imageOffsetY,
-            imageBlur: design.imageBlur,
-            imageVintage: design.imageVintage,
-            imageFeather: design.imageFeather,
-            backgroundColor: design.backgroundColor ?? null,
-            backgroundGradient: design.backgroundGradient ?? null,
-        };
-
-        const updated = currentSlides.map(s => ({
-            ...s,
-            design: {
-                ...s.design,
-                ...bgProps,
-            },
-        }));
-
-        slidesRef.current = updated;
-        setSlides(updated);
-        dirty.current = true;
-        setNotice(`Background & applied effects synced across all ${currentSlides.length} slides!`);
-        try {
-            await Promise.all(
-                updated.map(s => updateDraft(scope, s.id, { design: s.design }))
-            );
-        } catch {
-            // Keep in-memory sync
-        }
-    };
-
-    // Apply only the image effects & adjustments (blur, vintage, feather, tone, crop, zoom) to all slides
-    const handleApplyEffectsToAllSlides = async () => {
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-        if (!currentSlides.length) return;
-        const effectProps: Partial<PostDesign> = {
-            imageFit: design.imageFit,
-            imageTone: design.imageTone,
-            imageZoom: design.imageZoom,
-            imageOffsetX: design.imageOffsetX,
-            imageOffsetY: design.imageOffsetY,
-            imageBlur: design.imageBlur,
-            imageVintage: design.imageVintage,
-            imageFeather: design.imageFeather,
-            backgroundColor: design.backgroundColor ?? null,
-            backgroundGradient: design.backgroundGradient ?? null,
-        };
-
-        const updated = currentSlides.map(s => ({
-            ...s,
-            design: {
-                ...s.design,
-                ...effectProps,
-            },
-        }));
-
-        slidesRef.current = updated;
-        setSlides(updated);
-        dirty.current = true;
-        setNotice(`Image effects applied across all ${currentSlides.length} slides!`);
-        try {
-            await Promise.all(
-                updated.map(s => updateDraft(scope, s.id, { design: s.design }))
-            );
-        } catch {
-            // Keep in-memory sync
-        }
-    };
-
-    // Confirm apply all from optional question
-    const handleConfirmApplyAllSlides = async () => {
-        await handleApplyBackgroundToAllSlides();
-        setApplyAllDismissed(true);
-    };
-
-    // Reuse another slide's visual for current slide
-    const handleReuseSlideImage = (sourceIndex: number) => {
-        const currentSlides = slidesRef.current.length ? slidesRef.current : slides;
-        const sourceDesign = currentSlides[sourceIndex]?.design;
-        if (!sourceDesign?.imageUri) return;
-        apply(current => ({
-            ...current,
-            imageUri: sourceDesign.imageUri,
-            imageFit: sourceDesign.imageFit,
-            imageTone: sourceDesign.imageTone,
-            imageZoom: sourceDesign.imageZoom,
-            imageOffsetX: sourceDesign.imageOffsetX,
-            imageOffsetY: sourceDesign.imageOffsetY,
-            imageBlur: sourceDesign.imageBlur,
-            imageVintage: sourceDesign.imageVintage,
-            imageFeather: sourceDesign.imageFeather,
-            backgroundColor: sourceDesign.backgroundColor,
-            backgroundGradient: sourceDesign.backgroundGradient,
-        }));
-        setNotice(`Applied visual from Slide ${sourceIndex + 1} to current slide`);
-    };
-
-
-    // Export single slide
-    const exportPost = async (slideIdx = activeSlideIndex) => {
-        const targetNode = slideIdx === activeSlideIndex ? exportRef.current : carouselExportRefs.current[slideIdx];
-        if (!targetNode || exporting || !canExport) return;
-        setExporting(true); setIssue(''); setNotice('');
-        try {
-            if (imageIssue && !design.hiddenLayers.includes('visual')) throw new Error(imageIssue);
-            const targetDesign = slides[slideIdx]?.design || design;
-            const bytes = await artworkBytes(targetNode, targetDesign.format);
-            const cleanName = (targetDesign.headline || activeSlide.name)
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/(^-|-$)/g, '')
-                .slice(0, 42) || 'the-leaders-post';
-            download(bytes, `${cleanName}.png`);
-            setNotice(`Slide ${slideIdx + 1} downloaded (PNG)`);
-        } catch (error) { setIssue(error instanceof Error ? error.message : 'Export failed.'); }
-        finally { setExporting(false); }
-    };
-
-    // Export all carousel slides as ZIP
-    const exportAllCarousel = async () => {
-        if (exporting || !canExport) return;
-        setExporting(true); setIssue(''); setNotice('');
-        try {
-            const validNodes = carouselExportRefs.current.filter((n): n is HTMLDivElement => Boolean(n));
-            if (validNodes.length !== slides.length) {
-                throw new Error('Some slides are still preparing for export.');
-            }
-            const baseTitle = getCarouselBaseTitle(slides[0]?.name || draft.name)
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .slice(0, 32) || 'carousel';
-            await exportCarouselZip(validNodes, slides, `${baseTitle}-pack.zip`);
-            setNotice(`All ${slides.length} slides exported in ZIP!`);
-        } catch (err) {
-            setIssue(err instanceof Error ? err.message : 'Carousel ZIP export failed.');
-        } finally {
-            setExporting(false);
-        }
-    };
-
-    // Auto-fit overflowing text to slide line limit
-    const handleAutoFitText = () => {
+    const changeTool = (next: Tool) => { end(); setTool(next); setReposition(false); if (next === 'media') setSelected('visual'); else if (next === 'text' && selected === 'visual') setSelected('headline'); };
+    const lockedLabel = textLocked ? ' · Locked' : '';
+    const fitText = () => {
         const nodes = exportRef.current?.querySelectorAll<HTMLElement>('[data-line-limit]');
         if (!nodes) return;
-
-        let headlineRatio = 1;
-        let supportingRatio = 1;
-
-        for (const node of Array.from(nodes)) {
-            const limit = Number(node.dataset.lineLimit);
-            const lh = parseFloat(getComputedStyle(node).lineHeight);
-            const maxAllowed = lh * limit + 1;
-            if (node.scrollHeight > maxAllowed) {
-                const ratio = maxAllowed / node.scrollHeight;
-                if (node.dataset.testid === 'artwork-headline') {
-                    headlineRatio = Math.min(headlineRatio, ratio);
-                } else {
-                    supportingRatio = Math.min(supportingRatio, ratio);
-                }
-            }
-        }
-
         apply(current => {
-            let next = { ...current };
-            if (headlineRatio < 1) {
-                const newScale = Math.max(0.55, Math.floor(current.headlineScale * headlineRatio * 0.95 * 100) / 100);
-                next = { ...next, headlineScale: newScale };
-            }
-            if (supportingRatio < 1) {
-                const currentSize = current.textTypography?.supporting?.size ?? 100;
-                const currentSpacing = current.textTypography?.supporting?.lineSpacing ?? 100;
-                const newSize = Math.max(55, Math.floor(currentSize * supportingRatio * 0.95));
-                const newSpacing = Math.max(88, Math.floor(currentSpacing * Math.max(0.92, supportingRatio)));
-                next = setTextTypography(next, 'supporting', {
-                    size: newSize,
-                    lineSpacing: newSpacing,
-                });
-            } else if (headlineRatio >= 1 && supportingRatio >= 1) {
-                const currentSize = current.textTypography?.supporting?.size ?? 100;
-                next = setTextTypography(next, 'supporting', {
-                    size: Math.max(55, Math.round(currentSize * 0.85)),
-                });
+            let next = current;
+            for (const node of nodes) {
+                const available = parseFloat(getComputedStyle(node).lineHeight) * Number(node.dataset.lineLimit);
+                if (node.scrollHeight <= available + 1) continue;
+                const layer = node.dataset.testid === 'artwork-headline' ? 'headline' : 'supporting';
+                const size = Math.max(60, Math.floor(current.textTypography[layer].size * available / node.scrollHeight * .96));
+                next = setTextTypography(next, layer, { size });
             }
             return next;
         });
-
-        setOverflow(false);
-        setIssue('');
-        setImageIssue('');
-        setAlertDismissed(true);
-        setNotice('Text auto-fitted to format line limits.');
     };
 
-    // Keyboard navigation shortcuts
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            const activeEl = document.activeElement;
-            const isTyping = activeEl && (
-                activeEl.tagName === 'INPUT' ||
-                activeEl.tagName === 'TEXTAREA' ||
-                activeEl.tagName === 'SELECT' ||
-                (activeEl as HTMLElement).isContentEditable
-            );
-            if (isTyping) return;
-
-            if (e.key === 'ArrowLeft' || e.key === '[') {
-                if (slides.length > 1 && activeSlideIndex > 0) {
-                    e.preventDefault();
-                    void switchSlide(activeSlideIndex - 1);
-                }
-            } else if (e.key === 'ArrowRight' || e.key === ']') {
-                if (slides.length > 1 && activeSlideIndex < slides.length - 1) {
-                    e.preventDefault();
-                    void switchSlide(activeSlideIndex + 1);
-                }
-            } else if ((e.metaKey || e.ctrlKey) && e.key === 'z') {
-                e.preventDefault();
-                if (e.shiftKey) {
-                    if (history.redo) undo(true);
-                } else {
-                    if (history.undo) undo();
-                }
-            } else if ((e.metaKey || e.ctrlKey) && e.key === 'y') {
-                e.preventDefault();
-                if (history.redo) undo(true);
-            } else if ((e.metaKey || e.ctrlKey) && e.key === 's') {
-                e.preventDefault();
-                void persist();
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [slides.length, activeSlideIndex, history, undo, persist]);
-
-    const field = fields.find(item => item.layer === selected) || fields[0];
-    const textLocked = design.lockedLayers.includes(field.layer);
-    const slider = (label: string, value: number, min: number, max: number, change: (value: number) => Change, disabled = false, vertical = false) => <Slider label={label} value={value} min={min} max={max} disabled={disabled} vertical={vertical} onStart={begin} onChange={value => live(change(value))} onEnd={end} />;
-    const choice = (label: string, active: boolean, action: () => void, disabled = false) => <button type="button" key={label} className={`${styles.choice} ${active ? styles.active : ''}`} aria-pressed={active} disabled={disabled} onClick={action}>{label}</button>;
-
-    const isBookTemplate = design.template.startsWith('book-');
-    const currentCraft = getStudioCraft(design.template);
-
-    return <div className={`${styles.studio} ${styles.editor}`}>
-        {/* Top Professional Toolbar */}
-        <header className={styles.topToolbar}>
-            <div className={styles.toolbarLeft}>
-                <button
-                    type="button"
-                    className={styles.toolbarCloseBtn}
-                    aria-label="Close editor"
-                    onClick={async () => { if (await persist()) onClose(); }}
-                    title="Close editor and return to drafts"
-                >
-                    <X size={18} />
+    return <div className={`${styles.studio} ${styles.editor} ${styles.organizedEditor} ${canvasFocused ? styles.canvasFocused : ''}`}>
+        <header className={styles.workspaceHeader}>
+            <div className={styles.documentHeading}>
+                <button className={styles.iconButton} aria-label="Close editor" disabled={busy || exporting} onClick={async () => { if (await persist()) onClose(); }}>
+                    <ChevronLeft size={20} />
                 </button>
-                <div className={styles.toolbarTitleGroup}>
-                    <h1 className={styles.toolbarTitle} title={activeSlide.name}>
-                        {getCarouselBaseTitle(activeSlide.name)}
-                    </h1>
-                    {slides.length > 1 && (
-                        <span className={styles.toolbarSlideBadge}>
-                            Slide {activeSlideIndex + 1} of {slides.length}
-                        </span>
-                    )}
+                <div className={styles.documentName}>
+                    <span className={styles.workspaceEyebrow}>THE LEADERS / STUDIO</span>
+                    <h1 title={draft.name}>{getCarouselBaseTitle(draft.name)}</h1>
                 </div>
-                <button
-                    type="button"
-                    className={styles.toolbarSaveBtn}
-                    onClick={() => { void persist(); }}
-                    title="Click to save changes now"
-                >
-                    <span className={`${styles.saveDot} ${saveState === 'saving' ? styles.saving : saveState === 'error' ? styles.failed : ''}`} />
-                    <span className={styles.saveStatusText}>
-                        {saveState === 'saved' ? 'Saved' : saveState === 'saving' ? 'Saving…' : 'Save failed'}
-                    </span>
-                </button>
+                <button className={styles.saveState} aria-label={saveState === 'error' ? 'Retry saving' : 'Save changes'} onClick={() => void persist()}>
+                    <span className={`${styles.saveDot} ${saveState === 'saving' ? styles.saving : saveState === 'error' ? styles.failed : ''}`} />{saveState === 'saved' ? 'Saved' : saveState === 'saving' ? 'Saving…' : 'Retry save'}</button>
             </div>
-
-            <div className={styles.toolbarCenter}>
-                <button
-                    type="button"
-                    className={styles.instagramPreviewBtn}
-                    onClick={() => setInstagramPreviewOpen(true)}
-                    title="Open live Instagram feed simulator"
-                >
-                    <Instagram size={15} />
-                    <span>Instagram Preview</span>
-                </button>
-            </div>
-
-            <div className={styles.toolbarRight}>
+            <div className={styles.workspaceActions}>
                 <div className={styles.historyGroup}>
-                    <button
-                        type="button"
-                        className={styles.toolbarIconBtn}
-                        aria-label="Undo"
-                        title="Undo (Ctrl+Z)"
-                        disabled={!history.undo}
-                        onClick={() => undo()}
-                    >
+                    <button className={styles.toolbarIconBtn} aria-label="Undo" title="Undo (⌘/Ctrl+Z)" disabled={!history.undo || busy || exporting} onClick={() => undo()}>
                         <Undo2 size={16} />
                     </button>
-                    <button
-                        type="button"
-                        className={styles.toolbarIconBtn}
-                        aria-label="Redo"
-                        title="Redo (Ctrl+Y)"
-                        disabled={!history.redo}
-                        onClick={() => undo(true)}
-                    >
+                    <button className={styles.toolbarIconBtn} aria-label="Redo" disabled={!history.redo || busy || exporting} onClick={() => undo(true)}>
                         <Redo2 size={16} />
                     </button>
                 </div>
-
-                {slides.length > 1 && (
-                    <button
-                        type="button"
-                        className={styles.toolbarSecondaryBtn}
-                        disabled={exporting || !canExport}
-                        onClick={exportAllCarousel}
-                        title="Export all carousel slides as a ZIP file"
-                    >
-                        <Download size={15} />
-                        <span>Export ZIP ({slides.length})</span>
-                    </button>
-                )}
-
-                <button
-                    type="button"
-                    className={styles.toolbarPrimaryBtn}
-                    disabled={exporting || !canExport || Boolean(imageIssue && !design.hiddenLayers.includes('visual'))}
-                    onClick={() => { void exportPost(activeSlideIndex); }}
-                    title="Export current slide as high-res PNG"
-                >
-                    <Download size={15} />
-                    <span>{exporting ? 'Exporting…' : slides.length > 1 ? `Export Slide ${activeSlideIndex + 1}` : 'Export PNG'}</span>
+                <button className={styles.button} aria-label="Preview Instagram post" onClick={() => setPreviewOpen(true)}>
+                    <Instagram size={16} />
+                    <span className={styles.actionLabel}>Preview</span>
+                </button>
+                {slides.length > 1 && <button className={styles.button} aria-label="Export carousel ZIP" disabled={!ready || busy || exporting || !canExport} onClick={() => void exportAll()}>
+                    <Layers3 size={16} />
+                    <span>Export all</span>
+                </button>}
+                <button className={styles.button} aria-label="Share to Instagram" title="Share to Instagram" aria-expanded={instagramShareOpen} disabled={!ready || busy || exporting || !canExport} onClick={() => setInstagramShareOpen(value => !value)}>
+                    <Share2 size={16} /><span className={styles.actionLabel}>Share</span>
+                </button>
+                <button className={styles.primary} aria-label="Export current page PNG" disabled={!ready || busy || exporting || !canExport || Boolean(imageIssue) || overflow} onClick={() => void exportPost()}>
+                    <Download size={16} />
+                    <span>{exporting ? 'Exporting…' : 'Export PNG'}</span>
                 </button>
             </div>
         </header>
-
-        {/* Global Warning / Notification Banner */}
-        {Boolean(issue || imageIssue || (overflow && !alertDismissed)) && (
-            <div className={styles.alertBanner} role="alert">
-                <div className={styles.alertMessage}>
-                    <AlertCircle size={15} />
-                    <span>{issue || imageIssue || 'Text exceeds this format’s line limit. It may be clipped on export.'}</span>
-                </div>
-                <div className={styles.alertActionsGroup}>
-                    {overflow && (
-                        <button
-                            type="button"
-                            className={styles.autoFitBtn}
-                            onClick={handleAutoFitText}
-                            title="Automatically adjust font size and line spacing to fit"
-                        >
-                            <Sparkles size={13} />
-                            Auto-fit Text Size
-                        </button>
-                    )}
-                    <button
-                        type="button"
-                        className={styles.bannerCloseBtn}
-                        onClick={() => {
-                            setAlertDismissed(true);
-                            setIssue('');
-                            setImageIssue('');
-                        }}
-                        aria-label="Dismiss warning"
-                        title="Dismiss warning"
-                    >
-                        <X size={14} />
-                    </button>
-                </div>
-            </div>
-        )}
-
-        {notice && (
-            <div className={styles.noticeBanner} role="status">
-                <div className={styles.alertMessage}>
-                    <Check size={14} />
-                    <span>{notice}</span>
-                </div>
-                <button type="button" className={styles.bannerCloseBtn} onClick={() => setNotice('')}>
-                    <X size={12} />
-                </button>
-            </div>
-        )}
-
-        {/* Optional question banner if other slides in carousel are missing images */}
-        {showApplyAllPrompt && (
-            <div className={styles.applyAllBanner} role="status">
-                <div className={styles.alertMessage}>
-                    <Sparkles size={15} color="var(--studio-red)" />
-                    <span>
-                        Only Slide {activeSlideIndex + 1} has an image ({slides.length - 1} other {slides.length - 1 === 1 ? 'slide is' : 'slides are'} missing images). Apply this image to all slides?
-                    </span>
-                </div>
-                <div className={styles.alertActionsGroup}>
-                    <button
-                        type="button"
-                        className={styles.autoFitBtn}
-                        onClick={handleConfirmApplyAllSlides}
-                    >
-                        <Check size={13} />
-                        Yes, Apply to All Slides
-                    </button>
-                    <button
-                        type="button"
-                        className={styles.bannerCloseBtn}
-                        onClick={() => setApplyAllDismissed(true)}
-                        aria-label="Keep on this slide only"
-                        title="Keep on this slide only"
-                    >
-                        <X size={14} />
-                    </button>
-                </div>
-            </div>
-        )}
-
-
+        {instagramShareOpen && <InstagramSharePanel slides={slides} activeIndex={activeSlideIndex}
+            getNode={id => exportNodes.current.get(id)} persist={persist}
+            disabled={!ready || busy || exporting || !canExport} setPreparing={setExporting} onClose={() => setInstagramShareOpen(false)} />}
+        {(issue || imageIssue || overflow) && <div className={styles.alertBanner} role="alert">
+            <span>{issue || imageIssue || 'Content does not fit. Shorten the text, reduce the rows, or choose a taller format.'}</span>{overflow && <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>}{issue && <button className={styles.button} onClick={() => { if (!ready) { setIssue(''); setLoadAttempt(value => value + 1); } else void persist(); }}>{ready ? 'Retry save' : 'Retry loading pages'}</button>}</div>}
+        {notice && <div className={styles.workspaceNotice} role="status">
+            <Check size={14} />
+            <span>{notice}</span>
+            <button className={styles.bannerCloseBtn} aria-label="Dismiss notification" onClick={() => setNotice('')}>
+                <X size={14} />
+            </button>
+        </div>}
         <div className={styles.body}>
-            <div ref={stageRef} className={styles.stage}>
-                <div className={styles.stageMetaPill}>
-                    <span className={styles.stageMetaDimension}>{outputW} × {outputH}</span>
-                    <span className={styles.stageMetaDivider}>•</span>
-                    <span className={styles.stageMetaFormat}>{reposition ? 'Drag to Reposition' : design.format.toUpperCase()}</span>
-                    {slides.length > 1 && (
-                        <>
-                            <span className={styles.stageMetaDivider}>•</span>
-                            <span className={styles.stageMetaSlide}>Slide {activeSlideIndex + 1} of {slides.length}</span>
-                        </>
-                    )}
-                </div>
-
-                {/* Stage Canvas Wrap with Navigation Chevrons Outside the Artwork */}
-                <div className={styles.stageCanvasWrap}>
-                    {slides.length > 1 && (
-                        <button
-                            type="button"
-                            className={styles.stageNavBtn}
-                            disabled={activeSlideIndex === 0}
-                            onClick={() => switchSlide(activeSlideIndex - 1)}
-                            aria-label="Previous Slide"
-                            title="Previous Slide (← or [)"
-                        >
-                            <ChevronLeft size={22} />
+            <main className={styles.stage} aria-label="Artwork workspace">
+                <div className={styles.canvasHeading}>
+                    <span>{design.format} <span aria-hidden="true">/</span> {outputW} × {outputH}</span>
+                    <div className={styles.canvasViewActions}><span>Page {activeSlideIndex + 1} of {slides.length}</span>
+                        <button className={styles.canvasFocusButton} aria-label={canvasFocused ? 'Show editing controls' : 'Expand canvas'} aria-pressed={canvasFocused} onClick={() => setCanvasFocused(value => !value)}>
+                            {canvasFocused ? <Minimize2 size={15} /> : <Maximize2 size={15} />}<span>{canvasFocused ? 'Show controls' : 'Expand'}</span>
                         </button>
-                    )}
-
-                    <div 
-                        className={styles.canvasShell} 
-                        style={{ width: 360 * scale, height: referenceH * scale, position: 'relative' }} 
-                        onPointerDown={canvasDown} 
-                        onPointerMove={canvasMove} 
-                        onPointerUp={canvasEnd} 
-                        onPointerCancel={canvasEnd}
-                    >
+                    </div>
+                </div>
+                <div ref={stageRef} className={styles.stageSurface}>
+                    <div className={styles.canvasShell} style={{ width: 360 * scale, height: referenceH * scale }} onPointerDown={canvasDown} onPointerMove={canvasMove} onPointerUp={canvasEnd} onPointerCancel={canvasEnd}>
                         <div className={styles.scaledArtwork} style={{ transform: `scale(${scale})` }}>
-                            <Artwork 
-                                ref={previewRef} 
-                                design={design} 
-                                selected={selected} 
-                                guides={reposition} 
-                                onSelect={reposition ? undefined : select} 
-                                onChooseImage={() => setMediaModalOpen(true)} 
-                            />
+                            <Artwork design={design} selected={selected} guides={reposition} onSelect={select} onChooseImage={() => { select('visual'); fileRef.current?.click(); }} />
                         </div>
-
-                        {/* Clean Instagram Carousel Counter Badge on Canvas */}
-                        {slides.length > 1 && (
-                            <div className={styles.carouselCanvasCounter}>
-                                {activeSlideIndex + 1}/{slides.length}
-                            </div>
-                        )}
                     </div>
-
-                    {slides.length > 1 && (
-                        <button
-                            type="button"
-                            className={styles.stageNavBtn}
-                            disabled={activeSlideIndex === slides.length - 1}
-                            onClick={() => switchSlide(activeSlideIndex + 1)}
-                            aria-label="Next Slide"
-                            title="Next Slide (→ or ])"
-                        >
-                            <ChevronRight size={22} />
-                        </button>
-                    )}
                 </div>
-
-                {/* Pagination Dots below Canvas */}
-                {slides.length > 1 && (
-                    <div className={styles.stageDotsRow} role="tablist" aria-label="Slides pagination">
-                        {slides.map((_, idx) => (
-                            <button
-                                key={idx}
-                                type="button"
-                                className={`${styles.stageDot} ${idx === activeSlideIndex ? styles.stageDotActive : ''}`}
-                                onClick={() => switchSlide(idx)}
-                                aria-label={`Jump to slide ${idx + 1}`}
-                                title={`Slide ${idx + 1}`}
-                            />
-                        ))}
-                    </div>
-                )}
-            </div>
-
-            <aside className={styles.inspector}>
-                <div className={styles.tabs} role="tablist" aria-label="Editor tools">
-                    {([{ key: 'text', label: 'Text', Icon: Type }, { key: 'layout', label: 'Layout', Icon: LayoutTemplate }, { key: 'media', label: 'Media', Icon: ImagePlus }, { key: 'carousel', label: 'Carousel', Icon: Layers3 }] as const).map(({ key, label, Icon }) => (
-                        <button key={key} role="tab" aria-selected={tool === key} className={styles.tab} onClick={() => { setTool(key); setReposition(false); if (key === 'media') setSelected('visual'); else if (key === 'text' && selected === 'visual') setSelected('headline'); }}>
-                            <div className={styles.tabIconWrap}>
-                                <Icon size={18} />
-                                {key === 'carousel' && slides.length > 1 && (
-                                    <span className={styles.tabCountBadge}>{slides.length}</span>
-                                )}
-                            </div>
-                            <span>{label}</span>
-                        </button>
-                    ))}
-                </div>
-
-                <div className={styles.panel} role="tabpanel" aria-label={`${tool} controls`} key={tool}>
-                    {tool === 'text' && <>
-                        <div className={styles.layerGrid}>{fields.map(item => {
-                            const cl = currentCraft.layers.find(l => l.key === item.layer);
-                            const isSelected = selected === item.layer;
-                            const label = cl ? cl.label : item.label;
-                            const role = cl ? cl.role : item.layer.toUpperCase();
-                            return (
-                                <button
-                                    key={item.layer}
-                                    type="button"
-                                    className={`${styles.layerChoiceCard} ${isSelected ? styles.layerChoiceCardActive : ''}`}
-                                    onClick={() => select(item.layer)}
-                                >
-                                    <span className={styles.layerChoiceRole}>{role}</span>
-                                    <span className={styles.layerChoiceLabel} title={label}>{label}</span>
-                                </button>
-                            );
-                        })}</div>
-                        <label className={styles.field}>
-                            <div className={styles.between}>
-                                <span>{(currentCraft.layers.find(l => l.key === field.layer)?.label || field.label)}{textLocked ? ' · locked' : ''}</span>
-                                <span className={styles.subtle} style={{ fontSize: 11 }}>
-                                    {(design[field.key] ?? '').length} chars · {(design[field.key] ?? '').split('\n').filter(Boolean).length} paras
-                                </span>
-                            </div>
-                            <textarea
-                                className={styles.input}
-                                aria-label={`Edit ${field.label.toLowerCase()}`}
-                                rows={4}
-                                disabled={textLocked}
-                                value={design[field.key] ?? ''}
-                                onChange={event => {
-                                    setAlertDismissed(false);
-                                    setIssue('');
-                                    update(field.key, field.key === 'eyebrow' ? event.target.value.toUpperCase() : event.target.value);
-                                }}
-                            />
-                        </label>
-                        {field.layer === 'kicker' && (
+                <nav className={`${styles.pageRail} ${slides.length === 1 ? styles.singlePageRail : ''}`} aria-label="Carousel pages">
+                    <button className={styles.railArrow} aria-label="Previous page" disabled={activeSlideIndex === 0 || busy || exporting} onClick={() => switchSlide(activeSlideIndex - 1)}>
+                        <ChevronLeft size={16} />
+                    </button>
+                    <div className={styles.pageRailList}>{slides.map((item, index) => <button key={item.id} className={`${styles.pageThumbnail} ${item.id === activeId ? styles.pageThumbnailActive : ''}`} aria-label={`Page ${index + 1}: ${item.design.headline || 'Untitled'}`} aria-current={item.id === activeId ? 'page' : undefined} disabled={busy || exporting} onClick={() => switchSlide(index)}>
+                        <span className={styles.thumbnailVisual} aria-hidden="true">
+                            <span className={styles.thumbnailCanvas} style={{ width: 360, height: 360 * postOutputDimensions[item.design.format][1] / postOutputDimensions[item.design.format][0], transform: `scale(${Math.min(48 / 360, 54 / (360 * postOutputDimensions[item.design.format][1] / postOutputDimensions[item.design.format][0]))})` }}>
+                                <Artwork design={item.design} />
+                            </span>
+                            <span className={styles.thumbnailNumber}>{index + 1}</span>
+                        </span>
+                    </button>)}</div>
+                    <button className={styles.railAdd} aria-label="Add page" disabled={!ready || busy || exporting} onClick={() => void addPage()}>
+                        <Plus size={18} />
+                        <span>Add page</span>
+                    </button>
+                    <button className={styles.railArrow} aria-label="Next page" disabled={activeSlideIndex === slides.length - 1 || busy || exporting} onClick={() => switchSlide(activeSlideIndex + 1)}>
+                        <ChevronRight size={16} />
+                    </button>
+                </nav>
+            </main>
+            <aside className={styles.inspector} aria-label="Page tools" hidden={canvasFocused}>
+                <div className={styles.tabs} role="tablist" aria-label="Editor tools">{tools.map(({ key, label, Icon }, index) => <button key={key} id={`studio-tab-${key}`} role="tab" aria-selected={tool === key} aria-controls={`studio-panel-${key}`} tabIndex={tool === key ? 0 : -1} className={styles.tab} onClick={() => changeTool(key)} onKeyDown={event => {
+                    const direction = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+                    const target = event.key === 'Home' ? 0 : event.key === 'End' ? tools.length - 1 : direction ? (index + direction + tools.length) % tools.length : -1;
+                    if (target >= 0) { event.preventDefault(); changeTool(tools[target].key); document.getElementById(`studio-tab-${tools[target].key}`)?.focus(); }
+                }}>
+                    <Icon size={18} />
+                    <span>{label}{key === 'pages' ? ` · ${slides.length}` : ''}</span>
+                </button>)}</div>
+                <fieldset className={styles.inspectorBody} disabled={!ready || busy || exporting}>
+                    {!ready && <p role="status" className={styles.subtle}>Loading your pages…</p>}
+                    {slides.length > 1 && <section className={`${styles.editScope} ${styles.scopeBar} ${editAll ? styles.scopeBarGlobal : ''}`} aria-label="Carousel style scope">
+                        <span className={styles.scopeBarLabel}>Apply to</span>
+                        <div className={styles.segmented} role="group" aria-label="Editing scope">{choice(`This page`, !editAll, () => setEditAll(false))}{choice(`All ${slides.length} pages`, editAll, () => setEditAll(true))}</div>
+                        <button className={styles.scopeBarOptions} aria-label="Choose styles to share" title={`${sharedGroups.length} styles selected · Sharing options`} aria-expanded={scopeDetails} aria-controls="shared-style-settings" onClick={() => setScopeDetails(!scopeDetails)}><Globe size={15} /></button>
+                    </section>}
+                    <div className={styles.panel} id={`studio-panel-${tool}`} role="tabpanel" aria-labelledby={`studio-tab-${tool}`} tabIndex={0} key={tool}>
+                        <div className={styles.panelHeading}>
+                            <span className={styles.workspaceEyebrow}>{tool === 'pages' ? 'CAROUSEL' : `PAGE ${activeSlideIndex + 1}`}</span>
+                            <h2>{tool === 'cricket' ? 'The cricket desk' : tool === 'text' ? 'Words & typography' : tool === 'layout' ? 'Canvas & design' : tool === 'media' ? 'Image & background' : 'Arrange your story'}</h2>
+                            <p>{tool === 'cricket' ? 'Teams, match data and every big moment.' : tool === 'text' ? 'Edit the copy, then refine its style.' : tool === 'layout' ? 'Set the format and visual identity.' : tool === 'media' ? 'Choose a visual and make it yours.' : 'Add, duplicate and reorder pages.'}</p>
+                        </div>
+                        {tool === 'cricket' && <CricketInspector key={activeId} design={design} onChange={apply} />}
+                        {tool === 'text' && <>
+                            <div className={styles.layerGrid} role="group" aria-label="Text layers">{fields.map(item => <button key={item.layer} className={`${styles.choice} ${selected === item.layer ? styles.active : ''}`} aria-pressed={selected === item.layer} onClick={() => select(item.layer)}>{item.label}</button>)}</div>
                             <label className={styles.field}>
-                                <span>Category / Tag</span>
-                                <input
-                                    className={styles.input}
-                                    aria-label="Edit category"
-                                    disabled={textLocked}
-                                    value={design.category ?? ''}
-                                    onChange={event => {
-                                        setAlertDismissed(false);
-                                        setIssue('');
-                                        update('category', event.target.value.toUpperCase());
-                                    }}
-                                />
+                                <span>{craft.layers.find(layer => layer.key === field.layer)?.label ?? field.label}{lockedLabel}</span>
+                                <textarea className={styles.input} aria-label={`Edit ${field.label.toLowerCase()}`} rows={4} disabled={textLocked} value={design[field.key]} onChange={event => update(field.key, event.target.value)} />
+                                <small className={styles.helpText}>Copy is always specific to this page.</small>
                             </label>
-                        )}
-                        <Section title="Typography">
-                            <div className={styles.row}>
-                                {(['auto', 'onest', 'hind'] as const).map(font =>
-                                    choice(
-                                        font === 'auto' ? 'Auto' : font === 'onest' ? 'Onest' : 'Hind',
-                                        (design.textTypography?.[field.layer]?.font ?? 'auto') === font,
-                                        () => apply(current => setTextTypography(current, field.layer, { font })),
-                                        textLocked
-                                    )
-                                )}
+                            {field.layer === 'kicker' && <label className={styles.field}>
+                                <span>Category / tag</span>
+                                <input className={styles.input} aria-label="Edit category" disabled={textLocked} value={design.category} onChange={event => update('category', event.target.value)} />
+                            </label>}
+                            <div className={styles.toolSection}>
+                                <h3>Typography</h3>
+                                <div className={styles.row}>{(['auto', 'onest', 'hind'] as const).map(font => choice(font === 'auto' ? 'Auto font' : font === 'onest' ? 'Onest' : 'Hind', design.textTypography[field.layer].font === font, () => apply(current => setTextTypography(current, field.layer, { font })), textLocked))}</div>
+                                {slider('Type size', design.textTypography[field.layer].size, 60, 160, value => current => setTextTypography(current, field.layer, { size: value }), textLocked)}
+                                {slider('Line spacing', design.textTypography[field.layer].lineSpacing, 90, 180, value => current => setTextTypography(current, field.layer, { lineSpacing: value }), textLocked)}
+                                <div className={styles.row}>{(['left', 'center'] as const).map(value => choice(value === 'left' ? 'Align left' : 'Align center', design.textAlign === value, () => update('textAlign', value), textLocked))}</div>
                             </div>
-                            <p className={styles.subtle}>Nepali uses Hind to keep vowel marks and joined letters intact.</p>
-                            {([{ key: 'size', label: 'size', min: 60, max: 160 }, { key: 'lineSpacing', label: 'line spacing', min: 90, max: 180 }, { key: 'shadow', label: 'shadow', min: 0, max: 100 }] as const).map(setting => (
-                                <div key={setting.key}>
-                                    {slider(
-                                        `${field.label} ${setting.label}`,
-                                        setting.key === 'size' && field.layer === 'headline'
-                                            ? (design.headlineScale ?? 1) * 100
-                                            : (design.textTypography?.[field.layer]?.[setting.key] ?? 100),
-                                        setting.min,
-                                        setting.max,
-                                        value => current => setTextTypography(current, field.layer, { [setting.key]: value }),
-                                        textLocked
-                                    )}
-                                </div>
-                            ))}
-                        </Section>
-                        <Section title="Font color">
-                            <ColorPicker
-                                key={`${field.layer}-${design.textColors?.[field.layer] ?? '#ffffff'}`}
-                                label={field.label}
-                                color={design.textColors?.[field.layer] ?? '#ffffff'}
-                                disabled={textLocked}
-                                onChange={color => apply(current => setTextColor(current, field.layer, color))}
-                            />
-                        </Section>
-                        <Section title="Position">
-                            <button className={styles.button} disabled={textLocked} onClick={() => apply(current => positionText(current, field.layer, { x: 0, y: 0 }))}>Reset position</button>
-                            <label className={styles.row}><input type="checkbox" checked={snap} onChange={event => setSnap(event.target.checked)} />Snap to template position</label>
-                            <button className={styles.button} disabled={textLocked || design.hiddenLayers.includes(field.layer)} aria-pressed={reposition} onClick={() => setReposition(!reposition)}>{reposition ? 'Done repositioning' : 'Reposition on canvas'}</button>
-                            {(['x', 'y'] as const).map(axis => (
-                                <div key={axis}>
-                                    {slider(
-                                        `${field.label} ${axis === 'x' ? 'horizontal' : 'vertical'} position`,
-                                        design.textPositions?.[field.layer]?.[axis] ?? 0,
-                                        -50,
-                                        50,
-                                        value => current => positionText(current, field.layer, { [axis]: value }),
-                                        textLocked,
-                                        axis === 'y'
-                                    )}
-                                </div>
-                            ))}
-                        </Section>
-                        <div className={styles.field}>
-                            <span>Alignment</span>
-                            <div className={styles.row}>
-                                {(['left', 'center'] as const).map(alignment =>
-                                    choice(
-                                        alignment === 'left' ? 'Align left' : 'Align center',
-                                        design.textAlign === alignment,
-                                        () => update('textAlign', alignment),
-                                        textLocked
-                                    )
-                                )}
-                            </div>
-                        </div>
-                    </>}
-
-                    {tool === 'layout' && <>
-                        <div className={styles.field}><span>Post format</span><div className={styles.row}>{(Object.keys(postOutputDimensions) as PostDesign['format'][]).map(format => choice(format[0].toUpperCase() + format.slice(1), design.format === format, () => update('format', format)))}</div><p className={styles.subtle}>{outputW} × {outputH} px</p></div>
-                        <div className={styles.field}><span>Artwork accent</span><ColorPicker key={design.accent} label="Artwork accent" color={design.accent} reset="#B71C1C" onChange={color => update('accent', color || '#B71C1C')} /></div>
-                        <div className={styles.field}><span>Template</span>{postTemplates.map(template => <button key={template.key} className={`${styles.choice} ${design.template === template.key ? styles.active : ''}`} aria-pressed={design.template === template.key} onClick={() => apply(current => ({ ...current, template: template.key, ...template.patch }))}><span className={styles.grow}>{template.title}<small className={styles.subtle}> · {template.subtitle}</small></span></button>)}</div>
-                    </>}
-
-                    {tool === 'media' && <>
-                        {/* 1. Optional Question Card if other slides in carousel are missing images */}
-                        {showApplyAllPrompt && (
-                            <div className={styles.applyAllPromptCard}>
-                                <div className={styles.applyAllPromptContent}>
-                                    <div className={styles.applyAllPromptIconBadge}>
-                                        <Sparkles size={16} />
-                                    </div>
-                                    <div className={styles.applyAllPromptInfo}>
-                                        <strong className={styles.applyAllPromptTitle}>
-                                            Apply this image across all {slides.length} slides?
-                                        </strong>
-                                        <p className={styles.applyAllPromptDesc}>
-                                            Only Slide {activeSlideIndex + 1} has an image, and {slides.length - 1} other {slides.length - 1 === 1 ? 'slide is' : 'slides are'} missing visuals.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className={styles.applyAllPromptActions}>
-                                    <button
-                                        type="button"
-                                        className={styles.applyAllPromptYesBtn}
-                                        onClick={handleConfirmApplyAllSlides}
-                                    >
-                                        <Check size={14} />
-                                        <span>Yes, Apply to All Slides</span>
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className={styles.applyAllPromptNoBtn}
-                                        onClick={() => setApplyAllDismissed(true)}
-                                    >
-                                        <span>Keep on this slide only</span>
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                        {/* 2. Slide Missing Visual Prompt: If current slide has no image, but another single slide in carousel HAS an image */}
-                        {!design.imageUri && singleImageSlideIndex >= 0 && singleImageSlideIndex !== activeSlideIndex && (
-                            <div className={styles.missingSlidePromptCard}>
-                                <div className={styles.missingSlidePromptInfo}>
-                                    <Sparkles size={15} color="var(--studio-red)" />
-                                    <span>Slide {singleImageSlideIndex + 1} has an image. Use that visual here?</span>
-                                </div>
-                                <button
-                                    type="button"
-                                    className={styles.applyAllPromptYesBtn}
-                                    onClick={() => handleReuseSlideImage(singleImageSlideIndex)}
-                                >
-                                    <Copy size={13} />
-                                    <span>Use Slide {singleImageSlideIndex + 1}&apos;s Visual</span>
-                                </button>
-                            </div>
-                        )}
-
-                        {/* 3. Media Sub-Tab Segmented Selector: Photo & Media vs Story Gradients & Colors */}
-                        <div className={styles.mediaSegmentedNav} role="tablist" aria-label="Media background type">
-                            <button
-                                type="button"
-                                role="tab"
-                                aria-selected={mediaSubTab === 'photo'}
-                                className={`${styles.mediaSegmentedBtn} ${mediaSubTab === 'photo' ? styles.mediaSegmentedBtnActive : ''}`}
-                                onClick={() => setMediaSubTab('photo')}
-                            >
-                                <ImagePlus size={15} />
-                                <span>Photo & Media</span>
-                                {design.imageUri && <span className={styles.activePillBadge}>Photo</span>}
-                            </button>
-                            <button
-                                type="button"
-                                role="tab"
-                                aria-selected={mediaSubTab === 'gradient'}
-                                className={`${styles.mediaSegmentedBtn} ${mediaSubTab === 'gradient' ? styles.mediaSegmentedBtnActive : ''}`}
-                                onClick={() => setMediaSubTab('gradient')}
-                            >
-                                <Sparkles size={15} />
-                                <span>Gradients & Colors</span>
-                                {(design.backgroundGradient || design.backgroundColor) && (
-                                    <span className={styles.activePillBadge} style={{ background: 'var(--studio-red)' }}>Active</span>
-                                )}
-                            </button>
-                        </div>
-
-                        {/* TAB 1: STORY GRADIENTS & COLORS */}
-                        {mediaSubTab === 'gradient' && (
-                            <>
-                                {/* Active background status card */}
-                                <div className={styles.activeBgCard}>
-                                    <div className={styles.activeBgIndicator}>
-                                        <div 
-                                            className={styles.activeBgPreviewBubble} 
-                                            style={{ background: design.backgroundGradient || design.backgroundColor || '#111318' }} 
-                                        />
-                                        <div className={styles.activeBgText}>
-                                            <small>Active Background</small>
-                                            <span>
-                                                {design.backgroundGradient 
-                                                    ? (storyGradients.find(g => g.value === design.backgroundGradient)?.label || 'Story Gradient')
-                                                    : design.backgroundColor 
-                                                        ? (storyColors.find(c => c.value === design.backgroundColor)?.label || design.backgroundColor)
-                                                        : 'Default Dark (#111318)'}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    {(design.backgroundGradient || design.backgroundColor) && (
-                                        <button
-                                            type="button"
-                                            className={styles.clearBgBtn}
-                                            onClick={() => apply(current => ({ ...current, backgroundGradient: null, backgroundColor: null }))}
-                                            title="Reset to default dark background"
-                                        >
-                                            Reset Default
-                                        </button>
-                                    )}
-                                </div>
-
-                                {slides.length > 1 && (
-                                    <button
-                                        type="button"
-                                        className={styles.applyAllSlidesBtn}
-                                        onClick={handleApplyBackgroundToAllSlides}
-                                        title="Apply current background across all carousel slides"
-                                    >
-                                        <Copy size={13} />
-                                        <span>Apply Gradient / Color to All Slides ({slides.length})</span>
-                                    </button>
-                                )}
-
-                                <Section title="Instagram Story Gradients">
-                                    <p className={styles.subtle} style={{ fontSize: 11, margin: '0 0 10px' }}>
-                                        Curated high-contrast color transitions designed for maximum readability and visual impact.
-                                    </p>
-                                    <div className={styles.storyGradientGrid}>
-                                        {storyGradients.map(preset => {
-                                            const isActive = design.backgroundGradient === preset.value;
-                                            return (
-                                                <button
-                                                    key={preset.id}
-                                                    type="button"
-                                                    className={`${styles.storyGradientCircle} ${isActive ? styles.storyGradientCircleActive : ''}`}
-                                                    style={{ background: preset.value }}
-                                                    onClick={() => {
-                                                        apply(current => ({
-                                                            ...current,
-                                                            backgroundGradient: preset.value,
-                                                            backgroundColor: null,
-                                                        }));
-                                                    }}
-                                                    title={preset.label}
-                                                    aria-label={preset.label}
-                                                >
-                                                    {isActive && <Check size={14} color="#fff" strokeWidth={3} />}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </Section>
-
-                                <Section title="Story Solid Colors">
-                                    <p className={styles.subtle} style={{ fontSize: 11, margin: '0 0 10px' }}>
-                                        Classic editorial solids inspired by modern newsroom stories.
-                                    </p>
-                                    <div className={styles.storyColorGrid}>
-                                        {storyColors.map(preset => {
-                                            const isActive = design.backgroundColor === preset.value && !design.backgroundGradient;
-                                            return (
-                                                <button
-                                                    key={preset.id}
-                                                    type="button"
-                                                    className={`${styles.storyColorCircle} ${isActive ? styles.storyColorCircleActive : ''}`}
-                                                    style={{ background: preset.value }}
-                                                    onClick={() => {
-                                                        apply(current => ({
-                                                            ...current,
-                                                            backgroundColor: preset.value,
-                                                            backgroundGradient: null,
-                                                        }));
-                                                    }}
-                                                    title={preset.label}
-                                                    aria-label={preset.label}
-                                                >
-                                                    {isActive && <Check size={14} color={preset.value === '#ffffff' ? '#000' : '#fff'} strokeWidth={3} />}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </Section>
-
-                                <Section title="Custom Background Color">
-                                    <ColorPicker
-                                        key={`custom-bg-${design.backgroundColor || '#111318'}`}
-                                        label="Custom Color"
-                                        color={design.backgroundColor || '#111318'}
-                                        reset="#111318"
-                                        onChange={color => apply(current => ({
-                                            ...current,
-                                            backgroundColor: color,
-                                            backgroundGradient: null,
-                                        }))}
-                                    />
-                                </Section>
-
-                                {design.imageUri && (
-                                    <div className={styles.bgPhotoNotice}>
-                                        <Sparkles size={14} color="var(--studio-red)" style={{ flexShrink: 0, marginTop: 2 }} />
-                                        <div style={{ flex: 1 }}>
-                                            <strong>A photo is active on this slide.</strong>
-                                            <p style={{ margin: '4px 0 8px', fontSize: 11 }}>
-                                                The photo sits over this background. Set crop to &quot;Fit whole photo&quot; to reveal the background, or remove the photo to showcase the gradient full-screen.
-                                            </p>
-                                            <div className={styles.row}>
-                                                <button
-                                                    type="button"
-                                                    className={styles.button}
-                                                    style={{ flex: 1, fontSize: 11 }}
-                                                    onClick={() => apply(current => setImageFit(current, 'contain'))}
-                                                >
-                                                    Fit whole photo
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className={styles.button}
-                                                    style={{ flex: 1, fontSize: 11 }}
-                                                    onClick={() => update('imageUri', null)}
-                                                >
-                                                    Remove photo
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                <button
-                                    type="button"
-                                    className={styles.subtleLinkBtn}
-                                    onClick={() => setMediaSubTab('photo')}
-                                >
-                                    <ImagePlus size={14} />
-                                    <span>Switch to Photo & Media Settings →</span>
-                                </button>
-                            </>
-                        )}
-
-                        {/* TAB 2: PHOTO & MEDIA */}
-                        {mediaSubTab === 'photo' && (
-                            <>
-                                {/* Quick Story Gradients strip */}
-                                <div className={styles.quickGradientBarWrap}>
-                                    <div className={styles.quickGradientBarHeader}>
-                                        <span>QUICK STORY GRADIENTS</span>
-                                        <button
-                                            type="button"
-                                            className={styles.clearBgBtn}
-                                            onClick={() => setMediaSubTab('gradient')}
-                                        >
-                                            View all 21 presets →
-                                        </button>
-                                    </div>
-                                    <div className={styles.quickGradientBar}>
-                                        {storyGradients.slice(0, 6).map(preset => {
-                                            const isActive = design.backgroundGradient === preset.value;
-                                            return (
-                                                <button
-                                                    key={preset.id}
-                                                    type="button"
-                                                    className={`${styles.quickGradientCircle} ${isActive ? styles.quickGradientCircleActive : ''}`}
-                                                    style={{ background: preset.value }}
-                                                    onClick={() => {
-                                                        apply(current => ({
-                                                            ...current,
-                                                            backgroundGradient: preset.value,
-                                                            backgroundColor: null,
-                                                        }));
-                                                    }}
-                                                    title={preset.label}
-                                                >
-                                                    {isActive && <Check size={12} color="#fff" strokeWidth={3} />}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div className={styles.field}>
-                                    <strong>{design.imageUri ? 'Background Visual' : 'Add Post Visual'}</strong>
-                                    <p className={styles.subtle}>
-                                        {design.imageUri
-                                            ? 'Reposition, zoom, style or replace with web archives & Google search.'
-                                            : 'Search web archives, paste any Google image URL, or upload from your device.'}
-                                    </p>
-                                    <div className={styles.row}>
-                                        <button
-                                            type="button"
-                                            className={styles.primary}
-                                            style={{ flex: 1 }}
-                                            disabled={design.lockedLayers.includes('visual')}
-                                            onClick={() => setMediaModalOpen(true)}
-                                        >
-                                            <Globe size={16} />
-                                            {design.imageUri ? 'Browse / Replace Web Media' : 'Browse & Search Web Media'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className={styles.button}
-                                            disabled={design.lockedLayers.includes('visual')}
-                                            onClick={() => fileRef.current?.click()}
-                                            title="Upload file from device"
-                                        >
-                                            <Upload size={16} />
-                                            Upload
-                                        </button>
-                                    </div>
-                                    {slides.length > 1 && (
-                                        <button
-                                            type="button"
-                                            className={styles.applyAllSlidesBtn}
-                                            onClick={handleApplyBackgroundToAllSlides}
-                                            title="Apply current slide's background image, adjustments, and colors across all carousel slides"
-                                        >
-                                            <Copy size={13} />
-                                            <span>Apply Background to All Slides ({slides.length})</span>
-                                        </button>
-                                    )}
-                                </div>
-
-                                <div className={styles.field}>
-                                    <span>Quick Paste Web or Google Image URL</span>
-                                    <div className={styles.quickUrlBar}>
-                                        <input
-                                            type="url"
-                                            className={styles.quickUrlInput}
-                                            placeholder="Paste Google or web image URL…"
-                                            value={quickImageUrl}
-                                            onChange={e => setQuickImageUrl(e.target.value)}
-                                            disabled={design.lockedLayers.includes('visual') || quickUrlLoading}
-                                            onKeyDown={e => {
-                                                if (e.key === 'Enter') {
-                                                    e.preventDefault();
-                                                    void handleApplyQuickUrl();
-                                                }
-                                            }}
-                                        />
-                                        <button
-                                            type="button"
-                                            className={styles.quickUrlSubmitBtn}
-                                            disabled={!quickImageUrl.trim() || design.lockedLayers.includes('visual') || quickUrlLoading}
-                                            onClick={() => { void handleApplyQuickUrl(); }}
-                                        >
-                                            {quickUrlLoading ? 'Loading…' : 'Load URL'}
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {design.imageUri && (
-                                    <div className={styles.row}>
-                                        <button
-                                            type="button"
-                                            className={styles.button}
-                                            style={{ flex: 1 }}
-                                            onClick={handleCopyActiveVisual}
-                                            title="Copy image URL or Data URI"
-                                        >
-                                            {mediaCopied ? <Check size={15} color="var(--studio-green)" /> : <Copy size={15} />}
-                                            {mediaCopied ? 'Copied' : 'Copy Image'}
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className={styles.button}
-                                            style={{ flex: 1 }}
-                                            onClick={handleDownloadActiveVisual}
-                                            title="Download current artwork image"
-                                        >
-                                            <Download size={15} />
-                                            Download Image
-                                        </button>
-                                    </div>
-                                )}
-
+                            <Section title="Text color & shadow">
+                                <ColorPicker key={`${activeId}:${field.layer}:${design.textColors[field.layer]}`} label={`${field.label} color`} color={design.textColors[field.layer]} disabled={textLocked} onChange={color => apply(current => setTextColor(current, field.layer, color))} />{slider('Text shadow', design.textTypography[field.layer].shadow, 0, 100, value => current => setTextTypography(current, field.layer, { shadow: value }), textLocked)}</Section>
+                            <Section title="Position & visibility">
                                 <label className={styles.row}>
-                                    <input type="checkbox" checked={keepAdjustments} onChange={event => setKeepAdjustments(event.target.checked)} />
-                                    Keep adjustments on replace
-                                </label>
-
-                                <div className={styles.field}><span>Image crop</span><div className={styles.row}>{choice('Fill canvas', design.imageFit === 'cover', () => apply(current => setImageFit(current, 'cover')), mediaDisabled)}{choice('Fit whole photo', design.imageFit === 'contain', () => apply(current => setImageFit(current, 'contain')), mediaDisabled)}</div></div>
-                                <div className={styles.field}><span>Image position</span><div ref={ballRef} role="group" aria-label="Image scroll ball" aria-disabled={mediaDisabled} className={styles.ball}
-                                    onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
-                                    onPointerMove={event => { const previous = ballDrag.current; if (!previous) return; live(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y)); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
-                                    onPointerUp={() => { ballDrag.current = null; end(); }} onPointerCancel={() => { ballDrag.current = null; end(); }}><i style={{ transform: `rotate(${design.imageOffsetX * 2}deg) translate(${design.imageOffsetX / 12}px, ${design.imageOffsetY / 12}px)` }} /></div>
-                                    <div className={styles.dPadRow}>
-                                        {([{ label: 'Move image left', dx: -2, dy: 0, Icon: ArrowLeft }, { label: 'Move image up', dx: 0, dy: -2, Icon: ArrowUp }, { label: 'Move image down', dx: 0, dy: 2, Icon: ArrowDown }, { label: 'Move image right', dx: 2, dy: 0, Icon: ArrowRight }]).map(({ label, dx, dy, Icon }) => (
-                                            <button
-                                                key={label}
-                                                type="button"
-                                                className={styles.dPadBtn}
-                                                aria-label={label}
-                                                title={label}
-                                                disabled={mediaDisabled}
-                                                onClick={() => apply(current => moveImage(current, dx, dy))}
-                                            >
-                                                <Icon size={16} />
-                                            </button>
-                                        ))}
-                                    </div>
+                                    <input type="checkbox" checked={snap} onChange={event => setSnap(event.target.checked)} />Snap to template</label>
+                                <button className={styles.button} disabled={textLocked} aria-pressed={reposition} onClick={() => setReposition(!reposition)}>{reposition ? 'Finish positioning' : 'Position on canvas'}</button>{(['x', 'y'] as const).map(axis => <div key={axis}>{slider(`${field.label} ${axis === 'x' ? 'horizontal' : 'vertical'} position`, design.textPositions[field.layer][axis], -50, 50, value => current => positionText(current, field.layer, { [axis]: value }), textLocked)}</div>)}<button className={styles.button} disabled={textLocked} onClick={() => apply(current => positionText(current, field.layer, { x: 0, y: 0 }))}>Reset position</button>
+                                <div className={styles.row}>
+                                    <button className={styles.button} aria-pressed={design.hiddenLayers.includes(field.layer)} disabled={textLocked} onClick={() => toggleLayer('hiddenLayers', field.layer)}>{design.hiddenLayers.includes(field.layer) ? <Eye /> : <EyeOff />}{design.hiddenLayers.includes(field.layer) ? 'Show layer' : 'Hide layer'}</button>
+                                    <button className={styles.button} aria-pressed={textLocked} onClick={() => toggleLayer('lockedLayers', field.layer)}>{textLocked ? <Lock /> : <LockOpen />}{textLocked ? 'Unlock layer' : 'Lock layer'}</button>
                                 </div>
-                                {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
-
-                                <Section title="Image effects">
-                                    <div className={styles.row}>
-                                        <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => imageEffectControls.reduce((next, effect) => setImageEffect(next, effect.key, 0), current))}>
-                                            Reset image effects
-                                        </button>
-                                        {slides.length > 1 && (
-                                            <button
-                                                type="button"
-                                                className={styles.button}
-                                                disabled={mediaDisabled}
-                                                onClick={handleApplyEffectsToAllSlides}
-                                                title="Apply current effects (blur, vintage, feather, tone) to all carousel slides"
-                                            >
-                                                <Sparkles size={13} />
-                                                <span>Apply to All Slides</span>
-                                            </button>
-                                        )}
-                                    </div>
-                                    {slides.length > 1 && (
-                                        <label className={styles.row} style={{ fontSize: 11, cursor: 'pointer', margin: '4px 0 6px', color: 'var(--studio-secondary)' }}>
-                                            <input
-                                                type="checkbox"
-                                                checked={syncBackgroundEffects}
-                                                onChange={event => setSyncBackgroundEffects(event.target.checked)}
-                                            />
-                                            <span>Sync effects across slides with same background</span>
-                                        </label>
-                                    )}
-                                    {imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}
+                            </Section>
+                        </>}
+                        {tool === 'layout' && <>
+                            <div className={styles.toolSection}>
+                                <h3>Canvas size</h3>
+                                <div className={styles.formatGrid}>{(Object.keys(postOutputDimensions) as PostDesign['format'][]).map(format => <button key={format} className={`${styles.formatOption} ${design.format === format ? styles.active : ''}`} aria-pressed={design.format === format} onClick={() => update('format', format)}>
+                                    <span className={styles.formatShape} style={{ aspectRatio: `${postOutputDimensions[format][0]} / ${postOutputDimensions[format][1]}` }} />
+                                    <strong>{format[0].toUpperCase() + format.slice(1)}</strong>
+                                    <small>{postOutputDimensions[format].join(' × ')}</small>
+                                </button>)}</div>
+                            </div>
+                            <Section title="Artwork accent">
+                                <ColorPicker key={design.accent} label="Artwork accent" color={design.accent} reset="#B71C1C" onChange={color => update('accent', color || '#B71C1C')} />
+                            </Section>
+                            <Section title="Page template">
+                                <p className={styles.helpText}>Change the page’s role. Your written copy stays in place.</p>
+                                <div className={styles.templateList}>{postTemplates.map(template => <button key={template.key} className={`${styles.choice} ${design.template === template.key ? styles.active : ''}`} aria-pressed={design.template === template.key} onClick={() => { apply(current => ({ ...current, template: template.key, ...(template.key === 'cricket' && !current.cricket ? { cricket: blankCricketData() } : {}) })); if (template.key === 'cricket') setTool('cricket'); }}>
+                                    <span>{template.title}<small>{template.subtitle}</small>
+                                    </span>{design.template === template.key && <Check size={15} />}</button>)}</div>
+                            </Section>
+                        </>}
+                        {tool === 'media' && <>
+                            <div className={styles.segmented} role="group" aria-label="Background type">{choice('Photo', backgroundTab === 'photo', () => setBackgroundTab('photo'))}{design.template === 'cricket' && choice('Player photos', backgroundTab === 'players', () => setBackgroundTab('players'))}{choice('Color & gradient', backgroundTab === 'color', () => setBackgroundTab('color'))}</div>
+                            {mediaLocked && <p className={styles.helpText}>This visual is locked. Unlock it below to make changes.</p>}
+                            {backgroundTab === 'players' ? <CricketPlayerLibrary key={`${activeId}-${design.cricket?.teamId}`} initialTeam={design.cricket?.teamId || 'janakpur'} disabled={mediaLocked || !ready || busy || exporting} onSelect={selectPlayerPhoto}
+                                onSearch={name => { setMediaSearchQuery(`${name} cricket`); setMediaModalOpen(true); }} /> : backgroundTab === 'photo' ? <>
+                                <div className={styles.imageWell}>{design.imageUri ? <img src={design.imageUri} alt="Current page photo" /> : <>
+                                    <ImagePlus size={30} />
+                                    <span>Add a photo to this page</span>
+                                </>}</div>
+                                <div className={styles.row}>
+                                    <button className={styles.button} disabled={mediaLocked} onClick={() => fileRef.current?.click()}>
+                                        <Upload size={15} />{design.imageUri ? 'Replace photo' : 'Upload photo'}</button>
+                                    <button className={styles.button} disabled={mediaLocked} onClick={() => { setMediaSearchQuery(''); setMediaModalOpen(true); }}>Search library / web</button>
+                                </div>
+                                <Section title="Use an image URL">
+                                    <label className={styles.field}>
+                                        <span>Direct image URL</span>
+                                        <input className={styles.input} type="url" aria-label="Image URL" placeholder="https://…" value={quickUrl} disabled={mediaLocked || urlLoading} onChange={event => setQuickUrl(event.target.value)} />
+                                    </label>
+                                    <button className={styles.button} disabled={mediaLocked || urlLoading || !quickUrl.trim()} onClick={() => void applyUrl()}>{urlLoading ? 'Loading image…' : 'Use image'}</button>
                                 </Section>
-                                <div className={styles.field}>
-                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span>Image tone</span>
-                                        {slides.length > 1 && syncBackgroundEffects && (
-                                            <span style={{ fontSize: 10, color: 'var(--studio-secondary)' }}>Synced across shared slides</span>
-                                        )}
+                                <label className={styles.checkRow}>
+                                    <input type="checkbox" checked={keepAdjustments} onChange={event => setKeepAdjustments(event.target.checked)} />Keep adjustments when replacing</label>
+                                <div className={styles.toolSection}>
+                                    <h3>Fit & crop</h3>
+                                    <div className={styles.row}>{choice('Fill frame', design.imageFit === 'cover', () => apply(current => setImageFit(current, 'cover')), mediaDisabled)}{choice('Fit image', design.imageFit === 'contain', () => apply(current => setImageFit(current, 'contain')), mediaDisabled)}</div>
+                                    {slider('Image zoom', design.imageZoom * 100, 100, 300, value => current => ({ ...current, imageZoom: value / 100 }), mediaDisabled)}
+                                    <div className={styles.field}><span>Image position</span>
+                                        <div className={styles.ball} role="group" aria-label="Image scroll ball" aria-describedby="image-ball-help" aria-disabled={mediaDisabled} tabIndex={mediaDisabled ? -1 : 0}
+                                            onPointerDown={event => { if (mediaDisabled) return; event.preventDefault(); event.currentTarget.focus(); event.currentTarget.setPointerCapture(event.pointerId); begin(); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
+                                            onPointerMove={event => { const previous = ballDrag.current; if (!previous || mediaDisabled) return; apply(current => moveImage(current, event.clientX - previous.x, event.clientY - previous.y)); ballDrag.current = { x: event.clientX, y: event.clientY }; }}
+                                            onPointerUp={() => { ballDrag.current = null; end(); }} onPointerCancel={() => { ballDrag.current = null; end(); }} onLostPointerCapture={() => { ballDrag.current = null; end(); }}
+                                            onKeyDown={event => {
+                                                if (mediaDisabled || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home'].includes(event.key)) return;
+                                                event.preventDefault(); begin(); const step = event.shiftKey ? 10 : 2;
+                                                apply(current => event.key === 'Home' ? { ...current, imageOffsetX: 0, imageOffsetY: 0 } : moveImage(current, event.key === 'ArrowLeft' ? -step : event.key === 'ArrowRight' ? step : 0, event.key === 'ArrowUp' ? -step : event.key === 'ArrowDown' ? step : 0));
+                                            }} onKeyUp={end} onBlur={() => { ballDrag.current = null; end(); }}
+                                            onWheel={event => {
+                                                if (mediaDisabled) return; begin(); const movement = wheelMovement(event.deltaX, event.deltaY, event.deltaMode, event.shiftKey); apply(current => moveImage(current, movement.x, movement.y)); clearTimeout(wheelTimer.current); wheelTimer.current = setTimeout(end, 180);
+                                            }}>
+                                            <i aria-hidden="true" style={{ transform: `rotate(${design.imageOffsetX * 2}deg) translate(${Math.max(-12, Math.min(12, design.imageOffsetX / 12))}px, ${Math.max(-12, Math.min(12, design.imageOffsetY / 12))}px)` }} />
+                                        </div>
+                                        <p id="image-ball-help" className={styles.helpText}>Drag or scroll the ball to pan the full photo. Arrow keys fine-tune; Shift moves faster. Home centers it. You can also drag directly on the canvas.</p>
+                                        <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Center photo</button>
                                     </div>
-                                    <div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div>
                                 </div>
-                                <button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset all image adjustments</button>
-                                <div className={styles.row}><button className={styles.button} disabled={mediaDisabled} onClick={() => apply(current => ({ ...current, imageOffsetX: 0, imageOffsetY: 0 }))}>Reset position</button><button className={styles.button} disabled={!design.imageUri || design.lockedLayers.includes('visual')} onClick={() => update('imageUri', null)}>Remove image</button></div>
-
-                                <button
-                                    type="button"
-                                    className={styles.subtleLinkBtn}
-                                    onClick={() => setMediaSubTab('gradient')}
-                                >
-                                    <Sparkles size={14} />
-                                    <span>Open Story Gradients & Background Colors Studio →</span>
+                                <Section title="Image effects">
+                                    <div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}<button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset image adjustments</button>
+                                </Section>
+                                {design.imageUri && <button className={styles.button} disabled={mediaLocked} onClick={() => update('imageUri', null)}>
+                                    <Trash2 size={14} />Remove photo</button>}
+                            </> : <div className={styles.toolSection}>
+                                <h3>Background presets</h3>
+                                <div className={styles.backgroundGrid}>{[...storyColors, ...storyGradients].map(preset => <button key={preset.id} className={styles.backgroundPreset} disabled={mediaLocked} aria-label={preset.label} aria-pressed={design.backgroundColor === preset.value || design.backgroundGradient === preset.value} style={{ background: preset.value }} title={preset.label} onClick={() => apply(current => ({ ...current, imageUri: null, backgroundColor: preset.type === 'color' ? preset.value : null, backgroundGradient: preset.type === 'gradient' ? preset.value : null }))}>
+                                    <span>{preset.label}</span>
+                                </button>)}</div>
+                                <label className={styles.field}>
+                                    <span>Custom background color</span>
+                                    <input type="color" aria-label="Custom background color" disabled={mediaLocked} value={design.backgroundColor || '#111318'} onChange={event => apply(current => ({ ...current, imageUri: null, backgroundGradient: null, backgroundColor: event.target.value }))} />
+                                </label>
+                            </div>}
+                            <div className={styles.row}>
+                                <button className={styles.button} aria-pressed={mediaLocked} onClick={() => toggleLayer('lockedLayers', 'visual')}>{mediaLocked ? <Lock /> : <LockOpen />}{mediaLocked ? 'Unlock visual' : 'Lock visual'}</button>
+                                <button className={styles.button} disabled={mediaLocked} aria-pressed={design.hiddenLayers.includes('visual')} onClick={() => toggleLayer('hiddenLayers', 'visual')}>{design.hiddenLayers.includes('visual') ? <Eye /> : <EyeOff />}{design.hiddenLayers.includes('visual') ? 'Show photo' : 'Hide photo'}</button>
+                            </div>
+                        </>}
+                        {tool === 'pages' && <>
+                            <div className={styles.row}>
+                                <button className={styles.primary} onClick={() => void addPage()}>
+                                    <Plus size={15} />Add page</button>
+                                <button className={styles.button} onClick={() => void addPage(true)}>
+                                    <Copy size={15} />Duplicate page</button>
+                            </div>
+                            <ol className={styles.orderedPages}>{slides.map((item, index) => <li key={item.id} className={item.id === activeId ? styles.currentPageRow : undefined}>
+                                <button className={styles.pageRowTitle} aria-label={`Edit page ${index + 1}`} aria-current={item.id === activeId ? 'page' : undefined} onClick={() => switchSlide(index)}>
+                                    <span>{index + 1}</span>
+                                    <strong>{item.design.headline || 'Untitled page'}<small>{getStudioCraft(item.design.template).badge}</small>
+                                    </strong>
                                 </button>
-                            </>
-                        )}
-                    </>}
-
-                    {tool === 'carousel' && (
-                        <div className={styles.carouselInspector}>
-                            {/* Deck Header & Quick Actions */}
-                            <div className={styles.carouselDeckCard}>
-                                <div className={styles.between}>
-                                    <div className={styles.carouselDeckInfo}>
-                                        <span className={styles.carouselDeckBadge}>
-                                            <Layers3 size={13} />
-                                            CAROUSEL DECK
-                                        </span>
-                                        <strong className={styles.carouselDeckTitle}>
-                                            {slides.length} {slides.length === 1 ? 'Slide' : 'Slides'} Total
-                                        </strong>
-                                    </div>
-                                    <div className={styles.carouselTopActions}>
-                                        <button
-                                            type="button"
-                                            className={styles.carouselAddBtn}
-                                            onClick={handleAddSlide}
-                                            title="Add a new blank slide"
-                                        >
-                                            <Plus size={14} />
-                                            <span>Add Slide</span>
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className={styles.carouselDuplicateBtn}
-                                            onClick={handleDuplicateSlide}
-                                            title="Duplicate current slide"
-                                        >
-                                            <Copy size={13} />
-                                            <span>Duplicate</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                {slides.length > 1 && (
-                                    <div style={{ marginTop: 10 }}>
-                                        <button
-                                            type="button"
-                                            className={styles.applyAllSlidesBtn}
-                                            style={{ margin: 0, width: '100%', padding: '7px 12px' }}
-                                            onClick={handleApplyBackgroundToAllSlides}
-                                            title="Sync active slide's background image and effects across all slides"
-                                        >
-                                            <Sparkles size={13} />
-                                            <span>Sync Background & Effects to All Slides</span>
-                                        </button>
-                                    </div>
-                                )}
-                            </div>
-
-                            {/* Vertical Slide Sequence List */}
-                            <div className={styles.carouselSlideSection}>
-                                <div className={styles.between} style={{ marginBottom: 4 }}>
-                                    <span className={styles.inspectorSectionLabel}>SLIDES SEQUENCE</span>
-                                    <span className={styles.subtle} style={{ fontSize: 11 }}>
-                                        Active: Slide {activeSlideIndex + 1}
-                                    </span>
-                                </div>
-
-                                <div className={styles.carouselSlideList}>
-                                    {slides.map((s, idx) => {
-                                        const isCurrent = idx === activeSlideIndex;
-                                        const title = s.design.headline || s.name || `Slide ${idx + 1}`;
-                                        const archetypeLabel = s.design.template === 'book-review' ? 'Cover / Thesis'
-                                            : s.design.template === 'book-analysis' ? 'Analysis & Proof'
-                                            : s.design.template === 'book-takeaways' ? 'Key Takeaways'
-                                            : s.design.template === 'book-verdict' ? 'Verdict & Quote'
-                                            : s.design.template.replace(/^book-/, '');
-
-                                        return (
-                                            <div
-                                                key={s.id}
-                                                className={`${styles.carouselSlideItem} ${isCurrent ? styles.carouselSlideItemActive : ''}`}
-                                            >
-                                                <button
-                                                    type="button"
-                                                    className={styles.carouselSlideMainBtn}
-                                                    onClick={() => switchSlide(idx)}
-                                                    title={`Switch to Slide ${idx + 1}: ${title}`}
-                                                >
-                                                    <div className={styles.carouselSlideNumber}>
-                                                        {idx + 1}
-                                                    </div>
-                                                    <div className={styles.carouselSlideMeta}>
-                                                        <span className={styles.carouselSlideArchetypeTag}>{archetypeLabel}</span>
-                                                        <strong className={styles.carouselSlideHeadline}>{title}</strong>
-                                                    </div>
-                                                </button>
-
-                                                <div className={styles.carouselSlideItemActions}>
-                                                    <button
-                                                        type="button"
-                                                        className={styles.carouselMiniActionBtn}
-                                                        disabled={idx === 0}
-                                                        onClick={(e) => { e.stopPropagation(); handleMoveSlide(idx, -1); }}
-                                                        title="Move slide up"
-                                                        aria-label="Move slide up"
-                                                    >
-                                                        <ArrowUp size={13} />
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        className={styles.carouselMiniActionBtn}
-                                                        disabled={idx === slides.length - 1}
-                                                        onClick={(e) => { e.stopPropagation(); handleMoveSlide(idx, 1); }}
-                                                        title="Move slide down"
-                                                        aria-label="Move slide down"
-                                                    >
-                                                        <ArrowDown size={13} />
-                                                    </button>
-                                                    {slides.length > 1 && (
-                                                        <button
-                                                            type="button"
-                                                            className={`${styles.carouselMiniActionBtn} ${styles.carouselDeleteBtn}`}
-                                                            onClick={(e) => { e.stopPropagation(); handleDeleteSlide(idx); }}
-                                                            title="Delete this slide"
-                                                            aria-label="Delete this slide"
-                                                        >
-                                                            <Trash2 size={13} />
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </div>
-
-                            {/* Current Slide Archetype Switcher */}
-                            {currentCraft.archetypes && (
-                                <div className={styles.archetypeBox}>
-                                    <div className={styles.between}>
-                                        <span className={styles.inspectorSectionLabel}>
-                                            SLIDE {activeSlideIndex + 1} ARCHETYPE
-                                        </span>
-                                        <span className={styles.subtle} style={{ fontSize: 11 }}>
-                                            {design.template}
-                                        </span>
-                                    </div>
-                                    <div className={styles.archetypeGrid}>
-                                        {currentCraft.archetypes.map(arch => {
-                                            const isActive = design.template === arch.key;
-                                            return (
-                                                <button
-                                                    key={arch.key}
-                                                    type="button"
-                                                    className={`${styles.archetypePill} ${isActive ? styles.archetypePillActive : ''}`}
-                                                    onClick={() => {
-                                                        const matched = postTemplates.find(t => t.key === arch.key);
-                                                        if (matched) {
-                                                            apply(current => ({
-                                                                ...current,
-                                                                template: arch.key,
-                                                                category: matched.patch.category ?? current.category,
-                                                                eyebrow: matched.patch.eyebrow ?? current.eyebrow,
-                                                                accent: matched.patch.accent ?? current.accent,
-                                                                summary: matched.patch.summary ?? current.summary,
-                                                                author: matched.patch.author ?? current.author,
-                                                            }));
-                                                        }
-                                                    }}
-                                                >
-                                                    {arch.label}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Instagram Caption Section with 1-Click Copy */}
-                            <div className={styles.carouselCaptionCard}>
-                                <div className={styles.between}>
-                                    <span className={styles.inspectorSectionLabel}>INSTAGRAM CAPTION</span>
-                                    <button
-                                        type="button"
-                                        className={styles.captionCopyBtn}
-                                        onClick={handleCopyCaption}
-                                        title="Copy Instagram caption to clipboard"
-                                    >
-                                        {captionCopied ? (
-                                            <>
-                                                <Check size={13} color="#10B981" />
-                                                <span style={{ color: '#10B981' }}>Copied!</span>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Copy size={13} />
-                                                <span>Copy Caption</span>
-                                            </>
-                                        )}
+                                <div className={styles.pageRowActions}>
+                                    <button aria-label={`Move page ${index + 1} earlier`} disabled={index === 0} onClick={() => movePage(index, -1)}>
+                                        <ArrowUp size={15} />
+                                    </button>
+                                    <button aria-label={`Move page ${index + 1} later`} disabled={index === slides.length - 1} onClick={() => movePage(index, 1)}>
+                                        <ArrowDown size={15} />
+                                    </button>
+                                    <button aria-label={`Delete page ${index + 1}`} disabled={slides.length === 1} onClick={() => void deletePage(item.id)}>
+                                        <Trash2 size={15} />
                                     </button>
                                 </div>
-                                <div className={styles.captionPreviewBox}>
-                                    {generateInstagramCaption(slides)}
-                                </div>
-                            </div>
-
-                            {/* Footer Actions: Book Review Master Generator, Instagram Simulator, ZIP Export */}
-                            <div className={styles.carouselFooterActions}>
-                                {isBookTemplate && (
-                                    <button
-                                        type="button"
-                                        className={styles.button}
-                                        style={{ width: '100%', borderColor: 'var(--studio-red)', color: 'var(--studio-red)' }}
-                                        onClick={() => setBookModalOpen(true)}
-                                    >
-                                        <BookOpen size={16} />
-                                        AI Prompt & Data Generator
-                                    </button>
-                                )}
-                                <button
-                                    type="button"
-                                    className={styles.button}
-                                    style={{ width: '100%' }}
-                                    onClick={() => setInstagramPreviewOpen(true)}
-                                >
-                                    <Instagram size={16} color="#E1306C" />
-                                    Open Instagram Simulator
-                                </button>
-                                <button
-                                    type="button"
-                                    className={styles.primary}
-                                    style={{ width: '100%' }}
-                                    disabled={exporting || !canExport}
-                                    onClick={exportAllCarousel}
-                                >
-                                    <Download size={16} />
-                                    {exporting ? 'Exporting Carousel...' : `Download All ${slides.length} Slides (ZIP)`}
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </div>
+                            </li>)}</ol>
+                            <p className={styles.helpText}>Page order saves with your carousel. Removed pages stay in recoverable Trash.</p>
+                            <Section title="Caption & export">
+                                <button className={styles.button} onClick={() => void copyCaption()}>
+                                    <Copy size={14} />Copy carousel caption</button>
+                                <p className={styles.captionPreviewBox}>{generateInstagramCaption(slides)}</p>
+                                <button className={styles.primary} disabled={!canExport} onClick={() => void exportAll()}>
+                                    <Download size={15} />Download carousel ZIP</button>
+                            </Section>
+                        </>}
+                    </div>
+                </fieldset>
+                <footer className={styles.inspectorFooter}>
+                    <span>{editAll && slides.length > 1 ? `Sharing ${sharedGroups.length} style groups across ${slides.length} pages` : `Editing page ${activeSlideIndex + 1} only`}</span>
+                    <span>Browser-local drafts</span>
+                </footer>
             </aside>
         </div>
-
-        <input 
-            type="file" 
-            accept="image/png,image/jpeg,image/webp,image/avif,image/gif" 
-            hidden 
-            ref={fileRef} 
-            aria-label="Upload studio photo" 
-            onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} 
-        />
-
-        {/* Offscreen artwork nodes for single export and carousel batch zip */}
+        <input type="file" accept="image/png,image/jpeg,image/webp,image/avif,image/gif" hidden ref={fileRef} aria-label="Upload studio photo" onChange={event => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
         <div className={styles.offscreen} aria-hidden="true">
-            <Artwork ref={exportRef} design={design} />
-            {slides.map((s, idx) => (
-                <div key={s.id} ref={el => { carouselExportRefs.current[idx] = el; }}>
-                    <Artwork design={s.design} />
-                </div>
-            ))}
-        </div>
-
-        {/* Book Review Modal */}
-        {bookModalOpen && (
-            <BookReviewModal
-                scope={scope}
-                onClose={() => setBookModalOpen(false)}
-                onOpenDraft={(item) => {
-                    setBookModalOpen(false);
-                    apply(item.design);
-                }}
-            />
-        )}
-
-        {/* Web Media Search & Direct URL Modal */}
-        {mediaModalOpen && (
-            <StudioMediaModal
-                onClose={() => setMediaModalOpen(false)}
-                onApplyImage={(uri) => {
-                    apply(current => replaceImage(current, uri, keepAdjustments));
-                    setMediaModalOpen(false);
-                    setNotice('Web image applied to canvas');
-                    setApplyAllDismissed(false);
-                }}
-                initialQuery={design.headline ? design.headline.slice(0, 40) : (design.category || "Nepal politics")}
-            />
-        )}
-
-        {/* Instagram Mobile Feed Simulator Modal */}
-        {instagramPreviewOpen && (
-            <InstagramPreviewModal
-                slides={slides}
-                activeSlideIndex={activeSlideIndex}
-                onSelectSlide={(index) => {
-                    void switchSlide(index);
-                }}
-                onClose={() => setInstagramPreviewOpen(false)}
-                onExportCurrent={(index) => exportPost(index)}
-                onExportAll={slides.length > 1 ? exportAllCarousel : undefined}
-            />
-        )}
+            <Artwork ref={exportRef} design={design} />{slides.map(item => <Artwork key={item.id} ref={node => { if (node) exportNodes.current.set(item.id, node); else exportNodes.current.delete(item.id); }} design={item.design} />)}</div>
+        {scopeDetails && <Modal labelledBy="shared-style-title" onClose={() => setScopeDetails(false)}>
+            <div className={styles.shareDialogHeading}>
+                <span className={styles.workspaceEyebrow}>CAROUSEL STYLES</span>
+                <h2 id="shared-style-title">Choose what stays consistent</h2>
+                <p className={styles.helpText}>Select the styles you want to share across all {slides.length} pages.</p>
+            </div>
+            <div id="shared-style-settings" className={styles.shareDialogOptions}>
+                <p className={styles.helpText}>Each page keeps its own copy, template and locked layers.</p>
+                {sharedStyleOptions.filter(option => option.key !== 'cricket' || design.template === 'cricket').map(option => <label key={option.key} className={styles.scopeOption}>
+                    <input type="checkbox" checked={sharedGroups.includes(option.key)} onChange={event => setSharedGroups(current => event.target.checked ? [...current, option.key] : current.filter(key => key !== option.key))} />
+                    <span>
+                        <strong>{option.label}</strong>
+                        <small>{option.description}</small>
+                    </span>
+                </label>)}
+                <button className={styles.button} disabled={!sharedGroups.length} onClick={() => { applyToAll(); setScopeDetails(false); }}>
+                    <Copy size={14} />Apply selected styles now</button>
+                <button className={styles.scopeSettings} onClick={() => setScopeDetails(false)}>Done choosing styles<Check size={14} />
+                </button>
+                <p className={styles.helpText}>{editAll ? 'New changes to selected styles update every page. Undo restores the whole carousel.' : 'Apply once above, or choose All pages to keep editing together.'}</p>
+            </div>
+        </Modal>}
+        {mediaModalOpen && <StudioMediaModal onClose={() => setMediaModalOpen(false)} onApplyImage={uri => { apply(current => replaceImage(current, uri, keepAdjustments)); setMediaModalOpen(false); setBackgroundTab('photo'); }} initialQuery={mediaSearchQuery || design.headline.slice(0, 40) || design.category} />}
+        {previewOpen && <InstagramPreviewModal slides={slides} activeSlideIndex={activeSlideIndex} onSelectSlide={switchSlide} onClose={() => setPreviewOpen(false)} onExportCurrent={exportPost} onExportAll={slides.length > 1 ? exportAll : undefined} />}
     </div>;
 }

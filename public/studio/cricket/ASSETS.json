@@ -1,0 +1,77 @@
+{
+  "description": "NPL franchise marks for editorial cricket templates. Team trademarks remain with their owners; no blanket reuse licence was identified. Palettes are editorial interpretations, not official brand guidelines.",
+  "assets": [
+    {
+      "teamId": "biratnagar",
+      "file": "biratnagar.png",
+      "sourcePage": "https://biratkings.com/",
+      "sourceUrl": "https://biratkings.com/assets/biratnagar-kings-logo-transparent-ByYqYoTH.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "a00a63f181bae3c61199a865929fd6c52caa0acdde494f0c4d20fe29615814c0",
+      "note": "Franchise website asset; resized to at most 512 pixels, transparent margins trimmed."
+    },
+    {
+      "teamId": "chitwan",
+      "file": "chitwan.png",
+      "sourcePage": "https://chitwanrhinos.com/",
+      "sourceUrl": "https://chitwanrhinos.com/rhinos-logo.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "ad23429ffe9c1c4f8ffda8acdf223996000842ade45ff1a84cc238dd4ecd2977",
+      "note": "Franchise website asset; resized to at most 512 pixels, transparent margins trimmed."
+    },
+    {
+      "teamId": "janakpur",
+      "file": "janakpur.png",
+      "sourcePage": "https://sudurpaschimroyals.com/",
+      "sourceUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/team-logos/1783232862147-Janakpur%20Bolts-White-MagentaBolt.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "22e9ff9f2e65062bbf88d633b9f347bda937c83cc84c834fc443c23cee8ea836",
+      "note": "White-letter variant from franchise opponent listing."
+    },
+    {
+      "teamId": "karnali",
+      "file": "karnali.png",
+      "sourcePage": "https://karnaliyaks.com/",
+      "sourceUrl": "https://karnaliyaks.com/_nuxt/karnali-yaks-logo.DTDUeTvz.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "b2fe83712d191d3352e1d5fdd59739563898a8c84db4bdfc900a04b9db7f2959",
+      "note": "Franchise website asset; resized to at most 512 pixels, transparent margins trimmed."
+    },
+    {
+      "teamId": "kathmandu",
+      "file": "kathmandu.png",
+      "sourcePage": "https://sudurpaschimroyals.com/",
+      "sourceUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/team-logos/1782984743950-409375.webp",
+      "retrievedAt": "2026-10-25",
+      "sha256": "9b441563d668d4d61ccc38fc62f38ce58a4d767a1732db3426448e9819948c25",
+      "note": "2025 rebranded Gorkhas crest; source franchise opponent listing."
+    },
+    {
+      "teamId": "lumbini",
+      "file": "lumbini.png",
+      "sourcePage": "https://lumbinilions.com.np/",
+      "sourceUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/logo/2026-09/lumbinilions-logo-1789543627.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "7e954ce878517b3204d7e3438c5061adab2bfdf48364e71dd62f5a16ab9b36eb",
+      "note": "Franchise website asset; resized to at most 512 pixels, transparent margins trimmed."
+    },
+    {
+      "teamId": "pokhara",
+      "file": "pokhara.png",
+      "sourcePage": "https://pokharaavengers.com/",
+      "sourceUrl": "https://pokharaavengers.com/logo.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "b3a9620b75101fbd024549826290e02bebb9296ee4cb5ffd1eaeb8688d1ddc27",
+      "note": "Franchise website asset; resized to at most 512 pixels, transparent margins trimmed."
+    },
+    {
+      "teamId": "sudurpaschim",
+      "file": "sudurpaschim.png",
+      "sourcePage": "https://sudurpaschimroyals.com/",
+      "sourceUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/team-logos/1783233491767-SudurpaschimRoyals_NewLogo.png",
+      "retrievedAt": "2026-10-25",
+      "sha256": "d8cb9dd22a9fe7c86c725658cfc9e95365a9603c704f4c63c3e2079168926297",
+      "note": "Franchise website asset; resized to at most 512 pixels, transparent margins trimmed."
+    }
+  ]
+}

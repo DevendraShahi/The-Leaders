@@ -1,56 +1,20 @@
 "use client";
 
-import { forwardRef, useId, type CSSProperties } from 'react';
-import { vintageMatrix } from '@/lib/post-studio/image-effects';
-import { textTypographyStyle } from '@/lib/post-studio/typography';
+import { forwardRef } from 'react';
 import { textLineLimit } from '@/lib/post-studio/text-overflow';
-import { postOutputDimensions, type PostDesign, type PostLayer, type PostTextLayer } from '@/lib/post-studio/types';
+import { postOutputDimensions, type PostDesign, type PostLayer } from '@/lib/post-studio/types';
 import styles from './PostStudio.module.css';
+import { artworkTextStyle } from '@/lib/post-studio/artwork-text';
+import { ArtworkPhoto } from './ArtworkPhoto';
+import { CricketArtwork } from './CricketArtwork';
+export { artworkTextStyle } from '@/lib/post-studio/artwork-text';
 
-export function artworkTextStyle(design: PostDesign, layer: PostTextLayer, content?: string): CSSProperties {
-    const type = textTypographyStyle(design, layer, content);
-    const position = design.textPositions[layer];
-    const [, height] = postOutputDimensions[design.format];
-    const [width] = postOutputDimensions[design.format];
-    return {
-        fontFamily: type.fontFamily, fontSize: type.fontSize, lineHeight: `${type.lineHeight}px`,
-        fontWeight: 400, ...(type.letterSpacing === undefined ? {} : { letterSpacing: type.letterSpacing }),
-        color: design.textColors[layer] || undefined,
-        textShadow: `0 ${type.textShadowOffset.height}px ${type.textShadowRadius}px ${type.textShadowColor}`,
-        transform: `translate(${position.x * 3.6}px, ${position.y * 3.6 * height / width}px)`,
-    };
-}
-
-function Photo({ design, height }: { design: PostDesign; height: number }) {
-    const id = useId().replace(/[^a-z0-9]/gi, '');
-    if (!design.imageUri || design.hiddenLayers.includes('visual')) return null;
-    const feather = design.imageFeather * .0045;
-    const filtered = design.imageBlur > 0 || design.imageVintage > 0;
-    return <svg className={styles.photo} width={360} height={height} viewBox={`0 0 360 ${height}`} aria-hidden="true">
-        <defs>
-            <filter id={`${id}filter`} x="-25%" y="-25%" width="150%" height="150%">
-                {design.imageVintage > 0 && <feColorMatrix type="matrix" values={vintageMatrix(design.imageVintage).join(' ')} />}
-                {design.imageBlur > 0 && <feGaussianBlur stdDeviation={design.imageBlur * .16} />}
-            </filter>
-            {(['horizontal', 'vertical'] as const).map(axis => <linearGradient key={axis} id={`${id}${axis}`} x1="0%" y1="0%" x2={axis === 'horizontal' ? '100%' : '0%'} y2={axis === 'vertical' ? '100%' : '0%'}>
-                <stop offset="0" stopColor="white" stopOpacity="0" /><stop offset={feather} stopColor="white" />
-                <stop offset={1 - feather} stopColor="white" /><stop offset="1" stopColor="white" stopOpacity="0" />
-            </linearGradient>)}
-            <mask id={`${id}maskX`} x={0} y={0} width={360} height={height} maskUnits="userSpaceOnUse"><rect width={360} height={height} fill={`url(#${id}horizontal)`} /></mask>
-            <mask id={`${id}maskY`} x={0} y={0} width={360} height={height} maskUnits="userSpaceOnUse"><rect width={360} height={height} fill={`url(#${id}vertical)`} /></mask>
-        </defs>
-        <g transform={`translate(${design.imageOffsetX + 180} ${design.imageOffsetY + height / 2}) scale(${design.imageZoom}) translate(-180 ${-height / 2})`}>
-            <g mask={feather > 0 ? `url(#${id}maskX)` : undefined}><g mask={feather > 0 ? `url(#${id}maskY)` : undefined}>
-                <image href={design.imageUri} width={360} height={height} preserveAspectRatio={design.imageFit === 'contain' ? 'xMidYMid meet' : 'xMidYMid slice'} filter={filtered ? `url(#${id}filter)` : undefined} />
-            </g></g>
-        </g>
-    </svg>;
-}
 
 export const Artwork = forwardRef<HTMLDivElement, {
     design: PostDesign; selected?: PostLayer; guides?: boolean;
     onSelect?: (layer: PostLayer) => void; onChooseImage?: () => void;
 }>(({ design, selected, guides, onSelect, onChooseImage }, ref) => {
+    if (design.template === 'cricket') return <CricketArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} />;
     const [w, h] = postOutputDimensions[design.format];
     const height = 360 * h / w;
     const hidden = (layer: PostLayer) => design.hiddenLayers.includes(layer);
@@ -61,7 +25,7 @@ export const Artwork = forwardRef<HTMLDivElement, {
     const selectedClass = (layer: PostLayer) => onSelect && selected === layer ? styles.selected : '';
     const backgroundStyle = design.backgroundGradient || design.backgroundColor || '#111318';
     return <div ref={ref} className={styles.artwork} style={{ width: 360, height, background: backgroundStyle }} data-testid="post-artwork">
-        <Photo design={design} height={height} />
+        <ArtworkPhoto design={design} height={height} />
         {!hidden('visual') && design.imageUri && <div className={styles.tint} style={{ background: design.imageTone === 'clear' ? 'rgba(7,9,13,.18)' : design.imageTone === 'warm' ? 'rgba(61,28,14,.38)' : 'rgba(5,7,10,.52)' }} />}
         {onSelect && <div className={styles.visualHit} {...select('visual')} />}
         {!design.imageUri && !design.backgroundGradient && !design.backgroundColor && !hidden('visual') && onChooseImage && <button className={styles.addPhoto} onClick={onChooseImage}>＋ ADD VISUAL</button>}

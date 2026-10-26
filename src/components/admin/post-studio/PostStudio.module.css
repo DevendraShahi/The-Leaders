@@ -415,8 +415,411 @@
     .bannerCloseBtn{padding:2px}
     .noticeBanner{padding:6px 10px;font-size:11px}
     textarea.input{min-height:76px;line-height:1.45}
+    .scopeSwitcherCard{padding:8px 10px;gap:6px}
+    .scopeButtonsRow{gap:4px}
+    .scopeBtn{padding:6px 6px;font-size:10px}
+    .toolScopeActionBtn{font-size:9.5px;padding:2px 6px}
 }
 
+/* Tool Scope Switcher & Universal Controls */
+.scopeSwitcherCard {
+    background: var(--studio-surface);
+    border: 1px solid var(--studio-border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    margin-bottom: 4px;
+}
 
+.scopeSwitcherHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 
+.scopeSwitcherTitleWrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
+.scopeSwitcherLabel {
+    font-size: 10px;
+    font-family: Onest_700Bold, sans-serif;
+    color: var(--studio-secondary);
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.scopeSwitcherBadge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.scopeBadgeSectional {
+    background: #3b82f615;
+    color: #2563eb;
+    border: 1px solid #3b82f635;
+}
+
+.scopeBadgeUniversal {
+    background: #8b5cf618;
+    color: #7c3aed;
+    border: 1px solid #8b5cf640;
+}
+
+.scopeHelpToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    color: var(--studio-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 0;
+}
+
+.scopeHelpToggle:hover {
+    background: var(--studio-muted);
+    color: var(--studio-text);
+}
+
+.scopeButtonsRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+}
+
+.scopeBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    border: 1px solid var(--studio-border);
+    background: var(--studio-muted);
+    color: var(--studio-secondary);
+    font-size: 11px;
+    font-family: Onest_600SemiBold, sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.scopeBtn:hover {
+    border-color: var(--studio-secondary);
+    color: var(--studio-text);
+}
+
+.scopeBtnActive {
+    border-color: #2563eb !important;
+    background: #2563eb12 !important;
+    color: #1d4ed8 !important;
+    font-weight: 700;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+.scopeBtnActiveUniversal {
+    border-color: #7c3aed !important;
+    background: #7c3aed18 !important;
+    color: #6d28d9 !important;
+    font-weight: 700;
+    box-shadow: 0 0 0 1px #7c3aed;
+}
+
+.universalScopeHint {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #6d28d9;
+    background: #7c3aed0e;
+    border: 1px dashed #7c3aed40;
+    padding: 6px 9px;
+    border-radius: 6px;
+    margin: 0;
+}
+
+.sectionalScopeHint {
+    font-size: 11px;
+    line-height: 1.4;
+    color: var(--studio-secondary);
+    background: var(--studio-muted);
+    padding: 6px 9px;
+    border-radius: 6px;
+    margin: 0;
+}
+
+.scopeHelpBox {
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--studio-secondary);
+    background: var(--studio-surface);
+    border: 1px solid var(--studio-border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.scopeHelpBox p {
+    margin: 0;
+}
+
+/* Tool Header with Scope Action */
+.toolHeaderWithAction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.toolHeaderWithAction > span {
+    font-size: 12px;
+    font-family: Onest_600SemiBold, sans-serif;
+    color: var(--studio-text);
+}
+
+.toolScopeActionBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    border: 1px solid var(--studio-border);
+    background: var(--studio-surface);
+    color: var(--studio-secondary);
+    font-size: 10.5px;
+    font-family: Onest_600SemiBold, sans-serif;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+}
+
+.toolScopeActionBtn:hover {
+    border-color: #7c3aed;
+    color: #7c3aed;
+    background: #7c3aed0a;
+}
+
+.toolScopeBannerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0 8px 0;
+    border-bottom: 1px solid var(--studio-border);
+    margin-bottom: 8px;
+}
+
+/* Stage Canvas Scope Pill Badge */
+.stageScopeBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid #3b82f640;
+    background: #3b82f615;
+    color: #2563eb;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.stageScopeBadge:hover {
+    filter: brightness(1.1);
+}
+
+.stageScopeBadgeUniversal {
+    border-color: #8b5cf650;
+    background: #8b5cf625;
+    color: #7c3aed;
+}
+
+/* Studio workspace: canvas, one inspector, and a persistent page sequence. */
+.organizedEditor{--studio-bg:#f6f5f2;--studio-muted:#eeede9;--studio-border:#ddddd7;--studio-secondary:#65655f}
+.organizedEditor button{transition:background .15s,border-color .15s,color .15s}
+.organizedEditor .body{min-width:0}
+.workspaceHeader{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 20px;background:var(--studio-surface);border-bottom:1px solid var(--studio-border);flex-shrink:0}
+.documentHeading{display:flex;align-items:center;gap:12px;min-width:0}
+.documentName{min-width:0}.documentName h1{font:17px/1.4 Onest_600SemiBold,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:30vw;margin:2px 0 0}
+.workspaceEyebrow{font:10px/1.4 Onest_600SemiBold,sans-serif;letter-spacing:1.1px;color:var(--studio-secondary)}
+.workspaceActions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.workspaceActions .button,.workspaceActions .primary{min-height:40px;padding:8px 12px}
+.workspaceNotice{position:absolute;bottom:20px;left:20px;z-index:20;display:flex;align-items:center;gap:10px;max-width:min(480px,calc(100vw - 40px));background:var(--studio-text);color:var(--studio-surface);padding:12px 14px;border-radius:8px;box-shadow:0 6px 24px #0002;font-size:12px}
+.workspaceNotice span{flex:1}
+.organizedEditor .stage{position:relative;padding:20px 24px 14px;gap:16px;background-color:var(--studio-muted);background-image:radial-gradient(var(--studio-border) .8px,transparent .8px);background-size:16px 16px}
+.canvasHeading{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;font:11px/1.5 Onest_500Medium,sans-serif;color:var(--studio-secondary);flex-shrink:0}
+.canvasHeading>span:first-child{text-transform:capitalize}.canvasHeading span span{margin:0 8px;opacity:.4}
+.stageSurface{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;width:100%}
+.organizedEditor .canvasShell{box-shadow:0 10px 36px #0002;border-radius:2px;border:0}
+.organizedEditor .inspector{width:380px;background:var(--studio-surface)}
+.organizedEditor .tabs{padding:0 12px;flex-shrink:0;gap:4px;background:var(--studio-surface)}
+.organizedEditor .tab{min-height:64px;font-family:Onest_500Medium,sans-serif!important;gap:5px}
+.organizedEditor .tab[aria-selected=true]{background:linear-gradient(0deg,#b71c1c08,transparent)}
+.inspectorBody{display:flex;flex-direction:column;min-height:0;min-width:0;flex:1;margin:0;padding:0;border:0}
+.organizedEditor .panel{padding:20px;gap:20px;min-width:0;scrollbar-width:thin;scrollbar-color:var(--studio-border) transparent}
+.panelHeading h2{font:20px/1.35 Onest_600SemiBold,sans-serif;margin:4px 0 0;letter-spacing:-.5px}
+.panelHeading p{font-size:12px;line-height:1.5;color:var(--studio-secondary);margin:6px 0 0}
+.toolSection{display:grid;gap:14px;padding-top:18px;border-top:1px solid var(--studio-border)}
+.toolSection h3{font:13px/1.4 Onest_600SemiBold,sans-serif;margin:0}
+.organizedEditor .layerGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.organizedEditor .layerGrid .choice{min-height:38px;padding:6px 10px;font-size:12px!important;justify-content:flex-start}
+.organizedEditor .input{background:var(--studio-bg);font-size:16px;line-height:1.65;resize:vertical}
+.organizedEditor .field{min-width:0}
+.organizedEditor .field>span{font-size:12px}
+.organizedEditor .row .choice{font-size:12px!important;padding:8px;min-height:40px;white-space:nowrap}
+.organizedEditor .section{padding-top:8px}
+.organizedEditor .section summary{font-size:13px}
+.helpText{font-size:11px;line-height:1.6;color:var(--studio-secondary);margin:0}
+.inspectorFooter{display:flex;flex-wrap:wrap;justify-content:space-between;gap:3px 12px;flex-shrink:0;padding:10px 20px;border-top:1px solid var(--studio-border);font-size:10px;line-height:1.4;color:var(--studio-secondary)}
+.editScope{margin:12px 14px 0;padding:12px;background:var(--studio-bg);border:1px solid var(--studio-border);border-radius:8px;flex-shrink:0}
+.scopeHeading{display:flex;justify-content:space-between;align-items:center;gap:10px;font:11px/1.4 Onest_600SemiBold,sans-serif;margin-bottom:8px}
+.segmented{display:flex;gap:4px;background:var(--studio-muted);border-radius:6px;padding:3px;min-width:0}
+.segmented .choice{flex:1;min-width:0;min-height:34px;font-size:12px!important;border:1px solid transparent;padding:6px;background:transparent}
+.segmented .choice.active{background:var(--studio-surface)!important;border-color:var(--studio-border)!important;box-shadow:0 1px 3px #0001;color:var(--studio-text)!important}
+.scopeSettings{display:flex;align-items:center;justify-content:space-between;width:100%;font-size:11px!important;background:none;border:0;color:var(--studio-secondary);padding:8px 0 0;min-height:32px}
+.scopeOptions{display:grid;gap:10px;max-height:240px;overflow-y:auto;margin-top:10px;padding:0 4px 4px 0;scrollbar-width:thin}
+.scopeOption{display:flex;align-items:flex-start;gap:9px;font-size:12px;cursor:pointer;padding:4px 0}
+.scopeOption input{width:16px;height:16px;flex-shrink:0;margin-top:2px;accent-color:var(--studio-red)}
+.scopeOption span{display:grid;gap:2px}.scopeOption strong{font:12px/1.4 Onest_500Medium,sans-serif}.scopeOption small{font-size:10px;line-height:1.5;color:var(--studio-secondary)}
+.scopeOptions>.button{font-size:11px!important;min-height:38px}
+.pageRail{display:flex;align-items:center;gap:8px;width:100%;max-width:100%;padding:10px;background:var(--studio-surface);border:1px solid var(--studio-border);border-radius:10px;flex-shrink:0;box-shadow:0 2px 8px #00000005}
+.pageRailList{display:flex;align-items:center;gap:8px;flex:1;min-width:0;overflow-x:auto;padding:3px;scrollbar-width:thin;scroll-behavior:smooth}
+.pageThumbnail{background:none;border:2px solid transparent;border-radius:5px;padding:2px;flex:0 0 58px;height:65px;color:#fff;overflow:hidden}
+.pageThumbnailActive{border-color:var(--studio-red)}
+.thumbnailVisual{display:flex;flex-direction:column;justify-content:space-between;position:relative;width:100%;height:100%;padding:5px;border-radius:2px;overflow:hidden;text-align:left}
+.thumbnailVisual>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.5}.thumbnailVisual>.thumbnailNumber{position:relative;font-size:9px;line-height:1.2}.thumbnailVisual>strong{position:relative;font:7px/1.25 Onest_600SemiBold,sans-serif;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.railArrow{display:grid;place-items:center;border:0;background:none;color:var(--studio-secondary);width:28px;height:44px;flex-shrink:0}
+.railAdd{height:58px;min-width:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px dashed var(--studio-border);background:none;border-radius:6px;color:var(--studio-secondary);font-size:10px!important;flex-shrink:0;padding:6px}
+.formatGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.formatOption{display:grid;justify-items:center;align-content:center;gap:6px;min-height:122px;padding:14px 8px;border:1px solid var(--studio-border);border-radius:8px;background:var(--studio-bg);color:var(--studio-text)}
+.formatOption strong{font:12px/1.4 Onest_500Medium,sans-serif}.formatOption small{font-size:10px;color:var(--studio-secondary)}
+.formatShape{display:block;height:35px;max-width:70px;border:1.5px solid currentColor;border-radius:2px;color:var(--studio-secondary)}
+.templateList{display:grid;gap:6px}.templateList .choice{justify-content:space-between;font-size:12px!important}.templateList small{display:block;font:11px/1.5 Onest_400Regular,sans-serif;color:var(--studio-secondary);margin-top:2px}
+.imageWell{height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;border:1px dashed var(--studio-border);border-radius:8px;background:var(--studio-bg);color:var(--studio-secondary);font-size:12px;overflow:hidden}.imageWell img{width:100%;height:100%;object-fit:contain}
+.checkRow{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--studio-secondary)}
+.checkRow input{accent-color:var(--studio-red);width:16px;height:16px}
+.imageNudges{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.imageNudges .button{padding:6px;min-height:40px}
+.cropPad{font-size:10px;color:var(--studio-secondary);background:var(--studio-bg);border:1px dashed var(--studio-border);padding:16px;text-align:center;border-radius:6px}
+.backgroundGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.backgroundPreset{height:76px;border:2px solid transparent;border-radius:6px;padding:6px;display:flex;align-items:flex-end;text-align:left;color:white}
+.backgroundPreset[aria-pressed=true]{outline:2px solid var(--studio-red);outline-offset:2px}.backgroundPreset span{font:9px/1.3 Onest_500Medium,sans-serif;background:#1119;padding:3px 4px;border-radius:2px}
+.orderedPages{display:grid;gap:8px;list-style:none;margin:0;padding:0}
+.orderedPages li{display:flex;align-items:center;gap:4px;min-width:0;border:1px solid var(--studio-border);border-radius:8px;padding:6px;background:var(--studio-bg)}
+.orderedPages li.currentPageRow{border-color:var(--studio-red);background:var(--studio-surface)}
+.pageRowTitle{flex:1;min-width:0;display:flex;align-items:center;gap:10px;background:none;border:0;padding:6px;color:inherit;text-align:left}
+.pageRowTitle>span{display:grid;place-items:center;width:24px;height:30px;flex-shrink:0;font-size:12px;border:1px solid var(--studio-border);border-radius:3px;color:var(--studio-secondary)}
+.pageRowTitle strong{font:12px/1.5 Onest_500Medium,sans-serif;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow-wrap:anywhere}.pageRowTitle small{display:block;font:9px/1.5 Onest_400Regular,sans-serif;color:var(--studio-secondary);margin-top:2px}
+.pageRowActions{display:flex;gap:0;flex-shrink:0}.pageRowActions button{display:grid;place-items:center;width:30px;height:40px;border:0;border-radius:4px;background:none;color:var(--studio-secondary)}
+.pageRowActions button:hover:not(:disabled){background:var(--studio-muted);color:var(--studio-red)}
+:global([data-theme=dark]) .organizedEditor{--studio-bg:#151516;--studio-muted:#1d1d1f;--studio-border:#333335;--studio-secondary:#b8b8be}
+@media(min-width:1500px){.organizedEditor .inspector{width:410px}.organizedEditor .stage{padding:24px 40px 20px}}
+@media(max-width:1100px){.documentName h1{max-width:22vw;font-size:15px}.workspaceHeader{padding:10px 12px;gap:12px}.workspaceActions{gap:6px}.organizedEditor .inspector{width:340px}.organizedEditor .panel{padding:16px}}
+@media(max-width:800px){
+    .workspaceHeader{flex-wrap:wrap;gap:8px;padding:8px 12px}
+    .documentHeading{width:100%;gap:8px}.documentName{flex:1}.documentName h1{max-width:none;font-size:14px}.workspaceEyebrow{font-size:9px}
+    .documentHeading .iconButton{width:32px;min-height:36px;padding:4px}.documentHeading .saveState{font-size:10px!important;min-height:32px;padding:4px}
+    .workspaceActions{width:100%;justify-content:flex-end;gap:6px}.workspaceActions .historyGroup{display:flex;margin-right:auto}.workspaceActions .button,.workspaceActions .primary{min-height:36px;font-size:11px!important;padding:6px 10px}.workspaceActions .toolbarIconBtn{width:32px;height:32px}
+    .organizedEditor .body{flex-direction:column;overflow:hidden}.organizedEditor .stage{flex:0 0 40%;height:40%;min-height:190px;max-height:none;padding:10px 12px 8px;gap:8px}
+    .organizedEditor .inspector{flex:1;width:100%;min-height:0;border-left:0;border-top:1px solid var(--studio-border);overflow:hidden}
+    .organizedEditor .tabs{padding:0 8px;min-height:44px}.organizedEditor .tab{min-height:44px;flex-direction:row;gap:6px;font-size:12px!important}.organizedEditor .tab svg{width:16px;height:16px}
+    .canvasHeading{font-size:10px}.canvasHeading span span{margin:0 4px}
+    .pageRail{padding:3px 6px;gap:4px;border-radius:6px}.pageRailList{gap:5px;padding:2px}.pageThumbnail{flex-basis:39px;height:43px;padding:1px}.thumbnailVisual{padding:3px}.thumbnailVisual>strong{font-size:5px;-webkit-line-clamp:2}.thumbnailVisual>.thumbnailNumber{font-size:7px}.railAdd{height:38px;min-width:44px;padding:3px;font-size:8px!important}.railAdd svg{width:14px;height:14px}.railArrow{width:24px;height:38px}
+    .organizedEditor .panel{padding:16px;gap:16px}.panelHeading h2{font-size:18px}.panelHeading p{font-size:11px}
+    .editScope{margin:8px 12px 0;padding:8px 10px}.scopeHeading{margin-bottom:6px}.scopeSettings{padding-top:4px;min-height:28px}.scopeOptions{max-height:150px}
+    .inspectorFooter{padding:7px 16px;font-size:9px}.organizedEditor .input{font-size:16px;min-height:44px}
+    .organizedEditor .layerGrid{grid-template-columns:repeat(4,minmax(0,1fr))}.organizedEditor .layerGrid .choice{justify-content:center;font-size:11px!important;padding:6px 4px}
+    .formatGrid{grid-template-columns:repeat(4,minmax(0,1fr))}.formatOption{min-height:100px;padding:10px 4px}.formatOption strong{font-size:10px}.formatOption small{font-size:8px}
+    .workspaceNotice{bottom:12px;left:12px;max-width:calc(100vw - 24px)}
+    .pageRowActions button{width:36px;min-height:44px}
+}
+@media(max-width:380px){.workspaceActions .actionLabel{display:none}.workspaceActions .button,.workspaceActions .primary{padding:6px 8px}.workspaceActions .historyGroup{gap:0}.documentHeading .saveState{font-size:9px!important}.documentName h1{max-width:190px}.formatGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-height:620px) and (min-width:801px){.scopeOptions{max-height:140px}.workspaceHeader{padding:6px 12px}.organizedEditor .stage{padding:10px 16px;gap:8px}}
+@media(prefers-reduced-motion:reduce){.organizedEditor *{scroll-behavior:auto;transition:none!important}}
+.workspaceActions button{white-space:nowrap}
+@media(max-width:440px){.workspaceActions .actionLabel{display:none}.workspaceActions .historyGroup{margin-right:auto}.workspaceActions .button{font-size:11px!important}}
+.shareDialogHeading{display:grid;gap:8px}
+.shareDialogOptions{display:grid;gap:12px}
+.shareDialogOptions .scopeOption{padding:10px;border:1px solid var(--studio-border);border-radius:6px;background:var(--studio-surface)}
+.shareDialogOptions .scopeOption:has(input:checked){border-color:var(--studio-red)}
+.shareDialogOptions .scopeOption strong{font-size:13px}.shareDialogOptions .scopeOption small{font-size:11px}
+.shareDialogOptions .scopeSettings{min-height:44px;justify-content:center;gap:8px}
+.organizedEditor .thumbnailVisual{padding:0;align-items:center;justify-content:center;background:var(--studio-muted)}
+.thumbnailCanvas{display:block;position:absolute;transform-origin:center center;pointer-events:none}
+.organizedEditor .thumbnailVisual>.thumbnailNumber{position:absolute;top:2px;left:2px;background:#111b;color:#fff;padding:2px 4px;border-radius:2px;font:9px/1.1 Onest_600SemiBold,sans-serif}
+@media(max-width:800px){.pageThumbnail{flex-basis:48px;height:55px}.railAdd{height:46px}.organizedEditor .thumbnailVisual>.thumbnailNumber{font-size:8px}}
+.organizedEditor .panel>*{flex-shrink:0}
+@media(max-width:800px) and (max-height:600px){.organizedEditor .stage{flex-basis:26%;height:26%;min-height:130px}.workspaceHeader{gap:4px}.documentName .workspaceEyebrow{display:none}.organizedEditor .panel{padding:12px}}
+.wideDialog{width:min(1080px,calc(100vw - 32px))}.wideDialogContent{max-width:none}
+@media(max-width:640px){.wideDialog{width:calc(100vw - 16px)}}
+.cricketEntry{display:flex;align-items:center;gap:16px;padding:20px;border:1px solid var(--studio-border);border-left:4px solid var(--studio-red);border-radius:8px;background:var(--studio-surface)}.cricketEntry>svg{color:var(--studio-red);flex-shrink:0}.cricketEntry>div{flex:1;min-width:0}.cricketEntry h2{font-size:20px}.cricketEntry p{font-size:11px;color:var(--studio-secondary);margin:4px 0 0}
+@media(max-width:640px){.cricketEntry{flex-wrap:wrap;padding:16px}.cricketEntry>.primary{width:100%}}
+.wideDialogContent{height:min(880px,90dvh);display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box}
+
+.instagramShare{flex-shrink:0;max-height:46dvh;overflow:auto;padding:16px 20px;border-bottom:1px solid var(--studio-border);background:var(--studio-surface);display:grid;gap:12px}
+.instagramShareHeading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.instagramShareHeading h2{display:flex;align-items:center;gap:8px;margin:0;font-size:16px}
+.instagramShareHeading p{margin:6px 0 0;font-size:12px;color:var(--studio-secondary)}
+.instagramShareActions{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
+.instagramShareActions .field{min-width:190px;flex:1;max-width:300px;font-size:12px}
+.instagramShareActions .button,.instagramShareActions .primary{min-height:44px;text-decoration:none;justify-content:center}
+.instagramShare textarea{resize:vertical;font-size:12px;min-height:80px}
+@media(max-width:540px){.instagramShare{padding:12px;max-height:52dvh}.instagramShareActions .field{flex-basis:100%;max-width:none}.instagramShareActions>.button,.instagramShareActions>.primary{flex:1;font-size:12px!important}.workspaceActions{flex-wrap:wrap}}
+
+/* Give the artwork the space left by actual controls, without a fixed scale allowance. */
+.canvasViewActions{display:flex;align-items:center;gap:12px;min-width:0}
+.canvasFocusButton{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:32px;padding:4px 8px;border:1px solid var(--studio-border);border-radius:6px;color:var(--studio-text);background:var(--studio-surface);font-size:11px!important;white-space:nowrap}
+.organizedEditor .inspector[hidden]{display:none}
+.singlePageRail{width:auto;align-self:flex-end;padding:0;background:none;border:0;box-shadow:none}
+.singlePageRail .pageRailList,.singlePageRail .railArrow{display:none}
+.singlePageRail .railAdd{flex-direction:row;min-height:32px;height:32px;padding:4px 10px;border-style:solid;background:var(--studio-surface);font-size:11px!important}
+.organizedEditor.canvasFocused .stage{flex:1;height:auto;min-height:0;max-height:none}
+@media(max-width:800px){
+    .organizedEditor .stage{flex:0 0 60%;height:60%;min-height:180px;padding:8px 12px;gap:6px}
+    .canvasHeading{min-height:32px}.canvasViewActions{gap:8px}
+    .workspaceEyebrow{display:none}
+    .documentName h1{margin:0}
+    .workspaceHeader{gap:4px;padding:6px 12px}
+    .organizedEditor .pageRail:not(.singlePageRail){padding:2px 6px}
+    .organizedEditor .pageThumbnail{height:44px;flex-basis:40px}
+    .organizedEditor .railAdd{height:38px}
+    .organizedEditor .singlePageRail .railAdd{height:30px;min-height:30px}
+    .organizedEditor .inspectorFooter{display:none}
+    .organizedEditor .panelHeading{display:none}
+    .organizedEditor .panel{padding:12px 16px;gap:14px}
+}
+@media(max-width:800px) and (max-height:600px){
+    .organizedEditor .body{flex-direction:row}
+    .organizedEditor .stage{flex:1;height:auto;min-height:0}
+    .organizedEditor .inspector{width:45%;height:100%;border-top:0;border-left:1px solid var(--studio-border)}
+    .organizedEditor .tab{flex-direction:column;gap:3px;font-size:10px!important;padding:4px 2px}
+    .canvasHeading>span:first-child{font-size:9px}
+    .canvasViewActions>span{display:none}
+}
+
+/* One-line carousel scope notice, with the detailed options kept in its dialog. */
+.organizedEditor .scopeBar{display:flex;align-items:center;gap:8px;margin:8px 12px 0;padding:4px 6px 4px 10px;min-height:42px;border-radius:6px;white-space:nowrap}
+.scopeBarLabel{font-size:11px;color:var(--studio-secondary);flex-shrink:0}
+.scopeBar .segmented{flex:1;min-width:0;padding:2px;gap:2px}
+.scopeBar .segmented .choice{font-size:11px!important;min-height:30px;padding:4px 6px}
+.scopeBarOptions{display:grid;place-items:center;flex-shrink:0;width:32px;height:32px;border:0;border-radius:4px;background:transparent;color:var(--studio-secondary)}
+.scopeBarOptions:hover{background:var(--studio-muted);color:var(--studio-red)}
+.organizedEditor .scopeBarGlobal{border-color:var(--studio-red);background:color-mix(in srgb,var(--studio-red) 4%,var(--studio-surface))}
+.scopeBarGlobal .scopeBarOptions{color:var(--studio-red)}

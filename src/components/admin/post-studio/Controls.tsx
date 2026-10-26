@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { normalizeTextColor, textColorPalette } from '@/lib/post-studio/text-colors';
 import styles from './PostStudio.module.css';
 
-export function Modal({ children, labelledBy, onClose, blocked = false }: { children: ReactNode; labelledBy: string; onClose: () => void; blocked?: boolean }) {
+export function Modal({ children, labelledBy, onClose, blocked = false, wide = false }: { children: ReactNode; labelledBy: string; onClose: () => void; blocked?: boolean; wide?: boolean }) {
     const ref = useRef<HTMLDialogElement>(null);
     useEffect(() => {
         const dialog = ref.current;
@@ -12,8 +12,8 @@ export function Modal({ children, labelledBy, onClose, blocked = false }: { chil
         dialog.showModal();
         return () => dialog.close();
     }, []);
-    return <dialog ref={ref} className={styles.nativeDialog} aria-labelledby={labelledBy} onCancel={event => { event.preventDefault(); if (!blocked) onClose(); }}>
-        <div className={styles.studio} style={{ minHeight: 0 }}><div className={styles.dialog}>{children}</div></div>
+    return <dialog ref={ref} className={`${styles.nativeDialog} ${wide ? styles.wideDialog : ''}`} aria-labelledby={labelledBy} onCancel={event => { event.preventDefault(); if (!blocked) onClose(); }}>
+        <div className={styles.studio} style={{ minHeight: 0 }}><div className={`${styles.dialog} ${wide ? styles.wideDialogContent : ''}`}>{children}</div></div>
     </dialog>;
 }
 

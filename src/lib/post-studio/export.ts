@@ -1,3 +1,4 @@
+import { artworkFitIssues } from './artwork-fit';
 import { toCanvas } from 'html-to-image';
 import { postOutputDimensions, postExportReferenceWidth, type PostFormat } from './types';
 
@@ -28,11 +29,15 @@ export async function artworkBytes(node: HTMLElement, format: PostFormat) {
         try { await image.decode(); }
         catch { throw new Error('A photo is unavailable. Replace it in the editor before exporting.'); }
     }));
-    for (const text of node.querySelectorAll<HTMLElement>('[data-line-limit]')) {
-        if (text.scrollHeight > parseFloat(getComputedStyle(text).lineHeight) * Number(text.dataset.lineLimit) + 1) {
-            throw new Error('Text is clipped. Shorten it or reduce its size/spacing before exporting.');
-        }
-    }
+    // Intrinsic photo bounds must finish updating before capturing the SVG.
+    if (node.querySelector('[data-photo-ready="false"]')) await new Promise<void>((resolve, reject) => {
+        const observer = new MutationObserver(() => {
+            if (!node.querySelector('[data-photo-ready="false"]')) { observer.disconnect(); clearTimeout(timeout); resolve(); }
+        });
+        const timeout = setTimeout(() => { observer.disconnect(); reject(new Error('Photo is still preparing. Retry export.')); }, 5000);
+        observer.observe(node, { attributes: true, childList: true, subtree: true });
+    });
+    if (artworkFitIssues(node).length) throw new Error('Artwork content is clipped. Shorten the text, reduce the rows, or choose a taller format before exporting.');
     const [width, height] = postOutputDimensions[format];
     const canvas = await toCanvas(node, {
         width: postExportReferenceWidth, height: postExportReferenceWidth * height / width,

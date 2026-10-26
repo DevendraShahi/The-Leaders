@@ -273,7 +273,7 @@ export default function StudioMediaModal({ onClose, onApplyImage, initialQuery =
                                     <div className={styles.mediaCardThumb}>
                                         <img src={item.thumbnailUrl} alt={item.title} loading="lazy" />
                                         <span className={styles.mediaSourceBadge}>
-                                            {item.source === "wikimedia" ? "PUBLIC DOMAIN" : "LIBRARY"}
+                                            {item.source === "wikimedia" ? "WIKIMEDIA" : "LIBRARY"}
                                         </span>
                                     </div>
                                     <div className={styles.mediaCardBody}>
@@ -283,6 +283,7 @@ export default function StudioMediaModal({ onClose, onApplyImage, initialQuery =
                                         <span className={styles.mediaCardAuthor} title={item.author}>
                                             {item.author}
                                         </span>
+                                        {item.license && <small className={styles.subtle}>{item.license}</small>}
                                         {item.width && item.height && (
                                             <small className={styles.subtle}>
                                                 {item.width} × {item.height}

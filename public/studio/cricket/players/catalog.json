@@ -1,0 +1,2020 @@
+{
+  "checkedAt": "2026-10-25",
+  "rosterSource": "https://nepalpremierleague.org/players",
+  "note": "Team assignment is a dated snapshot of the league directory. Team photos retain their owners’ rights; Commons licenses are listed individually.",
+  "players": [
+    {
+      "id": "dipendra-singh-airee",
+      "name": "Dipendra Singh Airee",
+      "teamId": "sudurpaschim",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/dipendra-singh-airee",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700449195-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/dipendra-singh-airee.webp",
+        "thumbnailUrl": "/studio/cricket/players/dipendra-singh-airee-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "harmeet-singh",
+      "name": "Harmeet Singh",
+      "teamId": "janakpur",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/harmeet-singh"
+    },
+    {
+      "id": "karan-kc",
+      "name": "Karan KC",
+      "teamId": "kathmandu",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/karan-kc",
+      "photo": {
+        "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Karan_Kc_Nepali_Cricketer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karan_Kc_Nepali_Cricketer.jpg",
+        "credit": "Helloworld3377",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "kind": "commons",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/karan-kc.webp",
+        "thumbnailUrl": "/studio/cricket/players/karan-kc-thumb.webp",
+        "width": 853,
+        "height": 1280,
+        "note": "Archive photo · 2016 Panchakanya Tej kit"
+      }
+    },
+    {
+      "id": "kushal-bhurtel",
+      "name": "Kushal Bhurtel",
+      "teamId": "pokhara",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/kushal-bhurtel",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players.png",
+        "sourceUrl": "https://pokharaavengers.com/squad/kushal-bhurtel",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/kushal-bhurtel.webp",
+        "thumbnailUrl": "/studio/cricket/players/kushal-bhurtel-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "kushal-malla",
+      "name": "Kushal Malla",
+      "teamId": "chitwan",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/kushal-malla",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/kushal-malla-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/kushal-malla.webp",
+        "thumbnailUrl": "/studio/cricket/players/kushal-malla-thumb.webp",
+        "width": 804,
+        "height": 1600
+      }
+    },
+    {
+      "id": "rohit-paudel",
+      "name": "Rohit Paudel",
+      "teamId": "lumbini",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/rohit-paudel",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/rohit-1788156524-1-1-1789225622.png",
+        "sourceUrl": "https://lumbinilions.com.np/rohit-paudel",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/rohit-paudel.webp",
+        "thumbnailUrl": "/studio/cricket/players/rohit-paudel-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "sandeep-lamichhane",
+      "name": "Sandeep Lamichhane",
+      "teamId": "biratnagar",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/sandeep-lamichhane",
+      "photo": {
+        "originalUrl": "https://biratkings.com/assets/sandeep-lamichhane-nobg-DL9DhKuu.png",
+        "sourceUrl": "https://biratkings.com/",
+        "credit": "Biratnagar Kings — Nepal Premier League Cricket Franchise",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sandeep-lamichhane.webp",
+        "thumbnailUrl": "/studio/cricket/players/sandeep-lamichhane-thumb.webp",
+        "width": 1073,
+        "height": 1600
+      }
+    },
+    {
+      "id": "sompal-kami",
+      "name": "Sompal Kami",
+      "teamId": "karnali",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/sompal-kami",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Sompal%20Kami%20New.jpg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sompal-kami.webp",
+        "thumbnailUrl": "/studio/cricket/players/sompal-kami-thumb.webp",
+        "width": 716,
+        "height": 1075
+      }
+    },
+    {
+      "id": "aaditya-mahata",
+      "name": "Aaditya Mahata",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/aaditya-mahata",
+      "photo": {
+        "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-6919b4d3dcde7Aditya-Mahata--.png",
+        "sourceUrl": "https://boltsjanakpur.com/squad",
+        "credit": "Squad",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/aaditya-mahata.webp",
+        "thumbnailUrl": "/studio/cricket/players/aaditya-mahata-thumb.webp",
+        "width": 718,
+        "height": 1600
+      }
+    },
+    {
+      "id": "aakash-chand",
+      "name": "Aakash Chand",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/aakash-chand",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(5).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/akash-chand",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/aakash-chand.webp",
+        "thumbnailUrl": "/studio/cricket/players/aakash-chand-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "aakash-tripathi",
+      "name": "Aakash Tripathi",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/aakash-tripathi",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/akash-1791179157.png",
+        "sourceUrl": "https://lumbinilions.com.np/aakash-tripathi",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/aakash-tripathi.webp",
+        "thumbnailUrl": "/studio/cricket/players/aakash-tripathi-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "aarif-sheikh",
+      "name": "Aarif Sheikh",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/aarif-sheikh",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700218449-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/aarif-sheikh.webp",
+        "thumbnailUrl": "/studio/cricket/players/aarif-sheikh-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "aashutosh-pandey",
+      "name": "Aashutosh Pandey",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/aashutosh-pandey"
+    },
+    {
+      "id": "aasif-sheikh",
+      "name": "Aasif Sheikh",
+      "teamId": "lumbini",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/aasif-sheikh",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/asig-1791179059.png",
+        "sourceUrl": "https://lumbinilions.com.np/aasif-sheikh",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/aasif-sheikh.webp",
+        "thumbnailUrl": "/studio/cricket/players/aasif-sheikh-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "abhishek-tiwari",
+      "name": "Abhishek Tiwari",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/abhishek-tiwari"
+    },
+    {
+      "id": "abhishesh-gautam",
+      "name": "Abhishesh Gautam",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/abhishesh-gautam",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/abhiseseh-1788154954-1789226262.png",
+        "sourceUrl": "https://lumbinilions.com.np/abhishesh-gautam",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/abhishesh-gautam.webp",
+        "thumbnailUrl": "/studio/cricket/players/abhishesh-gautam-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "abinash-bohara",
+      "name": "Abinash Bohara",
+      "teamId": "sudurpaschim",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/abinash-bohara",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700272584-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/abinash-bohara.webp",
+        "thumbnailUrl": "/studio/cricket/players/abinash-bohara-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "ajay-chauhan",
+      "name": "Ajay Chauhan",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/ajay-chauhan",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/ajay-1791179394.png",
+        "sourceUrl": "https://lumbinilions.com.np/ajay-chauhan",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ajay-chauhan.webp",
+        "thumbnailUrl": "/studio/cricket/players/ajay-chauhan-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "akbar-ali",
+      "name": "Akbar Ali",
+      "teamId": "karnali",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/akbar-ali"
+    },
+    {
+      "id": "amar-rautela",
+      "name": "Amar Rautela",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/amar-rautela"
+    },
+    {
+      "id": "andre-russell",
+      "name": "Andre Russell",
+      "teamId": "biratnagar",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/andre-russell"
+    },
+    {
+      "id": "angelo-mathews",
+      "name": "Angelo Mathews",
+      "teamId": "biratnagar",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/angelo-mathews"
+    },
+    {
+      "id": "anil-kharel",
+      "name": "Anil Kharel",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/anil-kharel",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700894451-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/anil-kharel.webp",
+        "thumbnailUrl": "/studio/cricket/players/anil-kharel-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "anil-sah",
+      "name": "Anil Sah",
+      "teamId": "janakpur",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/anil-sah",
+      "photo": {
+        "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-69199760b9bd5Anil-K-Shah.png",
+        "sourceUrl": "https://boltsjanakpur.com/squad",
+        "credit": "Squad",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/anil-sah.webp",
+        "thumbnailUrl": "/studio/cricket/players/anil-sah-thumb.webp",
+        "width": 771,
+        "height": 1600
+      }
+    },
+    {
+      "id": "aprajit-poudel",
+      "name": "Aprajit Poudel",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/aprajit-poudel"
+    },
+    {
+      "id": "ariful-islam",
+      "name": "Ariful Islam",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/ariful-islam",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Ariful%20Islam.JPG",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ariful-islam.webp",
+        "thumbnailUrl": "/studio/cricket/players/ariful-islam-thumb.webp",
+        "width": 507,
+        "height": 652
+      }
+    },
+    {
+      "id": "arjun-gharti",
+      "name": "Arjun Gharti",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/arjun-gharti",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(8).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/arjun-gharti-bitalu",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/arjun-gharti.webp",
+        "thumbnailUrl": "/studio/cricket/players/arjun-gharti-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "arjun-kumal",
+      "name": "Arjun Kumal",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/arjun-kumal",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(2).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/arjun-kumal",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/arjun-kumal.webp",
+        "thumbnailUrl": "/studio/cricket/players/arjun-kumal-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "arjun-saud",
+      "name": "Arjun Saud",
+      "teamId": "chitwan",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/arjun-saud"
+    },
+    {
+      "id": "arniko-yadav",
+      "name": "Arniko Yadav",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/arniko-yadav",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/arniko-1791179320.png",
+        "sourceUrl": "https://lumbinilions.com.np/arniko-yadav",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/arniko-yadav.webp",
+        "thumbnailUrl": "/studio/cricket/players/arniko-yadav-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "ashok-dhami",
+      "name": "Ashok Dhami",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/ashok-dhami",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/ashok-dhami-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ashok-dhami.webp",
+        "thumbnailUrl": "/studio/cricket/players/ashok-dhami-thumb.webp",
+        "width": 824,
+        "height": 1358
+      }
+    },
+    {
+      "id": "ayub-chand",
+      "name": "Ayub Chand",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/ayub-chand",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700729202-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ayub-chand.webp",
+        "thumbnailUrl": "/studio/cricket/players/ayub-chand-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "basir-ahamad",
+      "name": "Basir Ahamad",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/basir-ahamad",
+      "photo": {
+        "originalUrl": "https://biratkings.com/assets/basir-ahmad-nobg-DyRY3aw0.png",
+        "sourceUrl": "https://biratkings.com/",
+        "credit": "Biratnagar Kings — Nepal Premier League Cricket Franchise",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/basir-ahamad.webp",
+        "thumbnailUrl": "/studio/cricket/players/basir-ahamad-thumb.webp",
+        "width": 1073,
+        "height": 1600
+      }
+    },
+    {
+      "id": "bhim-sharki",
+      "name": "Bhim Sharki",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bhim-sharki"
+    },
+    {
+      "id": "bibek-magar",
+      "name": "Bibek Magar",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bibek-magar",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(11).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/bibek-rana-magar",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bibek-magar.webp",
+        "thumbnailUrl": "/studio/cricket/players/bibek-magar-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "bibek-yadav",
+      "name": "Bibek Yadav",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bibek-yadav",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/bibek-kumar-yadav-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bibek-yadav.webp",
+        "thumbnailUrl": "/studio/cricket/players/bibek-yadav-thumb.webp",
+        "width": 535,
+        "height": 1600
+      }
+    },
+    {
+      "id": "bikash-aagri",
+      "name": "Bikash Aagri",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bikash-aagri",
+      "photo": {
+        "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-6919ba78c1da3BikashAgri.png",
+        "sourceUrl": "https://boltsjanakpur.com/squad",
+        "credit": "Squad",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bikash-aagri.webp",
+        "thumbnailUrl": "/studio/cricket/players/bikash-aagri-thumb.webp",
+        "width": 774,
+        "height": 1600
+      }
+    },
+    {
+      "id": "binod-bhandari",
+      "name": "Binod Bhandari",
+      "teamId": "sudurpaschim",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/binod-bhandari",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700309343-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/binod-bhandari.webp",
+        "thumbnailUrl": "/studio/cricket/players/binod-bhandari-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "bipin-archarya",
+      "name": "Bipin Archarya",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bipin-archarya",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(16).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/bipin-acharya",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bipin-archarya.webp",
+        "thumbnailUrl": "/studio/cricket/players/bipin-archarya-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "bipin-khatri",
+      "name": "Bipin Khatri",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bipin-khatri",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(4).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/bipin-khatri",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bipin-khatri.webp",
+        "thumbnailUrl": "/studio/cricket/players/bipin-khatri-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "bipin-rawal",
+      "name": "Bipin Rawal",
+      "teamId": "chitwan",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/bipin-rawal",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/bipin-rawal-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bipin-rawal.webp",
+        "thumbnailUrl": "/studio/cricket/players/bipin-rawal-thumb.webp",
+        "width": 566,
+        "height": 1600
+      }
+    },
+    {
+      "id": "bipin-sharma",
+      "name": "Bipin Sharma",
+      "teamId": "karnali",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/bipin-sharma",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Bipin%20Sharma.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/bipin-sharma.webp",
+        "thumbnailUrl": "/studio/cricket/players/bipin-sharma-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "bishal-patel",
+      "name": "Bishal Patel",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bishal-patel"
+    },
+    {
+      "id": "bishal-susling",
+      "name": "Bishal Susling",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/bishal-susling"
+    },
+    {
+      "id": "brandon-mcmullen",
+      "name": "Brandon McMullen",
+      "teamId": "sudurpaschim",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/brandon-mcmullen"
+    },
+    {
+      "id": "chamika-karunaratne",
+      "name": "Chamika Karunaratne",
+      "teamId": "pokhara",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/chamika-karunaratne",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/chamika%20karunratna.png",
+        "sourceUrl": "https://pokharaavengers.com/squad/chamika-karunaratne",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/chamika-karunaratne.webp",
+        "thumbnailUrl": "/studio/cricket/players/chamika-karunaratne-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "charith-asalanka",
+      "name": "Charith Asalanka",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/charith-asalanka"
+    },
+    {
+      "id": "d-arcy-short",
+      "name": "D'Arcy Short",
+      "teamId": "lumbini",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/d-arcy-short",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/darcy-1788155140-1-1790752142.png",
+        "sourceUrl": "https://lumbinilions.com.np/d%E2%80%99arcy-john-matthew-short",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/d-arcy-short.webp",
+        "thumbnailUrl": "/studio/cricket/players/d-arcy-short-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "david-miller",
+      "name": "David Miller",
+      "teamId": "karnali",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/david-miller",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/DavidMiller.jpg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/david-miller.webp",
+        "thumbnailUrl": "/studio/cricket/players/david-miller-thumb.webp",
+        "width": 861,
+        "height": 873
+      }
+    },
+    {
+      "id": "david-warner",
+      "name": "David Warner",
+      "teamId": "kathmandu",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/david-warner"
+    },
+    {
+      "id": "dayanand-mandal",
+      "name": "Dayanand Mandal",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dayanand-mandal"
+    },
+    {
+      "id": "deepak-bohara",
+      "name": "Deepak Bohara",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/deepak-bohara",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/deepak-bohara-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/deepak-bohara.webp",
+        "thumbnailUrl": "/studio/cricket/players/deepak-bohara-thumb.webp",
+        "width": 458,
+        "height": 1600
+      }
+    },
+    {
+      "id": "deepak-dumre",
+      "name": "Deepak Dumre",
+      "teamId": "karnali",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/deepak-dumre"
+    },
+    {
+      "id": "dev-khanal",
+      "name": "Dev Khanal",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dev-khanal"
+    },
+    {
+      "id": "dev-shah",
+      "name": "Dev Shah",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dev-shah"
+    },
+    {
+      "id": "dhananjaya-lakshan",
+      "name": "Dhananjaya Lakshan",
+      "teamId": "pokhara",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/dhananjaya-lakshan",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(15).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/dhananjaya-lakshan",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/dhananjaya-lakshan.webp",
+        "thumbnailUrl": "/studio/cricket/players/dhananjaya-lakshan-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "dilip-nath",
+      "name": "Dilip Nath",
+      "teamId": "lumbini",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/dilip-nath",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dilip-nath-178815558-1789226588.png",
+        "sourceUrl": "https://lumbinilions.com.np/dilip-nath",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/dilip-nath.webp",
+        "thumbnailUrl": "/studio/cricket/players/dilip-nath-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "dilsad-ali",
+      "name": "Dilsad Ali",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dilsad-ali"
+    },
+    {
+      "id": "dinesh-adhikari",
+      "name": "Dinesh Adhikari",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dinesh-adhikari"
+    },
+    {
+      "id": "dinesh-kharel",
+      "name": "Dinesh Kharel",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dinesh-kharel",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/15th%20September%20for%20outside%20valley(5).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/dinesh-kharel",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/dinesh-kharel.webp",
+        "thumbnailUrl": "/studio/cricket/players/dinesh-kharel-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "dipak-bohara",
+      "name": "Dipak Bohara",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dipak-bohara",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700357441-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/dipak-bohara.webp",
+        "thumbnailUrl": "/studio/cricket/players/dipak-bohara-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "dipendra-rawat",
+      "name": "Dipendra Rawat",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/dipendra-rawat",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Dipendra%20Rawat.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/dipendra-rawat.webp",
+        "thumbnailUrl": "/studio/cricket/players/dipendra-rawat-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "diwan-pun",
+      "name": "Diwan Pun",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/diwan-pun",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Diwan%20Pun.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/diwan-pun.webp",
+        "thumbnailUrl": "/studio/cricket/players/diwan-pun-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "durgesh-gupta",
+      "name": "Durgesh Gupta",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/durgesh-gupta",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/durgesh-1788156628-1-1789226388.png",
+        "sourceUrl": "https://lumbinilions.com.np/durgesh-gupta",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/durgesh-gupta.webp",
+        "thumbnailUrl": "/studio/cricket/players/durgesh-gupta-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "gautam-kc",
+      "name": "Gautam KC",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/gautam-kc",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/gautam-kc-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/gautam-kc.webp",
+        "thumbnailUrl": "/studio/cricket/players/gautam-kc-thumb.webp",
+        "width": 527,
+        "height": 1600
+      }
+    },
+    {
+      "id": "gulshan-jha",
+      "name": "Gulshan Jha",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/gulshan-jha",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Gulshan%20Kumar%20Jha.jpg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/gulshan-jha.webp",
+        "thumbnailUrl": "/studio/cricket/players/gulshan-jha-thumb.webp",
+        "width": 1122,
+        "height": 1402
+      }
+    },
+    {
+      "id": "haider-ali",
+      "name": "Haider Ali",
+      "teamId": "sudurpaschim",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/haider-ali"
+    },
+    {
+      "id": "hemant-dhami",
+      "name": "Hemant Dhami",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/hemant-dhami",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700488677-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/hemant-dhami.webp",
+        "thumbnailUrl": "/studio/cricket/players/hemant-dhami-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "hikmat-mahara",
+      "name": "Hikmat Mahara",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/hikmat-mahara",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700524848-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/hikmat-mahara.webp",
+        "thumbnailUrl": "/studio/cricket/players/hikmat-mahara-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "hunain-shah",
+      "name": "Hunain Shah",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/hunain-shah"
+    },
+    {
+      "id": "hussain-talat",
+      "name": "Hussain Talat",
+      "teamId": "karnali",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/hussain-talat",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Hussain%20Talat.JPG",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/hussain-talat.webp",
+        "thumbnailUrl": "/studio/cricket/players/hussain-talat-thumb.webp",
+        "width": 593,
+        "height": 763
+      }
+    },
+    {
+      "id": "iftikhar-ahmed",
+      "name": "Iftikhar Ahmed",
+      "teamId": "janakpur",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/iftikhar-ahmed"
+    },
+    {
+      "id": "imran-sheikh",
+      "name": "Imran Sheikh",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/imran-sheikh"
+    },
+    {
+      "id": "ishan-pandey",
+      "name": "Ishan Pandey",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/ishan-pandey",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700589376-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ishan-pandey.webp",
+        "thumbnailUrl": "/studio/cricket/players/ishan-pandey-thumb.webp",
+        "width": 1066,
+        "height": 1600
+      }
+    },
+    {
+      "id": "james-neesham",
+      "name": "James Neesham",
+      "teamId": "janakpur",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/james-neesham"
+    },
+    {
+      "id": "jishan-alam",
+      "name": "Jishan Alam",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/jishan-alam"
+    },
+    {
+      "id": "k-s-bharat",
+      "name": "K. S. Bharat",
+      "teamId": "kathmandu",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/k-s-bharat"
+    },
+    {
+      "id": "kaleem-sana",
+      "name": "Kaleem Sana",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/kaleem-sana",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/kaleem-sana-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/kaleem-sana.webp",
+        "thumbnailUrl": "/studio/cricket/players/kaleem-sana-thumb.webp",
+        "width": 497,
+        "height": 1205
+      }
+    },
+    {
+      "id": "kamal-singh-airee",
+      "name": "Kamal Singh Airee",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/kamal-singh-airee"
+    },
+    {
+      "id": "kamil-mishara",
+      "name": "Kamil Mishara",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/kamil-mishara"
+    },
+    {
+      "id": "kiran-thagunna",
+      "name": "Kiran Thagunna",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/kiran-thagunna",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/15th%20September%20for%20outside%20valley(3).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/kiran-kumar-thagunna",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/kiran-thagunna.webp",
+        "thumbnailUrl": "/studio/cricket/players/kiran-thagunna-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "kishore-mahato",
+      "name": "Kishore Mahato",
+      "teamId": "lumbini",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/kishore-mahato",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/kishore-1791179257.png",
+        "sourceUrl": "https://lumbinilions.com.np/kishore-mahato",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/kishore-mahato.webp",
+        "thumbnailUrl": "/studio/cricket/players/kishore-mahato-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "krishna-paudel",
+      "name": "Krishna Paudel",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/krishna-paudel"
+    },
+    {
+      "id": "lalit-rajbanshi",
+      "name": "Lalit Rajbanshi",
+      "teamId": "janakpur",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/lalit-rajbanshi",
+      "photo": {
+        "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-69199a9355d6eLalit-Rajbanshi.png",
+        "sourceUrl": "https://boltsjanakpur.com/squad",
+        "credit": "Squad",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/lalit-rajbanshi.webp",
+        "thumbnailUrl": "/studio/cricket/players/lalit-rajbanshi-thumb.webp",
+        "width": 850,
+        "height": 1600
+      }
+    },
+    {
+      "id": "lokesh-bam",
+      "name": "Lokesh Bam",
+      "teamId": "biratnagar",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/lokesh-bam",
+      "photo": {
+        "originalUrl": "https://biratkings.com/assets/lokesh-bam-nobg-CGCWVUyI.png",
+        "sourceUrl": "https://biratkings.com/",
+        "credit": "Biratnagar Kings — Nepal Premier League Cricket Franchise",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/lokesh-bam.webp",
+        "thumbnailUrl": "/studio/cricket/players/lokesh-bam-thumb.webp",
+        "width": 1073,
+        "height": 1600
+      }
+    },
+    {
+      "id": "mahedi-hasan",
+      "name": "Mahedi Hasan",
+      "teamId": "pokhara",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/mahedi-hasan"
+    },
+    {
+      "id": "mark-watt",
+      "name": "Mark Watt",
+      "teamId": "karnali",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/mark-watt",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Mark%20Watt.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/mark-watt.webp",
+        "thumbnailUrl": "/studio/cricket/players/mark-watt-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "mayan-yadav",
+      "name": "Mayan Yadav",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/mayan-yadav",
+      "photo": {
+        "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-6919b70d80537Mayan2.png",
+        "sourceUrl": "https://boltsjanakpur.com/squad",
+        "credit": "Squad",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/mayan-yadav.webp",
+        "thumbnailUrl": "/studio/cricket/players/mayan-yadav-thumb.webp",
+        "width": 795,
+        "height": 1600
+      }
+    },
+    {
+      "id": "milan-bohara",
+      "name": "Milan Bohara",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/milan-bohara",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700624009-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/milan-bohara.webp",
+        "thumbnailUrl": "/studio/cricket/players/milan-bohara-thumb.webp",
+        "width": 1066,
+        "height": 1600
+      }
+    },
+    {
+      "id": "moeen-ali",
+      "name": "Moeen Ali",
+      "teamId": "janakpur",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/moeen-ali"
+    },
+    {
+      "id": "mohammad-aadil-alam",
+      "name": "Mohammad Aadil Alam",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/mohammad-aadil-alam"
+    },
+    {
+      "id": "mohammad-saifuddin",
+      "name": "Mohammad Saifuddin",
+      "teamId": "pokhara",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/mohammad-saifuddin"
+    },
+    {
+      "id": "mousom-dhakal",
+      "name": "Mousom Dhakal",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/mousom-dhakal",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/mousam-dhakal-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/mousom-dhakal.webp",
+        "thumbnailUrl": "/studio/cricket/players/mousom-dhakal-thumb.webp",
+        "width": 446,
+        "height": 1600
+      }
+    },
+    {
+      "id": "nandan-yadav",
+      "name": "Nandan Yadav",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/nandan-yadav",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Nandan%20Yadav.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/nandan-yadav.webp",
+        "thumbnailUrl": "/studio/cricket/players/nandan-yadav-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "narayan-joshi",
+      "name": "Narayan Joshi",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/narayan-joshi",
+      "photo": {
+        "originalUrl": "https://biratkings.com/assets/narayan-joshi-nobg-DaRa962R.png",
+        "sourceUrl": "https://biratkings.com/",
+        "credit": "Biratnagar Kings — Nepal Premier League Cricket Franchise",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/narayan-joshi.webp",
+        "thumbnailUrl": "/studio/cricket/players/narayan-joshi-thumb.webp",
+        "width": 1073,
+        "height": 1600
+      }
+    },
+    {
+      "id": "naren-saud",
+      "name": "Naren Saud",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/naren-saud"
+    },
+    {
+      "id": "niroshan-dickwella",
+      "name": "Niroshan Dickwella",
+      "teamId": "lumbini",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/niroshan-dickwella",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dikka-1788155249-1-1789227302.png",
+        "sourceUrl": "https://lumbinilions.com.np/niroshan-dickwella",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/niroshan-dickwella.webp",
+        "thumbnailUrl": "/studio/cricket/players/niroshan-dickwella-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "pawan-sarraf",
+      "name": "Pawan Sarraf",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/pawan-sarraf",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Pawan%20Sarraf.jpg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/pawan-sarraf.webp",
+        "thumbnailUrl": "/studio/cricket/players/pawan-sarraf-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "prashiddha-jaisi",
+      "name": "Prashiddha Jaisi",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/prashiddha-jaisi"
+    },
+    {
+      "id": "pratik-pokharel",
+      "name": "Pratik Pokharel",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/pratik-pokharel",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(9).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/pratik-pokharel",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/pratik-pokharel.webp",
+        "thumbnailUrl": "/studio/cricket/players/pratik-pokharel-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "pratik-shrestha",
+      "name": "Pratik Shrestha",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/pratik-shrestha"
+    },
+    {
+      "id": "pratish-gc",
+      "name": "Pratish GC",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/pratish-gc",
+      "photo": {
+        "originalUrl": "https://biratkings.com/assets/pratish-gc-nobg-DzvlCQOh.png",
+        "sourceUrl": "https://biratkings.com/",
+        "credit": "Biratnagar Kings — Nepal Premier League Cricket Franchise",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/pratish-gc.webp",
+        "thumbnailUrl": "/studio/cricket/players/pratish-gc-thumb.webp",
+        "width": 1073,
+        "height": 1600
+      }
+    },
+    {
+      "id": "ranjeet-kumar",
+      "name": "Ranjeet Kumar",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/ranjeet-kumar"
+    },
+    {
+      "id": "rashid-khan",
+      "name": "Rashid Khan",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/rashid-khan"
+    },
+    {
+      "id": "ravi-bopara",
+      "name": "Ravi Bopara",
+      "teamId": "chitwan",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/ravi-bopara",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/ravi-bopara-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ravi-bopara.webp",
+        "thumbnailUrl": "/studio/cricket/players/ravi-bopara-thumb.webp",
+        "width": 561,
+        "height": 1241
+      }
+    },
+    {
+      "id": "rijan-dhakal",
+      "name": "Rijan Dhakal",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/rijan-dhakal"
+    },
+    {
+      "id": "rit-gautam",
+      "name": "Rit Gautam",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/rit-gautam"
+    },
+    {
+      "id": "ruben-trumpelmann",
+      "name": "Ruben Trumpelmann",
+      "teamId": "lumbini",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/ruben-trumpelmann",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/trumpy-1788156290-1-1789227009.png",
+        "sourceUrl": "https://lumbinilions.com.np/ruben-trumpelmann",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/ruben-trumpelmann.webp",
+        "thumbnailUrl": "/studio/cricket/players/ruben-trumpelmann-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "rupesh-singh",
+      "name": "Rupesh Singh",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/rupesh-singh"
+    },
+    {
+      "id": "sachin-bhatta",
+      "name": "Sachin Bhatta",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sachin-bhatta",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700068539-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sachin-bhatta.webp",
+        "thumbnailUrl": "/studio/cricket/players/sachin-bhatta-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "sachin-sharma",
+      "name": "Sachin Sharma",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sachin-sharma",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Sachin%20Sharma.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sachin-sharma.webp",
+        "thumbnailUrl": "/studio/cricket/players/sachin-sharma-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "sagar-dhakal",
+      "name": "Sagar Dhakal",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sagar-dhakal",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(6).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/sagar-dhakal",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sagar-dhakal.webp",
+        "thumbnailUrl": "/studio/cricket/players/sagar-dhakal-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "sahan-arachchige",
+      "name": "Sahan Arachchige",
+      "teamId": "kathmandu",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/sahan-arachchige"
+    },
+    {
+      "id": "sahibzada-farhan",
+      "name": "Sahibzada Farhan",
+      "teamId": "karnali",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/sahibzada-farhan",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Sahibzada%20Farhan.jpg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sahibzada-farhan.webp",
+        "thumbnailUrl": "/studio/cricket/players/sahibzada-farhan-thumb.webp",
+        "width": 767,
+        "height": 851
+      }
+    },
+    {
+      "id": "sahil-patel",
+      "name": "Sahil Patel",
+      "teamId": "kathmandu",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/sahil-patel"
+    },
+    {
+      "id": "saif-zaib",
+      "name": "Saif Zaib",
+      "teamId": "sudurpaschim",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/saif-zaib"
+    },
+    {
+      "id": "salauddin-khan",
+      "name": "Salauddin Khan",
+      "teamId": "chitwan",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/salauddin-khan",
+      "photo": {
+        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/salahuddin-khan-s3.png",
+        "sourceUrl": "https://chitwanrhinos.com/",
+        "credit": "Chitwan Rhinos",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/salauddin-khan.webp",
+        "thumbnailUrl": "/studio/cricket/players/salauddin-khan-thumb.webp",
+        "width": 772,
+        "height": 1290
+      }
+    },
+    {
+      "id": "santosh-karki",
+      "name": "Santosh Karki",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/santosh-karki"
+    },
+    {
+      "id": "santosh-yadav",
+      "name": "Santosh Yadav",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/santosh-yadav"
+    },
+    {
+      "id": "scott-kuggeleijn",
+      "name": "Scott Kuggeleijn",
+      "teamId": "sudurpaschim",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/scott-kuggeleijn"
+    },
+    {
+      "id": "shadley-van-schalkwyk",
+      "name": "Shadley van Schalkwyk",
+      "teamId": "lumbini",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/shadley-van-schalkwyk"
+    },
+    {
+      "id": "shahab-alam",
+      "name": "Shahab Alam",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/shahab-alam"
+    },
+    {
+      "id": "shakib-al-hasan",
+      "name": "Shakib Al Hasan",
+      "teamId": "pokhara",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/shakib-al-hasan",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(13).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/shakib-al-hasan",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/shakib-al-hasan.webp",
+        "thumbnailUrl": "/studio/cricket/players/shakib-al-hasan-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "shamim-hossain",
+      "name": "Shamim Hossain",
+      "teamId": "lumbini",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/shamim-hossain"
+    },
+    {
+      "id": "sher-malla",
+      "name": "Sher Malla",
+      "teamId": "lumbini",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/sher-malla",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/sher-malla-178815580-1789226543.png",
+        "sourceUrl": "https://lumbinilions.com.np/sher-malla",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sher-malla.webp",
+        "thumbnailUrl": "/studio/cricket/players/sher-malla-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "sherfane-rutherford",
+      "name": "Sherfane Rutherford",
+      "teamId": "sudurpaschim",
+      "role": "Batter",
+      "profileUrl": "https://nepalpremierleague.org/players/sherfane-rutherford"
+    },
+    {
+      "id": "shubh-kansakar",
+      "name": "Shubh Kansakar",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/shubh-kansakar",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Shubh%20Kansakar.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/shubh-kansakar.webp",
+        "thumbnailUrl": "/studio/cricket/players/shubh-kansakar-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "shubham-ranjane",
+      "name": "Shubham Ranjane",
+      "teamId": "biratnagar",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/shubham-ranjane"
+    },
+    {
+      "id": "sikandar-raza",
+      "name": "Sikandar Raza",
+      "teamId": "chitwan",
+      "role": "All-rounder",
+      "profileUrl": "https://nepalpremierleague.org/players/sikandar-raza"
+    },
+    {
+      "id": "smit-patel",
+      "name": "Smit Patel",
+      "teamId": "kathmandu",
+      "role": "Wicket-keeper",
+      "profileUrl": "https://nepalpremierleague.org/players/smit-patel"
+    },
+    {
+      "id": "sonu-devkota",
+      "name": "Sonu Devkota",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sonu-devkota"
+    },
+    {
+      "id": "subash-bhandari",
+      "name": "Subash Bhandari",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/subash-bhandari",
+      "photo": {
+        "originalUrl": "https://biratkings.com/assets/subash-bhandari-nobg-C51pnMvS.png",
+        "sourceUrl": "https://biratkings.com/",
+        "credit": "Biratnagar Kings — Nepal Premier League Cricket Franchise",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/subash-bhandari.webp",
+        "thumbnailUrl": "/studio/cricket/players/subash-bhandari-thumb.webp",
+        "width": 1073,
+        "height": 1600
+      }
+    },
+    {
+      "id": "sudip-aryal",
+      "name": "Sudip Aryal",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sudip-aryal",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(10).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/sudip-aryal",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sudip-aryal.webp",
+        "thumbnailUrl": "/studio/cricket/players/sudip-aryal-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "sujan-thapaliya",
+      "name": "Sujan Thapaliya",
+      "teamId": "biratnagar",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sujan-thapaliya"
+    },
+    {
+      "id": "sundeep-jora",
+      "name": "Sundeep Jora",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sundeep-jora",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/sunddep-1788155704-1-1789226093.png",
+        "sourceUrl": "https://lumbinilions.com.np/sundeep-jora",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sundeep-jora.webp",
+        "thumbnailUrl": "/studio/cricket/players/sundeep-jora-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "sunny-bk",
+      "name": "Sunny BK",
+      "teamId": "pokhara",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/sunny-bk",
+      "photo": {
+        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(12).png",
+        "sourceUrl": "https://pokharaavengers.com/squad/sunny-bk",
+        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/sunny-bk.webp",
+        "thumbnailUrl": "/studio/cricket/players/sunny-bk-thumb.webp",
+        "width": 1080,
+        "height": 1350
+      }
+    },
+    {
+      "id": "surya-tamang",
+      "name": "Surya Tamang",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/surya-tamang",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Surya%20Tamang.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/surya-tamang.webp",
+        "thumbnailUrl": "/studio/cricket/players/surya-tamang-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "suryanshu-koirala",
+      "name": "Suryanshu Koirala",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/suryanshu-koirala"
+    },
+    {
+      "id": "tek-rawat",
+      "name": "Tek Rawat",
+      "teamId": "sudurpaschim",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/tek-rawat",
+      "photo": {
+        "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700688007-cropped-image.jpg",
+        "sourceUrl": "https://sudurpaschimroyals.com/squad",
+        "credit": "Sudurpaschim Royals - Nepal Premier League",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/tek-rawat.webp",
+        "thumbnailUrl": "/studio/cricket/players/tek-rawat-thumb.webp",
+        "width": 1280,
+        "height": 1600
+      }
+    },
+    {
+      "id": "tilak-bhandari",
+      "name": "Tilak Bhandari",
+      "teamId": "lumbini",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/tilak-bhandari",
+      "photo": {
+        "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/tilak-1788156715-1-1789226136.png",
+        "sourceUrl": "https://lumbinilions.com.np/tilak-bhandari",
+        "credit": "Lumbini Lions - Welcome to the Lion's den",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/tilak-bhandari.webp",
+        "thumbnailUrl": "/studio/cricket/players/tilak-bhandari-thumb.webp",
+        "width": 950,
+        "height": 1100
+      }
+    },
+    {
+      "id": "trit-raj-das",
+      "name": "Trit Raj Das",
+      "teamId": "janakpur",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/trit-raj-das"
+    },
+    {
+      "id": "unish-thakuri",
+      "name": "Unish Thakuri",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/unish-thakuri",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Unish%20BS%20Thakuri.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/unish-thakuri.webp",
+        "thumbnailUrl": "/studio/cricket/players/unish-thakuri-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    },
+    {
+      "id": "usama-mir",
+      "name": "Usama Mir",
+      "teamId": "chitwan",
+      "role": "Bowler",
+      "profileUrl": "https://nepalpremierleague.org/players/usama-mir"
+    },
+    {
+      "id": "will-bosisto",
+      "name": "Will Bosisto",
+      "teamId": "kathmandu",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/will-bosisto"
+    },
+    {
+      "id": "yuvraj-khatri",
+      "name": "Yuvraj Khatri",
+      "teamId": "karnali",
+      "role": "Player",
+      "profileUrl": "https://nepalpremierleague.org/players/yuvraj-khatri",
+      "photo": {
+        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Yuvraj%20Khatri.jpeg",
+        "sourceUrl": "https://karnaliyaks.com/our-yaks",
+        "credit": "Karnali Yaks",
+        "license": "Team website — reuse terms apply",
+        "kind": "team",
+        "checkedAt": "2026-10-25",
+        "url": "/studio/cricket/players/yuvraj-khatri.webp",
+        "thumbnailUrl": "/studio/cricket/players/yuvraj-khatri-thumb.webp",
+        "width": 1024,
+        "height": 1536
+      }
+    }
+  ]
+}
