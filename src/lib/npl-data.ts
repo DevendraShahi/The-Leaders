@@ -214,6 +214,17 @@ export function getAllNplPlayers(): NplPlayer[] {
   return teams.flatMap(t => t.players);
 }
 
+export function getNplPlayerById(id: string): { player: NplPlayer; team: NplTeamExtended } | null {
+  const teams = getNplTeamsData();
+  for (const team of teams) {
+    const player = team.players.find((p) => p.id === id);
+    if (player) {
+      return { player, team };
+    }
+  }
+  return null;
+}
+
 export function getNplFixtures(): CricketFixture[] {
   return cricketFixtures;
 }

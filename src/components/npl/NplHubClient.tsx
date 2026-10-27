@@ -1423,6 +1423,17 @@ export function NplHubClient({
                       "{selectedPlayer.highlights}"
                     </p>
                   )}
+
+                  {/* Link to Full Player Dossier */}
+                  <div className="pt-4 border-t border-border/60">
+                    <Link
+                      href={`/npl/players/${selectedPlayer.id}`}
+                      className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs md:text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition w-full justify-center"
+                    >
+                      <span>{isNe ? "विस्तृत प्रोफाइल तथा ट्रेडिङ कार्ड हेर्नुहोस्" : "Open Full Dossier & Ultimate Team Card"}</span>
+                      <ArrowUpRight className="h-4 w-4" />
+                    </Link>
+                  </div>
                 </div>
               </div>
             </motion.div>

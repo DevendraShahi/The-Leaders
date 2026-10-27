@@ -195,9 +195,10 @@ export default async function TeamPage({ params }: TeamPageProps) {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {team.players.map((p) => (
-            <div
+            <Link
               key={p.id}
-              className="group rounded-2xl border border-border/80 bg-card p-3 shadow-sm hover:border-primary/60 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden"
+              href={`/npl/players/${p.id}`}
+              className="group rounded-2xl border border-border/80 bg-card p-3 shadow-sm hover:border-primary/60 hover:shadow-lg transition-all flex flex-col justify-between overflow-hidden cursor-pointer"
             >
               <div className="relative h-44 w-full flex items-center justify-center bg-gradient-to-b from-primary/5 to-transparent rounded-xl p-2">
                 <Image
@@ -222,7 +223,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                 <span className="text-[10px] font-semibold text-primary uppercase tracking-wider block">
                   {p.category} · {p.origin}
                 </span>
-                <h3 className="font-semibold text-xs md:text-sm leading-tight text-foreground truncate mt-0.5">
+                <h3 className="font-semibold text-xs md:text-sm leading-tight text-foreground truncate mt-0.5 group-hover:text-primary transition">
                   {p.name}
                 </h3>
                 <span className="text-[11px] text-muted-foreground block truncate">
@@ -242,7 +243,7 @@ export default async function TeamPage({ params }: TeamPageProps) {
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
