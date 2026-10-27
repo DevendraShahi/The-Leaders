@@ -4,6 +4,7 @@ import { HeroMarquee } from "@/components/home/hero-marquee";
 import { LeadersGrid } from "@/components/home/LeadersGrid";
 import { NewsSection } from "@/components/home/news-section";
 import { HomeTasks } from "@/components/home/HomeTasks";
+import { NplHomeWidget } from "@/components/home/NplHomeWidget";
 import { getArticles } from "@/lib/data";
 
 import { constructMetadata } from "@/lib/metadata";
@@ -96,6 +97,7 @@ export default async function Home() {
       <HeroMarquee />
         <Hero />
         <HomeTasks />
+        <NplHomeWidget />
         <LeadersGrid />
         <NewsSection articles={articles} />
     </>

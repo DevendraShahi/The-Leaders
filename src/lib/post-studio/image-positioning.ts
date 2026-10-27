@@ -18,7 +18,7 @@ export function resetImageAdjustments(design: PostDesign): PostDesign {
 }
 export function replaceImage(design: PostDesign, uri: string, preserve = true): PostDesign {
     if (design.lockedLayers.includes("visual") || !uri.trim()) return design;
-    const next = { ...design, imageUri: uri, imageCredit: uri === design.imageUri ? design.imageCredit : '' };
+    const next = { ...design, imageUri: uri, imageCredit: uri === design.imageUri ? design.imageCredit : '', playerPhotoId: uri === design.imageUri ? design.playerPhotoId : undefined };
     return preserve && design.imageUri ? next : resetImageAdjustments(next);
 }
 export function setImageFit(design: PostDesign, fit: "cover" | "contain"): PostDesign {

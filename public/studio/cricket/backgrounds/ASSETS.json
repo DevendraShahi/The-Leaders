@@ -1,0 +1,38 @@
+{
+  "retrieved": "2026-10-26",
+  "assets": [
+    {
+      "file": "stadium-01.jpg",
+      "title": "Stadium 01",
+      "creator": "Sergej Majboroda / Poly Haven",
+      "source": "https://polyhaven.com/a/stadium_01",
+      "download": "https://dl.polyhaven.org/file/ph-assets/HDRIs/extra/Tonemapped%20JPG/stadium_01.jpg",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "modifications": "Resized to 4096px width and JPEG recompressed; generic stadium atmosphere, not TU venue.",
+      "sha256": "39a15ff7c9926567d3accf19d385e73a79f9010c7b63ee17a6b8a4e447efbf24"
+    },
+    {
+      "file": "paper-001.jpg",
+      "title": "Paper001",
+      "creator": "ambientCG",
+      "source": "https://ambientcg.com/view?id=Paper001",
+      "download": "https://ambientcg.com/get?file=Paper001_1K-JPG.zip",
+      "license": "CC0-1.0",
+      "licenseUrl": "https://docs.ambientcg.com/license/",
+      "modifications": "Color map extracted from 1K JPG package and JPEG recompressed.",
+      "sha256": "f9c094e77b32f1c8f2f16ce21616f2e7fd757d743c7aa0c18c49ffbb054664f9"
+    },
+    {
+      "file": "cricket-field.jpg",
+      "title": "Cricket Match at Delhi Sports Field",
+      "creator": "Arto Suraj",
+      "source": "https://www.pexels.com/photo/cricket-match-at-delhi-sports-field-36293965/",
+      "download": "https://images.pexels.com/photos/36293965/pexels-photo-36293965.jpeg?cs=srgb&dl=pexels-artosuraj-36293965.jpg&fm=jpg",
+      "license": "Pexels License",
+      "licenseUrl": "https://www.pexels.com/license/",
+      "modifications": "Resized to 2400px wide, JPEG recompressed. Runtime crop and dark overlay. Illustrative background, not TU stadium or the announced match.",
+      "sha256": "827181031f3b43dfc9c1bb3af8ed7929ac360feedc5bcfbb9642c16524c49afa"
+    }
+  ]
+}

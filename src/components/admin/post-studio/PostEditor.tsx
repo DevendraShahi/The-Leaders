@@ -24,8 +24,16 @@ import CricketInspector from './CricketInspector';
 import CricketPlayerLibrary from './CricketPlayerLibrary';
 import CricketLogoLibrary from './CricketLogoLibrary';
 import { playerPhotoCredit, type NplPlayer } from '@/lib/post-studio/cricket-players';
+import { applyPlayerPortrait, playerPhotoSubject, selectPlayerPortrait } from '@/lib/post-studio/player-portraits';
 import { blankCricketData } from '@/lib/post-studio/cricket-data';
 import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
+import { matchdayCopy, matchdayIssues } from '@/lib/post-studio/matchday';
+import { fixturesCopy, fixturesPostIssues } from '@/lib/post-studio/fixtures-post';
+import { headToHeadCopy, headToHeadIssues } from '@/lib/post-studio/head-to-head';
+import { prematchCopy, prematchIssues, prematchIds } from '@/lib/post-studio/prematch-posts';
+import { momentIds, momentCopy, momentIssues } from '@/lib/post-studio/moment-posts';
+import { phaseIds, phaseCopy, phaseIssues } from '@/lib/post-studio/phase-posts';
+import { scoreCopy, scoreUpdateIssues } from '@/lib/post-studio/score-update';
 
 type Tool = 'text' | 'layout' | 'media' | 'layers' | 'pages' | 'cricket';
 type Change = PostDesign | ((current: PostDesign) => PostDesign);
@@ -101,6 +109,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     } | null>(null);
     const activeSlideIndex = Math.max(0, slides.findIndex(item => item.id === activeId));
     const activeSlide = slides[activeSlideIndex], design = activeSlide.design;
+    const managedMatchday = design.template === 'cricket' && ['matchday', 'fixtures', 'head-to-head', 'score', ...prematchIds, ...momentIds, ...phaseIds].includes(design.cricket?.template ?? '');
+    const matchdayProblems = [...matchdayIssues(design), ...fixturesPostIssues(design), ...headToHeadIssues(design), ...prematchIssues(design), ...scoreUpdateIssues(design), ...momentIssues(design), ...phaseIssues(design)];
+    const managedCopy = phaseIds.some(id => id === design.cricket?.template) ? phaseCopy : momentIds.some(id => id === design.cricket?.template) ? momentCopy : design.cricket?.template === 'score' ? scoreCopy : prematchIds.some(id => id === design.cricket?.template) ? prematchCopy : design.cricket?.template === 'fixtures' ? fixturesCopy : design.cricket?.template === 'head-to-head' ? headToHeadCopy : matchdayCopy;
     const tools = design.template === 'cricket' ? [{ key: 'cricket' as const, label: 'Match', Icon: Trophy }, ...baseTools] : baseTools;
     const field = fields.find(item => item.layer === selected) ?? fields[0];
     const craft = getStudioCraft(design.template);
@@ -201,7 +212,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     };
     const apply = (change: Change, record = !interaction.current) => {
         const previous = currentDesign();
-        const next = typeof change === 'function' ? change(previous) : change;
+        const next = applyPlayerPortrait(typeof change === 'function' ? change(previous) : change);
         if (same(previous, next)) return;
         commit(slidesRef.current.map(item => item.id === activeIdRef.current ? { ...item, design: next }
             : editAll ? { ...item, design: shareStyles(item.design, next, sharedGroups, previous) } : item), record);
@@ -442,6 +453,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     };
     const selectPlayerPhoto = async (player: NplPlayer) => {
         if (!player.photo?.url || mediaLocked || !ready || busy || exporting || operation.current) return;
+        const subject = playerPhotoSubject(currentDesign()), targetId = activeIdRef.current;
+        if (!addAsOverlay && subject && subject.teamId !== player.teamId) { setIssue('Choose a photo from the named player’s team.'); return; }
         operation.current = true; setBusy(true); setIssue('');
         try {
             const response = await fetch(player.photo.url);
@@ -451,11 +464,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             const uri = await new Promise<string>((resolve, reject) => {
                 const reader = new FileReader(); reader.onload = () => resolve(String(reader.result)); reader.onerror = () => reject(new Error('Could not read player photo.')); reader.readAsDataURL(blob);
             });
+            if (activeIdRef.current !== targetId) return;
             if (addAsOverlay) {
                 addOverlayImage(uri, playerPhotoCredit(player));
                 setAddAsOverlay(false);
             } else {
-                apply(current => ({ ...replaceImage(current, uri, keepAdjustments), imageCredit: playerPhotoCredit(player) }));
+                apply(current => playerPhotoSubject(current) ? selectPlayerPortrait(current, player, uri) : ({ ...replaceImage(current, uri, keepAdjustments), imageCredit: playerPhotoCredit(player) }));
             }
             setBackgroundTab('photo'); setNotice(`${player.name} photo inserted.`);
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not insert player photo.'); }
@@ -750,8 +764,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         {instagramShareOpen && <InstagramSharePanel slides={slides} activeIndex={activeSlideIndex}
             getNode={id => exportNodes.current.get(id)} persist={persist}
             disabled={!ready || busy || exporting || !canExport} setPreparing={setExporting} onClose={() => setInstagramShareOpen(false)} />}
-        {(issue || imageIssue || overflow) && <div className={styles.alertBanner} role="alert">
-            <span>{issue || imageIssue || 'Content does not fit. Shorten the text, reduce the rows, or choose a taller format.'}</span>{overflow && <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>}{issue && <button className={styles.button} onClick={() => { if (!ready) { setIssue(''); setLoadAttempt(value => value + 1); } else void persist(); }}>{ready ? 'Retry save' : 'Retry loading pages'}</button>}</div>}
+        {(issue || imageIssue || overflow || matchdayProblems.length > 0) && <div className={styles.alertBanner} role="alert">
+            <span>{issue || imageIssue || matchdayProblems.join(' ') || 'Content does not fit. Shorten the text, reduce the rows, or choose a taller format.'}</span>{overflow && !managedMatchday && <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>}{issue && <button className={styles.button} onClick={() => { if (!ready) { setIssue(''); setLoadAttempt(value => value + 1); } else void persist(); }}>{ready ? 'Retry save' : 'Retry loading pages'}</button>}</div>}
         {notice && <div className={styles.workspaceNotice} role="status">
             <Check size={14} />
             <span>{notice}</span>
@@ -850,7 +864,13 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             <p>{tool === 'cricket' ? 'Teams, match data and every big moment.' : tool === 'text' ? 'Edit the copy, then refine its style.' : tool === 'layout' ? 'Set the format and visual identity.' : tool === 'media' ? 'Choose a visual and make it yours.' : tool === 'layers' ? 'Control layer depth, stacking order, visibility and lock states across text and visuals.' : 'Add, duplicate and reorder pages.'}</p>
                         </div>
                         {tool === 'cricket' && <CricketInspector key={activeId} design={design} onChange={apply} />}
-                        {tool === 'text' && <>
+                        {tool === 'text' && managedMatchday && <>
+                            <p className={styles.subtle}>This template fits text automatically into reserved areas. Edit fixture facts in Match. Manual text positions and alignment are replaced by the managed layout.</p>
+                            {(['headline', 'summary', 'author'] as const).map(key => <label key={key} className={styles.field}><span>{key === 'headline' ? 'Headline' : key === 'summary' ? 'Supporting line (optional)' : 'Byline'}</span><textarea className={styles.input} aria-label={`Edit ${key === 'author' ? 'byline' : key}`} rows={2} maxLength={key === 'author' ? 100 : managedCopy[key]} value={design[key]} disabled={design.lockedLayers.includes(key === 'summary' ? 'supporting' : key === 'author' ? 'footer' : 'headline')} onChange={event => update(key, event.target.value)} /><small>{design[key].length}{key !== 'author' ? ` / ${managedCopy[key]}` : ''} characters</small></label>)}
+                            <button className={styles.button} onClick={() => apply(current => ({ ...current, hiddenLayers: current.hiddenLayers.filter(layer => layer !== 'headline') }))}>Show required headline</button>
+                            {matchdayProblems.length > 0 && <p role="alert" className={styles.subtle}>{matchdayProblems.join(' ')}</p>}
+                        </>}
+                        {tool === 'text' && !managedMatchday && <>
                             <div className={styles.layerGrid} role="group" aria-label="Text layers">{fields.map(item => <button key={item.layer} className={`${styles.choice} ${selected === item.layer ? styles.active : ''}`} aria-pressed={selected === item.layer} onClick={() => select(item.layer)}>{item.label}</button>)}</div>
                             <label className={styles.field}>
                                 <span>{craft.layers.find(layer => layer.key === field.layer)?.label ?? field.label}{lockedLabel}</span>
@@ -907,8 +927,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 {choice('Photo', backgroundTab === 'photo', () => setBackgroundTab('photo'))}
                                 {choice('Team & NPL logos', backgroundTab === 'logos', () => setBackgroundTab('logos'))}
                                 {design.template === 'cricket' && choice('Player photos', backgroundTab === 'players', () => setBackgroundTab('players'))}
-                                {choice('Color & gradient', backgroundTab === 'color', () => setBackgroundTab('color'))}
+                                {!managedMatchday && choice('Color & gradient', backgroundTab === 'color', () => setBackgroundTab('color'))}
                             </div>
+                            {managedMatchday && <p className={styles.helpText}>This template keeps photos and overlays behind the information. Choose Stadium or Editorial in Match; text placement stays protected.</p>}
                             {mediaLocked && <p className={styles.helpText}>This visual is locked. Unlock it below to make changes.</p>}
                             {backgroundTab === 'logos' ? (
                                 <CricketLogoLibrary
@@ -923,7 +944,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                         setNotice(`${name} added as image overlay.`);
                                     }}
                                 />
-                            ) : backgroundTab === 'players' ? <CricketPlayerLibrary key={`${activeId}-${design.cricket?.teamId}`} initialTeam={design.cricket?.teamId || 'janakpur'} disabled={mediaLocked || !ready || busy || exporting} onSelect={selectPlayerPhoto}
+                            ) : backgroundTab === 'players' ? <CricketPlayerLibrary key={`${activeId}-${playerPhotoSubject(design)?.teamId || design.cricket?.teamId}`} selectedPhoto={design.playerPhotoId} initialTeam={playerPhotoSubject(design)?.teamId || design.cricket?.teamId || 'janakpur'} disabled={mediaLocked || !ready || busy || exporting} onSelect={selectPlayerPhoto}
                                 onSearch={name => { setMediaSearchQuery(`${name} cricket`); setMediaModalDefaultTab('search'); setMediaModalOpen(true); }} /> : backgroundTab === 'photo' ? <>
                                 <div className={styles.imageWell}>{design.imageUri ? <img src={design.imageUri} alt="Current page photo" /> : <>
                                     <ImagePlus size={30} />
@@ -1444,7 +1465,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                 <Section title="Image effects">
                                     <div className={styles.row}>{(['ink', 'clear', 'warm'] as const).map(tone => choice(tone[0].toUpperCase() + tone.slice(1), design.imageTone === tone, () => update('imageTone', tone), mediaDisabled))}</div>{imageEffectControls.map(effect => <div key={effect.key}>{slider(effect.label, design[effect.key], 0, 100, value => current => setImageEffect(current, effect.key, value), mediaDisabled)}</div>)}<button className={styles.button} disabled={mediaDisabled} onClick={() => apply(resetImageAdjustments)}>Reset image adjustments</button>
                                 </Section>
-                                {design.imageUri && <button className={styles.button} disabled={mediaLocked} onClick={() => update('imageUri', null)}>
+                                {design.imageUri && <button className={styles.button} disabled={mediaLocked} onClick={() => apply(current => ({ ...current, imageUri: null, imageCredit: '', playerPhotoId: undefined, ...(playerPhotoSubject(current) ? { cricket: { ...current.cricket!, showPlayerPhoto: false } } : {}) }))}>
                                     <Trash2 size={14} />Remove photo</button>}
                             </> : <div className={styles.toolSection}>
                                 <h3>Background presets</h3>

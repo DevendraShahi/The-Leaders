@@ -10,12 +10,33 @@ import { postOutputDimensions, type PostDesign, type PostLayer, type PostTextLay
 import { ArtworkPhoto } from './ArtworkPhoto';
 import { ArtworkPlacedImages } from './ArtworkPlacedImages';
 import css from './CricketStudio.module.css';
+import { BroadcastCricketArtwork } from './BroadcastCricketArtwork';
+import { MatchdayArtwork } from './MatchdayArtwork';
+import { FixturesArtwork } from './FixturesArtwork';
+import { HeadToHeadArtwork } from './HeadToHeadArtwork';
+import { PrematchArtwork } from './PrematchArtwork';
+import { ScoreUpdateArtwork } from './ScoreUpdateArtwork';
+import { MomentArtwork } from './MomentArtwork';
+import { PhaseArtwork } from './PhaseArtwork';
+import { PartnershipArtwork } from './PartnershipArtwork';
+import { momentIds, type MomentId } from '@/lib/post-studio/moment-posts';
+import { prematchIds, type PrematchId } from '@/lib/post-studio/prematch-posts';
 
-export const CricketArtwork = forwardRef<HTMLDivElement, {
+export type CricketArtworkProps = {
     design: PostDesign; selected?: PostLayer; guides?: boolean;
     onSelect?: (layer: PostLayer) => void; onChooseImage?: () => void;
     selectedPlacedImageId?: string; onSelectPlacedImage?: (id: string) => void;
-}>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
+};
+export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
+    if (design.cricket?.template === 'partnership') return <PartnershipArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket && ['powerplay', 'partnership'].includes(design.cricket.template)) return <PhaseArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket?.template === 'matchday') return <MatchdayArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket?.template === 'fixtures') return <FixturesArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket?.template === 'head-to-head') return <HeadToHeadArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket?.template === 'score') return <ScoreUpdateArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket && momentIds.includes(design.cricket.template as MomentId)) return <MomentArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricket && prematchIds.includes(design.cricket.template as PrematchId)) return <PrematchArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.cricketStyle && design.cricketStyle !== 'classic') return <BroadcastCricketArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     const data = design.cricket ?? blankCricketData(), baseSpec = cricketTemplate(data.template);
     const spec = data.template === 'player-of-match' && data.awardPerformance === 'bowling' ? { ...baseSpec, layout: 'bowler' as const } : baseSpec;
     const team = nplTeam(data.teamId), opponent = nplTeam(data.opponentId);

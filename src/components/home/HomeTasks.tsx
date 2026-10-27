@@ -7,6 +7,7 @@ const tasks = [
     { href: "/leaders", en: "Leaders", ne: "नेताहरू" },
     { href: "/articles", en: "Articles", ne: "लेखहरू" },
     { href: "/coverage/daily-brief", en: "Daily", ne: "दैनिक" },
+    { href: "/npl", en: "NPL 2026", ne: "एनपीएल २०२६" },
 ];
 
 export function HomeTasks() {

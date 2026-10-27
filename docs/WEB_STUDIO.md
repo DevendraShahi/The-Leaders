@@ -1,5 +1,86 @@
 # Web post Studio
 
+## Fixture-led cricket creation
+
+The cricket desk uses the Season III fixture image supplied by the editor on
+October 26, saved at `public/studio/cricket/fixtures-season3.png`. Its 28 league
+pairings are in `src/lib/post-studio/cricket-fixtures.ts`; four explicit rest days
+and the November 17/18/19/21 playoff rounds are recorded separately.
+
+Choose a Nepal calendar date, then a particular game. Double headers retain
+separate match IDs, teams and times. No game is automatically chosen on a
+two-match date. Teams, competition, match label, date, venue and start time are
+carried into prompts and saved designs. A daily-fixtures graphic includes both
+games on that date. Switching dates or games clears the previous time override.
+
+Default league slots follow the supplied sheet's 12:30/16:30 labels, with single
+evening fixtures seeded at 16:30. The source/timing section links both the sheet
+and the reported 17:00 timing revision; editors can adjust or clear the selected
+game's start time. The sheet's additional holder/header labels are not treated as
+separate match kickoff times. Playoff times are left blank. Qualified teams are
+not inferred: on a playoff date, select the confirmed participants explicitly.
+
+Source material is a snapshot, not a live schedule feed. No score, toss, playing
+XI, standings or result is filled from a fixture. Existing saved drafts keep
+their own snapshots and are not rewritten when another game is selected.
+
+Automated checks cover round-robin completeness, unique IDs, both same-day games,
+Nepal date rollover, rest days, playoff labels, timing overrides, prompt/import
+binding and empty scores. Desktop/mobile browser checks created and reloaded two
+separate same-day drafts and a daily graphic containing both fixtures.
+
+## Prompt creation engine (October 26, 2026)
+
+Use **New post** in Studio or **New cricket post** in the cricket desk. Creation
+has three separate screens: Request, Response and Review. Each screen has its own
+scrolling content area and a persistent footer action. The main Studio page
+prioritizes drafts; manual templates, book reviews and daily editions are in
+secondary collapsible sections. Cricket's manual gallery is collapsed by default.
+
+1. **Request:** describe the post and include available facts/source material.
+   Cricket provides visible post content type, featured team and opponent
+   dropdowns on the desk and creation form. These choices carry into the prompt;
+   typing additional information is optional. The response must match the selected
+   teams, and the same team cannot be selected on both sides.
+   A rule-based suggestion selects the post type and displays the proposed output
+   before copying. Editors can change the type, language or size in optional
+   settings. **Copy prompt & continue** copies the instructions and data contract
+   directly; the schema is not displayed in the normal flow. A manual-copy fallback
+   appears only when clipboard access fails.
+2. **Response:** paste the AI's reply and choose **Review post**. JSON code fences
+   are accepted. Omitted content and per-post fields become empty editable values,
+   never gallery example scores. Explicitly invalid data and mismatched post types
+   are rejected. A readable error and optional **Copy repair request** preserve the
+   pasted response; technical error paths are collapsed under View details.
+3. **Review:** inspect one post at a time, edit headline/supporting text and complete
+   only missing essential facts. Shared fixture corrections apply to every page;
+   moment scores stay separate. Missing lineups/tables have structured inputs.
+   Source links are available in an expandable section. Complete posts use
+   **Create post**; incomplete ones explicitly use **Save unfinished draft**.
+   There is no extra review checkbox. Validation does not establish factual accuracy.
+4. Studio saves the collection atomically and opens the editor. A failed save
+   keeps the response and preview available for retry. Each attempt reuses its
+   collection IDs so retrying cannot duplicate the same collection. Existing
+   drafts are preserved. Scores remain separate snapshots for each post.
+
+The engine supports all 28 cricket templates and breaking/explainer/quote news
+posts. Book reviews retain their existing prompt/import flow. Sources persist
+as optional `sourceUrls` on designs and are included in generated captions.
+No API key, direct AI call, live score fetching or auto-publishing is involved.
+This feature uses the existing artwork and browser-local draft storage; template
+redesign and cloud project/match storage remain subsequent work.
+
+Tests cover all cricket contracts, shared context versus moment snapshots,
+invalid responses, source preservation, account isolation, retry deduplication,
+guided navigation, hidden optional controls, missing-field editing, clipboard
+fallback, preview invalidation and recovery from a failed write. An isolated
+browser fixture verified all three screens on desktop light and mobile dark,
+inline date completion, visible footer actions, no horizontal overflow, draft
+creation and IndexedDB reload. Desktop verification included an actual 1080 × 1350
+PNG download. This fixture does not test production authentication.
+On Windows, if Vitest's temp-file rename is denied, set TEMP and TMP to a writable
+workspace directory such as `.next/studio-test-temp` for the test process.
+
 `/admin/social` is the browser counterpart of `mobile/app/(tabs)/studio.tsx`
 and `mobile/src/features/post-designer/PostEditor.tsx`. The dashboard and sidebar
 link to Studio; `/admin/designer` remains an alias. Existing admin authentication

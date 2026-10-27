@@ -21,6 +21,7 @@ function fontCSS() {
 }
 export async function artworkBytes(node: HTMLElement, format: PostFormat) {
     await document.fonts.ready;
+    if (node.dataset.exportError) throw new Error(node.dataset.exportError);
     await Promise.all(Array.from(node.querySelectorAll('img')).map(image => image.decode()));
     await Promise.all(Array.from(node.querySelectorAll('svg image')).map(async photo => {
         const uri = photo.getAttribute('href');
@@ -37,6 +38,8 @@ export async function artworkBytes(node: HTMLElement, format: PostFormat) {
         const timeout = setTimeout(() => { observer.disconnect(); reject(new Error('Photo is still preparing. Retry export.')); }, 5000);
         observer.observe(node, { attributes: true, childList: true, subtree: true });
     });
+    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
+    if (node.querySelector('[data-text-ready="false"]')) throw new Error('Text is still preparing. Retry export.');
     if (artworkFitIssues(node).length) throw new Error('Artwork content is clipped. Shorten the text, reduce the rows, or choose a taller format before exporting.');
     const [width, height] = postOutputDimensions[format];
     const canvas = await toCanvas(node, {

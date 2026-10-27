@@ -1,0 +1,44 @@
+.artwork{position:relative;overflow:hidden;background:#08151c;color:#faf8ed;--ink:#faf8ed;--muted:#c2cbd0;--rule:#ffffff40;isolation:isolate;font-family:Onest_700Bold,sans-serif}
+.artwork *{box-sizing:border-box}.background,.photo,.scrim{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.background{object-fit:cover;object-position:53% center}.photo{opacity:.65}.scrim{background:linear-gradient(180deg,#07151deb 0%,#07151dbe 35%,#07151d44 58%,#07151df5 78%)}
+.content{position:absolute;inset:5% 6%;display:grid;grid-template-rows:8% 20% 35% 16% 10% 7% 4%;min-width:0}.content>*,.team>*{min-width:0;min-height:0}.header{display:flex;justify-content:space-between;align-items:start;gap:12px}.brand{display:flex;align-items:center;gap:6px;flex-shrink:0;font-size:7px;letter-spacing:.4px}.brand>img{width:25px;height:25px;object-fit:contain}.brand>span>span{display:block;font-size:4.5px;letter-spacing:.9px;margin-top:3px;color:var(--muted)}.competition{width:40%;height:100%;text-align:right;text-transform:uppercase;padding-top:2px}
+.titleBlock{display:grid;grid-template-rows:20% 80%;padding:3% 0 2%}.kicker{grid-row:1;display:flex;align-items:center;gap:8px}.kicker:before{content:'';width:18px;height:2px;background:var(--accent);flex-shrink:0}.matchLabel{height:100%;width:85%;letter-spacing:1px}.headline{grid-row:2;height:100%;width:100%;letter-spacing:-1.6px;text-transform:uppercase;padding-top:1px}
+.teams{display:grid;grid-template-columns:minmax(0,1fr) 32px minmax(0,1fr);align-items:center;gap:4px;padding:0 0 5%}.team{height:100%;display:grid;grid-template-rows:72% 28%;gap:0;text-align:center}.crestSlot{display:flex;align-items:center;justify-content:center;padding:3px 6px 10px}.crestSlot img{object-fit:contain;width:auto;height:auto;filter:drop-shadow(0 5px 8px #0003)}.teamName{height:100%;width:100%;padding:0 2px}.versus{align-self:center;text-align:center;font-size:9px;color:var(--ink);letter-spacing:.2px}
+.details{border-top:1px solid var(--rule);display:grid;grid-template-columns:1fr 1fr;padding-top:6%;gap:12px}.dateBlock,.timeBlock{display:grid;grid-template-rows:72% 28%;min-width:0;min-height:0}.timeBlock{text-align:right}.date,.time{height:100%;width:100%;letter-spacing:-1px}.weekday{height:100%;width:100%;color:var(--muted)}.timeBlock>span{font-size:5.5px;letter-spacing:.7px;color:var(--muted)}
+.venueBlock{display:grid;grid-template-columns:34px minmax(0,1fr);gap:8px;align-items:start;padding-top:8px}.venueBlock>span{font-size:5px;letter-spacing:.8px;color:var(--muted);padding-top:4px}.venue{height:100%;width:100%;padding-top:1px}.summaryBlock{padding-top:4px}.summary{height:100%;width:100%;color:var(--muted)}.footer{border-top:1px solid var(--rule);padding-top:4px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.author,.credit{height:100%;width:100%;color:var(--muted)}.credit{text-align:right}.guides{position:absolute;inset:5% 6%;border:1px dashed #49e8c7;pointer-events:none}
+.content [role=button]{cursor:pointer}.content [data-selected=true]{outline:1px dashed #49e8c7;outline-offset:2px}.content [role=button]:focus-visible{outline:2px solid #49e8c7}
+.paper{background:#f4f0e7;color:#12282e;--ink:#12282e;--muted:#40565b;--rule:#12282e40}.paper .background{mix-blend-mode:multiply}.paper .scrim{background:#f4f0e72b}.paper .photo{opacity:.15}
+.artwork[data-format=story] .content{inset:6% 7%;grid-template-rows:8% 21% 35% 15% 9% 8% 4%}.artwork[data-format=story] .crestSlot{padding-bottom:15px}.artwork[data-format=story] .versus{font-size:11px}
+.artwork[data-format=square] .content{inset:5% 6%;grid-template-rows:9% 20% 34% 16% 11% 6% 4%}.artwork[data-format=square] .titleBlock{padding-top:1%}.artwork[data-format=square] .headline{letter-spacing:-1.3px}.artwork[data-format=square] .venueBlock{padding-top:6px}.artwork[data-format=square] .details{padding-top:3%}.artwork[data-format=square] .footer{padding-top:2px}
+.artwork[data-format=landscape] .content{inset:6% 5%;grid-template-columns:45% 55%;grid-template-rows:18% 36% 23% 16% 7%}.artwork[data-format=landscape] .header{grid-column:1/-1}.artwork[data-format=landscape] .brand{font-size:5px;gap:4px}.artwork[data-format=landscape] .brand>img{width:18px;height:18px}.artwork[data-format=landscape] .brand>span>span{font-size:3.5px;margin-top:2px}.artwork[data-format=landscape] .competition{width:40%;height:16px}.artwork[data-format=landscape] .titleBlock{grid-column:1;grid-row:2;padding:0 10px 0 0;grid-template-rows:25% 75%}.artwork[data-format=landscape] .headline{letter-spacing:-.8px}.artwork[data-format=landscape] .matchLabel{letter-spacing:.5px}.artwork[data-format=landscape] .teams{grid-column:2;grid-row:2/5;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr);padding:0 0 8px 10px;gap:0}.artwork[data-format=landscape] .team{grid-template-rows:70% 30%}.artwork[data-format=landscape] .crestSlot{padding:3px 3px 8px}.artwork[data-format=landscape] .versus{font-size:6px}.artwork[data-format=landscape] .details{grid-column:1;grid-row:3;padding:3px 0 0;gap:8px;margin-right:10px}.artwork[data-format=landscape] .timeBlock>span{font-size:4px;letter-spacing:0}.artwork[data-format=landscape] .venueBlock{grid-column:1;grid-row:4;padding-top:4px;grid-template-columns:22px 1fr;gap:4px;margin-right:10px}.artwork[data-format=landscape] .venueBlock>span{font-size:3.5px;padding-top:2px;letter-spacing:0}.artwork[data-format=landscape] .summaryBlock{grid-column:1/-1;grid-row:5;padding:0}.artwork[data-format=landscape] .footer{display:none}
+.artwork[data-language=ne] .headline{letter-spacing:0;text-transform:none}.artwork[data-language=ne] .matchLabel{letter-spacing:0}.artwork[data-language=ne] .timeBlock>span{font-family:Hind_700Bold,sans-serif}
+.artwork[data-format=landscape] .content{grid-template-rows:17% 32% 22% 14% 8% 7%}
+.artwork[data-format=landscape] .footer{display:grid;grid-column:1/-1;grid-row:6;padding-top:2px}
+.crestSlot{position:relative;padding:0}
+.crestSlot img{position:absolute;inset:0;width:100%;height:100%;padding:5px 6px 12px}
+.artwork[data-format=story] .crestSlot{padding:0}
+.artwork[data-format=landscape] .crestSlot{padding:0}
+.artwork[data-format=square] .content{grid-template-rows:8% 20% 30% 17% 12% 9% 4%}
+.content{grid-template-rows:8% 20% 33% 16% 10% 9% 4%}
+.venueBlock{grid-template-rows:minmax(0,1fr)}
+.artwork[data-format=square] .content{grid-template-rows:8% 20% 28% 17% 12% 11% 4%}
+.artwork[data-format=landscape] .content{grid-template-rows:17% 30% 23% 14% 8% 8%}
+.artwork[data-format=landscape] .venueBlock{grid-column:1/-1;margin-right:0;grid-template-columns:25px minmax(0,1fr)}
+.artwork[data-format=landscape] .teams{grid-row:2/4}
+.overlays{position:absolute;inset:0;z-index:0}
+.scrim{z-index:1;background:linear-gradient(180deg,#07151deb 0%,#07151dbe 35%,#07151d99 58%,#07151df5 78%)}
+.content{z-index:2;pointer-events:none}.content [role=button]{pointer-events:auto}.guides{z-index:3}
+.paper:has(.overlays img) .scrim{background:#f4f0e7e8}
+/* Tournament branding and stacked, centered venue. */
+.tournamentLogo{width:59px;height:29px;padding:3px 5px;background:transparent;border-radius:0;flex-shrink:0;margin-left:auto}
+.tournamentLogo img{display:block;width:100%;height:100%;object-fit:contain}
+.venueBlock{grid-template-columns:minmax(0,1fr);grid-template-rows:8px minmax(0,1fr);gap:3px;text-align:center;padding-top:5px}
+.venueBlock>span{padding-top:0;line-height:8px}.venue{text-align:center}
+.footer{grid-template-rows:minmax(0,1fr);align-content:start}.footerLabel{width:100%;height:100%;text-align:right;color:var(--muted)}
+.footer:has(.credit){grid-template-rows:minmax(0,1fr) minmax(0,1fr)}.credit{grid-column:1/-1;text-align:center}
+.artwork[data-format=landscape] .tournamentLogo{width:40px;height:20px;padding:2px 4px}
+.artwork[data-format=landscape] .venueBlock{grid-template-columns:minmax(0,1fr);grid-template-rows:5px minmax(0,1fr);gap:1px;padding-top:2px}
+.artwork[data-format=landscape] .venueBlock>span{padding-top:0;line-height:5px}
+.content{grid-template-rows:8% 20% 31% 16% 10% 9% 6%}
+.artwork[data-format=square] .content{grid-template-rows:8% 20% 26% 17% 12% 11% 6%}
+.artwork[data-format=story] .content{grid-template-rows:8% 21% 33% 15% 9% 8% 6%}
+.artwork:not(.paper) .tournamentLogo img{filter:brightness(0) invert(1)}

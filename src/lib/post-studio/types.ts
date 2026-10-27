@@ -5,6 +5,12 @@ export type PostFormat = "square" | "portrait" | "story" | "landscape";
 export type PostTemplate = "breaking" | "explainer" | "quote" | "book-review" | "book-analysis" | "book-takeaways" | "book-verdict" | "cricket";
 export type TextAlignment = "left" | "center";
 export type ImageTone = "ink" | "clear" | "warm";
+export type CricketStyle = 'stadium' | 'editorial' | 'classic';
+export const cricketStyles: { id: CricketStyle; label: string; description: string }[] = [
+  { id: 'stadium', label: 'Stadium', description: 'Bold team crests, oversized numbers and a dark sports finish.' },
+  { id: 'editorial', label: 'Editorial', description: 'Warm paper, clean rules and sharply ordered match information.' },
+  { id: 'classic', label: 'Classic', description: 'The original cricket layouts.' },
+];
 export type PostLayer = "visual" | "kicker" | "headline" | "supporting" | "footer";
 export type PostTextLayer = Exclude<PostLayer, "visual">;
 export type TextPositions = Record<PostTextLayer, { x: number; y: number }>;
@@ -76,6 +82,10 @@ export type PostDesign = {
   backgroundGradient?: string | null;
   cricket?: CricketData;
   placedImages?: PlacedImage[];
+  sourceUrls?: string[];
+  fixtureId?: string;
+  cricketStyle?: CricketStyle;
+  playerPhotoId?: string;
 };
 
 export const defaultPostDesign: PostDesign = {

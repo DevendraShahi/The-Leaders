@@ -43,6 +43,10 @@ export const postDesignSchema = z.object({
     backgroundGradient: z.string().nullable().optional(),
     cricket: cricketDataSchema.optional(),
     placedImages: z.array(placedImageSchema).optional(),
+    sourceUrls: z.array(z.string().url().refine(value => /^https?:\/\//i.test(value))).max(10).optional(),
+    fixtureId: z.string().min(1).optional(),
+    cricketStyle: z.enum(['stadium', 'editorial', 'classic']).optional(),
+    playerPhotoId: z.string().min(1).optional(),
 });
 const draftSchema = z.object({ id: z.string().min(1), name: z.string().trim().min(1).max(100), createdAt: z.string().datetime(), updatedAt: z.string().datetime(), trashedAt: z.string().datetime().nullable(), design: postDesignSchema,
     carouselId: z.string().min(1).optional(), carouselOrder: z.number().int().nonnegative().optional(),

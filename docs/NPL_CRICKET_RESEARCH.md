@@ -1,8 +1,15 @@
 # NPL cricket desk: research and template kit
 
-Research checked October 25, 2026, Toronto time / October 26, Nepal time. The template library is a dedicated Studio page at `/admin/social/cricket`; drafts open in the existing editor. This is an editorial design and manual scoring kit; it does not subscribe to a live score service or publish posts.
+Research checked October 25, 2026, Toronto time / October 26, Nepal time. The template library is a dedicated Studio page at `/admin/social/cricket`; drafts open in the existing editor. This is an editorial design and manual scoring kit; it does not subscribe to a live score service or publish posts. Detailed franchise profiles, owners, coaches, and rosters are documented in [NPL Season 3 Teams Documentation](NPL_SEASON_3_TEAMS.md).
 
 ## Season and source findings
+
+Update, October 26: the editor supplied the Season III fixture sheet. Studio now
+uses its league pairings/rest days and playoff dates, with a date/game selector.
+The sheet is saved at `public/studio/cricket/fixtures-season3.png`. Sheet timing
+labels and the reported 17:00 revision remain visible in the source/timing
+section, with a per-game editable start time. The no-prefill finding below
+describes the earlier kit, before fixture selection was implemented.
 
 The third NPL season is scheduled for **October 26–November 21, 2026**, at the TU ground in Kirtipur. The October 23 season preview is more current than the original August announcement. Lumbini Lions versus Sudurpaschim Royals is the reported opening fixture. The verified date is October 26; by the time of this research that date had already begun in Nepal. [The Kathmandu Post, October 23](https://kathmandupost.com/cricket/2026/10/23/what-s-new-in-the-nepal-premier-league-s-third-season), [original CAN announcement reported August 8](https://kathmandupost.com/sports/2026/08/08/npl-season-3-to-begin-on-october-26-final-on-november-21), [opening fixture report](https://kathmandupost.com/cricket/2026/09/20/lumbini-lions-to-face-sudurpaschim-royals-in-npl-opener).
 

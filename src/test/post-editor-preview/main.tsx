@@ -1,14 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import '@/app/globals.css';
 import PostEditor from '@/components/admin/post-studio/PostEditor';
 import CricketStudio from '@/components/admin/post-studio/CricketStudio';
 import { createDraftCollection, listDrafts, type PostDraft } from '@/lib/post-studio/drafts';
-import { defaultPostDesign, type PostFormat } from '@/lib/post-studio/types';
-import { cricketTemplateIds, type CricketTemplateId } from '@/lib/post-studio/cricket-catalog';
+import { defaultPostDesign, type PostDesign, type PostFormat, type CricketStyle } from '@/lib/post-studio/types';
+import { Artwork } from '@/components/admin/post-studio/Artwork';
+import { findPlayers, playerPhotoCredit } from '@/lib/post-studio/cricket-players';
+import { artworkBytes } from '@/lib/post-studio/export';
+import { cricketTemplateIds, type CricketTemplateId, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
+import type { CricketData } from '@/lib/post-studio/cricket-data';
 import { createCricketDesign } from '@/lib/post-studio/cricket-design';
 import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
 const scope = 'studio-responsive-preview';
+type AuditCase = { template: CricketTemplateId; format: PostFormat; language: 'en' | 'ne'; style: CricketStyle; photo?: boolean; long?: boolean; overrides?: Partial<PostDesign>; teamId?: NplTeamId; opponentId?: NplTeamId; cricket?: Partial<CricketData> };
+declare global { interface Window { renderCricketAudit?: (value: AuditCase) => void; exportCricketAudit?: () => Promise<number[]> } }
+function CricketAudit() {
+    const [config, setConfig] = useState<AuditCase>({ template: 'matchday', format: 'portrait', language: 'en', style: 'stadium' });
+    useEffect(() => { window.renderCricketAudit = value => flushSync(() => setConfig(value)); return () => { delete window.renderCricketAudit; }; }, []);
+    const design = createCricketDesign(config.template, config.teamId ?? 'lumbini', config.opponentId ?? 'sudurpaschim', config.format, config.language, config.style);
+    design.cricket!.matchDate = '2026-10-27'; design.cricket!.startTime = '16:30'; design.cricket!.matchLabel = 'MATCH 03';
+    const player = findPlayers('lumbini')[0];
+    if (config.photo && player?.photo?.url) { design.imageUri = player.photo.url; design.imageCredit = playerPhotoCredit(player); design.cricket!.batter.name = player.name; design.cricket!.bowler.name = player.name; }
+    if (config.long) {
+        design.cricket!.batter.name = config.language === 'ne' ? 'खेलाडीको लामो नाम उदाहरण' : 'A batter with a longer full name';
+        design.cricket!.lineup = Array.from({ length: 11 }, (_, i) => config.language === 'ne' ? `खेलाडीको नाम ${i + 1}` : `Player ${i + 1} Full Name${i === 0 ? ' (c)' : i === 1 ? ' (wk)' : ''}`);
+    }
+    Object.assign(design, config.overrides);
+    Object.assign(design.cricket!, config.cricket);
+    useEffect(() => { window.exportCricketAudit = async () => Array.from(await artworkBytes(document.querySelector('[data-testid="post-artwork"]') as HTMLElement, config.format)); return () => { delete window.exportCricketAudit; }; }, [config]);
+    return <div style={{ padding: 32, background: '#e8e5dd', minHeight: '100vh', display: 'grid', justifyContent: 'center', alignContent: 'start', gap: 16 }}><p style={{ fontFamily: 'sans-serif', fontSize: 12, color: '#4b5355' }}>Template preview · illustrative data</p><Artwork design={design} /></div>;
+}
 (window as typeof window & { checkCricketArtwork: () => unknown }).checkCricketArtwork = () => Array.from(document.querySelectorAll<HTMLElement>('[data-cricket-template]')).map(node => ({
     template: node.dataset.cricketTemplate,
     issues: artworkFitIssues(node).map(element => ({ text: element.textContent?.slice(0, 90), className: element.className, width: element.clientWidth, scrollWidth: element.scrollWidth, height: element.clientHeight, scrollHeight: element.scrollHeight })),
@@ -20,6 +43,7 @@ function CricketPreview({ initial }: { initial?: PostDraft }) {
 }
 async function mount() {
     const params = new URLSearchParams(location.search);
+    if (params.has('visual-audit')) { createRoot(document.getElementById('root')!).render(<CricketAudit />); return; }
     document.documentElement.dataset.theme = params.get('theme') || 'light';
     const cricket = params.get('cricket') || (location.pathname === '/admin/social/cricket' ? 'gallery' : null);
     if (cricket) {

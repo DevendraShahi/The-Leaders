@@ -91,7 +91,13 @@
 .pageHeader{padding-bottom:30px;border-bottom:1px solid var(--studio-border);margin-bottom:30px}
 .backLink{display:inline-flex;align-items:center;gap:8px;padding:5px 0;background:none;border:0;color:var(--studio-secondary);font-size:12px!important;min-height:36px}
 .backLink:hover{color:var(--studio-red)}
-.pageTitleRow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:22px}
+.pageTitleRow{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-top:22px;flex-wrap:wrap}
+.creationAction{flex-shrink:0}
+.quickCreate{display:grid;grid-template-columns:1.2fr 1fr 1fr auto;gap:16px;align-items:end;padding:22px;border:1px solid var(--studio-border);border-radius:10px;background:var(--studio-surface);margin-bottom:24px}.quickCreate select{min-height:44px}.quickCreate button{white-space:nowrap}
+.fixtureFields{grid-column:1/-1;display:grid;grid-template-columns:1fr 3fr;gap:16px}.fixtureFields input{min-height:44px;width:100%;box-sizing:border-box;border:1px solid var(--studio-border);border-radius:6px;padding:10px;background:var(--studio-surface);color:var(--studio-text)}.fixtureNote{grid-column:1/-1;display:grid;gap:3px;font-size:12px;color:var(--studio-secondary)}.fixtureNote a{font-size:11px;color:var(--studio-red);margin-top:4px}
+@media(max-width:540px){.fixtureFields{grid-template-columns:1fr}.fixtureFields input{font-size:16px}}
+@media(max-width:900px){.quickCreate{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.quickCreate{grid-template-columns:1fr;padding:16px}.quickCreate select{font-size:16px}.quickCreate button{width:100%}}
 .pageTitleRow h1{font:36px/1.2 Onest_600SemiBold,sans-serif;letter-spacing:-1.4px!important;margin:7px 0 10px}
 .pageTitleRow p{font-size:13px;color:var(--studio-secondary);margin:0}
 .pageSummary{display:flex;align-items:center;gap:12px;color:var(--studio-secondary);flex-shrink:0}.pageSummary strong{font:48px/1 Onest_600SemiBold,sans-serif;letter-spacing:-2px;color:var(--studio-text)}.pageSummary span{font-size:11px;line-height:1.6}

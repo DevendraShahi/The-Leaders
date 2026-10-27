@@ -4,6 +4,11 @@ import { artworkBytes } from '@/lib/post-studio/export';
 import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
 beforeEach(() => { Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } }); });
 describe('Artwork export preflight', () => {
+    it('blocks a Matchday with missing facts before attempting image rendering', async () => {
+        const artwork = document.createElement('div');
+        artwork.dataset.exportError = 'Start time is required for Matchday.';
+        await expect(artworkBytes(artwork, 'portrait')).rejects.toThrow('Start time is required for Matchday.');
+    });
     it('blocks a structured cricket card whose content exceeds its reserved body', async () => {
         const artwork = document.createElement('div'), body = document.createElement('div');
         body.setAttribute('data-export-fit', ''); body.textContent = 'An overfull scorecard';

@@ -1,4 +1,6 @@
 import type { PostDesign, PostTextLayer } from './types';
+import { rebindCricketEvidence, redatePrematch } from './prematch-posts';
+import { applyPlayerPortrait } from './player-portraits';
 
 export const sharedStyleOptions = [
     { key: 'typography', label: 'Fonts & type sizes', description: 'Font, size, line spacing and shadow' },
@@ -12,7 +14,7 @@ export const sharedStyleOptions = [
 export type SharedStyle = typeof sharedStyleOptions[number]['key'];
 const textLayers: PostTextLayer[] = ['kicker', 'headline', 'supporting', 'footer'];
 const effectKeys = ['imageTone', 'imageBlur', 'imageVintage', 'imageFeather'] as const;
-const backgroundKeys = ['imageUri', 'imageCredit', 'imageFit', 'imageZoom', 'imageOffsetX', 'imageOffsetY', 'backgroundColor', 'backgroundGradient', ...effectKeys] as const;
+const backgroundKeys = ['imageUri', 'imageCredit', 'playerPhotoId', 'imageFit', 'imageZoom', 'imageOffsetX', 'imageOffsetY', 'backgroundColor', 'backgroundGradient', ...effectKeys] as const;
 const changed = (a: unknown, b: unknown) => JSON.stringify(a) !== JSON.stringify(b);
 
 /** Share visual settings only. Copy, template roles, visibility and locks stay page-specific.
@@ -49,6 +51,7 @@ export function shareStyles(target: PostDesign, source: PostDesign, groups: read
         } else if (groups.includes('effects')) for (const key of effectKeys) copy(key);
     }
     if (groups.includes('cricket') && source.cricket && next.cricket) {
+        if (!target.lockedLayers.includes('visual')) copy('cricketStyle');
         const src = source.cricket, prev = previous?.cricket;
         const keys = ['teamId', 'opponentId', 'competition', 'matchLabel', 'venue', 'matchDate', 'startTime', 'theme', 'language', 'teamLogoUri', 'opponentLogoUri'] as const;
         const copyContext = <K extends typeof keys[number]>(key: K) => {
@@ -60,6 +63,31 @@ export function shareStyles(target: PostDesign, source: PostDesign, groups: read
             copy('accent', true);
             if (!target.lockedLayers.includes('visual')) { copy('backgroundColor', true); copy('backgroundGradient', true); }
         }
+        if (target.cricket && (target.cricket.teamId !== next.cricket.teamId || target.cricket.opponentId !== next.cricket.opponentId || target.cricket.matchDate !== next.cricket.matchDate)) {
+            const rebound = redatePrematch(rebindCricketEvidence(target, next.cricket.teamId, next.cricket.opponentId), next.cricket.matchDate);
+            next.cricket.headToHead = rebound.cricket!.headToHead;
+            next.cricket.toss = rebound.cricket!.toss;
+            next.cricket.lineup = rebound.cricket!.lineup;
+            next.cricket.teamProfile = rebound.cricket!.teamProfile;
+            if (target.cricket.template === 'score') {
+                const reset = rebound.cricket!;
+                next.cricket.scoreInnings = reset.scoreInnings; next.cricket.runs = reset.runs; next.cricket.wickets = reset.wickets; next.cricket.overs = reset.overs; next.cricket.target = reset.target;
+                next.cricket.batter = reset.batter; next.cricket.secondBatter = reset.secondBatter; next.cricket.updatedAt = reset.updatedAt;
+                next.cricket.opponentRuns = reset.opponentRuns; next.cricket.opponentWickets = reset.opponentWickets; next.cricket.opponentOvers = reset.opponentOvers;
+            }
+            next.cricket.sourceUrl = rebound.cricket!.sourceUrl;
+            if (['powerplay', 'partnership'].includes(target.cricket.template)) {
+                const reset = rebound.cricket!;
+                Object.assign(next.cricket, { runs: reset.runs, wickets: reset.wickets, overs: reset.overs, powerplayOvers: reset.powerplayOvers, partnershipRuns: reset.partnershipRuns, partnershipBalls: reset.partnershipBalls, batter: reset.batter, secondBatter: reset.secondBatter, updatedAt: reset.updatedAt });
+                next.imageUri = null; next.imageCredit = ''; next.playerPhotoId = undefined;
+            }
+            if (['four', 'six', 'wicket'].includes(target.cricket.template)) {
+                const reset = rebound.cricket!;
+                Object.assign(next.cricket, { runs: reset.runs, wickets: reset.wickets, overs: reset.overs, batter: reset.batter, bowler: reset.bowler, dismissal: reset.dismissal, wicketType: reset.wicketType, updatedAt: reset.updatedAt });
+                next.imageUri = null; next.imageCredit = ''; next.playerPhotoId = undefined;
+            }
+            next.sourceUrls = rebound.sourceUrls; next.fixtureId = rebound.fixtureId;
+        }
     }
-    return next;
+    return applyPlayerPortrait(next);
 }

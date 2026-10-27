@@ -1,8 +1,12 @@
-import { defaultPostDesign, type PostDesign, type PostFormat } from './types';
+import { defaultPostDesign, type PostDesign, type PostFormat, type CricketStyle } from './types';
 import { blankCricketData, cricketNumber, defaultCricketData } from './cricket-data';
 import { cricketTemplate, nplTeam, nplTeams, type CricketLanguage, type CricketTemplateId, type NplTeamId } from './cricket-catalog';
+import { dayFixtureRows } from './cricket-fixtures';
+import { fixturesHeadline } from './fixtures-post';
+import { headToHeadHeadline } from './head-to-head';
+import { phaseHeadline } from './phase-posts';
 
-export function createCricketDesign(templateId: CricketTemplateId, teamId: NplTeamId = 'lumbini', opponentId: NplTeamId = 'sudurpaschim', format: PostFormat = 'portrait', language: CricketLanguage = 'en'): PostDesign {
+export function createCricketDesign(templateId: CricketTemplateId, teamId: NplTeamId = 'lumbini', opponentId: NplTeamId = 'sudurpaschim', format: PostFormat = 'portrait', language: CricketLanguage = 'en', cricketStyle: CricketStyle = 'stadium'): PostDesign {
     const spec = cricketTemplate(templateId), team = nplTeam(teamId), cricket = defaultCricketData(templateId);
     cricket.teamId = teamId; cricket.opponentId = opponentId; cricket.language = language;
     const otherTeams = nplTeams.filter(item => item.id !== teamId && item.id !== opponentId);
@@ -24,13 +28,15 @@ export function createCricketDesign(templateId: CricketTemplateId, teamId: NplTe
     if (templateId === 'fifty') cricket.batter = { ...cricket.batter, runs: 50, balls: 34, fours: 4, sixes: 3 };
     if (templateId === 'century') cricket.batter = { ...cricket.batter, runs: 100, balls: 60, fours: 8, sixes: 6 };
     if (templateId === 'five-for') cricket.bowler.wickets = 5;
-    if (templateId === 'powerplay') { cricket.runs = 48; cricket.wickets = 1; cricket.overs = '6'; }
+    if (templateId === 'powerplay') { cricket.runs = 48; cricket.wickets = 1; cricket.overs = '6'; cricket.powerplayOvers = '6'; }
     if (templateId === 'innings') { cricket.runs = 179; cricket.wickets = 8; cricket.overs = '20'; }
+    if (templateId === 'score') cricket.scoreInnings = 'chase';
+    if (templateId === 'fixtures') { cricket.matchDate = '2026-10-27'; cricket.fixtures = dayFixtureRows(cricket.matchDate); }
     if (templateId === 'result' || templateId === 'champions') { cricket.runs = 180; cricket.wickets = 3; cricket.overs = '19.2'; }
     return {
-        ...structuredClone(defaultPostDesign), template: 'cricket', format, cricket,
+        ...structuredClone(defaultPostDesign), template: 'cricket', format, cricket, cricketStyle,
         category: 'NPL 2026', eyebrow: language === 'ne' ? 'द लिडर्स · क्रिकेट' : 'THE LEADERS / CRICKET',
-        headline: language === 'ne' ? spec.headlineNe : spec.headline,
+        headline: templateId === 'powerplay' || templateId === 'partnership' ? phaseHeadline(templateId, language) : templateId === 'fixtures' ? fixturesHeadline(language) : templateId === 'head-to-head' ? headToHeadHeadline(language) : language === 'ne' ? spec.headlineNe : spec.headline,
         summary: '', author: language === 'ne' ? 'द लिडर्स खेलकुद' : 'The Leaders Sports',
         accent: templateId === 'champions' ? '#EFCB73' : team.primary, backgroundColor: team.dark, imageTone: 'ink',
     };

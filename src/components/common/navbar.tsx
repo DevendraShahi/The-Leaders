@@ -17,6 +17,7 @@ const links = [
     { href: "/", labelEn: "Home", labelNe: "गृहपृष्ठ" },
     { href: "/leaders", labelEn: "Leaders", labelNe: "स्तम्भहरू" },
     { href: "/articles", labelEn: "Articles", labelNe: "लेखहरू" },
+    { href: "/npl", labelEn: "NPL 2026", labelNe: "एनपीएल २०२६" },
     {
         href: "/coverage/daily-brief",
         labelEn: "Daily",

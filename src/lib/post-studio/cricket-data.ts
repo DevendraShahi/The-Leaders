@@ -33,6 +33,18 @@ export const cricketDataSchema = z.object({
     updatedAt: z.string().refine(value => value === '' || !Number.isNaN(Date.parse(value)), 'Use a valid update timestamp.'),
     teamLogoUri: z.string().nullable(), opponentLogoUri: z.string().nullable(),
     logoScale: z.number().min(30).max(300).default(100).optional(),
+    heroScale: z.number().min(70).max(130).optional(),
+    matchdayBackground: z.enum(['tu-1', 'tu-2', 'tu-3', 'tu-4', 'tu-5']).optional(),
+    scoreInnings: z.enum(['first', 'chase']).nullable().optional(),
+    powerplayOvers: overs.optional(),
+    wicketType: z.enum(['bowled', 'caught', 'lbw', 'stumped', 'hit-wicket', 'run-out', 'retired-out', 'other']).nullable().optional(),
+    momentPhotoRole: z.enum(['batter', 'bowler']).optional(),
+    showPlayerPhoto: z.boolean().optional(),
+    headToHead: z.object({ played: count, teamWins: count, opponentWins: count, ties: count, noResults: count,
+        asOf: z.string().refine(value => value === '' || (/^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(value + 'T00:00:00Z')) && new Date(value + 'T00:00:00Z').toISOString().slice(0, 10) === value), 'Use a valid YYYY-MM-DD cutoff date.'),
+    }).optional(),
+    toss: z.object({ winnerId: z.enum(nplTeamIds).nullable(), decision: z.enum(['bat', 'bowl']).nullable() }).optional(),
+    teamProfile: z.object({ captain: z.string().max(90), headCoach: z.string().max(90), homeCity: z.string().max(90) }).optional(),
     showTeamNameUnderLogo: z.boolean().default(true).optional(),
 }).superRefine((data, context) => {
     if (data.teamId === data.opponentId) context.addIssue({ code: 'custom', path: ['opponentId'], message: 'Choose two different teams.' });
@@ -85,6 +97,12 @@ export function blankCricketData(template: CricketTemplateId = 'matchday'): Cric
     const batter = { name: '', runs: null, balls: null, fours: null, sixes: null, notOut: false };
     return {
         ...data, sample: false, matchLabel: '', runs: null, wickets: null, overs: '',
+        ...(template === 'head-to-head' ? { headToHead: { played: null, teamWins: null, opponentWins: null, ties: null, noResults: null, asOf: '' } } : {}),
+        ...(template === 'toss' ? { toss: { winnerId: null, decision: null } } : {}),
+        ...(template === 'team' ? { teamProfile: { captain: '', headCoach: '', homeCity: '' } } : {}),
+        ...(template === 'score' ? { scoreInnings: null } : {}),
+        ...(template === 'powerplay' ? { powerplayOvers: '' } : {}),
+        ...(template === 'wicket' ? { wicketType: null } : {}),
         opponentRuns: null, opponentWickets: null, opponentOvers: '', target: null,
         batter: { ...batter }, secondBatter: { ...batter },
         bowler: { name: '', overs: '', maidens: null, runs: null, wickets: null },
