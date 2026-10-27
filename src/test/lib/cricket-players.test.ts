@@ -29,7 +29,7 @@ describe('Reviewed NPL player catalog', () => {
         const player = findPlayers('kathmandu', 'karan')[0];
         const design = createCricketDesign('batting');
         const inserted = { ...design, imageUri: 'data:image/webp;base64,test', imageCredit: playerPhotoCredit(player) };
-        expect(postDesignSchema.parse(inserted).imageCredit).toContain('CC BY-SA 4.0');
+        expect(postDesignSchema.parse(inserted).imageCredit).toContain(player.photo!.license);
         expect(shareStyles(design, inserted, ['background']).imageCredit).toBe(inserted.imageCredit);
         expect(generateCricketCaption([{ design: inserted } as PostDraft])).toContain(player.photo!.sourceUrl);
         expect(replaceImage(inserted, 'different').imageCredit).toBe('');

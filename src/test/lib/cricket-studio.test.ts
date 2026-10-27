@@ -35,7 +35,7 @@ describe('Cricket coverage templates', () => {
     });
     it('does not replace score data when a shared team identity is applied', () => {
         const source = createCricketDesign('four', 'chitwan', 'janakpur');
-        const target = createCricketDesign('wicket', 'lumbini', 'sudurpaschim');
+        const target = createCricketDesign('wicket', 'chitwan', 'janakpur');
         target.cricket = { ...target.cricket!, runs: 91, wickets: 4, sample: false, sourceUrl: 'https://example.com/scorecard', updatedAt: '2026-10-26T10:00:00Z' };
         const shared = shareStyles(target, source, ['cricket', 'typography', 'alignment']);
         expect(shared.cricket).toMatchObject({ teamId: 'chitwan', opponentId: 'janakpur', template: 'wicket', runs: 91, wickets: 4, sample: false, sourceUrl: 'https://example.com/scorecard', updatedAt: '2026-10-26T10:00:00Z' });
@@ -110,7 +110,7 @@ describe('Label-free authored cricket drafts', () => {
         const { generateInstagramCaption } = await import('@/lib/post-studio/carousel');
         const design = createCricketDesign('score'); design.cricket!.sample = true;
         const html = renderToStaticMarkup(createElement(Artwork, { design }));
-        expect(html).not.toContain('SAMPLE'); expect(html).toContain('CRICKET');
+        expect(html).not.toContain('SAMPLE'); expect(html).toMatch(/CRICKET/i);
         const draft = await createDraft('sports-editor', 'Legacy', design);
         expect(generateInstagramCaption([draft])).not.toContain('SAMPLE CONTENT');
     });

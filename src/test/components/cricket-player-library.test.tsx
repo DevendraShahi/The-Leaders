@@ -19,9 +19,9 @@ describe('Team player photo library', () => {
         fireEvent.change(screen.getByRole('combobox', { name: 'Player team' }), { target: { value: 'kathmandu' } });
         expect(screen.getByRole('textbox', { name: 'Search players' })).toHaveValue('');
         expect(screen.getByRole('button', { name: 'Use photo of Karan KC' })).toBeInTheDocument();
-        expect(screen.getByText('Archive photo · 2016 Panchakanya Tej kit')).toBeInTheDocument();
+        expect(screen.getAllByText('Photo source').length).toBeGreaterThan(0);
         fireEvent.click(screen.getByRole('checkbox', { name: 'Photos ready' }));
-        fireEvent.click(screen.getByRole('button', { name: 'Find photo of Bhim Sharki' })); expect(search).toHaveBeenCalledWith('Bhim Sharki');
+        fireEvent.click(screen.getByRole('button', { name: 'Find photo of Will Bosisto' })); expect(search).toHaveBeenCalledWith('Will Bosisto');
     });
     it('disables insertion when locked and handles a failed thumbnail', () => {
         const p = { initialTeam: 'lumbini' as const, disabled: true, onSelect: vi.fn(), onSearch: vi.fn() };

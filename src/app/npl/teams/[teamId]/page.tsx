@@ -77,8 +77,31 @@ export default async function TeamPage({ params }: TeamPageProps) {
     (f) => f.teamId === team.id || f.opponentId === team.id
   );
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SportsTeam",
+    name: team.name,
+    alternateName: team.nameNe,
+    url: `https://theleaders.com.np/npl/teams/${team.id}`,
+    logo: `https://theleaders.com.np${team.logo}`,
+    sport: "Cricket",
+    coach: {
+      "@type": "Person",
+      name: team.coach,
+    },
+    athlete: team.players.map((p) => ({
+      "@type": "Person",
+      name: p.name,
+      jobTitle: p.role,
+    })),
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground pb-16">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* 1. TEAM HERO BANNER */}
       <section
         className="relative overflow-hidden border-b border-border/80 pt-8 pb-12 md:pt-12 md:pb-16"
