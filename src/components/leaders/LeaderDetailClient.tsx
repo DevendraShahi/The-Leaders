@@ -4,12 +4,13 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Twitter, Globe, Linkedin, MapPin, Calendar } from "lucide-react";
+import { ArrowLeft, Twitter, Globe, Linkedin, MapPin, Calendar, ExternalLink, BookOpen } from "lucide-react";
 import { ILeader } from "@/models/Leader";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString, type LanguageCode } from "@/lib/locales";
 import { cn } from "@/lib/utils";
 import { MarkdownContent } from "@/components/common/MarkdownContent";
+import { LEADER_PORTRAIT_MAP, LEADER_WIKI_MAP } from "@/components/home/NewsArchiveSpotlight";
 
 type LocalizedField = { en?: string; ne?: string } | string | null | undefined;
 
@@ -110,6 +111,9 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
     const hasBirthDate = !!leader.birthDate;
     const hasDeathDate = !!leader.deathDate;
 
+    const portraitImage = (leader.slug && LEADER_PORTRAIT_MAP[leader.slug]) || leader.image;
+    const wikiUrl = (leader.slug && LEADER_WIKI_MAP[leader.slug]) || (leader.name?.en ? `https://en.wikipedia.org/wiki/${encodeURIComponent(leader.name.en.replace(/\s+/g, "_"))}` : null);
+
     return (
         <div className="leader-canvas min-h-screen">
             {/* Hero Section - Full Width */}
@@ -121,7 +125,7 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
             >
                 <div className="relative h-[40vh] min-h-[300px] sm:h-[45vh] lg:h-[50vh]">
                     <Image
-                        src={leader.cover || leader.image || "/placeholder-cover.jpg"}
+                        src={leader.cover || portraitImage || "/the-leaders-banner.png"}
                         alt={name || "Leader profile"}
                         fill
                         priority
@@ -155,19 +159,45 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
                                 {tString(locale.backToRoster, language)}
                             </Link>
 
-                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
-                                <div>
-                                    {position && (
-                                        <span className="leader-badge leader-badge-primary mb-3">
-                                            {position}
-                                        </span>
+                            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-6">
+                                <div className="flex items-start gap-4 sm:gap-6">
+                                    {portraitImage && (
+                                        <div className="relative w-20 h-24 sm:w-24 sm:h-28 rounded-xs overflow-hidden border border-[var(--leader-border)] shrink-0 shadow-xs bg-muted/40">
+                                            <Image
+                                                src={portraitImage}
+                                                alt={name}
+                                                fill
+                                                className="object-cover object-top filter grayscale contrast-105 hover:grayscale-0 transition-all duration-500"
+                                                sizes="96px"
+                                            />
+                                        </div>
                                     )}
-                                    <h1 className={cn(
-                                        "leader-h1",
-                                        language === "ne" ? "font-semibold tracking-normal" : ""
-                                    )}>
-                                        {name}
-                                    </h1>
+                                    <div>
+                                        {position && (
+                                            <span className="leader-badge leader-badge-primary mb-3">
+                                                {position}
+                                            </span>
+                                        )}
+                                        <h1 className={cn(
+                                            "leader-h1",
+                                            language === "ne" ? "font-semibold tracking-normal" : ""
+                                        )}>
+                                            {name}
+                                        </h1>
+                                        {wikiUrl && (
+                                            <div className="mt-2.5">
+                                                <a
+                                                    href={wikiUrl}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono font-bold tracking-wider uppercase text-muted-foreground hover:text-foreground bg-muted/40 hover:bg-muted border border-border/70 rounded-xs transition-colors"
+                                                >
+                                                    <span>{language === "ne" ? "विकिपिडिया अभिलेख" : "Wikipedia Archive"}</span>
+                                                    <ExternalLink className="w-3 h-3" />
+                                                </a>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                                 {leader.isFeatured && (
                                     <span className="leader-badge leader-badge-secondary self-start">
@@ -324,6 +354,58 @@ export default function LeaderDetailClient({ leader }: { leader: ILeader }) {
                                     {tString(locale.noStats, language)}
                                 </p>
                             )}
+                        </div>
+
+                        {/* Archival Sources & Verification */}
+                        <div className="leader-card p-5">
+                            <h3 className="leader-h3 pb-3 mb-4 border-b border-[var(--leader-border)] flex items-center justify-between">
+                                <span className="flex items-center gap-2">
+                                    <BookOpen className="w-4 h-4 text-[var(--leader-accent)]" />
+                                    <span>{language === "ne" ? "ऐतिहासिक स्रोत तथा अभिलेख" : "Archival Sources & Verification"}</span>
+                                </span>
+                                <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+                            </h3>
+
+                            <div className="space-y-2.5">
+                                {(leader.dataSources && leader.dataSources.length > 0) ? (
+                                    leader.dataSources.map((source, idx) => (
+                                        <a
+                                            key={idx}
+                                            href={source.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block p-3 rounded-xs border border-[var(--leader-border)] bg-[var(--leader-surface)] hover:border-[var(--leader-accent)] transition-colors group"
+                                        >
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className="text-xs font-semibold text-foreground group-hover:text-[var(--leader-accent)]">
+                                                    {source.title || (language === "ne" ? "विकिपिडिया जीवनी अभिलेख" : "Wikipedia Biographical Archive")}
+                                                </span>
+                                                <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-[var(--leader-accent)] shrink-0" />
+                                            </div>
+                                            <p className="text-[10px] font-mono text-muted-foreground mt-1 truncate">
+                                                {source.url}
+                                            </p>
+                                        </a>
+                                    ))
+                                ) : wikiUrl ? (
+                                    <a
+                                        href={wikiUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="block p-3 rounded-xs border border-[var(--leader-border)] bg-[var(--leader-surface)] hover:border-[var(--leader-accent)] transition-colors group"
+                                    >
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="text-xs font-semibold text-foreground group-hover:text-[var(--leader-accent)]">
+                                                {language === "ne" ? "विकिपिडिया खुला ऐतिहासिक अभिलेख" : "Wikipedia Open Biographical Archive"}
+                                            </span>
+                                            <ExternalLink className="w-3 h-3 text-muted-foreground group-hover:text-[var(--leader-accent)] shrink-0" />
+                                        </div>
+                                        <p className="text-[10px] font-mono text-muted-foreground mt-1 truncate">
+                                            {wikiUrl}
+                                        </p>
+                                    </a>
+                                ) : null}
+                            </div>
                         </div>
                     </motion.aside>
                 </motion.div>

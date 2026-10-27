@@ -1,34 +1,37 @@
-import type { Metadata } from "next";
-import { Manrope, Bebas_Neue, Hind, Lora } from "next/font/google";
+import { Inter, Newsreader, Lora, Martel, Mukta } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const manrope = Manrope({
-    variable: "--font-manrope",
+const inter = Inter({
+    variable: "--font-inter",
     subsets: ["latin"],
-});
-
-const bebas = Bebas_Neue({
-    variable: "--font-bebas",
-    weight: "400",
-    subsets: ["latin"],
-});
-
-const hind = Hind({
-    variable: "--font-hind",
-    subsets: ["devanagari", "latin"],
     weight: ["300", "400", "500", "600", "700"],
 });
 
 const lora = Lora({
     variable: "--font-lora",
     subsets: ["latin"],
+    style: ["normal", "italic"],
     weight: ["400", "500", "600", "700"],
 });
 
-const knight = localFont({
-    src: "../../public/fonts/KnightWarrior.otf",
-    variable: "--font-knight",
+const newsreader = Newsreader({
+    variable: "--font-newsreader",
+    subsets: ["latin"],
+    style: ["normal", "italic"],
+    weight: ["400", "500", "600", "700", "800"],
+});
+
+const martel = Martel({
+    variable: "--font-martel",
+    subsets: ["devanagari", "latin"],
+    weight: ["400", "600", "700", "800", "900"],
+});
+
+const mukta = Mukta({
+    variable: "--font-mukta",
+    subsets: ["devanagari", "latin"],
+    weight: ["300", "400", "500", "600", "700"],
 });
 
 import { constructMetadata } from "@/lib/metadata";
@@ -133,7 +136,7 @@ export default async function RootLayout({
                 <UmamiScript />
             </head>
             <body
-                className={`${manrope.variable} ${bebas.variable} ${hind.variable} ${lora.variable} ${knight.variable} antialiased bg-background text-foreground`}
+                className={`${inter.variable} ${lora.variable} ${newsreader.variable} ${martel.variable} ${mukta.variable} antialiased bg-background text-foreground`}
             >
 
                 <script

@@ -45,3 +45,14 @@ mobile/dist/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local artifacts and builds
+The-Leaders-Mobile-App/
+Patch/
+*.apk
+Screenshot-*.png
+image.png
+critique.json
+POST_EDITOR_REVIEW.md
+SECURITY_FIXES_2026-10-08.md
+

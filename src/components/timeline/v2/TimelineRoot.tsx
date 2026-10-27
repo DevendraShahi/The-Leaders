@@ -81,8 +81,7 @@ export function TimelineRoot({ data }: TimelineRootProps) {
             className="fixed inset-0 z-50 overflow-hidden bg-background flex flex-col"
             onWheel={onWheel}
         >
-            {/* Background Layer - Static noise/texture */}
-            <div className="absolute inset-0 z-0 bg-[url('/noise.png')] opacity-5 pointer-events-none" />
+            {/* Background Layer */}
             <div className="absolute inset-0 z-0 bg-gradient-to-b from-background via-transparent to-background pointer-events-none" />
 
             {/* Moving Track */}

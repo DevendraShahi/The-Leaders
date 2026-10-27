@@ -23,9 +23,12 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
                     {/* Brand */}
                     <div className="space-y-4">
-                        <Link href="/" className="flex items-center gap-2 group w-fit">
-                            <span className="font-knight text-center text-5xl md:text-7xl text-primary tracking-wide leading-none transition-transform duration-300 group-hover:scale-105">
-                                THE <br /> LEADERS
+                        <Link href="/" className="flex flex-col group w-fit">
+                            <span className="font-serif font-black text-3xl md:text-4xl text-foreground tracking-tight uppercase transition-opacity duration-200 group-hover:opacity-75">
+                                THE LEADERS
+                            </span>
+                            <span className="text-[10px] font-mono tracking-widest uppercase text-muted-foreground mt-1">
+                                DEMOCRACY ARCHIVE · KATHMANDU
                             </span>
                         </Link>
                         <p className="text-muted-foreground text-sm leading-relaxed">
@@ -51,11 +54,6 @@ export function Footer({ socialLinks = [] }: { socialLinks?: any[] }) {
                                     nameEn: "Articles",
                                     nameNe: "लेखहरू",
                                     href: "/articles",
-                                },
-                                {
-                                    nameEn: "Daily",
-                                    nameNe: "कभरेज",
-                                    href: "/coverage/daily-brief",
                                 },
                                 {
                                     nameEn: "About Us",

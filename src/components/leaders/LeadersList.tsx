@@ -12,6 +12,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ILeader } from "@/models/Leader";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString, type LanguageCode } from "@/lib/locales";
+import { LEADER_PORTRAIT_MAP } from "@/components/home/NewsArchiveSpotlight";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -448,6 +449,7 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                                     ? tString(locale.card.legacyTag, language)
                                     : tString(locale.card.activeTag, language);
                                 const sequenceLabel = tString(locale.card.sequenceLabel, language).replace("{index}", String(index + 2));
+                                const portraitImage = (leader.slug && LEADER_PORTRAIT_MAP[leader.slug]) || leader.image;
 
                                 return (
                                     <article
@@ -499,10 +501,10 @@ export default function LeadersList({ leaders }: LeadersListProps) {
                                             </div>
 
                                             <div className="c-card__figure relative min-h-[340px] overflow-hidden border-t border-border/80 lg:min-h-full lg:border-l lg:border-t-0 lg:border-border/80">
-                                                {leader.image ? (
+                                                {portraitImage ? (
                                                     <>
                                                         <Image
-                                                            src={leader.image}
+                                                            src={portraitImage}
                                                             alt={resolveContent(leader.name, language)}
                                                             fill
                                                             className="object-cover object-top home-image-base"

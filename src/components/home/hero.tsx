@@ -64,9 +64,9 @@ export function Hero() {
                         className="group w-full sm:w-auto font-semibold tracking-widest uppercase shadow-sm"
                         asChild
                     >
-                        <Link prefetch={false} href="/coverage/daily-brief">
+                        <Link prefetch={false} href="/articles">
                             <span className="flex items-center">
-                                {isNepali ? "समयरेखा हेर्नुहोस्" : "VIEW TIMELINE"}
+                                {isNepali ? "लेखहरू पढ्नुहोस्" : "EXPLORE ARTICLES"}
                                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                             </span>
                         </Link>

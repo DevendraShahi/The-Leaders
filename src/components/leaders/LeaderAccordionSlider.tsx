@@ -8,6 +8,7 @@ import { ILeader } from "@/models/Leader";
 import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString, type LanguageCode } from "@/lib/locales";
 import { cn } from "@/lib/utils";
+import { LEADER_PORTRAIT_MAP } from "@/components/home/NewsArchiveSpotlight";
 
 type LocalizedField = { en?: string; ne?: string } | string | null | undefined;
 
@@ -130,13 +131,13 @@ export default function LeaderAccordionSlider({ leaders }: LeaderAccordionSlider
                 <div className="accordion-header-content">
                     <div className="accordion-title-section">
                         <p className="accordion-kicker">
-                            {isNepali ? "प्रोफाइल र विवरण" : "Profiles & Dossiers"}
+                            {isNepali ? "प्रोफाइल र जीवनी" : "Profiles & Biographies"}
                         </p>
                         <h1 className={cn(
                             "accordion-title",
                             isNepali ? "font-semibold tracking-normal" : ""
                         )}>
-                            {isNepali ? "स्तम्भहरू" : "The Leaders"}
+                            {isNepali ? "नेताहरू" : "The Leaders"}
                         </h1>
                         <p className="accordion-subtitle">
                             {isNepali 
@@ -320,7 +321,7 @@ export default function LeaderAccordionSlider({ leaders }: LeaderAccordionSlider
                         </svg>
                     </p>
                     <h3>{isNepali ? "केहि भेटिएन" : "No leaders found"}</h3>
-                    <p>{isNepali ? "तपाईंको खोजसँग मिल्ने स्तम्भहरू छैनन्" : "No leaders match your search"}</p>
+                    <p>{isNepali ? "तपाईंको खोजसँग मिल्ने नेताहरू छैनन्" : "No leaders match your search"}</p>
                     <button onClick={clearFilters} className="accordion-empty-btn">
                         {isNepali ? "फिल्टर हटाउनुहोस्" : "Clear filters"}
                     </button>
@@ -346,6 +347,7 @@ function LeaderCard({ leader, isActive, index, language, isNepali, onActivate }:
     const years = resolveContent(leader.years, language);
     const desc = resolveContent(leader.desc, language);
     const isLegacy = !leader.isActive || String(leader.status).toLowerCase() === "archived";
+    const imageSrc = (leader.slug && LEADER_PORTRAIT_MAP[leader.slug]) || leader.image;
 
     return (
         <article
@@ -353,9 +355,9 @@ function LeaderCard({ leader, isActive, index, language, isNepali, onActivate }:
             onClick={onActivate}
         >
             <div className="accordion-card-bg">
-                {leader.image ? (
+                {imageSrc ? (
                     <Image
-                        src={leader.image}
+                        src={imageSrc}
                         alt={name}
                         fill
                         className="accordion-card-image"

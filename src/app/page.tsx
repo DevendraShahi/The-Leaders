@@ -1,20 +1,24 @@
 import type { Metadata } from "next";
-import { Hero } from "@/components/home/hero";
-import { HeroMarquee } from "@/components/home/hero-marquee";
-import { LeadersGrid } from "@/components/home/LeadersGrid";
-import { NewsSection } from "@/components/home/news-section";
-import { HomeTasks } from "@/components/home/HomeTasks";
 import { NplHomeWidget } from "@/components/home/NplHomeWidget";
 import { getArticles } from "@/lib/data";
+import { getLeaders } from "@/lib/leaders-db";
+import { getLiveAndArchivalDispatches, getInvestigativeReports, getOpinionColumns, SOURCE_DISPLAY_MAP } from "@/lib/news-feed";
+import { NewsMasthead } from "@/components/home/NewsMasthead";
+import { NewsFrontPage } from "@/components/home/NewsFrontPage";
+import { NewsArchiveSpotlight } from "@/components/home/NewsArchiveSpotlight";
+import { NewsInvestigativeGrid } from "@/components/home/NewsInvestigativeGrid";
+import { NewsOpinionSection } from "@/components/home/NewsOpinionSection";
+import { NewsOnThisDay } from "@/components/home/NewsOnThisDay";
+import { NewsNewsletterBriefing } from "@/components/home/NewsNewsletterBriefing";
 
 import { constructMetadata } from "@/lib/metadata";
 import { getSettings } from "@/lib/maintenance-check";
 import { absoluteUrl } from "@/lib/seo";
 
-export const revalidate = 21600;
+export const revalidate = 300; // 5-minute revalidation for fresh breaking wire
 
 const HOME_DEFAULT_DESCRIPTION =
-  "The Leaders is Nepal’s archive of political leaders, democratic history, and the news.";
+  "The Leaders is Nepal’s archive of political leaders, democratic history, and editorial investigations.";
 
 function withLeadersNPAliasInTitle(text: string, fallback: string): string {
   const value = (text || fallback).trim();
@@ -49,7 +53,9 @@ export async function generateMetadata(): Promise<Metadata> {
       "Nepal political leaders",
       "Nepal news",
       "Nepal democracy archive",
-      "Nepal history",
+      "Nepal investigative journalism",
+      "Nepal politics",
+      "Constitutional history of Nepal",
     ])
   );
 
@@ -64,13 +70,47 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const articles = await getArticles(3);
+  const [articles, leaders, dispatches, investigativeReports, opinionColumns] = await Promise.all([
+    getArticles(12).catch(() => []),
+    getLeaders().catch(() => []),
+    getLiveAndArchivalDispatches(12).catch(() => []),
+    getInvestigativeReports(6).catch(() => []),
+    getOpinionColumns(3).catch(() => []),
+  ]);
+
+  const leadArticle = articles[0];
+  const secondaryArticles = articles.slice(1, 4);
+  const investigativeArticles = articles.slice(4);
+
+  // Construct dynamic ticker items with real-time breaking Nepal news and archival dispatches
+  const tickerItems = [
+    ...dispatches.map((d) => {
+      const srcName = d.source || "OnlineKhabar";
+      const srcMeta = SOURCE_DISPLAY_MAP[srcName] || { en: srcName, ne: srcName };
+      const srcEn = srcMeta.en.toUpperCase();
+      const srcNe = srcMeta.ne;
+
+      return {
+        title: d.title,
+        link: d.link || "/articles",
+        tag: d.isLiveFeed 
+          ? { en: `WIRE · ${srcEn}`, ne: `ताजा तार · ${srcNe}` }
+          : { en: "ARCHIVE BRIEF", ne: "अभिलेख ब्रिफ" },
+      };
+    }),
+    ...articles.slice(0, 3).map((a) => ({
+      title: a.title,
+      link: `/articles/${a.slug}`,
+      tag: a.category || "INVESTIGATION",
+    })),
+  ];
+
   const homePageJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "@id": absoluteUrl("/#webpage"),
     url: absoluteUrl("/"),
-    name: "LeadersNP | The Leaders Nepal",
+    name: "The Leaders | Nepal’s Political & Democratic Journalism Archive",
     description: HOME_DEFAULT_DESCRIPTION,
     inLanguage: ["en", "ne"],
     isPartOf: {
@@ -79,27 +119,72 @@ export default async function Home() {
     about: [
       { "@type": "Thing", name: "Nepal Politics" },
       { "@type": "Thing", name: "Nepal News" },
-      { "@type": "Thing", name: "Political Leadership in Nepal" },
+      { "@type": "Thing", name: "Democratic Leadership in Nepal" },
+      { "@type": "Thing", name: "Constitutional Governance" },
     ],
     publisher: {
       "@id": absoluteUrl("/#organization"),
     },
   };
 
-  // Home is a server component; language switching happens client-side.
-  // We keep this neutral and let child components handle localization.
+  const newsOrgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsMediaOrganization",
+    "@id": absoluteUrl("/#organization"),
+    name: "The Leaders",
+    url: absoluteUrl("/"),
+    logo: absoluteUrl("/logo.svg"),
+    sameAs: [
+      "https://facebook.com/theleadersnp",
+      "https://twitter.com/theleadersnp"
+    ],
+    publishingPrinciples: absoluteUrl("/about"),
+    diversityPolicy: absoluteUrl("/about"),
+    ethicsPolicy: absoluteUrl("/about")
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageJsonLd) }}
       />
-      <HeroMarquee />
-        <Hero />
-        <HomeTasks />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsOrgJsonLd) }}
+      />
+      <div className="w-full bg-background">
+        {/* Masthead, Live Dateline & Wire Ticker */}
+        <NewsMasthead tickerItems={tickerItems} />
+
+        {/* Front Page Broadsheet: Lead Story, Top Stories & 24h Wire Dispatch */}
+        <NewsFrontPage 
+          leadArticle={leadArticle} 
+          secondaryArticles={secondaryArticles} 
+          briefs={dispatches} 
+        />
+
+        {/* Archival Statesmen Spotlight */}
+        <NewsArchiveSpotlight leaders={leaders} />
+
+        {/* In-Depth Policy & Investigative Reporting Grid */}
+        <NewsInvestigativeGrid 
+          reports={investigativeReports}
+          articles={investigativeArticles.length >= 3 ? investigativeArticles : articles} 
+        />
+
+        {/* Nepal Premier League 2026 Live Hub & Player Dossiers */}
         <NplHomeWidget />
-        <LeadersGrid />
-        <NewsSection articles={articles} />
+
+        {/* Opinion & Editorial Perspectives from Scholars & Columnists */}
+        <NewsOpinionSection opinions={opinionColumns} />
+
+        {/* Chronicles of Democracy: Pivotal Historic Milestones */}
+        <NewsOnThisDay />
+
+        {/* The Leaders Morning Dispatch Briefing Subscription */}
+        <NewsNewsletterBriefing />
+      </div>
     </>
   );
 }

@@ -8,6 +8,7 @@ import { useLanguage } from "@/components/providers/language-provider";
 import { LOCALES, tString } from "@/lib/locales";
 import { cn } from "@/lib/utils";
 import { Card, CardContent } from "@/components/ui/card";
+import { LEADER_PORTRAIT_MAP } from "@/components/home/NewsArchiveSpotlight";
 
 interface Leader {
     _id?: string;
@@ -99,7 +100,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
     return (
         <section id="home-section-3" className="relative overflow-hidden bg-secondary py-20 sm:py-32">
             <div className="container relative z-10 mx-auto mb-10 px-4 sm:mb-16">
-                <p className="home-kicker mb-4 text-primary font-bold">{language === "en" ? "Profiles & Dossiers" : "प्रोफाइल र विवरण"}</p>
+                <p className="home-kicker mb-4 text-primary font-bold">{language === "en" ? "Profiles & Biographies" : "प्रोफाइल र जीवनी"}</p>
 
                 <h2
                     className={cn(
@@ -156,7 +157,7 @@ export function LeadersGridClient({ leaders }: LeadersGridClientProps) {
                                         )}
                                     >
                                         <Image
-                                            src={leader.image || "/placeholder-leader.jpg"}
+                                            src={(leader.slug && LEADER_PORTRAIT_MAP[leader.slug]) || leader.image || "/the-leader.png"}
                                             alt={leaderName || fallbackName}
                                             fill
                                             className="object-cover object-top"

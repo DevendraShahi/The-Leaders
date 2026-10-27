@@ -4,7 +4,7 @@ import path from "path";
 const ROOT = process.cwd();
 const APP_DIR = path.join(ROOT, "src", "app");
 
-const EXCLUDED_SEGMENTS = new Set(["api", "admin"]);
+const EXCLUDED_SEGMENTS = new Set(["api", "admin", "sign-in", "sign-up"]);
 
 function walk(dir) {
     const out = [];

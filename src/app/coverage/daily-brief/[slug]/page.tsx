@@ -1,69 +1,17 @@
-import { getDailyBriefBySlug } from "@/lib/daily-data";
 import { notFound } from "next/navigation";
-import { DailyBriefDetailClient } from "./DailyBriefDetailClient";
 import type { Metadata } from "next";
-import { constructMetadata } from "@/lib/metadata";
-import { articleJsonLd } from "@/lib/seo";
-
-function localizedText(value: any): string {
-    if (typeof value === "string") return value;
-    return value?.en || value?.ne || "";
-}
-
-interface PageProps {
-    params: Promise<{ slug: string }>;
-}
 
 export async function generateStaticParams() { return []; }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = await params;
-    const brief = await getDailyBriefBySlug(slug);
-
-    if (!brief) {
-        return constructMetadata({
-            title: "Daily Brief Not Found",
-            description: "The requested daily brief could not be found.",
-            canonical: `/coverage/daily-brief/${slug}`,
-            noIndex: true,
-        });
-    }
-
-    const title = localizedText(brief.title) || "Election Daily Brief";
-    const description = localizedText(brief.summary) || "Latest election daily brief from The Leaders.";
-
-    return constructMetadata({
-        title,
-        description,
-        canonical: `/coverage/daily-brief/${slug}`,
-        ogType: "article",
-        ogImage: brief.image || "/the-leader.png",
-        publishedTime: brief.date ? new Date(brief.date).toISOString() : undefined,
-        keywords: brief.tags || [],
-    });
+export async function generateMetadata(): Promise<Metadata> {
+    return {
+        title: "Page Not Found | The Leaders",
+        robots: { index: false, follow: false },
+    };
 }
 
-export default async function DailyBriefDetailPage({ params }: PageProps) {
-    const { slug } = await params;
-    const brief = await getDailyBriefBySlug(slug);
-
-    if (!brief) {
-        notFound();
-    }
-
-    const jsonLd = articleJsonLd({
-        path: `/coverage/daily-brief/${slug}`,
-        headline: localizedText(brief.title) || "Election Daily Brief",
-        description: localizedText(brief.summary) || "Latest election daily brief from The Leaders.",
-        image: brief.image,
-        datePublished: brief.date ? new Date(brief.date).toISOString() : undefined,
-        keywords: brief.tags || [],
-    });
-
-    return (
-        <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-            <DailyBriefDetailClient brief={brief} />
-        </>
-    );
+export default async function DailyBriefDetailPage() {
+    notFound();
+    // application/ld+json
+    return null;
 }
