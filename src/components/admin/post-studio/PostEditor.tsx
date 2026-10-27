@@ -1,4 +1,5 @@
 "use client";
+import { coverageIds, coverageCopy, coverageIssues, isCoverageTemplate } from '@/lib/post-studio/coverage-posts';
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
 import { AlertTriangle, ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Info, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, RotateCcw, Share2, Shield, ShieldAlert, Sparkles, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
@@ -109,9 +110,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     } | null>(null);
     const activeSlideIndex = Math.max(0, slides.findIndex(item => item.id === activeId));
     const activeSlide = slides[activeSlideIndex], design = activeSlide.design;
-    const managedMatchday = design.template === 'cricket' && ['matchday', 'fixtures', 'head-to-head', 'score', ...prematchIds, ...momentIds, ...phaseIds].includes(design.cricket?.template ?? '');
-    const matchdayProblems = [...matchdayIssues(design), ...fixturesPostIssues(design), ...headToHeadIssues(design), ...prematchIssues(design), ...scoreUpdateIssues(design), ...momentIssues(design), ...phaseIssues(design)];
-    const managedCopy = phaseIds.some(id => id === design.cricket?.template) ? phaseCopy : momentIds.some(id => id === design.cricket?.template) ? momentCopy : design.cricket?.template === 'score' ? scoreCopy : prematchIds.some(id => id === design.cricket?.template) ? prematchCopy : design.cricket?.template === 'fixtures' ? fixturesCopy : design.cricket?.template === 'head-to-head' ? headToHeadCopy : matchdayCopy;
+    const managedMatchday = design.template === 'cricket' && ['matchday', 'fixtures', 'head-to-head', 'score', ...prematchIds, ...momentIds, ...phaseIds, ...coverageIds].includes(design.cricket?.template ?? '');
+    const matchdayProblems = [...matchdayIssues(design), ...fixturesPostIssues(design), ...headToHeadIssues(design), ...prematchIssues(design), ...scoreUpdateIssues(design), ...momentIssues(design), ...phaseIssues(design), ...coverageIssues(design)];
+    const managedCopy = isCoverageTemplate(design.cricket?.template ?? '') ? coverageCopy : phaseIds.some(id => id === design.cricket?.template) ? phaseCopy : momentIds.some(id => id === design.cricket?.template) ? momentCopy : design.cricket?.template === 'score' ? scoreCopy : prematchIds.some(id => id === design.cricket?.template) ? prematchCopy : design.cricket?.template === 'fixtures' ? fixturesCopy : design.cricket?.template === 'head-to-head' ? headToHeadCopy : matchdayCopy;
     const tools = design.template === 'cricket' ? [{ key: 'cricket' as const, label: 'Match', Icon: Trophy }, ...baseTools] : baseTools;
     const field = fields.find(item => item.layer === selected) ?? fields[0];
     const craft = getStudioCraft(design.template);
@@ -179,6 +180,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 action: 'fitText',
                 actionLabel: 'Auto-fit Text Now'
             };
+        }
+        if (!options?.isAll && matchdayProblems.length) {
+            return { title: 'Check Post Content', message: matchdayProblems.join(' '), type: 'warning' };
         }
         return null;
     };
@@ -454,7 +458,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const selectPlayerPhoto = async (player: NplPlayer) => {
         if (!player.photo?.url || mediaLocked || !ready || busy || exporting || operation.current) return;
         const subject = playerPhotoSubject(currentDesign()), targetId = activeIdRef.current;
-        if (!addAsOverlay && subject && subject.teamId !== player.teamId) { setIssue('Choose a photo from the named player’s team.'); return; }
+        const cricket = currentDesign().cricket;
+        if (!addAsOverlay && subject && cricket && ![cricket.teamId, cricket.opponentId].includes(player.teamId)) { setIssue('Choose a player from one of this match’s two teams.'); return; }
         operation.current = true; setBusy(true); setIssue('');
         try {
             const response = await fetch(player.photo.url);
@@ -533,7 +538,6 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             }
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Export failed.';
-            setIssue(message);
             setExportAlert({
                 title: 'Export Failed',
                 message,
@@ -573,7 +577,6 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             setNotice('Carousel ZIP downloaded.');
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Carousel export failed.';
-            setIssue(message);
             setExportAlert({
                 title: 'Carousel Export Failed',
                 message,

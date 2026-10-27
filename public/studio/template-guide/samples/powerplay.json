@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Powerplay",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "powerplay",
+      "teamId": "lumbini",
+      "headline": "POWERPLAY COMPLETE",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "runs": 48,
+        "wickets": 1,
+        "overs": "6",
+        "powerplayOvers": "6"
+      }
+    }
+  ]
+}

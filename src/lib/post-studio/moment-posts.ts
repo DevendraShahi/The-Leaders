@@ -1,3 +1,4 @@
+import { cricketTeamIssues } from './cricket-team-context';
 import { blankCricketData } from './cricket-data';
 import { cricketTemplate, type CricketLanguage, type NplTeamId } from './cricket-catalog';
 import type { PostDesign } from './types';
@@ -10,22 +11,22 @@ export const bowlerCreditedTypes = ['bowled', 'caught', 'lbw', 'stumped', 'hit-w
 export function momentIssues(design: PostDesign): string[] {
     const data = design.cricket;
     if (design.template !== 'cricket' || !data || !momentIds.includes(data.template as MomentId)) return [];
-    const issues: string[] = [];
+    const issues: string[] = cricketTeamIssues(data);
     if (!design.headline.trim() || design.hiddenLayers.includes('headline')) issues.push('Show the event headline before exporting.');
     if (design.headline.length > momentCopy.headline) issues.push('Keep the headline within 48 characters.');
-    if (design.summary.length > momentCopy.summary) issues.push('Keep supporting copy within 100 characters.');
-    if (!data.matchDate) issues.push('Confirm the match date for this event.');
+    if (!design.hiddenLayers.includes('supporting') && design.summary.length > momentCopy.summary) issues.push('Keep supporting copy within 100 characters.');
     if (data.runs === null || data.wickets === null || !data.overs) issues.push('Confirm runs, wickets and overs immediately after this event.');
     if (!data.batter.name.trim()) issues.push('Confirm the batter for this event.');
     if ((data.template === 'four' || data.template === 'six') && data.runs !== null && data.runs < (data.template === 'four' ? 4 : 6)) issues.push('The post-event team total cannot be below this boundary value.');
     if (data.template === 'wicket') {
+        if (data.runs !== null && data.batter.runs !== null && data.batter.runs > data.runs) issues.push('The dismissed batter’s innings runs cannot exceed the team total.');
+        if (data.batter.runs !== null && (data.batter.fours ?? 0) * 4 + (data.batter.sixes ?? 0) * 6 > data.batter.runs) issues.push('The dismissed batter’s boundary runs cannot exceed their innings runs.');
         if (!data.wicketType) issues.push('Confirm the dismissal type.');
         if (!data.dismissal.trim()) issues.push('Add the confirmed dismissal details.');
         if (data.wickets === 0) issues.push('A wicket event must show at least one wicket lost.');
         if (data.batter.notOut) issues.push('The dismissed batter cannot be marked not out.');
         if (data.wicketType && bowlerCreditedTypes.includes(data.wicketType) && !data.bowler.name.trim()) issues.push('Name the credited bowler for this dismissal.');
     }
-    if (![data.sourceUrl, ...(design.sourceUrls ?? [])].some(url => /^https?:\/\/[^\s]+$/.test(url))) issues.push('Add the source for this specific match event.');
     return issues;
 }
 export function rebindMoment(design: PostDesign, teamId: NplTeamId, opponentId: NplTeamId, matchDate = design.cricket?.matchDate ?? ''): PostDesign {

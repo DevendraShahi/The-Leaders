@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Toss update",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "toss",
+      "headline": "TOSS UPDATE",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "toss": {
+          "winnerId": "sudurpaschim",
+          "decision": "bowl"
+        }
+      }
+    }
+  ]
+}

@@ -48,7 +48,7 @@ export function editionDrafts(edition: DailyEdition) {
 }
 
 export function editionCaption(edition: DailyEdition) {
-    return `${edition.caption.ne}\n\n${edition.caption.en}\n\nSources / स्रोत:\n${edition.sources.map(source => `${source.name}: ${source.url}`).join('\n')}`;
+    return `${edition.caption.ne}\n\n${edition.caption.en}`;
 }
 
 /**
@@ -128,8 +128,7 @@ export function generateInstagramCaption(slides: PostDraft[]): string {
         first.template.startsWith("book") ? "#BookReview #GoodReads" : "",
     ].filter(Boolean).join(" ");
 
-    const sources = [...new Set(slides.flatMap(slide => slide.design.sourceUrls ?? []))];
-    return `${cleanEyebrow}⚡ ${cleanHeadline}\n\n${cleanSummary}${slideSummaries}Swipe through the carousel for the full analysis.${sources.length ? `\n\nSources:\n${sources.join('\n')}` : ''}\n\n—\nAnalysis by The Leaders Editorial\n🌐 theleaders.com.np\n\n${hashtags}`;
+    return `${cleanEyebrow}⚡ ${cleanHeadline}\n\n${cleanSummary}${slideSummaries}Swipe through the carousel for the full analysis.\n\n—\nAnalysis by The Leaders Editorial\n🌐 theleaders.com.np\n\n${hashtags}`;
 }
 
 /**

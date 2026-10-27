@@ -7,6 +7,8 @@ import { createCricketDesign, createCricketDraftDesign } from '@/lib/post-studio
 import { createDraftCollection, type PostDraft } from '@/lib/post-studio/drafts';
 import { cricketStyles, postOutputDimensions, type PostFormat, type CricketStyle } from '@/lib/post-studio/types';
 import { findPlayers, playerPhotoCredit } from '@/lib/post-studio/cricket-players';
+import { lineupProblems } from '@/lib/post-studio/prematch-posts';
+import { resolveResponseTeam } from '@/lib/post-studio/cricket-team-context';
 import { Artwork } from './Artwork';
 import PromptCreationModal from './PromptCreationModal';
 import { applyCricketFixture, cricketFixtures, cricketPlayoffs, cricketRestDays, fixtureLabel, fixtureScheduleSource, fixtureTimingSource, fixturesForDate, nepalDate, playoffFixture } from '@/lib/post-studio/cricket-fixtures';
@@ -23,6 +25,7 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
     const [setupExpanded, setSetupExpanded] = useState(false);
     const [promptOpen, setPromptOpen] = useState(false);
     const [contentType, setContentType] = useState<CricketTemplateId>('matchday');
+    const [pastedLineup, setPastedLineup] = useState({ context: '', value: '' });
     const [visualStyle, setVisualStyle] = useState<CricketStyle>('stadium');
     const [fixtureDate, setFixtureDate] = useState(() => nepalDate());
     const [fixtureChoice, setFixtureChoice] = useState(() => { const games = fixturesForDate(fixtureDate); return games.length === 1 ? games[0].id : ''; });
@@ -40,6 +43,10 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
     const [language, setLanguage] = useState<CricketLanguage>('en'), [format, setFormat] = useState<PostFormat>('portrait');
     const [category, setCategory] = useState<CricketCategory | 'All'>('All'), [query, setQuery] = useState('');
     const [pack, setPack] = useState('match'), [busy, setBusy] = useState(false), [error, setError] = useState('');
+    const lineupContext = `${fixtureDate}:${fixtureChoice}:${teamId}:${opponentId}`;
+    const lineupText = pastedLineup.context === lineupContext ? pastedLineup.value : '';
+    const lineup = lineupText.split('\n').map(name => name.trim()).filter(Boolean);
+    const lineupErrors = lineup.length ? [...lineupProblems(lineup), ...(lineup.some(name => name.length > 90) ? ['Keep each player name under 90 characters.'] : [])] : [];
     const gridRef = useRef<HTMLDivElement>(null);
     const [previewSize, setPreviewSize] = useState({ width: 160, height: 200 });
     const chooseFixture = (id: string) => {
@@ -65,6 +72,7 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
         return () => observer.disconnect();
     }, [visible.length]);
     const create = async (ids: CricketTemplateId[]) => {
+        if (ids.includes('playing-xi') && lineupErrors.length) { setError(lineupErrors.join(' ')); return; }
         if (creationLock.current) return; creationLock.current = true; setBusy(true); setError('');
         try {
             const carouselId = `cricket-${Date.now().toString(36)}-${crypto.randomUUID().slice(0, 8)}`;
@@ -74,6 +82,12 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
                 design: (() => {
                     const chosen = fixture ?? (id === 'fixtures' ? dayGames[0] : undefined);
                     const draft = createCricketDraftDesign(id, id === 'fixtures' && chosen ? chosen.teamId : teamId, id === 'fixtures' && chosen ? chosen.opponentId : opponentId, format, language, visualStyle);
+                    if (id === 'playing-xi' && lineup.length) {
+                        const matched = chosen ? applyCricketFixture(draft, chosen) : draft;
+                        const resolved = resolveResponseTeam({ ...matched.cricket!, matchDate: fixtureDate, lineup }).data;
+                        const resolvedTeam = nplTeams.find(team => team.id === resolved.teamId)!;
+                        return { ...matched, accent: resolvedTeam.primary, backgroundColor: resolvedTeam.dark, cricket: resolved };
+                    }
                     if (chosen) return applyCricketFixture(draft, chosen);
                     return id === 'fixtures' ? { ...draft, cricket: { ...draft.cricket!, matchDate: fixtureDate } } : draft;
                 })(),
@@ -94,6 +108,7 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
                     <span className={css.kitEyebrow}>THE LEADERS / CRICKET DESK</span>
                     <h1>Cricket desk</h1>
                     <p>Select the post type and teams. Studio prepares the prompt for you.</p>
+                    <a href="/studio/template-guide/index.html" target="_blank" rel="noopener noreferrer" className={css.backLink}>Editor field guide · examples for every template <ArrowUpRight size={14} /></a>
                 </div>
             </div>
         </header>
@@ -105,7 +120,8 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
             <label className={css.kitLabel}><span>Post content type</span><select value={contentType} disabled={busy} onChange={event => setContentType(event.target.value as CricketTemplateId)}>{categories.filter(category => category !== 'All').map(category => <optgroup key={category} label={category}>{cricketTemplates.filter(item => item.category === category).map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</optgroup>)}</select></label>
             <label className={css.kitLabel}><span>Featured team</span><select value={teamId} disabled={busy || !fixtureChoice} onChange={event => { const next = event.target.value as NplTeamId; setTeamId(next); if (next === opponentId) setOpponentId(teamId); }}>{nplTeams.filter(team => !selectedFixture || [selectedFixture.teamId, selectedFixture.opponentId].includes(team.id)).map(team => <option key={team.id} value={team.id}>{team.name}</option>)}</select></label>
             <label className={css.kitLabel}><span>Opponent</span><select value={opponentId} disabled={busy || !fixtureChoice || Boolean(selectedFixture)} onChange={event => setOpponentId(event.target.value as NplTeamId)}>{nplTeams.filter(team => team.id !== teamId && (!selectedFixture || [selectedFixture.teamId, selectedFixture.opponentId].includes(team.id))).map(team => <option key={team.id} value={team.id}>{team.name}</option>)}</select></label>
-            <button className={styles.primary} disabled={busy || (contentType === 'fixtures' ? !dayGames.length && !restDay && fixtureChoice !== 'custom' : !fixtureChoice)} onClick={() => contentType === 'fixtures' ? void create(['fixtures']) : setPromptOpen(true)}>{contentType === 'fixtures' ? 'Create fixtures post' : 'New cricket post'}</button>
+            {contentType === 'playing-xi' && <label className={css.kitLabel} style={{ gridColumn: '1 / -1' }}><span id="playing-xi-label">Playing XI names (optional)</span><textarea aria-labelledby="playing-xi-label" rows={6} maxLength={2000} value={lineupText} disabled={busy} aria-describedby="playing-xi-hint" onChange={event => { setPastedLineup({ context: lineupContext, value: event.target.value }); setError(''); }} placeholder="Paste eleven names, one per line" /><small id="playing-xi-hint">One player per line. Add (c) and (wk) if confirmed. Paste all eleven to create the post directly, or leave blank to use the prompt.</small>{lineupErrors.length > 0 && <small role="alert">{lineupErrors.join(' ')}</small>}</label>}
+            <button className={styles.primary} disabled={busy || (contentType === 'playing-xi' && lineupErrors.length > 0) || (contentType === 'fixtures' ? !dayGames.length && !restDay && fixtureChoice !== 'custom' : !fixtureChoice)} onClick={() => contentType === 'fixtures' || (contentType === 'playing-xi' && lineup.length) ? void create([contentType]) : setPromptOpen(true)}>{contentType === 'fixtures' ? 'Create fixtures post' : contentType === 'playing-xi' && lineup.length ? 'Create Playing XI post' : 'New cricket post'}</button>
             {contentType === 'fixtures' && <button className={styles.button} disabled={busy || !promptFixture} onClick={() => setPromptOpen(true)}>Use prompt instead</button>}
             <div className={css.fixtureNote}>{fixture ? <><strong>{fixture.label ?? `Match ${fixture.matchNumber}`} · {fixture.startTime ? `${fixture.startTime} NPT` : 'Start time to confirm'}</strong><span>{fixture.venue}</span></> : <span>{playoff ? `${playoff.label} · ${playoff.participants}. Select the confirmed participants; teams are not inferred from standings.` : restDay ? 'Rest day on your fixture sheet. No match is scheduled.' : fixtureChoice === 'custom' ? 'Choose the teams for your custom match.' : dayGames.length > 1 ? 'Two games today. Select the specific game before creating a post.' : 'Choose a scheduled game or use Custom match.'}</span>}
                 <details><summary>Schedule source and start time</summary><a href={fixtureScheduleSource} target="_blank" rel="noreferrer">Your Season III fixture sheet</a><p>The sheet lists 12:30 and 16:30. A <a href={fixtureTimingSource} target="_blank" rel="noreferrer">reported revision</a> lists evening games at 17:00. Confirm or adjust the selected game's time here.</p>{fixture && <label className={css.kitLabel}><span>Start time · Nepal</span><input type="time" value={fixture.startTime} disabled={busy} onChange={event => setTimeOverride(event.target.value)} /></label>}</details>

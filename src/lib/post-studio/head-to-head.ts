@@ -18,7 +18,7 @@ export function headToHeadIssues(design: PostDesign): string[] {
     const data = design.cricket, record = data.headToHead, issues: string[] = [];
     if (!design.headline.trim()) issues.push('Head to Head headline is required.');
     if (design.headline.length > headToHeadCopy.headline) issues.push('Keep the Head to Head headline within 48 characters.');
-    if (design.summary.length > headToHeadCopy.summary) issues.push('Keep the supporting line within 100 characters.');
+    if (!design.hiddenLayers.includes('supporting') && design.summary.length > headToHeadCopy.summary) issues.push('Keep the supporting line within 100 characters.');
     if (design.hiddenLayers.includes('headline')) issues.push('Show the Head to Head headline before exporting.');
     if (data.teamId === data.opponentId) issues.push('Choose two different teams.');
     if (!record) return [...issues, 'Enter the paired Head to Head record. Legacy statistic rows are retained but cannot establish each team’s wins.'];
@@ -27,6 +27,5 @@ export function headToHeadIssues(design: PostDesign): string[] {
     else if (record.played !== record.teamWins! + record.opponentWins! + record.ties! + record.noResults!) issues.push('Both win counts, ties and no results must add up to matches played.');
     if (!record.asOf) issues.push('Add the record cutoff date.');
     if (record.asOf && data.matchDate && record.asOf >= data.matchDate) issues.push('The record cutoff must be before the selected fixture date.');
-    if (![data.sourceUrl, ...(design.sourceUrls ?? [])].some(url => /^https?:\/\/[^\s]+$/.test(url))) issues.push('Add a source URL for the historical record.');
     return issues;
 }

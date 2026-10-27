@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Scorecard",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "scorecard",
+      "teamId": "lumbini",
+      "headline": "THE SCORECARD",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "runs": 128,
+        "wickets": 3,
+        "overs": "14.2",
+        "batting": [
+          {
+            "name": "Rohit Paudel",
+            "runs": 68,
+            "balls": 42,
+            "fours": 6,
+            "sixes": 3,
+            "notOut": true
+          },
+          {
+            "name": "Aakash Tripathi",
+            "runs": 45,
+            "balls": 31,
+            "fours": 4,
+            "sixes": 1,
+            "notOut": true
+          }
+        ],
+        "bowling": [
+          {
+            "name": "Dipendra Singh Airee",
+            "overs": "4",
+            "maidens": 0,
+            "runs": 24,
+            "wickets": 2
+          },
+          {
+            "name": "Abinash Bohara",
+            "overs": "4",
+            "maidens": 0,
+            "runs": 24,
+            "wickets": 1
+          }
+        ]
+      }
+    }
+  ]
+}

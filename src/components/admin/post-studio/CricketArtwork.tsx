@@ -1,5 +1,8 @@
 "use client";
 
+import { cricketTeamIssues } from '@/lib/post-studio/cricket-team-context';
+import { isCoverageTemplate } from '@/lib/post-studio/coverage-posts';
+import { CoverageArtwork } from './CoverageArtwork';
 import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import { hasDevanagari } from '@/lib/post-studio/typography';
 import { artworkTextStyle } from '@/lib/post-studio/artwork-text';
@@ -28,6 +31,7 @@ export type CricketArtworkProps = {
     selectedPlacedImageId?: string; onSelectPlacedImage?: (id: string) => void;
 };
 export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
+    if (design.cricket && isCoverageTemplate(design.cricket.template)) return <CoverageArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.cricket?.template === 'partnership') return <PartnershipArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.cricket && ['powerplay', 'partnership'].includes(design.cricket.template)) return <PhaseArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.cricket?.template === 'matchday') return <MatchdayArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
@@ -246,9 +250,8 @@ export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({
                 </div>{data.template === 'team' && stats(data.statRows.map(row => [row.label, row.value]))}</>;
         }
     };
-    const sourceHost = (() => { try { return data.sourceUrl ? new URL(data.sourceUrl).hostname.replace(/^www\./, '') : ''; } catch { return ''; } })();
     const updateTime = data.updatedAt ? new Date(data.updatedAt).toLocaleTimeString(data.language === 'ne' ? 'ne-NP' : 'en-GB', { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: false }) : '';
-    return <div ref={ref} data-testid="post-artwork" data-cricket-template={data.template} className={`${css.artwork} ${landscape ? css.landscape : ''} ${compact ? css.square : ''} ${design.format === 'story' ? css.story : ''}`} style={{ width: 360, height, background: design.backgroundGradient || design.backgroundColor || team.dark, '--cricket-accent': design.accent, '--cricket-secondary': team.secondary, textAlign: design.textAlign, fontFamily: data.language === 'ne' ? 'Hind_400Regular,sans-serif' : 'Onest_400Regular,sans-serif' } as CSSProperties}>
+    return <div ref={ref} data-testid="post-artwork" data-cricket-template={data.template} data-export-error={cricketTeamIssues(data).join(' ')} className={`${css.artwork} ${landscape ? css.landscape : ''} ${compact ? css.square : ''} ${design.format === 'story' ? css.story : ''}`} style={{ width: 360, height, background: design.backgroundGradient || design.backgroundColor || team.dark, '--cricket-accent': design.accent, '--cricket-secondary': team.secondary, textAlign: design.textAlign, fontFamily: data.language === 'ne' ? 'Hind_400Regular,sans-serif' : 'Onest_400Regular,sans-serif' } as CSSProperties}>
         <ArtworkPhoto design={design} height={height} />
         <div className={css.atmosphere} style={data.theme === 'split' ? { background: `linear-gradient(125deg,${team.dark}b0 45%,${opponent.dark}d9 45%)` } : undefined} />
         {design.imageUri && !hidden('visual') && <div className={css.photoShade} style={{ background: design.imageTone === 'clear' ? 'linear-gradient(0deg,#030713dd,transparent 85%)' : design.imageTone === 'warm' ? 'linear-gradient(0deg,#251408ee,#25140855)' : 'linear-gradient(0deg,#030713f5,#03071366)' }} />}
@@ -273,7 +276,7 @@ export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({
             <div className={`${css.body} ${css['layout' + spec.layout]}`} data-export-fit>{renderBody()}{!hidden('supporting') && design.summary && <div {...select('supporting')} className={`${css.note} ${selectedClass('supporting')}`} style={textStyle('supporting', landscape ? 8 : 10, design.summary)} data-line-limit={textLineLimit(design.format, 'supporting', 'cricket')}>{design.summary}</div>}</div>
             {!hidden('footer') && <footer {...select('footer')} className={`${css.footer} ${selectedClass('footer')}`} style={textStyle('footer', landscape ? 5 : 6, design.author)}>
                 <span>{design.author}</span>
-                <span>{updateTime ? `${updateTime} NPT` : data.matchDate || 'NPL'}{sourceHost ? ` · ${sourceHost}` : ''}</span>
+                <span>{updateTime ? `${updateTime} NPT` : data.matchDate || 'NPL'}</span>
             </footer>}
         </div>
         <ArtworkPlacedImages layerFilter="front" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />

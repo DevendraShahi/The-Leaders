@@ -16,7 +16,7 @@ export function fixturesPostIssues(design: PostDesign): string[] {
     if (!design.headline.trim()) issues.push('Fixtures headline is required.');
     if (!data.matchDate) issues.push('Choose the Nepal date for this fixtures post.');
     if (design.headline.length > fixturesCopy.headline) issues.push('Keep the Fixtures headline within 48 characters.');
-    if (design.summary.length > fixturesCopy.summary) issues.push('Keep the supporting line within 100 characters.');
+    if (!design.hiddenLayers.includes('supporting') && design.summary.length > fixturesCopy.summary) issues.push('Keep the supporting line within 100 characters.');
     if (design.hiddenLayers.includes('headline')) issues.push('Show the Fixtures headline before exporting.');
     if (data.fixtures.length > 2) issues.push('Use one Nepal date and at most two games per fixtures post. Split longer schedules into pages.');
     if (!data.fixtures.length && !cricketRestDays.includes(data.matchDate)) issues.push('Add the confirmed games for this date. An empty list does not establish a rest day.');

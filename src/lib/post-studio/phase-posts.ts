@@ -1,3 +1,4 @@
+import { cricketTeamIssues } from './cricket-team-context';
 import { blankCricketData, oversToBalls, type CricketData } from './cricket-data';
 import type { CricketLanguage, NplTeamId } from './cricket-catalog';
 import type { PostDesign } from './types';
@@ -27,17 +28,15 @@ export function phaseContradictions(data: CricketData): string[] {
 export function phaseIssues(design: PostDesign): string[] {
  const data = design.cricket;
  if (design.template !== 'cricket' || !data || !phaseIds.includes(data.template as PhaseId)) return [];
- const issues = phaseContradictions(data);
+ const issues = [...phaseContradictions(data), ...cricketTeamIssues(data)];
  if (!design.headline.trim() || design.hiddenLayers.includes('headline')) issues.push('Show the phase headline before exporting.');
- if (design.headline.length > phaseCopy.headline || design.summary.length > phaseCopy.summary) issues.push('Keep the headline within 48 characters and supporting copy within 100.');
- if (!data.matchDate) issues.push('Confirm this match date.');
+ if (design.headline.length > phaseCopy.headline || (!design.hiddenLayers.includes('supporting') && design.summary.length > phaseCopy.summary)) issues.push('Keep the headline within 48 characters and supporting copy within 100.');
  if (data.runs === null || data.wickets === null || !data.overs) issues.push('Confirm the batting team score and overs for this snapshot.');
- if (data.template === 'powerplay' && !data.powerplayOvers) issues.push('Confirm the actual powerplay duration from the match source.');
+ if (data.template === 'powerplay' && !data.powerplayOvers) issues.push('Confirm the actual powerplay duration from the match.');
  if (data.template === 'partnership') {
   if (!data.batter.name.trim() || !data.secondBatter.name.trim()) issues.push('Name both partnership batters.');
   if (data.partnershipRuns === null || data.partnershipBalls === null) issues.push('Confirm partnership runs and balls.');
  }
- if (![data.sourceUrl, ...(design.sourceUrls ?? [])].some(url => /^https?:\/\/[^\s]+$/.test(url))) issues.push('Add a source for this match snapshot.');
  return issues;
 }
 export function rebindPhase(design: PostDesign, teamId: NplTeamId, opponentId: NplTeamId, matchDate = design.cricket?.matchDate ?? ''): PostDesign {

@@ -3,8 +3,6 @@ import { nplTeam, teamName } from './cricket-catalog';
 import { cricketNumber, cricketScore } from './cricket-data';
 import { hasBatter, scoreChase, scoreState } from './score-update';
 import { bowlerCreditedTypes } from './moment-posts';
-import { matchingPortraitFor } from './player-portraits';
-import { playerPhotoCredit } from './cricket-players';
 
 export function generateCricketCaption(slides: PostDraft[]): string {
     const first = slides[0]?.design, data = first?.cricket;
@@ -52,13 +50,7 @@ export function generateCricketCaption(slides: PostDraft[]): string {
         const body = [item.design.headline, detail, item.design.summary].filter(Boolean).join('\n');
         return slides.length > 1 ? `${n(index + 1)}. ${body}` : body;
     }).filter(Boolean).join('\n\n');
-    const sources = Array.from(new Set(slides.flatMap(item => [item.design.cricket?.sourceUrl, ...(item.design.sourceUrls ?? [])]).filter((url): url is string => Boolean(url))));
-    const photoCredits = Array.from(new Set(slides.flatMap(item => {
-        const d=item.design,c=d.cricket;if(c?.showPlayerPhoto===false||d.hiddenLayers.includes('visual'))return [];
-        const second=c?.template==='partnership'?matchingPortraitFor(c.secondBatter.name,c.teamId):undefined;
-        return [d.imageUri?d.imageCredit:'',second?playerPhotoCredit(second):''].filter(Boolean);
-    })));
     const tags = ['#NPL', '#NepalPremierLeague', '#NepalCricket', '#TheLeaders', `#${team.name.replace(/[^a-zA-Z0-9]/g, '')}`, ...profilesOnly ? [] : [`#${opponent.name.replace(/[^a-zA-Z0-9]/g, '')}`]].join(' ');
     const when = profilesOnly ? '' : [data.matchDate, data.startTime ? `${data.startTime} NPT` : '', data.venue].filter(Boolean).join(' · ');
-    return `${data.competition} | ${teamName(team, language)}${profilesOnly ? '' : ` vs ${teamName(opponent, language)}`}\n${when}\n\n${details}${sources.length ? `\n\n${language === 'ne' ? 'स्रोत' : 'Sources'}:\n${sources.join('\n')}` : ''}${photoCredits.length ? `\n\n${photoCredits.join('\n\n')}` : ''}\n\n${first.author || 'The Leaders Sports'}\n\n${tags}`;
+    return `${data.competition} | ${teamName(team, language)}${profilesOnly ? '' : ` vs ${teamName(opponent, language)}`}\n${when}\n\n${details}\n\n${first.author || 'The Leaders Sports'}\n\n${tags}`;
 }

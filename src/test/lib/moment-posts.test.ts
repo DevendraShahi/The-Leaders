@@ -43,7 +43,8 @@ describe('Match moments and player portraits', () => {
  it('a portrait picker sets the named subject but never fills event scores', () => {
   const d = createCricketDraftDesign('four', 'lumbini', 'sudurpaschim'); const player = findPlayers('lumbini')[0];
   const next = selectPlayerPortrait(d, player); expect(next.cricket!.batter.name).toBe(player.name); expect(next.cricket!.runs).toBeNull();
-  expect(selectPlayerPortrait(d, findPlayers('sudurpaschim')[0])).toBe(d);
+  expect(selectPlayerPortrait(d, findPlayers('sudurpaschim')[0]).cricket!.teamId).toBe('sudurpaschim');
+  expect(selectPlayerPortrait(d, findPlayers('janakpur')[0])).toBe(d);
  });
  it('does not copy a tracked portrait onto a differently named player when sharing backgrounds', () => {
   const source = applyPlayerPortrait(design()), target = design('six'); target.cricket!.batter.name = 'Unknown player';
@@ -65,7 +66,7 @@ describe('Match moments and player portraits', () => {
   const d = design('wicket'); d.cricket!.batter.notOut = true; expect(momentIssues(d).join(' ')).toContain('not out');
   d.cricket!.wickets = 0; expect(momentIssues(d).join(' ')).toContain('at least one');
   const paths = creationGaps([createCricketDraftDesign('wicket')]).map(g => g.path);
-  expect(paths).toContain('cricket.wicketType'); expect(paths).toContain('cricket.matchDate'); expect(paths).not.toContain('cricket.batter.balls'); expect(paths).not.toContain('cricket.bowler.wickets');
+  expect(paths).toContain('cricket.wicketType'); expect(paths).not.toContain('cricket.matchDate'); expect(paths).not.toContain('cricket.batter.balls'); expect(paths).not.toContain('cricket.bowler.wickets');
   const six = design('six'); six.cricket!.runs = 3; expect(momentIssues(six).join(' ')).toContain('boundary value');
  });
  it('instructs structured event facts and local portrait resolution', () => {

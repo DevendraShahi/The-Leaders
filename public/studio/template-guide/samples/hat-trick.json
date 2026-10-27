@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Hat-trick",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "hat-trick",
+      "teamId": "lumbini",
+      "headline": "THREE BALLS. THREE WICKETS.",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "bowler": {
+          "name": "Sher Malla",
+          "overs": "4",
+          "maidens": 0,
+          "runs": 24,
+          "wickets": 3
+        },
+        "opponentRuns": 179,
+        "opponentWickets": 8,
+        "opponentOvers": "20"
+      }
+    }
+  ]
+}

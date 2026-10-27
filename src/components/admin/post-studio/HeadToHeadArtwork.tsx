@@ -25,14 +25,10 @@ export const HeadToHeadArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>
         role: 'button', tabIndex: 0, 'aria-label': `Select ${layer}`, 'data-selected': selected === layer || undefined,
         onClick: () => onSelect(layer), onKeyDown: (event: React.KeyboardEvent) => { if (['Enter', ' '].includes(event.key)) { event.preventDefault(); onSelect(layer); } },
     } : {};
-    const source = data.sourceUrl || design.sourceUrls?.[0] || '';
-    let sourceHost = '';
-    try { sourceHost = source ? new URL(source).hostname.replace(/^www\./, '') : ''; } catch { /* Preflight requests a valid source. */ }
     const cutoff = record?.asOf ? new Date(`${record.asOf}T12:00:00Z`) : null;
     const date = cutoff && !Number.isNaN(cutoff.getTime()) ? new Intl.DateTimeFormat(ne ? 'ne-NP' : 'en-GB', { timeZone: 'UTC', day: '2-digit', month: 'short', year: 'numeric' }).format(cutoff) : t('Cutoff to confirm', 'मिति पुष्टि हुन बाँकी');
     const background = matchdayBackgrounds.find(item => item.id === data.matchdayBackground) ?? matchdayBackgrounds[wide ? 0 : 4];
     const photo = Boolean(design.imageUri && !design.hiddenLayers.includes('visual'));
-    const credit = [photo ? design.imageCredit : '', ...(design.placedImages ?? []).filter(image => !image.hidden).map(image => image.credit)].filter(Boolean).join(' · ');
     const identity = (id: NplTeamId, wins: number | null | undefined, customLogo: string | null) => <section className={s.team} aria-label={nplTeam(id).name}>
         <div className={s.crest}><img src={customLogo || teamLogo(id)} alt={nplTeam(id).name} /></div>
         {text(teamName(nplTeam(id), data.language), s.teamName, wide ? 11 : 15, wide ? 7 : 9, 'h2h-teams')}
@@ -48,9 +44,9 @@ export const HeadToHeadArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>
             <div className={s.title} {...select('headline')}><span>{t('ALL NPL MEETINGS', 'एनपीएलका सबै भेट')}</span>{!design.hiddenLayers.includes('headline') && text(design.headline, s.headline, wide ? 25 : 33, wide ? 12 : 17, undefined, 'artwork-headline')}</div>
             <main className={s.comparison} {...select('visual')} data-export-fit>{identity(data.teamId, record?.teamWins, data.teamLogoUri)}<span className={s.vs}>VS</span>{identity(data.opponentId, record?.opponentWins, data.opponentLogoUri)}</main>
             <div className={s.facts}>{statistic(t('MATCHES PLAYED', 'खेलिएका खेल'), record?.played)}{statistic(t('TIED · NO WINNER', 'बराबरी · विजेता छैन'), record?.ties)}{statistic(t('NO RESULT', 'नतिजाविहीन'), record?.noResults)}</div>
-            <div className={s.metadata}>{text(`${t('RECORD AS OF', 'तथ्याङ्क मिति')} ${date}`, s.cutoff, wide ? 5.5 : 7.5, wide ? 4.5 : 6)}{text(sourceHost ? `${t('SOURCE', 'स्रोत')} · ${sourceHost}` : t('SOURCE TO CONFIRM', 'स्रोत पुष्टि हुन बाँकी'), s.source, wide ? 5 : 6.5, wide ? 4 : 5)}</div>
+            <div className={s.metadata}>{text(`${t('RECORD AS OF', 'तथ्याङ्क मिति')} ${date}`, s.cutoff, wide ? 5.5 : 7.5, wide ? 4.5 : 6)}</div>
             <div className={s.summary} {...select('supporting')}>{!design.hiddenLayers.includes('supporting') && design.summary && text(design.summary, s.summaryText, wide ? 6 : 8, wide ? 5 : 6)}</div>
-            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}{credit && text(credit, base.credit, 4, 3)}</footer>
+            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}</footer>
         </div>
         {guides && <div className={base.guides} aria-hidden="true" />}
     </div>;

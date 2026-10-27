@@ -64,6 +64,7 @@ export default function PostStudio() {
     const visible = (trash ? discarded : active).filter(item => `${item.name} ${item.design.headline}`.toLowerCase().includes(search.toLowerCase().trim()));
     return <div className={styles.studio}><div className={styles.library}>
         <header className={styles.between}><div><h1>Studio</h1><p className={styles.subtle}>Create a post or continue your work.</p></div><div className={styles.row}><Link href="/admin" prefetch={false} className={styles.button}>Dashboard</Link><button className={styles.primary} disabled={busy || loading} onClick={() => setPromptModalOpen(true)}><Plus size={18} />New post</button></div></header>
+        <p><a href="/studio/template-guide/index.html" target="_blank" rel="noopener noreferrer" className={styles.subtle}>Editor field guide · filled examples and section maps ↗</a></p>
         <details className={styles.section}><summary>Other creation tools</summary><div className={styles.sectionContent}>
         <section className={styles.cricketEntry} aria-label="Cricket desk"><Trophy size={25} /><div><h2>Cricket desk</h2><p>Browse cricket templates and coverage packs.</p></div><Link href="/admin/social/cricket" prefetch={false} className={styles.button}>Browse cricket templates</Link></section>
         <p className={styles.subtle}>Start with a blank template when you already have your content.</p>

@@ -1,6 +1,7 @@
 import type { PostDesign, PostTextLayer } from './types';
 import { rebindCricketEvidence, redatePrematch } from './prematch-posts';
 import { applyPlayerPortrait } from './player-portraits';
+import { hasPostTeam, isOtherMatchSnapshot } from './cricket-team-context';
 
 export const sharedStyleOptions = [
     { key: 'typography', label: 'Fonts & type sizes', description: 'Font, size, line spacing and shadow' },
@@ -53,13 +54,23 @@ export function shareStyles(target: PostDesign, source: PostDesign, groups: read
     if (groups.includes('cricket') && source.cricket && next.cricket) {
         if (!target.lockedLayers.includes('visual')) copy('cricketStyle');
         const src = source.cricket, prev = previous?.cricket;
+        const samePair = [src.teamId, src.opponentId].includes(next.cricket.teamId) && [src.teamId, src.opponentId].includes(next.cricket.opponentId);
+        const preservePostSide = samePair && hasPostTeam(next.cricket.template);
         const keys = ['teamId', 'opponentId', 'competition', 'matchLabel', 'venue', 'matchDate', 'startTime', 'theme', 'language', 'teamLogoUri', 'opponentLogoUri'] as const;
         const copyContext = <K extends typeof keys[number]>(key: K) => {
+            if (preservePostSide && (key === 'teamId' || key === 'opponentId')) return;
+            if (preservePostSide && (key === 'teamLogoUri' || key === 'opponentLogoUri')) {
+                if (target.lockedLayers.includes('visual')) return;
+                const targetTeam = key === 'teamLogoUri' ? next.cricket!.teamId : next.cricket!.opponentId;
+                const sourceKey = targetTeam === src.teamId ? 'teamLogoUri' : 'opponentLogoUri';
+                if (!prev || changed(prev[sourceKey], src[sourceKey])) Object.assign(next.cricket!, { [key]: src[sourceKey] });
+                return;
+            }
             if (target.lockedLayers.includes('visual') && (key === 'teamLogoUri' || key === 'opponentLogoUri' || key === 'theme' || key === 'teamId' || key === 'opponentId')) return;
             if (!prev || changed(prev[key], src[key])) next.cricket![key] = src[key];
         };
         for (const key of keys) copyContext(key);
-        if (!target.lockedLayers.includes('visual') && (!prev || prev.teamId !== src.teamId || prev.theme !== src.theme)) {
+        if (!target.lockedLayers.includes('visual') && (!preservePostSide || next.cricket.teamId === src.teamId) && (!prev || prev.teamId !== src.teamId || prev.theme !== src.theme)) {
             copy('accent', true);
             if (!target.lockedLayers.includes('visual')) { copy('backgroundColor', true); copy('backgroundGradient', true); }
         }
@@ -69,6 +80,14 @@ export function shareStyles(target: PostDesign, source: PostDesign, groups: read
             next.cricket.toss = rebound.cricket!.toss;
             next.cricket.lineup = rebound.cricket!.lineup;
             next.cricket.teamProfile = rebound.cricket!.teamProfile;
+            if (isOtherMatchSnapshot(target.cricket.template)) {
+                const reset = rebound.cricket!;
+                Object.assign(next.cricket, { runs: reset.runs, wickets: reset.wickets, overs: reset.overs, target: reset.target,
+                    opponentRuns: reset.opponentRuns, opponentWickets: reset.opponentWickets, opponentOvers: reset.opponentOvers,
+                    batter: reset.batter, secondBatter: reset.secondBatter, bowler: reset.bowler, batting: reset.batting, bowling: reset.bowling,
+                    result: reset.result, awardPerformance: reset.awardPerformance, updatedAt: reset.updatedAt });
+                if (next.playerPhotoId) { next.imageUri = null; next.imageCredit = ''; next.playerPhotoId = undefined; }
+            }
             if (target.cricket.template === 'score') {
                 const reset = rebound.cricket!;
                 next.cricket.scoreInnings = reset.scoreInnings; next.cricket.runs = reset.runs; next.cricket.wickets = reset.wickets; next.cricket.overs = reset.overs; next.cricket.target = reset.target;

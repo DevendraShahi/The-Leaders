@@ -1,3 +1,4 @@
+import { cricketTeamIssues } from './cricket-team-context';
 import { blankCricketData, chaseEquation, oversToBalls, type CricketData } from './cricket-data';
 import type { PostDesign } from './types';
 import type { NplTeamId } from './cricket-catalog';
@@ -32,18 +33,16 @@ export function scoreChase(data: CricketData) {
 export function scoreUpdateIssues(design: PostDesign): string[] {
     const data = design.cricket;
     if (design.template !== 'cricket' || data?.template !== 'score') return [];
-    const issues = scoreContradictions(data);
+    const issues = [...scoreContradictions(data), ...cricketTeamIssues(data)];
     if (!design.headline.trim() || design.hiddenLayers.includes('headline')) issues.push('Show the Score Update headline before exporting.');
     if (design.headline.length > scoreCopy.headline) issues.push('Keep the headline within 48 characters.');
-    if (design.summary.length > scoreCopy.summary) issues.push('Keep supporting copy within 100 characters.');
-    if (!data.matchDate) issues.push('Choose the match date for this score snapshot.');
+    if (!design.hiddenLayers.includes('supporting') && design.summary.length > scoreCopy.summary) issues.push('Keep supporting copy within 100 characters.');
     if (!data.scoreInnings) issues.push('Confirm first innings or a chase.');
     if (data.runs === null || data.wickets === null || oversToBalls(data.overs) === null) issues.push('Confirm the team runs, wickets and overs.');
     if (data.scoreInnings === 'chase' && data.target === null) issues.push('Enter the officially confirmed chase target.');
     [data.batter, data.secondBatter].forEach((batter, index) => {
         if (hasBatter(batter) && (!batter.name.trim() || batter.runs === null || batter.balls === null)) issues.push(`Batter ${index + 1}: provide name, runs and balls, or clear the optional batter slot.`);
     });
-    if (![data.sourceUrl, ...(design.sourceUrls ?? [])].some(url => /^https?:\/\/[^\s]+$/.test(url))) issues.push('Add a source URL for the score snapshot.');
     return issues;
 }
 /** A score snapshot belongs to one batting side and fixture, not just to a team pair. */

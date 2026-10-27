@@ -7,6 +7,8 @@ import { applyPlayerPortrait } from './player-portraits';
 import { bowlerCreditedTypes, rebindMoment } from './moment-posts';
 import type { NplTeamId } from './cricket-catalog';
 import { rebindPhase, setPowerplayDuration } from './phase-posts';
+import { reconcileEditedPlayerTeams, setCricketPostTeam } from './cricket-team-context';
+import { rebindCricketEvidence } from './prematch-posts';
 
 /** Suggestions are explicit defaults; editors can override them before copying. */
 export function suggestPostTemplates(kind: PromptOptions['kind'], brief: string): string[] {
@@ -51,7 +53,7 @@ const col = (key: string, label: string, type: ReviewColumn['type'] = 'text'): R
 const tables: Record<string, { label: string; columns: ReviewColumn[] }> = {
     fixtures: { label: 'Fixtures', columns: [col('teamId', 'Team', 'team'), col('opponentId', 'Opponent', 'team'), col('when', 'Date and time'), col('venue', 'Venue')] },
     batting: { label: 'Batting performances', columns: [col('name', 'Player'), col('runs', 'Runs', 'number'), col('balls', 'Balls', 'number'), col('fours', 'Fours', 'number'), col('sixes', 'Sixes', 'number'), col('notOut', 'Not out', 'checkbox')] },
-    bowling: { label: 'Bowling performances', columns: [col('name', 'Player'), col('overs', 'Overs'), col('maidens', 'Maidens', 'number'), col('runs', 'Runs', 'number'), col('wickets', 'Wickets', 'number')] },
+    bowling: { label: 'Opposition bowling · this innings', columns: [col('name', 'Player'), col('overs', 'Overs'), col('maidens', 'Maidens', 'number'), col('runs', 'Runs', 'number'), col('wickets', 'Wickets', 'number')] },
     standings: { label: 'Standings', columns: [col('teamId', 'Team', 'team'), col('played', 'Played', 'number'), col('won', 'Won', 'number'), col('lost', 'Lost', 'number'), col('points', 'Points', 'number'), col('nrr', 'Net run rate')] },
     statRows: { label: 'Team statistics', columns: [col('label', 'Statistic'), col('value', 'Value')] },
 };
@@ -68,9 +70,7 @@ export function creationGaps(designs: PostDesign[]): CreationGap[] {
         if (empty(value) || incompleteRows || (type === 'lines' && path === 'cricket.lineup' && Array.isArray(value) && value.length !== 11)) gaps.push({ key: `${page ?? 'match'}:${path}`, page, path, label, type, columns, options });
     };
     if (designs.some(design => design.cricket)) {
-        add(null, 'cricket.competition', labels.competition);
         if (designs.some(design => design.cricket?.template === 'fixtures')) add(null, 'cricket.matchDate', labels.matchDate, 'date');
-        if (designs.some(design => ['toss', 'playing-xi', 'score', 'four', 'six', 'wicket', 'powerplay', 'partnership'].includes(design.cricket?.template ?? ''))) add(null, 'cricket.matchDate', labels.matchDate, 'date');
         if (designs.some(design => design.cricket?.template === 'matchday')) {
             add(null, 'cricket.matchDate', labels.matchDate, 'date'); add(null, 'cricket.startTime', labels.startTime, 'time'); add(null, 'cricket.venue', labels.venue);
         }
@@ -81,9 +81,11 @@ export function creationGaps(designs: PostDesign[]): CreationGap[] {
         const data = design.cricket, layout = data.template === 'player-of-match' && data.awardPerformance === 'bowling' ? 'bowler' : cricketTemplate(data.template).layout;
         const fields: string[] = [];
         if (['score', 'event', 'batter', 'result'].includes(layout)) fields.push('runs', 'wickets', 'overs');
+        if (data.template === 'scorecard') fields.push('runs', 'wickets', 'overs');
         if (layout === 'batter') fields.push('batter.name', 'batter.runs', 'batter.balls');
         if (['four', 'six', 'wicket', 'partnership'].includes(data.template)) fields.push('batter.name');
-        if (layout === 'bowler' || (data.template === 'player-of-match' && data.awardPerformance === 'all-round')) fields.push('bowler.name', 'bowler.wickets', 'bowler.runs', 'bowler.overs');
+        if (layout === 'bowler') fields.push('bowler.name', 'bowler.wickets', 'bowler.runs', 'bowler.overs');
+        if (data.template === 'player-of-match' && data.awardPerformance === 'all-round') fields.push('bowler.wickets', 'bowler.runs');
         if (data.template === 'wicket' && data.wicketType && bowlerCreditedTypes.includes(data.wicketType)) fields.push('bowler.name');
         if (layout === 'bowler' || layout === 'result') fields.push('opponentRuns', 'opponentWickets', 'opponentOvers');
         if ((layout === 'team' && !['toss', 'team'].includes(data.template)) || layout === 'result') fields.push('result');
@@ -117,8 +119,6 @@ export function creationGaps(designs: PostDesign[]): CreationGap[] {
                 add(page, `cricket.${key}.balls`, key === 'batter' ? 'Batter balls' : 'Second batter balls', 'number');
             }
         }
-        if (data.template === 'head-to-head' && !design.sourceUrls?.length) add(page, 'cricket.sourceUrl', 'Head to Head source URL');
-        if (['toss', 'playing-xi', 'team', 'score', 'four', 'six', 'wicket', 'powerplay', 'partnership'].includes(data.template) && !design.sourceUrls?.length) add(page, 'cricket.sourceUrl', 'Confirmed information source URL');
         const tableKeys = data.template === 'scorecard' ? ['batting', 'bowling'] : data.template === 'points-table' ? ['standings'] : data.template === 'fixtures' ? ['fixtures'] : [];
         for (const key of tableKeys) {
             if (key === 'fixtures' && !data.fixtures.length && cricketRestDays.includes(data.matchDate)) continue;
@@ -134,10 +134,13 @@ export function updateCreationValue(prepared: PreparedImport, page: number | nul
         if (page !== null && index !== page) return design;
         let next = structuredClone(design);
         if (next.cricket?.matchDate && path === 'cricket.matchDate') next = rebindPhase(next,next.cricket.teamId,next.cricket.opponentId,String(value));
-        if (next.cricket && path === 'cricket.teamId') next = rebindPhase(next,value as NplTeamId,next.cricket.opponentId);
+        if (next.cricket && path === 'cricket.teamId') {
+            const teamId = value as NplTeamId, before = next.cricket;
+            const opponentId = teamId === before.opponentId ? before.teamId : before.opponentId;
+            next = teamId === before.opponentId ? setCricketPostTeam(next, teamId) : rebindCricketEvidence(next, teamId, opponentId);
+        }
         if (next.cricket && path === 'cricket.opponentId') next = rebindPhase(next,next.cricket.teamId,value as NplTeamId);
         if (next.cricket?.matchDate && path === 'cricket.matchDate') next = rebindMoment(next, next.cricket.teamId, next.cricket.opponentId, String(value));
-        if (next.cricket && path === 'cricket.teamId') next = rebindMoment(next, value as NplTeamId, next.cricket.opponentId);
         if (next.cricket && path === 'cricket.opponentId') next = rebindMoment(next, next.cricket.teamId, value as NplTeamId);
         const keys = path.split('.');
         let target = next as unknown as Record<string, unknown>;
@@ -145,7 +148,7 @@ export function updateCreationValue(prepared: PreparedImport, page: number | nul
         target[keys[keys.length - 1]] = value;
         if (path === 'cricket.scoreInnings' && value === 'first' && next.cricket?.template === 'score') next.cricket.target = null;
         if (path === 'cricket.wicketType' && next.cricket && (!value || !bowlerCreditedTypes.includes(String(value)))) { next.cricket.bowler = { name: '', overs: '', maidens: null, runs: null, wickets: null }; next.cricket.momentPhotoRole = 'batter'; }
-        return applyPlayerPortrait(path === 'cricket.powerplayOvers' ? setPowerplayDuration(design, String(value)) : next);
+        return applyPlayerPortrait(path === 'cricket.powerplayOvers' ? setPowerplayDuration(design, String(value)) : reconcileEditedPlayerTeams(design, next));
     });
     return { ...prepared, designs };
 }

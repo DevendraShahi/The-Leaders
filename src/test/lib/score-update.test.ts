@@ -70,8 +70,8 @@ describe('Score Update benchmark', () => {
         const first = updateCreationValue({ ...prepared, designs: [design()] }, 0, 'cricket.scoreInnings', 'first');
         expect(first.designs[0].cricket?.target).toBeNull();
     });
-    it('keeps score, batters and derived chase facts consistent in captions', () => {
+    it('keeps score, batters and derived chase facts consistent in captions and omits sources', () => {
         const result = design(); const caption = generateCricketCaption([{ id: 'test', name: 'Illustrative score', design: result, createdAt: '', updatedAt: '', trashedAt: null }]);
-        expect(caption).toContain('128/3'); expect(caption).toContain('52 needed from 34 balls'); expect(caption).toContain('Illustrative batter: 68* (42)'); expect(caption).toContain('https://example.com/scorecard');
+        expect(caption).toContain('128/3'); expect(caption).toContain('52 needed from 34 balls'); expect(caption).toContain('Illustrative batter: 68* (42)'); expect(caption).not.toContain('https://example.com/scorecard');
     });
 });

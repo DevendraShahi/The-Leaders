@@ -29,9 +29,6 @@ export const ScoreUpdateArtwork = forwardRef<HTMLDivElement, CricketArtworkProps
     } : {};
     const background = matchdayBackgrounds.find(item => item.id === data.matchdayBackground) ?? matchdayBackgrounds[wide ? 0 : 4];
     const photo = Boolean(design.imageUri && !design.hiddenLayers.includes('visual'));
-    const credit = [photo ? design.imageCredit : '', ...(design.placedImages ?? []).filter(image => !image.hidden).map(image => image.credit)].filter(Boolean).join(' · ');
-    const source = data.sourceUrl || design.sourceUrls?.[0] || '';
-    let host = ''; try { host = source ? new URL(source).hostname.replace(/^www\./, '') : ''; } catch { /* Preflight requests a source. */ }
     const updated = data.updatedAt && !Number.isNaN(Date.parse(data.updatedAt)) ? new Intl.DateTimeFormat(ne ? 'ne-NP' : 'en-GB', { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(data.updatedAt)) : '';
     const badge = (id: NplTeamId, batting: boolean) => <div className={s.team}>
         <div className={s.crest}><img src={(batting ? data.teamLogoUri : data.opponentLogoUri) || teamLogo(id)} alt={nplTeam(id).name} style={{ transform: `scale(${Math.min(100, Math.max(60, data.logoScale ?? 100)) / 100})` }} /></div>
@@ -49,9 +46,9 @@ export const ScoreUpdateArtwork = forwardRef<HTMLDivElement, CricketArtworkProps
             <main className={s.scoreBlock} data-export-fit>{text(n(cricketScore(data.runs, data.wickets)), s.hero, wide ? 55 : 90, wide ? 25 : 35, undefined, 'score-value')}<div className={s.metrics}>{text(`${t('OVERS', 'ओभर')} ${n(data.overs)} / ${n(data.oversLimit)}`, s.metric, wide ? 7 : 10, wide ? 5.5 : 7)}{text(`${t('RUN RATE', 'रन रेट')} ${n(runRate(data.runs, data.overs))}`, s.metricRight, wide ? 7 : 10, wide ? 5.5 : 7)}</div></main>
             <div className={s.batters}>{batters.map((batter, index) => <div key={index} className={s.batter}>{text(batter.name || t('Batter to confirm', 'ब्याटर पुष्टि हुन बाँकी'), s.batterName, wide ? 8 : 10, wide ? 5 : 6, 'score-batters')}{text(`${n(batter.runs)}${batter.notOut ? '*' : ''} (${n(batter.balls)})`, s.batterScore, wide ? 12 : 17, wide ? 7 : design.format === 'square' ? 8 : 11, 'score-batter-values')}</div>)}{!batters.length && <span className={s.optionalNote}>{t('TEAM SCORE SNAPSHOT', 'टोलीको स्कोर अपडेट')}</span>}</div>
             <div className={s.chase}>{equation ? <>{text(`${n(equation.runs)} ${t('NEEDED FROM', 'रन आवश्यक, बाँकी')} ${n(equation.balls)} ${t('BALLS', 'बल')}`, s.chaseMain, wide ? 12 : 17, wide ? 7 : 10)}{text(`${t('TARGET', 'लक्ष्य')} ${n(data.target)} · ${t('REQ. RATE', 'आवश्यक रन रेट')} ${n(equation.rate)}`, s.chaseMeta, wide ? 5 : 7, wide ? 4 : 5)}</> : text(status, s.status, wide ? 13 : 20, wide ? 8 : 12)}</div>
-            <div className={s.source}>{text([host ? `${t('SOURCE', 'स्रोत')} · ${host}` : t('SOURCE TO CONFIRM', 'स्रोत पुष्टि हुन बाँकी'), updated ? `${updated} NPT` : ''].filter(Boolean).join(' · '), s.sourceText, wide ? 5 : 6, wide ? 4 : 5)}</div>
+            {updated ? <div className={s.source}>{text(`${updated} NPT`, s.sourceText, wide ? 5 : 6, wide ? 4 : 5)}</div> : null}
             <div className={s.summary} {...select('supporting')}>{!design.hiddenLayers.includes('supporting') && design.summary && text(design.summary, s.summaryText, wide ? 6 : 8, wide ? 4 : 6)}</div>
-            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}{credit && text(credit, base.credit, 4, 3)}</footer>
+            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}</footer>
         </div>{guides && <div className={base.guides} aria-hidden="true" />}
     </div>;
 });

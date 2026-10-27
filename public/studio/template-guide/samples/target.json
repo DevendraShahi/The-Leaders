@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Target",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "target",
+      "teamId": "lumbini",
+      "headline": "THE CHASE IS ON",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "runs": 0,
+        "wickets": 0,
+        "overs": "0",
+        "target": 180
+      }
+    }
+  ]
+}

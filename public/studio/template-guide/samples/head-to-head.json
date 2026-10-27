@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Head to head",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "head-to-head",
+      "headline": "HEAD TO HEAD",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "headToHead": {
+          "played": 6,
+          "teamWins": 3,
+          "opponentWins": 2,
+          "ties": 0,
+          "noResults": 1,
+          "asOf": "2026-10-25"
+        }
+      }
+    }
+  ]
+}

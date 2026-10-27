@@ -39,7 +39,6 @@ export const MatchdayArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
     const weekday = validDate ? `${new Intl.DateTimeFormat(ne ? 'ne-NP' : 'en-GB', { timeZone: 'UTC', weekday: 'long' }).format(validDate)} · ${n(String(validDate.getUTCFullYear()))}` : t('Awaiting confirmation', 'पुष्टि हुन बाँकी');
     const photo = Boolean(design.imageUri && !design.hiddenLayers.includes('visual'));
     const background = matchdayBackgrounds.find(item => item.id === data.matchdayBackground) ?? matchdayBackgrounds[wide ? 0 : 4];
-    const credit = [photo ? design.imageCredit : '', ...(design.placedImages ?? []).filter(image => !image.hidden).map(image => image.credit)].filter(Boolean).join(' · ');
     const badge = (opposition: boolean) => {
         const identity = opposition ? opponent : team;
         const uri = opposition ? data.opponentLogoUri : data.teamLogoUri;
@@ -72,7 +71,6 @@ export const MatchdayArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
             <footer className={s.footer} {...select('footer')}>
                 {text(design.hiddenLayers.includes('footer') ? '' : design.author, s.author, wide ? 5 : 6.5, 4.5, 'footer')}
                 {text('NPL 2026 | Cricket', s.footerLabel, wide ? 5 : 6.5, 4.5)}
-                {credit && text(credit, s.credit, wide ? 4 : 5, 3.5)}
             </footer>
         </div>
         {guides && <div className={s.guides} aria-hidden="true" />}

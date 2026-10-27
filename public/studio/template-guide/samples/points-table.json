@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Points table",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "points-table",
+      "teamId": "lumbini",
+      "headline": "THE STANDINGS",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "standings": [
+          {
+            "teamId": "biratnagar",
+            "played": 6,
+            "won": 5,
+            "lost": 1,
+            "points": 10,
+            "nrr": "1.250"
+          },
+          {
+            "teamId": "chitwan",
+            "played": 6,
+            "won": 4,
+            "lost": 2,
+            "points": 8,
+            "nrr": "0.950"
+          },
+          {
+            "teamId": "janakpur",
+            "played": 6,
+            "won": 3,
+            "lost": 3,
+            "points": 6,
+            "nrr": "0.650"
+          },
+          {
+            "teamId": "karnali",
+            "played": 6,
+            "won": 2,
+            "lost": 4,
+            "points": 4,
+            "nrr": "0.350"
+          },
+          {
+            "teamId": "kathmandu",
+            "played": 6,
+            "won": 1,
+            "lost": 5,
+            "points": 2,
+            "nrr": "0.050"
+          },
+          {
+            "teamId": "lumbini",
+            "played": 6,
+            "won": 0,
+            "lost": 6,
+            "points": 0,
+            "nrr": "-0.250"
+          },
+          {
+            "teamId": "pokhara",
+            "played": 6,
+            "won": 0,
+            "lost": 6,
+            "points": 0,
+            "nrr": "-0.550"
+          },
+          {
+            "teamId": "sudurpaschim",
+            "played": 6,
+            "won": 0,
+            "lost": 6,
+            "points": 0,
+            "nrr": "-0.850"
+          }
+        ]
+      }
+    }
+  ]
+}

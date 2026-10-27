@@ -16,7 +16,9 @@ import { playerPhotoSubject, selectPlayerPortrait } from '@/lib/post-studio/play
 import { findPlayers } from '@/lib/post-studio/cricket-players';
 import { phaseIds, setPowerplayDuration, type PhaseId } from '@/lib/post-studio/phase-posts';
 import { cricketRestDays, dayFixtureRows, fixturesForDate } from '@/lib/post-studio/cricket-fixtures';
+import { cricketTeamIssues, hasPostTeam, postPlayerRoles, reconcileEditedPlayerTeams, resetCricketTemplate, setCricketPostTeam } from '@/lib/post-studio/cricket-team-context';
 import { Section, Slider } from './Controls';
+import { coverageIds, isCoverageTemplate } from '@/lib/post-studio/coverage-posts';
 import css from './CricketStudio.module.css';
 import styles from './PostStudio.module.css';
 
@@ -55,7 +57,7 @@ const validOvers = (value: string) => value === '' || oversToBalls(value) !== nu
 export default function CricketInspector({ design, onChange }: { design: PostDesign; onChange: Edit }) {
     const data = design.cricket ?? blankCricketData(), baseSpec = cricketTemplate(data.template), team = nplTeam(data.teamId);
     const spec = data.template === 'player-of-match' && data.awardPerformance === 'bowling' ? { ...baseSpec, layout: 'bowler' as const } : baseSpec;
-    const managed = ['matchday', 'fixtures', 'head-to-head', 'score', ...prematchIds, ...momentIds, ...phaseIds].includes(data.template);
+    const managed = ['matchday', 'fixtures', 'head-to-head', 'score', ...prematchIds, ...momentIds, ...phaseIds, ...coverageIds].includes(data.template);
     const phase = phaseIds.includes(data.template as PhaseId);
     const moment = momentIds.includes(data.template as MomentId), subject = playerPhotoSubject(design);
     const record = data.headToHead ?? blankCricketData('head-to-head').headToHead!;
@@ -65,7 +67,7 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
     useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
     const edit = (change: Partial<CricketData> | ((current: CricketData) => CricketData)) => onChange(current => {
         const before = current.cricket ?? blankCricketData();
-        return { ...current, cricket: typeof change === 'function' ? change(before) : { ...before, ...change } };
+        return reconcileEditedPlayerTeams(current, { ...current, cricket: typeof change === 'function' ? change(before) : { ...before, ...change } });
     });
     const field = <K extends keyof CricketData>(key: K, value: CricketData[K]) => {
         if (key === 'matchDate') onChange(current => { const next = redatePrematch(current, value as string); return { ...next, cricket: { ...(next.cricket ?? blankCricketData()), matchDate: value as string } }; });
@@ -73,6 +75,7 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
     };
     const changeTeam = (id: NplTeamId) => onChange(current => {
         const before = current.cricket ?? blankCricketData(), next = nplTeam(id);
+        if (id === before.opponentId && hasPostTeam(before.template)) return setCricketPostTeam(current, id);
         const rebased = rebindCricketEvidence(current, id, id === before.opponentId ? before.teamId : before.opponentId);
         return {
             ...rebased, accent: next.primary, backgroundColor: before.theme === 'midnight' ? '#081321' : next.dark, backgroundGradient: null,
@@ -82,7 +85,7 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
     const changePreset = (id: CricketTemplateId) => onChange(current => {
         const before = current.cricket ?? blankCricketData(), previous = cricketTemplate(before.template), next = cricketTemplate(id);
         const defaultHeadline = current.headline === previous.headline || current.headline === previous.headlineNe || (['fixtures', 'head-to-head'].includes(before.template) && [fixturesHeadline('en'), fixturesHeadline('ne'), headToHeadHeadline('en'), headToHeadHeadline('ne')].includes(current.headline));
-        return { ...current, headline: defaultHeadline ? id === 'head-to-head' ? headToHeadHeadline(before.language) : id === 'fixtures' ? fixturesHeadline(before.language) : before.language === 'ne' ? next.headlineNe : next.headline : current.headline, cricket: { ...before, template: id } };
+        return { ...resetCricketTemplate(current, id), headline: defaultHeadline ? id === 'head-to-head' ? headToHeadHeadline(before.language) : id === 'fixtures' ? fixturesHeadline(before.language) : before.language === 'ne' ? next.headlineNe : next.headline : current.headline };
     });
     const uploadLogo = async (file: File | undefined, key: 'teamLogoUri' | 'opponentLogoUri') => {
         if (!file || design.lockedLayers.includes('visual')) return;
@@ -115,7 +118,7 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
     </div>;
     const withScore = ['score', 'event', 'batter', 'result', 'table'].includes(spec.layout) && data.template !== 'points-table';
     return <div className={css.cricketFields}>
-        {managed && <p className={css.fieldHint}>This template uses a managed layout. Team identities and template facts stay in reserved positions. Text fits automatically; headline: 48 characters, supporting copy stays in its own area. Crests stay within their safe area.</p>}
+        {managed && <p className={css.fieldHint}>This template uses a managed layout. Team identities and template facts stay in reserved positions. Text fits automatically; headline: {isCoverageTemplate(data.template) ? 64 : 48} characters, supporting copy stays in its own area. Crests stay within their safe area.</p>}
         {managed && <label className={css.kitLabel}><span>Stadium background</span><select aria-label="Cricket stadium background" value={data.matchdayBackground ?? (design.format === 'landscape' ? 'tu-1' : 'tu-5')} disabled={design.lockedLayers.includes('visual')} onChange={event => field('matchdayBackground', event.target.value as NonNullable<CricketData['matchdayBackground']>)}>{matchdayBackgrounds.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}</select><small className={css.fieldHint}>Your five images from /public/npl. Used by the Stadium style; uploaded photos can still replace the background.</small></label>}
         <label className={css.kitLabel}><span>Visual style</span><select aria-label="Cricket visual style" value={managed ? design.cricketStyle === 'editorial' ? 'editorial' : 'stadium' : design.cricketStyle ?? 'classic'} onChange={event => onChange(current => ({ ...current, cricketStyle: event.target.value as CricketStyle }))}>{cricketStyles.filter(style => !managed || style.id !== 'classic').map(style => <option key={style.id} value={style.id}>{style.label}</option>)}</select><small className={css.fieldHint}>{cricketStyles.find(style => style.id === (design.cricketStyle ?? 'classic'))?.description}</small></label>
         {!managed && design.cricketStyle && design.cricketStyle !== 'classic' && <Slider label="Hero number size" value={data.heroScale ?? 100} min={70} max={130} disabled={design.lockedLayers.includes('headline')} onStart={() => {}} onChange={value => field('heroScale', value)} onEnd={() => {}} />}
@@ -128,6 +131,8 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
             <TeamSelect label="Featured team" value={data.teamId} onChange={changeTeam} />
             <TeamSelect label="Opponent" value={data.opponentId} exclude={data.teamId} onChange={id => onChange(current => { const next = rebindCricketEvidence(current, data.teamId, id); return { ...next, cricket: { ...(next.cricket ?? data), opponentId: id, opponentLogoUri: null } }; })} />
         </div>
+        {postPlayerRoles(data).length > 0 && <p className={css.fieldHint} role="status">{data.template === 'wicket' ? `Batting / dismissed batter: ${team.name}. Fielding / credited bowler: ${nplTeam(data.opponentId).name}.` : `This post’s players belong to ${team.name}.`} Exact player names from either match team can update the post side; changing sides clears the previous score.</p>}
+        {cricketTeamIssues(data).map(issue => <p key={issue} className={css.fieldError} role="alert">{issue}</p>)}
         <div className={css.teamChoice}>
             <img src={data.teamLogoUri || teamLogo(data.teamId)} alt={team.name} />
             <div>
@@ -196,13 +201,13 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
                 <TextField label="Dismissal" value={data.dismissal} maxLength={240} onChange={value => field('dismissal', value)} />
                 {data.wicketType && bowlerCreditedTypes.includes(data.wicketType) && <TextField label="Credited bowler" value={data.bowler.name} maxLength={90} onChange={name => edit(current => ({ ...current, bowler: { ...current.bowler, name } }))} />}
             </>}
-            <p className={css.fieldHint}>Use the batting team's score immediately after this event. Confirm the match date and source below.</p>
+            <p className={css.fieldHint}>Use the batting team's score immediately after this event. Confirm the match date below.</p>
         </Section>}
         {subject && <Section title="Player portrait">
             <label className={css.kitLabel}><span><input type="checkbox" aria-label="Show player portrait" checked={data.showPlayerPhoto !== false} onChange={event => field('showPlayerPhoto', event.target.checked)} /> Show player portrait</span></label>
             {data.template === 'wicket' && data.wicketType && bowlerCreditedTypes.includes(data.wicketType) && <label className={css.kitLabel}><span>Portrait subject</span><select aria-label="Portrait subject" value={subject.role} onChange={event => field('momentPhotoRole', event.target.value as 'batter' | 'bowler')}><option value="bowler">Credited bowler</option><option value="batter">Dismissed batter</option></select></label>}
-            <label className={css.kitLabel}><span>Player photo · {nplTeam(subject.teamId).name}</span><select aria-label="Player photo" value={design.playerPhotoId ?? ''} onChange={event => { const player = findPlayers(subject.teamId).find(item => item.id === event.target.value); if (player) onChange(current => selectPlayerPortrait(current, player)); }}><option value="">Exact name match or choose a player</option>{findPlayers(subject.teamId).map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>
-            <p className={css.fieldHint}>Choosing a portrait fills this player's name only. Match facts still need a source. Missing portraits use the team logo.</p>
+            <label className={css.kitLabel}><span>Player photo · {nplTeam(subject.teamId).name}</span><select aria-label="Player photo" value={design.playerPhotoId ?? ''} onChange={event => { const player = findPlayers('all').find(item => item.id === event.target.value); if (player) onChange(current => selectPlayerPortrait(current, player)); }}><option value="">Exact name match or choose a player</option>{[subject.teamId, subject.teamId === data.teamId ? data.opponentId : data.teamId].map(id => <optgroup key={id} label={nplTeam(id).name}>{findPlayers(id).map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</optgroup>)}</select></label>
+            <p className={css.fieldHint}>Choose either match team’s player. The post side follows the player’s role; changing sides clears the old score. Missing portraits use the team logo.</p>
         </Section>}
         {!moment && !phase && spec.layout === 'batter' && <>
             <h3 className={css.sectionHeading}>Batter performance</h3>{batterFields('batter', 'Batter')}</>}
@@ -212,14 +217,13 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
                 <NumberField label="Partnership balls" value={data.partnershipBalls} onChange={value => field('partnershipBalls', value)} />
             </div>{(['batter','secondBatter'] as const).map((key,index)=><TextField key={key} label={`Partnership batter ${index+1}`} value={data[key].name} maxLength={90} onChange={name=>edit(current=>({...current,[key]:{...current[key],name}}))} />)}
             <label className={css.kitLabel}><span>Second batter photo</span><select aria-label="Second batter photo" value={findPlayers(data.teamId).find(player=>player.name===data.secondBatter.name)?.id??''} onChange={event=>{const player=findPlayers(data.teamId).find(item=>item.id===event.target.value);if(player)edit(current=>({...current,secondBatter:{...current.secondBatter,name:player.name}}));}}><option value="">Exact name match or choose a player</option>{findPlayers(data.teamId).map(player=><option key={player.id} value={player.id}>{player.name}</option>)}</select></label><p className={css.fieldHint}>Both portraits match players from the batting team. Individual innings figures are not required.</p></>}
-        {data.template === 'powerplay' && <TextField label="Confirmed powerplay overs" value={data.powerplayOvers??''} validate={validOvers} hint="Use the actual duration from the match source, including any reduction. This sets the score's over count. Changing a confirmed duration clears the previous score and source." onChange={value=>onChange(current=>setPowerplayDuration(current,value))} />}
-        {data.template==='partnership'&&<Section title="Individual innings (optional)"><p className={css.fieldHint}>These are sourced innings totals for each player, not their contribution to this partnership. Leave empty to show names only.</p>{(['batter','secondBatter'] as const).map((key,index)=><div key={key}><h3 className={css.sectionHeading}>{data[key].name||`Batter ${index+1}`}</h3><div className={css.dataGrid}>{(['runs','balls','fours','sixes'] as const).map(stat=><NumberField key={stat} label={`Partner ${index+1} innings ${stat}`} value={data[key][stat]} onChange={value=>edit(current=>({...current,[key]:{...current[key],[stat]:value}}))}/>)}</div></div>)}<button className={styles.button} onClick={()=>edit(current=>({...current,batter:{...blankCricketData().batter,name:current.batter.name},secondBatter:{...blankCricketData().secondBatter,name:current.secondBatter.name}}))}>Clear individual figures</button></Section>}
+        {data.template === 'powerplay' && <TextField label="Confirmed powerplay overs" value={data.powerplayOvers??''} validate={validOvers} hint="Use the actual duration from the match, including any reduction. This sets the score's over count. Changing a confirmed duration clears the previous score." onChange={value=>onChange(current=>setPowerplayDuration(current,value))} />}
+        {data.template==='partnership'&&<Section title="Individual innings (optional)"><p className={css.fieldHint}>These are innings totals for each player, not their contribution to this partnership. Leave empty to show names only.</p>{(['batter','secondBatter'] as const).map((key,index)=><div key={key}><h3 className={css.sectionHeading}>{data[key].name||`Batter ${index+1}`}</h3><div className={css.dataGrid}>{(['runs','balls','fours','sixes'] as const).map(stat=><NumberField key={stat} label={`Partner ${index+1} innings ${stat}`} value={data[key][stat]} onChange={value=>edit(current=>({...current,[key]:{...current[key],[stat]:value}}))}/>)}</div></div>)}<button className={styles.button} onClick={()=>edit(current=>({...current,batter:{...blankCricketData().batter,name:current.batter.name},secondBatter:{...blankCricketData().secondBatter,name:current.secondBatter.name}}))}>Clear individual figures</button></Section>}
         {!moment && (spec.layout === 'bowler' || (data.template === 'player-of-match' && data.awardPerformance === 'all-round')) && <>
             <h3 className={css.sectionHeading}>Bowler performance</h3>{bowlFields}</>}
         {spec.layout === 'score' && !phase && <>
-            <Section title={data.template === 'score' ? 'Batters (optional)' : 'Batters at the crease'}>{data.template === 'score' && <p className={css.fieldHint}>Only include sourced batter details. Empty slots stay out of the graphic. The star means not out, not the striker.</p>}{batterFields('batter', 'Batter')}{batterFields('secondBatter', 'Second batter')}{data.template === 'score' && <button className={styles.button} onClick={() => edit(current => { const empty = blankCricketData('score'); return { ...current, batter: empty.batter, secondBatter: empty.secondBatter }; })}>Clear optional batters</button>}</Section>
+            <Section title={data.template === 'score' ? 'Batters (optional)' : 'Batters at the crease'}>{data.template === 'score' && <p className={css.fieldHint}>Only include confirmed batter details. Empty slots stay out of the graphic. The star means not out, not the striker.</p>}{batterFields('batter', 'Batter')}{batterFields('secondBatter', 'Second batter')}{data.template === 'score' && <button className={styles.button} onClick={() => edit(current => { const empty = blankCricketData('score'); return { ...current, batter: empty.batter, secondBatter: empty.secondBatter }; })}>Clear optional batters</button>}</Section>
         </>}
-        {data.template === 'score' && <TextField label="Score source URL" type="url" maxLength={2000} value={data.sourceUrl} validate={value => !value || /^https?:\/\/[^\s]+$/.test(value) ? null : 'Use an HTTP or HTTPS source URL.'} onChange={value => field('sourceUrl', value)} />}
         {((spec.layout === 'team' && !['toss', 'team'].includes(data.template)) || spec.layout === 'result') && <TextField label={data.template === 'rain' ? 'Interruption update' : 'Result / announcement'} value={data.result} maxLength={240} onChange={value => field('result', value)} multiline />}
         {['toss', 'playing-xi'].includes(data.template) && <label className={css.kitLabel}><span>Confirmed match date</span><input aria-label="Confirmed match date" type="date" value={data.matchDate} onChange={event => field('matchDate', event.target.value)} /><small className={css.fieldHint}>Choose the date before entering the update. A new pairing or date clears old match-specific information.</small></label>}
         {data.template === 'toss' && <div className={css.tableEditor}>
@@ -228,7 +232,6 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
             <p className={css.fieldHint}>The fixture sheet cannot confirm a toss. Enter the actual result from the match update.</p>
         </div>}
         {data.template === 'team' && <div className={css.tableEditor}><h3 className={css.sectionHeading}>Franchise profile</h3><p className={css.fieldHint}>Enter confirmed details for this franchise and season. Empty facts stay out of the finished post.</p>{(['captain', 'headCoach', 'homeCity'] as const).map(key => <TextField key={key} label={key === 'captain' ? 'Team captain' : key === 'headCoach' ? 'Head coach' : 'Home city'} value={data.teamProfile?.[key] ?? ''} maxLength={90} onChange={value => edit(current => ({ ...current, teamProfile: { captain: '', headCoach: '', homeCity: '', ...current.teamProfile, [key]: value } }))} />)}</div>}
-        {prematchIds.includes(data.template as typeof prematchIds[number]) && <TextField label="Confirmed information source URL" type="url" value={data.sourceUrl} maxLength={2000} validate={value => !value || /^https?:\/\/[^\s]+$/.test(value) ? null : 'Use an HTTP or HTTPS source URL.'} onChange={value => field('sourceUrl', value)} />}
         {spec.layout === 'result' && <Section title="Opponent innings">
             <div className={css.dataGridThree}>
                 <NumberField label="Opponent runs" value={data.opponentRuns} onChange={value => field('opponentRuns', value)} />
@@ -244,7 +247,6 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
             <div className={css.dataGrid}><NumberField label={`${team.name} head-to-head wins`} value={record.teamWins} onChange={value => recordField('teamWins', value)} /><NumberField label={`${nplTeam(data.opponentId).name} head-to-head wins`} value={record.opponentWins} onChange={value => recordField('opponentWins', value)} /></div>
             <div className={css.dataGrid}><NumberField label="Head to Head ties without a winner" value={record.ties} onChange={value => recordField('ties', value)} /><NumberField label="Head to Head no results" value={record.noResults} onChange={value => recordField('noResults', value)} /></div>
             <label className={css.kitLabel}><span>Record cutoff date</span><input aria-label="Head to Head cutoff date" type="date" value={record.asOf} onChange={event => recordField('asOf', event.target.value)} /></label>
-            <TextField label="Head to Head source URL" type="url" value={data.sourceUrl} maxLength={2000} validate={value => !value || /^https?:\/\/[^\s]+$/.test(value) ? null : 'Use an HTTP or HTTPS source URL.'} onChange={value => field('sourceUrl', value)} />
             {!data.headToHead && <p className={css.fieldHint}>Legacy statistic rows are preserved in this draft. Enter a confirmed paired record here; ambiguous old values are not converted automatically.</p>}
         </div>}
 
@@ -319,10 +321,9 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
                 <TextField label="Start time in Nepal" value={data.startTime} maxLength={40} hint="Use the confirmed local start time; the artwork labels it NPT." onChange={value => field('startTime', value)} />
             </div>
         </Section>
-        <Section title="Source & update time">
+        <Section title="Update time">
             <div className={css.cricketFields}>
-                {data.template !== 'score' && <TextField label="Score source URL" value={data.sourceUrl} maxLength={500} type="url" validate={value => value === '' || /^https?:\/\/[^\s]+$/.test(value) ? null : 'Enter a complete http or https URL.'} onChange={value => field('sourceUrl', value)} />}
-                <p className={css.fieldHint}>The artwork shows the source domain and update time when supplied.</p>
+                <p className={css.fieldHint}>The artwork shows the update time when supplied.</p>
                 <label className={css.kitLabel}>
                     <span>Last update · Nepal time</span>
                     <input aria-label="Last update in Nepal time" type="datetime-local" value={data.updatedAt ? new Date(new Date(data.updatedAt).getTime() + 345 * 60000).toISOString().slice(0, 16) : ''} onChange={event => field('updatedAt', event.target.value ? new Date(event.target.value + '+05:45').toISOString() : '')} />

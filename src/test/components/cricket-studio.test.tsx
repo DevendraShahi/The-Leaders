@@ -26,6 +26,34 @@ async function save() {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Save changes' })).toHaveTextContent('Saved'));
 }
 describe('Cricket creation and editing', () => {
+    it('creates a Playing XI directly from pasted names with the selected fixture', async () => {
+        const open = vi.fn(); render(<CricketStudio scope="cricket-test" onBack={vi.fn()} onOpenDraft={open} />);
+        fireEvent.change(screen.getByLabelText('Match date · Nepal time'), { target: { value: '2026-10-27' } });
+        fireEvent.change(screen.getByLabelText('Scheduled game'), { target: { value: 'npl-2026-league-2' } });
+        fireEvent.change(screen.getByLabelText('Post content type'), { target: { value: 'playing-xi' } });
+        const names = Array.from({ length: 11 }, (_, i) => `Player ${i + 1}${i === 0 ? ' (c)' : i === 1 ? ' (wk)' : ''}`);
+        fireEvent.change(screen.getByLabelText('Playing XI names (optional)'), { target: { value: `\n${names.join('\n')}\n` } });
+        fireEvent.click(screen.getByRole('button', { name: 'Create Playing XI post' }));
+        await waitFor(() => expect(open).toHaveBeenCalledOnce());
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        const [draft] = await listDrafts('cricket-test');
+        expect(draft.design.cricket).toMatchObject({ template: 'playing-xi', teamId: 'biratnagar', opponentId: 'chitwan', matchDate: '2026-10-27', lineup: names, sample: false });
+    });
+    it('validates pasted XIs and clears the visible names when the match changes', () => {
+        render(<CricketStudio scope="cricket-test" onBack={vi.fn()} onOpenDraft={vi.fn()} />);
+        fireEvent.change(screen.getByLabelText('Scheduled game'), { target: { value: 'custom' } });
+        fireEvent.change(screen.getByLabelText('Post content type'), { target: { value: 'playing-xi' } });
+        const input = screen.getByLabelText('Playing XI names (optional)');
+        fireEvent.change(input, { target: { value: 'One player' } });
+        expect(screen.getByRole('button', { name: 'Create Playing XI post' })).toBeDisabled();
+        expect(screen.getByRole('alert')).toHaveTextContent('exactly eleven');
+        fireEvent.change(input, { target: { value: Array.from({ length: 11 }, () => 'Same player').join('\n') } });
+        expect(screen.getByRole('alert')).toHaveTextContent('only once');
+        fireEvent.change(screen.getByRole('combobox', { name: 'Featured team' }), { target: { value: 'janakpur' } });
+        expect(input).toHaveValue('');
+        fireEvent.click(screen.getByRole('button', { name: 'New cricket post' }));
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+    });
     it('creates both daily fixtures directly without a prompt or selecting one game', async () => {
         const open = vi.fn(); render(<CricketStudio scope="cricket-test" onBack={vi.fn()} onOpenDraft={open} />);
         fireEvent.change(screen.getByLabelText('Match date · Nepal time'), { target: { value: '2026-10-27' } });

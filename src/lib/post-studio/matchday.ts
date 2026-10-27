@@ -13,12 +13,12 @@ export const matchdayHeadline = (language: 'en' | 'ne') => language === 'ne' ? '
 export function matchdayIssues(design: PostDesign): string[] {
     if (design.template !== 'cricket' || design.cricket?.template !== 'matchday') return [];
     const data = design.cricket, issues: string[] = [];
-    for (const [label, value] of [['Headline', design.headline], ['Competition', data.competition], ['Match date', data.matchDate], ['Start time', data.startTime], ['Venue', data.venue]]) {
+    for (const [label, value] of [['Headline', design.headline], ['Match date', data.matchDate], ['Start time', data.startTime], ['Venue', data.venue]]) {
         if (!value.trim()) issues.push(`${label} is required for Matchday.`);
     }
     if (data.startTime && !/^([01]\d|2[0-3]):[0-5]\d$/.test(data.startTime)) issues.push('Use a 24-hour start time such as 16:30 (Nepal time).');
     if (design.headline.length > matchdayCopy.headline) issues.push(`Matchday headline must be ${matchdayCopy.headline} characters or fewer.`);
-    if (design.summary.length > matchdayCopy.summary) issues.push(`Matchday supporting line must be ${matchdayCopy.summary} characters or fewer.`);
+    if (!design.hiddenLayers.includes('supporting') && design.summary.length > matchdayCopy.summary) issues.push(`Matchday supporting line must be ${matchdayCopy.summary} characters or fewer.`);
     if (design.hiddenLayers.includes('headline')) issues.push('Show the Matchday headline before exporting.');
     if (data.teamId === data.opponentId) issues.push('Choose two different teams.');
     return issues;

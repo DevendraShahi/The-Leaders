@@ -80,16 +80,16 @@ describe('Prompt creation contract', () => {
         expect(() => digestCreationResponse(' '.repeat(250001), options)).toThrow('too large');
         expect(() => digestCreationResponse(JSON.stringify({ ...response(), sources: ['javascript:alert(1)'] }), options)).toThrow('source');
     });
-    it('creates an atomic, retry-safe collection and retains sources in captions', async () => {
+    it('creates an atomic, retry-safe collection and omits sources in captions', async () => {
         const prepared = digestCreationResponse(JSON.stringify(response()), options);
         const entries = prepared.designs.map((design, index) => ({ id: `import-${index}`, name: `Coverage ${index}`, carouselId: 'import', carouselOrder: index, design }));
         const drafts = await createDraftCollection('editor', entries);
         await createDraftCollection('editor', entries);
         expect(await listDrafts('editor')).toHaveLength(2);
         expect(await listDrafts('other-editor')).toHaveLength(0);
-        expect(generateInstagramCaption(drafts)).toContain('https://example.com/scorecard');
+        expect(generateInstagramCaption(drafts)).not.toContain('https://example.com/scorecard');
     });
-    it('imports news and preserves sources without requiring cricket fields', async () => {
+    it('imports news without requiring cricket fields and omits sources from captions', async () => {
         const config: PromptOptions = { ...options, kind: 'news', templates: ['breaking', 'quote'] };
         expect(generateCreationPrompt(config)).not.toContain('Supported team identifiers');
         const prepared = digestCreationResponse(JSON.stringify({ version: 1, title: 'News pack', sources: ['https://example.com/report'], posts: [
@@ -98,6 +98,6 @@ describe('Prompt creation contract', () => {
         ] }), config);
         const drafts = await createDraftCollection('news', prepared.designs.map((design, i) => ({ id: `news-${i}`, name: 'News', design })));
         expect(prepared.designs.every(design => !design.cricket)).toBe(true);
-        expect(generateInstagramCaption(drafts)).toContain('https://example.com/report');
+        expect(generateInstagramCaption(drafts)).not.toContain('https://example.com/report');
     });
 });

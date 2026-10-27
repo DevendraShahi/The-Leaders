@@ -44,8 +44,9 @@ secondary collapsible sections. Cricket's manual gallery is collapsed by default
    teams, and the same team cannot be selected on both sides.
    A rule-based suggestion selects the post type and displays the proposed output
    before copying. Editors can change the type, language or size in optional
-   settings. **Copy prompt & continue** copies the instructions and data contract
-   directly; the schema is not displayed in the normal flow. A manual-copy fallback
+   settings. **1-Click Copy Prompt** copies the instructions and data contract
+   directly, while **Next: Paste AI Output** advances directly without compelling prompt copy;
+   a live preview card allows inspecting or copying the prepared prompt anytime. A manual-copy fallback
    appears only when clipboard access fails.
 2. **Response:** paste the AI's reply and choose **Review post**. JSON code fences
    are accepted. Omitted content and per-post fields become empty editable values,

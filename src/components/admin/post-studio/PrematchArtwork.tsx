@@ -28,11 +28,8 @@ export const PrematchArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
     const winner = data.toss?.winnerId && [data.teamId, data.opponentId].includes(data.toss.winnerId) ? data.toss.winnerId : null;
     const identityId: NplTeamId | null = toss ? winner : data.teamId;
     const customLogo = identityId === data.teamId ? data.teamLogoUri : identityId === data.opponentId ? data.opponentLogoUri : null;
-    const source = data.sourceUrl || design.sourceUrls?.[0] || '';
-    let host = ''; try { host = source ? new URL(source).hostname.replace(/^www\./, '') : ''; } catch { /* Preflight requests a source. */ }
     const background = matchdayBackgrounds.find(item => item.id === data.matchdayBackground) ?? matchdayBackgrounds[wide ? 0 : 4];
     const photo = Boolean(design.imageUri && !design.hiddenLayers.includes('visual'));
-    const credit = [photo ? design.imageCredit : '', ...(design.placedImages ?? []).filter(image => !image.hidden).map(image => image.credit)].filter(Boolean).join(' · ');
     const dateObject = new Date(`${data.matchDate}T12:00:00Z`);
     const date = data.matchDate && !Number.isNaN(dateObject.getTime()) ? new Intl.DateTimeFormat(ne ? 'ne-NP' : 'en-GB', { timeZone: 'UTC', day: '2-digit', month: 'short', year: 'numeric' }).format(dateObject) : '';
     const context = toss ? `${teamName(nplTeam(data.teamId), data.language)} vs ${teamName(nplTeam(data.opponentId), data.language)}${date ? ` · ${date}` : ''}` : xi ? `vs ${teamName(nplTeam(data.opponentId), data.language)}${date ? ` · ${date}` : ''}` : t('NPL 2026 · FRANCHISE PROFILE', 'एनपीएल २०२६ · टोली परिचय');
@@ -51,9 +48,8 @@ export const PrematchArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
                 {xi && <ol className={s.lineup}>{(data.lineup.length ? data.lineup : Array.from({ length: 11 }, () => '')).map((name, index) => <li key={index}><span>{n(index + 1)}</span>{text(name || t('Name to confirm', 'नाम पुष्टि हुन बाँकी'), s.playerName, wide ? 7 : 11.5, wide ? 5.5 : 7, 'xi-players')}</li>)}</ol>}
                 {!xi && !toss && <div className={s.profile}>{facts.length ? facts.map(([label, value]) => <div className={s.fact} key={label}><span>{label}</span>{text(value, s.factValue, wide ? 12 : 18, wide ? 7 : 10, 'team-facts')}</div>) : text(t('Team details to confirm', 'टोलीको विवरण पुष्टि हुन बाँकी'), s.factValue, wide ? 13 : 19, 9)}</div>}
             </main>
-            <div className={s.source}>{text(host ? `${t('SOURCE', 'स्रोत')} · ${host}` : t('SOURCE TO CONFIRM', 'स्रोत पुष्टि हुन बाँकी'), s.sourceText, wide ? 5 : 6.5, wide ? 4 : 5)}</div>
             <div className={s.summary} {...select('supporting')}>{!design.hiddenLayers.includes('supporting') && design.summary && text(design.summary, s.summaryText, wide ? 6 : 8, wide ? 5 : 6)}</div>
-            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}{credit && text(credit, base.credit, 4, 3)}</footer>
+            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}</footer>
         </div>
         {guides && <div className={base.guides} aria-hidden="true" />}
     </div>;

@@ -29,7 +29,6 @@ export const FixturesArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
     const date = data.matchDate && !Number.isNaN(dateObject.getTime()) ? new Intl.DateTimeFormat(ne ? 'ne-NP' : 'en-GB', { timeZone: 'UTC', day: '2-digit', month: 'long', year: 'numeric' }).format(dateObject) : t('Date to confirm', 'मिति पुष्टि हुन बाँकी');
     const background = matchdayBackgrounds.find(item => item.id === data.matchdayBackground) ?? matchdayBackgrounds[wide ? 0 : 4];
     const photo = Boolean(design.imageUri && !design.hiddenLayers.includes('visual'));
-    const credit = [photo ? design.imageCredit : '', ...(design.placedImages ?? []).filter(image => !image.hidden).map(image => image.credit)].filter(Boolean).join(' · ');
     const rows = data.fixtures;
     const rest = !rows.length && cricketRestDays.includes(data.matchDate);
     const badge = (id: NplTeamId) => <div className={s.team}><div className={s.crest}><img src={teamLogo(id)} alt={nplTeam(id).name} /></div>{text(teamName(nplTeam(id), data.language), s.teamName, wide ? 9 : 12, wide ? 6 : 7, 'fixture-teams')}</div>;
@@ -50,7 +49,7 @@ export const FixturesArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
                 {!rows.length && <div className={s.empty}>{text(rest ? t('REST DAY', 'विश्राम दिन') : t('FIXTURES TO CONFIRM', 'खेल तालिका पुष्टि हुन बाँकी'), s.emptyTitle, wide ? 22 : 32, 14)}<span>{rest ? t('No league games scheduled.', 'लिगका खेल निर्धारित छैनन्।') : t('Add the confirmed games in Match.', 'पुष्टि भएका खेल थप्नुहोस्।')}</span></div>}
             </main>
             <div className={s.summary} {...select('supporting')}>{!design.hiddenLayers.includes('supporting') && design.summary && text(design.summary, s.summaryText, wide ? 6.5 : 8, wide ? 5 : 6)}</div>
-            <footer className={s.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, s.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', s.footerLabel, wide ? 4.5 : 6, 3.5)}{credit && text(credit, s.credit, 4, 3)}</footer>
+            <footer className={s.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, s.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', s.footerLabel, wide ? 4.5 : 6, 3.5)}</footer>
         </div>
         {guides && <div className={s.guides} aria-hidden="true" />}
     </div>;

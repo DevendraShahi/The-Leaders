@@ -1,2 +1,622 @@
-.artwork{--muted:#ccc7c6;--rule:#ffffff36;--red:#e51d26;background:#090909;color:#fff}.artwork>img{filter:grayscale(1) contrast(1.2)}.shade{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 50% 58%,#ae070755,transparent 58%),linear-gradient(180deg,#05050599,#06060640 40%,#050505ed 85%,#050505)}.content{position:absolute;inset:5% 6%;z-index:2;display:grid;grid-template-rows:6% 5% 13% 42% 14% 8% 5% 4% 3%;pointer-events:none}.content>*{min-height:0;min-width:0}.content [role=button]{pointer-events:auto;cursor:pointer}.content [data-selected=true]{outline:1px dashed #ef4e54}.content [role=button]:focus-visible{outline:2px solid #ef4e54}.fill,.contextOvers,.titleRuns,.sharedStat,.standLabel,.playerName,.batterMeta,.rate,.overs,.meta,.credit{width:100%;height:100%;min-width:0}.context{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:8px;border-block:1px solid var(--rule);padding:2px 4px;background:#050505a6}.contextOvers{text-align:right}.title{display:grid;grid-template-rows:66% 34%;text-align:center;padding-top:5px;letter-spacing:-1.1px}.titleRuns{color:var(--red);letter-spacing:1px}.arena{position:relative;min-height:0;isolation:isolate}.players{position:absolute;inset:0;overflow:hidden;z-index:0}.portrait{position:absolute;bottom:0;left:-13%;width:72%;height:100%;overflow:hidden}.portrait:nth-child(2){left:auto;right:-13%}.portrait>img{display:block;width:100%;height:100%;object-fit:contain;object-position:center bottom;transform-origin:center bottom;filter:grayscale(1) contrast(1.12) drop-shadow(0 0 7px #ed1c2470)}.stand{position:absolute;left:25%;right:25%;top:29%;bottom:8%;z-index:1;display:grid;grid-template-rows:83% 17%;grid-template-columns:minmax(0,1fr);text-align:center;pointer-events:none}.sharedStat{letter-spacing:-5px;text-shadow:0 0 12px #d40c17,0 2px 3px #000;color:#fff}.standLabel{letter-spacing:.7px;text-shadow:0 1px 4px #000}.cards{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:0 0 5px}.card{min-width:0;min-height:0;display:grid;grid-template-rows:30% 47% 23%;text-align:center;background:linear-gradient(#080808b3,#080808e8)}.playerName{background:linear-gradient(110deg,#79080d,#ce111b);padding:2px 6px;clip-path:polygon(5% 0,95% 0,100% 100%,0 100%)}.innings{min-width:0;min-height:0;padding:1px 2px}.batterMeta{color:var(--muted);border-bottom:1px solid var(--rule);padding:0 2px}.standStrip{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);gap:10px;align-items:center;border-block:1px solid var(--rule);border-inline:3px solid var(--red);background:#090909c9;padding:4px 7px;text-align:center}.rate{border-left:1px solid var(--rule);padding-left:5px;color:#f0cbcc}.score{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:minmax(0,1fr);gap:10px;padding:3px 0}.overs{text-align:right;color:var(--muted)}.notes{display:grid;grid-template-rows:30% 36% 34%;min-height:0;color:var(--muted)}.meta,.credit{opacity:.75}.content>footer{padding-top:1px;border-top:1px solid var(--rule)}.artwork[data-detailed=false] .content{grid-template-rows:6% 5% 13% 48% 8% 8% 5% 4% 3%}.artwork[data-detailed=false] .card{grid-template-rows:minmax(0,1fr);background:none}.artwork[data-format=story] .content{inset:8% 6% 10%;grid-template-rows:5% 4% 12% 44% 15% 8% 5% 4% 3%}.artwork[data-format=story][data-detailed=false] .content{grid-template-rows:5% 4% 12% 50% 9% 8% 5% 4% 3%}.artwork[data-format=story] .portrait{width:80%;left:-19%}.artwork[data-format=story] .portrait:nth-child(2){left:auto;right:-19%}.artwork[data-format=story] .stand{left:23%;right:23%;top:30%;bottom:5%}.artwork[data-format=story] .sharedStat{letter-spacing:-6px}.artwork[data-format=story] .cards{gap:20px;padding-bottom:6px}.artwork[data-format=landscape] .content{inset:4% 6%}.artwork[data-format=landscape] .title{padding:1px}.artwork[data-format=landscape] .sharedStat{letter-spacing:-2px}.artwork[data-format=landscape] .cards{gap:12px;padding-bottom:1px}.artwork[data-format=landscape] .playerName{padding:0 3px}.artwork[data-format=landscape] .standStrip{padding:1px 5px}.artwork[data-format=landscape] .score{padding:1px 0}
-.portrait{height:90%}.portrait:nth-child(2){height:100%}.artwork[data-detailed=false] .playerName{height:60%;align-self:start}.title{grid-template-rows:60% 40%}
+/* ==========================================================================
+   PartnershipArtwork.module.css
+   Architectural Benchmark: HeadToHead & Matchday standards.
+   Layout Rhythm: 8% Header | 17% Title | 37% Arena | 16% Facts | 8% Score | 8% Summary | 6% Footer
+   Zero dashboard cards. Seamless Stadium & Editorial styles.
+   ========================================================================== */
+
+.artwork {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    background: #07151d;
+    color: #fff9ed;
+    font-family: Onest_700Bold, sans-serif;
+    --ink: #fff9ed;
+    --muted: #c6d1d6;
+    --rule: rgba(255, 255, 255, 0.25);
+    --gold: #f5c542;
+}
+
+.artwork * {
+    box-sizing: border-box;
+}
+
+/* Base layers */
+.background,
+.photo,
+.scrim,
+.overlays {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.background {
+    object-fit: cover;
+    object-position: center;
+}
+
+.photo {
+    opacity: 0.65;
+}
+
+.overlays {
+    z-index: 0;
+}
+
+.scrim {
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        rgba(7, 21, 29, 0.92) 0%,
+        rgba(7, 21, 29, 0.70) 24%,
+        rgba(7, 21, 29, 0.58) 50%,
+        rgba(7, 21, 29, 0.80) 75%,
+        rgba(7, 21, 29, 0.95) 100%
+    );
+}
+
+/* Editorial Paper Mode */
+.paper {
+    background: #f4f0e7;
+    color: #12282e;
+    --ink: #12282e;
+    --muted: #40565b;
+    --rule: rgba(18, 40, 46, 0.22);
+    --gold: #b3820a;
+}
+
+.paper .background {
+    mix-blend-mode: multiply;
+}
+
+.paper .scrim {
+    background: linear-gradient(
+        180deg,
+        rgba(244, 240, 231, 0.92) 0%,
+        rgba(244, 240, 231, 0.68) 35%,
+        rgba(244, 240, 231, 0.94) 100%
+    );
+}
+
+.paper .tournamentLogo img {
+    filter: none;
+}
+
+/* 7-Row Content Grid (Exact benchmark rhythm of Head to Head) */
+.content {
+    position: absolute;
+    inset: 5% 6%;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: 7.5% 15.5% 41% 15% 7.5% 7.5% 6%;
+    pointer-events: none;
+    min-width: 0;
+    min-height: 0;
+}
+
+.content > * {
+    min-width: 0;
+    min-height: 0;
+}
+
+.content [role="button"] {
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.content [data-selected="true"] {
+    outline: 1px dashed #49e8c7;
+    outline-offset: 2px;
+}
+
+.content [role="button"]:focus-visible {
+    outline: 2px solid #49e8c7;
+}
+
+/* 1. Masthead Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: 12px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+    font-size: 7px;
+    letter-spacing: 0.4px;
+}
+
+.brand img {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+
+.brand small {
+    display: block;
+    font-size: 4.5px;
+    letter-spacing: 0.8px;
+    margin-top: 3px;
+    color: var(--muted);
+}
+
+.tournamentLogo {
+    width: 58px;
+    height: 28px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.tournamentLogo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+}
+
+/* 2. Context & Title Block */
+.title {
+    display: grid;
+    grid-template-rows: 24% 76%;
+    padding: 3px 0 5px;
+}
+
+.kickerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 5.5px;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.overBadge {
+    color: var(--gold);
+    font-weight: 700;
+}
+
+.headline {
+    height: 100%;
+    width: 100%;
+    letter-spacing: -1.3px;
+    text-transform: uppercase;
+    padding-top: 1px;
+}
+
+.artwork[data-language="ne"] .headline {
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+/* 3. Dual Batters Arena (Hero comparison with grounded portraits and bespoke stat chips) */
+.arena {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 24px minmax(0, 1fr);
+    gap: 6px;
+    padding: 0 0 4px;
+    align-items: stretch;
+    min-height: 0;
+}
+
+.playerCol {
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    min-width: 0;
+    min-height: 0;
+    text-align: center;
+    gap: 2px;
+}
+
+.portraitWrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.portraitWrapper img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+    filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45));
+}
+
+.playerName {
+    width: 100%;
+    font-weight: 700;
+    padding-top: 2px;
+    margin-bottom: 1px;
+    flex-shrink: 0;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.playerInnings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.inningsScore {
+    display: inline-flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 4px;
+    line-height: 1;
+}
+
+.scoreRuns {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--gold);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+}
+
+.scoreBalls {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.2px;
+    line-height: 1;
+    opacity: 0.9;
+}
+
+.statRow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1px;
+    line-height: 1;
+}
+
+.fourItem,
+.sixItem,
+.srItem {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2.5px;
+    font-size: 8.5px;
+    letter-spacing: 0.2px;
+    line-height: 1;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.metricLabel {
+    font-weight: 800;
+    letter-spacing: 0.3px;
+}
+
+.metricLabel sup {
+    font-size: 6px;
+    vertical-align: super;
+    line-height: 0;
+    font-family: inherit;
+    font-weight: 700;
+    margin-left: 0.5px;
+}
+
+.metricVal {
+    font-weight: 800;
+    color: #fff9ed;
+    letter-spacing: -0.2px;
+}
+
+.fourItem .metricLabel {
+    color: #4ade80; /* Clean Mint Green */
+}
+
+.sixItem .metricLabel {
+    color: #f87171; /* Vivid Sports Red */
+}
+
+.srItem .metricLabel {
+    color: #38bdf8; /* Clean Sky Blue */
+}
+
+.playerCrease {
+    font-size: 6px;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 2px 0;
+}
+
+.standCenter {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 22px;
+}
+
+.amp {
+    font-size: 15px;
+    color: var(--muted);
+    opacity: 0.5;
+    font-weight: 300;
+    line-height: 1;
+}
+
+/* Paper Editorial adjustments */
+.paper .playerName {
+    text-shadow: none;
+}
+
+.paper .scoreRuns {
+    text-shadow: none;
+}
+
+.paper .metricVal {
+    color: #12282e;
+}
+
+.paper .fourItem,
+.paper .sixItem,
+.paper .srItem {
+    text-shadow: none;
+}
+
+.paper .fourItem .metricLabel {
+    color: #059669;
+}
+
+.paper .sixItem .metricLabel {
+    color: #dc2626;
+}
+
+.paper .srItem .metricLabel {
+    color: #0284c7;
+}
+
+/* 4. Three-Column Stand Fact Bar (Directly modelled on Head to Head .facts) */
+.facts {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 0;
+}
+
+.stat {
+    display: grid;
+    grid-template-rows: 64% 36%;
+    text-align: center;
+    min-width: 0;
+    min-height: 0;
+    padding: 0 4px;
+    border-right: 1px solid var(--rule);
+}
+
+.stat:last-child {
+    border-right: none;
+}
+
+.statNumber {
+    width: 100%;
+    height: 100%;
+    letter-spacing: -1.2px;
+    color: var(--ink);
+}
+
+.statLabel {
+    width: 100%;
+    height: 100%;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+/* 5. Scoreboard Status Strip */
+.scoreboard {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    padding-top: 4px;
+    gap: 8px;
+}
+
+.scoreLeft {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    min-width: 0;
+}
+
+.miniCrest {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.scoreTotal {
+    height: 100%;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+.scoreOvers {
+    font-size: 5.5px;
+    color: var(--muted);
+    letter-spacing: 0.4px;
+    flex-shrink: 0;
+}
+
+.scoreRight {
+    text-align: right;
+    color: var(--muted);
+    min-width: 0;
+}
+
+.sourceHost {
+    width: 100%;
+    height: 100%;
+    color: var(--muted);
+    text-align: right;
+}
+
+/* 6. Summary Note */
+.summary {
+    padding: 3px 0;
+    min-height: 0;
+}
+
+.summaryText {
+    height: 100%;
+    width: 100%;
+    color: var(--muted);
+}
+
+/* 7. Footer */
+.footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: minmax(0, 1fr);
+    gap: 0 8px;
+}
+
+.footer:has(.credit) {
+    grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.author,
+.footerLabel,
+.credit {
+    height: 100%;
+    width: 100%;
+    color: var(--muted);
+}
+
+.footerLabel {
+    text-align: right;
+}
+
+.credit {
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+.guides {
+    position: absolute;
+    inset: 5% 6%;
+    border: 1px dashed #49e8c7;
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* ==========================================================================
+   Format Responsiveness: Square (1:1)
+   ========================================================================== */
+.artwork[data-format="square"] .content {
+    inset: 4% 5%;
+    grid-template-rows: 9% 17% 35% 15% 8% 10% 6%;
+}
+
+.artwork[data-format="square"] .facts {
+    padding: 4px 0;
+}
+
+.artwork[data-format="square"] .scoreboard {
+    padding-top: 2px;
+}
+
+.artwork[data-format="square"] .summary {
+    padding: 2px 0;
+}
+
+/* ==========================================================================
+   Format Responsiveness: Story (9:16)
+   ========================================================================== */
+.artwork[data-format="story"] .content {
+    inset: 6% 7% 7%;
+    grid-template-rows: 7% 16% 41% 14% 8% 8% 6%;
+}
+
+.artwork[data-format="story"] .portraitWrapper img {
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+}
+
+.artwork[data-format="story"] .arena {
+    gap: 8px;
+}
+
+/* ==========================================================================
+   Format Responsiveness: Landscape (16:9)
+   ========================================================================== */
+.artwork[data-format="landscape"] .content {
+    inset: 5% 5%;
+    grid-template-columns: 46% 54%;
+    grid-template-rows: 16% 30% 24% 15% 8% 7%;
+    gap: 0 12px;
+}
+
+.artwork[data-format="landscape"] .header {
+    grid-column: 1 / -1;
+    grid-row: 1;
+}
+
+.artwork[data-format="landscape"] .title {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 2px 6px 3px 0;
+    grid-template-rows: 20% 80%;
+}
+
+.artwork[data-format="landscape"] .facts {
+    grid-column: 1;
+    grid-row: 3;
+    padding: 3px 0;
+    margin-right: 6px;
+}
+
+.artwork[data-format="landscape"] .scoreboard {
+    grid-column: 1;
+    grid-row: 4;
+    padding-top: 3px;
+    margin-right: 6px;
+}
+
+.artwork[data-format="landscape"] .arena {
+    grid-column: 2;
+    grid-row: 2 / 5;
+    padding: 0 0 2px 6px;
+    gap: 4px;
+}
+
+.artwork[data-format="landscape"] .summary {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    padding: 0;
+}
+
+.artwork[data-format="landscape"] .footer {
+    grid-column: 1 / -1;
+    grid-row: 6;
+}
+
+.artwork[data-format="landscape"] .tournamentLogo {
+    width: 40px;
+    height: 20px;
+}

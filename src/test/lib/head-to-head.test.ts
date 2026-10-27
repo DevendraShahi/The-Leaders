@@ -50,10 +50,10 @@ describe('Head to Head benchmark contract', () => {
         expect(headToHeadIssues(legacy).join(' ')).toContain('Legacy statistic rows are retained'); expect(legacy.cricket!.statRows[0].value).toBe('3');
         expect(headToHeadIssues({ ...legacy, template: 'breaking' })).toEqual([]);
     });
-    it('keeps the paired record, cutoff and sources in the generated caption', () => {
+    it('keeps the paired record and cutoff in the generated caption and omits sources', () => {
         const result = design();
         const caption = generateCricketCaption([{ id: 'test', name: 'Illustrative record', design: result, createdAt: '', updatedAt: '', trashedAt: null }]);
         expect(caption).toContain('Lumbini Lions: 3 wins'); expect(caption).toContain('Sudurpaschim Royals: 1 win');
-        expect(caption).toContain('Record as of: 2026-10-25'); expect(caption).toContain('https://example.com/history');
+        expect(caption).toContain('Record as of: 2026-10-25'); expect(caption).not.toContain('https://example.com/history');
     });
 });

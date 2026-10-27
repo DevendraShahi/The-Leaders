@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Playing XI",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "playing-xi",
+      "teamId": "lumbini",
+      "headline": "THE PLAYING XI",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "lineup": [
+          "Aakash Tripathi",
+          "Aasif Sheikh (wk)",
+          "Abhishesh Gautam",
+          "Ajay Chauhan",
+          "Arniko Yadav",
+          "D'Arcy Short",
+          "Dilip Nath",
+          "Dinesh Adhikari",
+          "Durgesh Gupta",
+          "Kishore Mahato",
+          "Niroshan Dickwella"
+        ]
+      }
+    }
+  ]
+}

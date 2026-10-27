@@ -16,8 +16,7 @@ export async function carouselEntries(scope: string, edition: DailyEdition, lang
 export function packageCarousel(edition: DailyEdition, images: Record<string, Uint8Array>, language: 'ne' | 'en' | 'both') {
     const files = { ...images };
     for (const lang of ['ne', 'en'] as const) if (language === 'both' || language === lang) files[`${lang}/caption.txt`] = strToU8(edition.caption[lang]);
-    files['sources.txt'] = strToU8(edition.sources.map(source => `${source.name}\n${source.url}\n`).join('\n'));
-    files['README.txt'] = strToU8('The Leaders\nUpload PNGs in numerical order within one language folder. Captions and source links are included. Review all content before posting. This export does not publish.');
+    files['README.txt'] = strToU8('The Leaders\nUpload PNGs in numerical order within one language folder. Captions are included. Review all content before posting. This export does not publish.');
     // PNGs are already compressed; store them without expensive recompression.
     return zipSync(files, { level: 0 });
 }

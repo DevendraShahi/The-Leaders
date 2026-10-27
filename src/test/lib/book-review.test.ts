@@ -4,6 +4,9 @@ import {
     generateBookReviewCaption,
     generateBookReviewDrafts,
     generateBookReviewSummaryDraft,
+    generateBookReviewMasterPrompt,
+    parseBookReviewResponse,
+    BOOK_REVIEW_LENGTH_GUIDE,
     type BookReviewInput,
 } from '@/lib/post-studio/book-review';
 import { postDesignSchema } from '@/lib/post-studio/drafts';
@@ -155,7 +158,7 @@ describe('Book Review Templates & Generator', () => {
         ]);
     });
 
-    it('generates master prompt with target book title, author, context, and exact length rules', async () => {
+    it('generates master prompt with target book title, author, context, and editor length rules', async () => {
         const { generateBookReviewMasterPrompt } = await import('@/lib/post-studio/book-review');
         const prompt = generateBookReviewMasterPrompt(
             "The Republic",
@@ -166,11 +169,26 @@ describe('Book Review Templates & Generator', () => {
         expect(prompt).toContain('Book: "The Republic"');
         expect(prompt).toContain('Author: "Plato"');
         expect(prompt).toContain('Justice and political leadership');
-        expect(prompt).toContain('EXACTLY 140–185 characters');
-        expect(prompt).toContain('EXACTLY 120–175 characters');
+        for (const [key, limit] of Object.entries(BOOK_REVIEW_LENGTH_GUIDE)) {
+            expect(prompt).toContain(`${key}: aim for ${limit.min}–${limit.max} characters; maximum ${limit.max}.`);
+        }
+        expect(prompt).toContain('exactly 13 top-level fields');
         expect(prompt).toContain('centralThesis');
         expect(prompt).toContain('keyTakeaways');
         expect(prompt).toContain('criticSays');
+    });
+
+    it('keeps quoted book inputs valid JSON and preserves unavailable ratings through draft creation', () => {
+        const title = 'A "Quoted" Book', author = 'A. Writer';
+        const prompt = generateBookReviewMasterPrompt(title, author, 'Context with "quotes"');
+        const raw = prompt.slice(prompt.indexOf('\n{', prompt.indexOf('RETURN THIS JSON OBJECT')) + 1);
+        const input = JSON.parse(raw);
+        expect(Object.keys(input)).toHaveLength(13);
+        expect(input.title).toBe(title);
+        const parsed = parseBookReviewResponse(raw);
+        expect(parsed.success).toBe(true);
+        expect(parsed.data.rating).toBe('');
+        expect(generateBookReviewDrafts(parsed.data).every(draft => !JSON.stringify(draft.design).includes('★★★★★'))).toBe(true);
     });
 
     it('parses valid JSON response from AI code block into BookReviewInput', async () => {

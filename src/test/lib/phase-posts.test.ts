@@ -19,7 +19,7 @@ function design(template:'powerplay'|'partnership'='partnership'){
 describe('Powerplay and Partnership',()=>{
  it.each(['powerplay','partnership'] as const)('starts %s with unknown facts and a canonical title',id=>{
   const d=createCricketDraftDesign(id);expect(d.headline).toBe(phaseHeadline(id,'en'));expect(d.cricket!.runs).toBeNull();expect(phaseIssues(d).length).toBeGreaterThan(0);
-  expect(creationGaps([d]).map(g=>g.path)).toContain('cricket.matchDate');
+  expect(creationGaps([d]).map(g=>g.path)).not.toContain('cricket.matchDate');
  });
  it('accepts a sourced powerplay endpoint and reduced duration, never assuming six overs',()=>{
   const d=design('powerplay');expect(phaseIssues(d)).toEqual([]);d.cricket!.overs='3.2';d.cricket!.powerplayOvers='3.2';expect(phaseIssues(d)).toEqual([]);
@@ -47,8 +47,8 @@ describe('Powerplay and Partnership',()=>{
   const d=design();const results=[redatePrematch(d,'2026-10-27'),rebindCricketEvidence(d,'chitwan','sudurpaschim'),shareStyles(d,{...d,cricket:{...d.cricket!,matchDate:'2026-10-27'}},['cricket']),updateCreationValue({title:'Stand',designs:[d],warnings:[]},0,'cricket.matchDate','2026-10-27').designs[0]];
   for(const next of results){expect(next.cricket!.partnershipRuns).toBeNull();expect(next.cricket!.secondBatter.name).toBe('');expect(next.imageUri).toBeNull();expect(next.cricket!.sourceUrl).toBe('');}
  });
- it('retains both separate photo credits in captions and omits them when portraits are disabled',()=>{
-  const d=design();const slide={design:d} as PostDraft;const caption=generateCricketCaption([slide]);expect(caption).toContain('Photo: Rohit Paudel');expect(caption).toContain('Photo: Aakash Tripathi');expect(caption).toContain('76 runs · 48 balls');d.cricket!.showPlayerPhoto=false;expect(generateCricketCaption([slide])).not.toContain('Photo:');
+ it('omits photo credits in captions',()=>{
+  const d=design();const slide={design:d} as PostDraft;const caption=generateCricketCaption([slide]);expect(caption).not.toContain('Photo:');expect(caption).toContain('76 runs · 48 balls');d.cricket!.showPlayerPhoto=false;expect(generateCricketCaption([slide])).not.toContain('Photo:');
  });
  it('binds strict prompt titles and rejects contradictory imported powerplay facts',()=>{
   const options:PromptOptions={kind:'cricket',templates:['powerplay'],language:'en',format:'portrait',brief:'',teams:{teamId:'lumbini',opponentId:'sudurpaschim'}};

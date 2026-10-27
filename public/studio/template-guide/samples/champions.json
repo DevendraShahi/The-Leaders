@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Champions",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "champions",
+      "teamId": "lumbini",
+      "headline": "CHAMPIONS",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "runs": 180,
+        "wickets": 3,
+        "overs": "19.2",
+        "result": "Won by 7 wickets",
+        "opponentRuns": 179,
+        "opponentWickets": 8,
+        "opponentOvers": "20"
+      }
+    }
+  ]
+}

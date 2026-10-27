@@ -25,13 +25,13 @@ describe('Reviewed NPL player catalog', () => {
         expect(findPlayers('lumbini', 'aasif').map(player => player.id)).toContain('aasif-sheikh');
         expect(findPlayers('janakpur', 'aasif', false)).toHaveLength(0);
     });
-    it('persists credit, shares it with the image, includes it in captions, and clears it on replacement', () => {
+    it('persists credit, shares it with the image, clears it on replacement, and omits sources from captions', () => {
         const player = findPlayers('kathmandu', 'karan')[0];
         const design = createCricketDesign('batting');
         const inserted = { ...design, imageUri: 'data:image/webp;base64,test', imageCredit: playerPhotoCredit(player) };
         expect(postDesignSchema.parse(inserted).imageCredit).toContain(player.photo!.license);
         expect(shareStyles(design, inserted, ['background']).imageCredit).toBe(inserted.imageCredit);
-        expect(generateCricketCaption([{ design: inserted } as PostDraft])).toContain(player.photo!.sourceUrl);
+        expect(generateCricketCaption([{ design: inserted } as PostDraft])).not.toContain(player.photo!.sourceUrl);
         expect(replaceImage(inserted, 'different').imageCredit).toBe('');
         expect(generateCricketCaption([{ design: { ...inserted, imageUri: null } } as PostDraft])).not.toContain(player.photo!.sourceUrl);
     });

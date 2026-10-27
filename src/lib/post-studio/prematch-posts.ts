@@ -4,6 +4,7 @@ import { rebindHeadToHead } from './head-to-head';
 import { rebindScore } from './score-update';
 import { rebindMoment } from './moment-posts';
 import { rebindPhase } from './phase-posts';
+import { cricketTeamIssues, isOtherMatchSnapshot, resetCricketTemplate } from './cricket-team-context';
 
 export const prematchIds = ['toss', 'playing-xi', 'team'] as const;
 export type PrematchId = typeof prematchIds[number];
@@ -22,20 +23,18 @@ export function lineupProblems(lineup: string[]): string[] {
 export function prematchIssues(design: PostDesign): string[] {
     const data = design.cricket;
     if (design.template !== 'cricket' || !data || !prematchIds.includes(data.template as PrematchId)) return [];
-    const issues: string[] = [];
+    const issues: string[] = cricketTeamIssues(data);
     if (!design.headline.trim()) issues.push('The headline is required.');
     if (design.headline.length > prematchCopy.headline) issues.push('Keep the headline within 48 characters.');
-    if (design.summary.length > prematchCopy.summary) issues.push('Keep the supporting line within 100 characters.');
+    if (!design.hiddenLayers.includes('supporting') && design.summary.length > prematchCopy.summary) issues.push('Keep the supporting line within 100 characters.');
     if (design.hiddenLayers.includes('headline')) issues.push('Show the headline before exporting.');
     if (data.teamId === data.opponentId) issues.push('Choose two different teams.');
-    if (['toss', 'playing-xi'].includes(data.template) && !data.matchDate) issues.push('Add the selected match date for this confirmed update.');
     if (data.template === 'toss') {
         if (!data.toss?.winnerId || ![data.teamId, data.opponentId].includes(data.toss.winnerId)) issues.push('Choose the confirmed toss winner from these two teams.');
         if (!data.toss?.decision) issues.push('Confirm whether the toss winner chose to bat or bowl.');
     }
     if (data.template === 'playing-xi') issues.push(...lineupProblems(data.lineup));
     if (data.template === 'team' && !Object.values(data.teamProfile ?? {}).some(value => value.trim())) issues.push('Add at least one confirmed team detail: captain, head coach or home city.');
-    if (![data.sourceUrl, ...(design.sourceUrls ?? [])].some(url => /^https?:\/\/[^\s]+$/.test(url))) issues.push('Add a source URL for the confirmed information.');
     return issues;
 }
 /** Prevent a prior match's toss/XI, or another franchise's profile, following a team change. */
@@ -55,6 +54,10 @@ export function rebindPrematch(design: PostDesign, teamId: NplTeamId, opponentId
 }
 export function redatePrematch(design: PostDesign, matchDate: string): PostDesign {
     const data = design.cricket;
+    if (data && data.matchDate !== matchDate && isOtherMatchSnapshot(data.template)) {
+        const reset = resetCricketTemplate(design, data.template, true);
+        return { ...reset, fixtureId: undefined, cricket: { ...reset.cricket!, matchDate } };
+    }
     if (data && ['powerplay', 'partnership'].includes(data.template)) return rebindPhase(design, data.teamId, data.opponentId, matchDate);
     if (data && ['four', 'six', 'wicket'].includes(data.template)) return rebindMoment(design, data.teamId, data.opponentId, matchDate);
     if (data?.template === 'score') return rebindScore(design, data.teamId, data.opponentId, matchDate);
@@ -70,5 +73,7 @@ export function rebindCricketEvidence(design: PostDesign, teamId: NplTeamId, opp
     const scored = rebindScore({ ...moment, cricket: { ...moment.cricket!, teamId: design.cricket.teamId, opponentId: design.cricket.opponentId } }, teamId, opponentId);
     const historical = rebindHeadToHead({ ...scored, cricket: { ...scored.cricket!, teamId: design.cricket.teamId, opponentId: design.cricket.opponentId } }, teamId, opponentId);
     // Each safeguard compares against the original pair, while retaining earlier resets.
-    return rebindPrematch({ ...historical, cricket: { ...historical.cricket!, teamId: design.cricket.teamId, opponentId: design.cricket.opponentId } }, teamId, opponentId);
+    const rebound = rebindPrematch({ ...historical, cricket: { ...historical.cricket!, teamId: design.cricket.teamId, opponentId: design.cricket.opponentId } }, teamId, opponentId);
+    return isOtherMatchSnapshot(design.cricket.template) && (design.cricket.teamId !== teamId || design.cricket.opponentId !== opponentId)
+        ? { ...resetCricketTemplate(rebound, design.cricket.template, true), fixtureId: undefined } : rebound;
 }

@@ -82,14 +82,14 @@ describe('Cricket captions', () => {
         expect(caption).not.toContain('SAMPLE CONTENT'); expect(caption).toContain('#NepalCricket');
         expect(caption).toContain('128/3'); expect(caption).not.toContain('#NepalPolitics');
     });
-    it('preserves sources, Nepali digits and an all-round performance in the caption', async () => {
+    it('preserves Nepali digits and an all-round performance in the caption, omitting sources', async () => {
         const { generateInstagramCaption } = await import('@/lib/post-studio/carousel');
         const design = createCricketDesign('player-of-match', 'chitwan', 'kathmandu', 'portrait', 'ne');
         design.cricket = { ...design.cricket!, awardPerformance: 'all-round', sourceUrl: 'https://example.com/sample-scorecard' };
         const draft = await createDraft('sports-editor', 'Award', design);
         const caption = generateInstagramCaption([draft]);
         expect(caption).not.toContain('नमुना सामग्री'); expect(caption).toContain('६८*');
-        expect(caption).toContain('३/२४'); expect(caption).toContain('https://example.com/sample-scorecard');
+        expect(caption).toContain('३/२४'); expect(caption).not.toContain('https://example.com/sample-scorecard');
         expect(caption).toContain('#ChitwanRhinos');
     });
 });

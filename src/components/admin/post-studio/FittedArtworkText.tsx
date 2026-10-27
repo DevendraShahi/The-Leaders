@@ -41,10 +41,18 @@ export function FittedArtworkText({ text, max, min, lineHeight = 1.35, className
         const observer = new ResizeObserver(() => {
             if (lastWidth === node.clientWidth && lastHeight === node.clientHeight) return;
             lastWidth = node.clientWidth; lastHeight = node.clientHeight;
+            node.dataset.textReady = 'false';
             cancelAnimationFrame(frame); frame = requestAnimationFrame(fit);
         });
         observer.observe(node);
-        return () => { active = false; observer.disconnect(); cancelAnimationFrame(frame); document.fonts?.removeEventListener?.('loadingdone', fit); };
+        // Language/style classes can change letter spacing without resizing the slot.
+        const context = node.closest('[data-managed-layout]');
+        const contextObserver = new MutationObserver(() => {
+            node.dataset.textReady = 'false';
+            cancelAnimationFrame(frame); frame = requestAnimationFrame(fit);
+        });
+        if (context) contextObserver.observe(context, { attributes: true, attributeFilter: ['data-language', 'data-format', 'class', 'style'] });
+        return () => { active = false; observer.disconnect(); contextObserver.disconnect(); cancelAnimationFrame(frame); document.fonts?.removeEventListener?.('loadingdone', fit); };
     }, [text, max, min, lineHeight, style?.fontFamily, style?.letterSpacing, fitGroup]);
     return <div ref={ref} className={className} data-export-fit data-matchday-slot data-fit-group={fitGroup} data-testid={testId} data-text-ready="false" style={{ ...style, fontSize: max, lineHeight, overflowWrap: 'anywhere' }}>{text}</div>;
 }

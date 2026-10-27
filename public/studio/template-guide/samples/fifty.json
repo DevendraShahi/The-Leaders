@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Half-century",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "fifty",
+      "teamId": "lumbini",
+      "headline": "FIFTY. WELL PLAYED.",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {
+        "runs": 128,
+        "wickets": 3,
+        "overs": "14.2",
+        "batter": {
+          "name": "Rohit Paudel",
+          "runs": 50,
+          "balls": 34,
+          "fours": 5,
+          "sixes": 2,
+          "notOut": true
+        }
+      }
+    }
+  ]
+}

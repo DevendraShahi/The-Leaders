@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "title": "TRAINING ONLY · Matchday",
+  "sources": [],
+  "match": {
+    "teamId": "lumbini",
+    "opponentId": "sudurpaschim",
+    "competition": "NPL 2026",
+    "matchLabel": "TRAINING MATCH",
+    "venue": "Kirtipur",
+    "matchDate": "2026-10-26",
+    "startTime": "16:30",
+    "oversLimit": 20,
+    "sourceUrl": "",
+    "updatedAt": ""
+  },
+  "posts": [
+    {
+      "template": "matchday",
+      "headline": "MATCHDAY",
+      "summary": "Illustrative training data. Replace before publishing.",
+      "data": {}
+    }
+  ]
+}

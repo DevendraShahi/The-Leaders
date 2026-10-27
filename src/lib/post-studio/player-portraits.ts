@@ -2,6 +2,7 @@ import { findPlayers, nplPlayers, playerPhotoCredit, type NplPlayer } from './cr
 import { bowlerCreditedTypes } from './moment-posts';
 import type { PostDesign } from './types';
 import type { NplTeamId } from './cricket-catalog';
+import { reconcileEditedPlayerTeams } from './cricket-team-context';
 
 const identity = (name: string) => name.normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
 export function playerPhotoSubject(design: PostDesign): { role: 'batter' | 'bowler'; name: string; teamId: NplTeamId } | null {
@@ -43,7 +44,10 @@ export function portraitIsCurrent(design: PostDesign): boolean {
 }
 export function selectPlayerPortrait(design: PostDesign, player: NplPlayer, uri = player.photo?.url): PostDesign {
     const subject = playerPhotoSubject(design);
-    if (!subject || !uri || player.teamId !== subject.teamId || design.lockedLayers.includes('visual')) return design;
+    if (!subject || !uri || ![design.cricket!.teamId, design.cricket!.opponentId].includes(player.teamId) || design.lockedLayers.includes('visual')) return design;
     const data = design.cricket!;
-    return { ...design, imageUri: uri, imageCredit: playerPhotoCredit(player), playerPhotoId: player.id, imageFit: 'contain', imageZoom: 1, imageOffsetX: 0, imageOffsetY: 0, imageTone: 'clear', cricket: { ...data, showPlayerPhoto: true, [subject.role]: { ...data[subject.role], name: player.name } } };
+    const next = reconcileEditedPlayerTeams(design, { ...design, cricket: { ...data, [subject.role]: { ...data[subject.role], name: player.name } } });
+    const resolved = playerPhotoSubject(next);
+    if (resolved?.teamId !== player.teamId) return design;
+    return { ...next, imageUri: uri, imageCredit: playerPhotoCredit(player), playerPhotoId: player.id, imageFit: 'contain', imageZoom: 1, imageOffsetX: 0, imageOffsetY: 0, imageTone: 'clear', cricket: { ...next.cricket!, showPlayerPhoto: true } };
 }
