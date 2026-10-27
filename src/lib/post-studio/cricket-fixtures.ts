@@ -8,6 +8,15 @@ export interface CricketFixture {
     id: string; matchNumber: number; matchDate: string; startTime: string;
     teamId: NplTeamId; opponentId: NplTeamId; competition: string; venue: string; sourceUrl: string;
     label?: string;
+    status?: 'completed' | 'live' | 'upcoming';
+    result?: string;
+    resultNe?: string;
+    winnerId?: NplTeamId;
+    teamScore?: string;
+    opponentScore?: string;
+    playerOfTheMatch?: string;
+    playerOfTheMatchNe?: string;
+    playerOfTheMatchPerf?: string;
 }
 // Transcribed from the fixture sheet supplied by the editor on October 26.
 // The sheet's second-match time is 16:30. A separately reported revision says
@@ -31,10 +40,34 @@ const league: [string, NplTeamId, NplTeamId, string][] = [
     ['11-14', 'biratnagar', 'lumbini', '16:30'],
     ['11-15', 'chitwan', 'karnali', '12:30'], ['11-15', 'pokhara', 'kathmandu', '16:30'],
 ];
-export const cricketFixtures: CricketFixture[] = league.map(([date, teamId, opponentId, startTime], index) => ({
-    id: `npl-2026-league-${index + 1}`, matchNumber: index + 1, matchDate: `2026-${date}`, startTime,
-    teamId, opponentId, competition: 'NPL 2026', venue: 'Tribhuvan University International Cricket Ground, Kirtipur', sourceUrl: '',
-}));
+export const cricketFixtures: CricketFixture[] = league.map(([date, teamId, opponentId, startTime], index) => {
+    const matchNumber = index + 1;
+    const base: CricketFixture = {
+        id: `npl-2026-league-${matchNumber}`,
+        matchNumber,
+        matchDate: `2026-${date}`,
+        startTime,
+        teamId,
+        opponentId,
+        competition: 'NPL 2026',
+        venue: 'Tribhuvan University International Cricket Ground, Kirtipur',
+        sourceUrl: '',
+        status: matchNumber === 1 ? 'completed' : 'upcoming',
+    };
+
+    if (matchNumber === 1) {
+        base.result = 'Lumbini Lions won by 7 wickets (with 61 balls remaining)';
+        base.resultNe = 'लुम्बिनी लायन्स ७ विकेटले विजयी (६१ बल बाँकी छँदै)';
+        base.winnerId = 'lumbini';
+        base.teamScore = '88/3 (9.5 ov)';
+        base.opponentScore = '87 (17.2 ov)';
+        base.playerOfTheMatch = 'Sher Malla';
+        base.playerOfTheMatchNe = 'शेर मल्ल';
+        base.playerOfTheMatchPerf = '3/11 (4.0 ov)';
+    }
+
+    return base;
+});
 export const cricketRestDays = ['2026-10-30', '2026-11-04', '2026-11-08', '2026-11-11'];
 export const cricketPlayoffs = [
     { id: 'npl-2026-qualifier-1', matchNumber: 29, matchDate: '2026-11-17', label: 'Qualifier 1', participants: '1st place vs 2nd place' },

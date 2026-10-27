@@ -238,16 +238,16 @@ export function getNplRestDays(): string[] {
 }
 
 export function getNplStandings(): NplStanding[] {
-  // Initial standings representation for NPL 2026
+  // Official standings after Match #1 (Lumbini Lions vs Sudurpaschim Royals)
   return [
-    { rank: 1, teamId: 'lumbini', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 2, teamId: 'janakpur', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 3, teamId: 'biratnagar', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 4, teamId: 'chitwan', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 5, teamId: 'pokhara', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 6, teamId: 'sudurpaschim', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 7, teamId: 'kathmandu', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 8, teamId: 'karnali', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' }
+    { rank: 1, teamId: 'lumbini', played: 1, won: 1, lost: 0, tied: 0, nr: 0, points: 2, nrr: '+4.599' },
+    { rank: 2, teamId: 'biratnagar', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
+    { rank: 3, teamId: 'chitwan', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
+    { rank: 4, teamId: 'janakpur', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
+    { rank: 5, teamId: 'karnali', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
+    { rank: 6, teamId: 'kathmandu', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
+    { rank: 7, teamId: 'pokhara', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
+    { rank: 8, teamId: 'sudurpaschim', played: 1, won: 0, lost: 1, tied: 0, nr: 0, points: 0, nrr: '-4.599' }
   ];
 }
 

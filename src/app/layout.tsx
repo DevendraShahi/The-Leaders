@@ -136,7 +136,7 @@ export default async function RootLayout({
                 <UmamiScript />
             </head>
             <body
-                className={`${inter.variable} ${lora.variable} ${newsreader.variable} ${martel.variable} ${mukta.variable} antialiased bg-background text-foreground`}
+                className={`${inter.variable} ${lora.variable} ${newsreader.variable} ${martel.variable} ${mukta.variable} font-sans antialiased bg-background text-foreground`}
             >
 
                 <script
