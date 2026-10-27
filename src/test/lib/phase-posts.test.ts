@@ -52,7 +52,7 @@ describe('Powerplay and Partnership',()=>{
  });
  it('binds strict prompt titles and rejects contradictory imported powerplay facts',()=>{
   const options:PromptOptions={kind:'cricket',templates:['powerplay'],language:'en',format:'portrait',brief:'',teams:{teamId:'lumbini',opponentId:'sudurpaschim'}};
-  const prompt=generateCreationPrompt(options);expect(prompt).toContain('PHASE CONTRACTS');expect(prompt).toContain('Do not assume six overs');
+  const prompt=generateCreationPrompt(options);expect(prompt).toContain('POWERPLAY:');expect(prompt).toContain('Do not assume six overs');
   const payload={sources:['https://example.com/scorecard'],match:{teamId:'lumbini',opponentId:'sudurpaschim',oversLimit:20,matchDate:'2026-10-26'},posts:[{template:'powerplay',headline:'POWERPLAY COMPLETE',summary:'',data:{runs:48,wickets:1,overs:'6',powerplayOvers:'6'}}]};
   expect(phaseIssues(digestCreationResponse(JSON.stringify(payload),options).designs[0])).toEqual([]);
   payload.posts[0].data.overs='';expect(digestCreationResponse(JSON.stringify(payload),options).designs[0].cricket!.overs).toBe('6');payload.posts[0].data.overs='6';

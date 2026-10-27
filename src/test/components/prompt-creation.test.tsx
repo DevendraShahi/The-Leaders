@@ -72,7 +72,7 @@ describe('Guided post creation', () => {
         fireEvent.click(screen.getByRole('button', { name: '1-Click Copy Prompt' }));
         fireEvent.click(screen.getByRole('button', { name: 'Next: Paste AI Output' }));
         await screen.findByLabelText('AI response');
-        expect(clipboard.mock.calls[0][0]).toContain('Return exactly 1 posts in this order: result');
+        expect(clipboard.mock.calls[0][0]).toContain('Create ONE Match result post');
         expect(clipboard.mock.calls[0][0]).toContain('Janakpur Bolts vs Chitwan Rhinos');
         expect(clipboard.mock.calls[0][0]).toContain('match.teamId = "janakpur"');
     });
@@ -91,24 +91,24 @@ describe('Guided post creation', () => {
         expect(screen.getByLabelText('Language')).not.toBeVisible();
         expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
         await responseStep();
-        expect(clipboard.mock.calls[0][0]).toContain('JSON SCHEMA:');
+        expect(clipboard.mock.calls[0][0]).toContain('RETURN THIS JSON OBJECT');
         expect(screen.queryByLabelText('Your request')).not.toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Review post' })).toBeDisabled();
     });
     it('allows advancing to AI response step directly without copying the prompt', async () => {
         render(<PromptCreationModal scope="editor" initialOptions={{ template: 'matchday', teams: { teamId: 'lumbini', opponentId: 'sudurpaschim' } }} onOpen={vi.fn()} onClose={vi.fn()} />);
-        expect(screen.getByRole('region', { name: 'Generated master prompt preview' })).toBeInTheDocument();
+        expect(screen.getByRole('region', { name: 'Generated post prompt preview' })).toBeInTheDocument();
         fireEvent.click(screen.getByRole('button', { name: 'Next: Paste AI Output' }));
         expect(await screen.findByLabelText('AI response')).toBeInTheDocument();
         expect(clipboard).not.toHaveBeenCalled();
     });
-    it('renders master prompt preview and copies via card button', async () => {
+    it('renders the individual post prompt preview and copies via card button', async () => {
         render(<PromptCreationModal scope="editor" initialOptions={{ template: 'matchday', teams: { teamId: 'lumbini', opponentId: 'sudurpaschim' } }} onOpen={vi.fn()} onClose={vi.fn()} />);
-        const previewArea = screen.getByRole('region', { name: 'Generated master prompt preview' });
-        expect(previewArea).toHaveTextContent('Return exactly 1 posts in this order: matchday');
-        fireEvent.click(screen.getByRole('button', { name: 'Copy Master Prompt' }));
+        const previewArea = screen.getByRole('region', { name: 'Generated post prompt preview' });
+        expect(previewArea).toHaveTextContent('Create ONE Matchday post');
+        fireEvent.click(screen.getByRole('button', { name: 'Copy Post Prompt' }));
         await waitFor(() => expect(clipboard).toHaveBeenCalledOnce());
-        expect(clipboard.mock.calls[0][0]).toContain('Return exactly 1 posts in this order: matchday');
+        expect(clipboard.mock.calls[0][0]).toContain('Create ONE Matchday post');
     });
     it('reviews editable content before writing and persists corrections and sources', async () => {
         const open = vi.fn(); render(<PromptCreationModal scope="editor" initialKind="news" onOpen={open} onClose={vi.fn()} />);

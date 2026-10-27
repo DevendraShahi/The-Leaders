@@ -24,10 +24,10 @@ function response(config = options) {
 }
 beforeEach(() => storage.data.clear());
 describe('Prompt creation contract', () => {
-    it.each(cricketTemplateIds)('generates a schema and imports %s without example scores', id => {
+    it.each(cricketTemplateIds)('generates a post-specific prompt and imports %s without example scores', id => {
         const config = { ...options, templates: [id] };
         const prompt = generateCreationPrompt(config);
-        expect(prompt).toContain('JSON SCHEMA:');
+        expect(prompt).not.toContain('JSON SCHEMA:');
         expect(prompt).toContain('Do not invent');
         const result = digestCreationResponse(JSON.stringify(response(config)), config);
         expect(result.designs[0].cricket?.template).toBe(id);
@@ -43,7 +43,7 @@ describe('Prompt creation contract', () => {
         const result = digestCreationResponse(JSON.stringify(payload), options);
         expect(result.designs.map(design => design.cricket?.venue)).toEqual(['Verified ground', 'Verified ground']);
         expect(result.designs.map(design => design.cricket?.runs)).toEqual([100, 180]);
-        expect(result.warnings).toContain('Match.matchDate: missing information');
+        expect(result.warnings).not.toContain('Match.matchDate: missing information');
     });
     it('binds the response to the selected teams and rejects a different matchup', () => {
         const config = { ...options, teams: { teamId: 'lumbini' as const, opponentId: 'sudurpaschim' as const } };

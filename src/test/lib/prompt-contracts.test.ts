@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 vi.mock('@/lib/post-studio/storage', () => ({ default: { getItem: async () => null, setItem: async () => {} } }));
 import { cricketTemplateIds } from '@/lib/post-studio/cricket-catalog';
 import { cricketFixtures, playoffFixture } from '@/lib/post-studio/cricket-fixtures';
-import { cricketPromptFields, digestCreationResponse, generateCreationPrompt, generateCreationRepairPrompt, responseSchema, type PromptOptions } from '@/lib/post-studio/prompt-engine';
+import { cricketPostOutputFields, digestCreationResponse, generateCreationPrompt, generateCreationRepairPrompt, type PromptOptions } from '@/lib/post-studio/prompt-engine';
 
 function contentObject(prompt: string) {
     const marker = prompt.indexOf('RETURN THIS JSON OBJECT');
@@ -25,12 +25,52 @@ describe('Generated prompt examples match the importer', () => {
         for (const context of contexts) for (const language of ['en', 'ne'] as const) for (const format of ['portrait', 'square', 'story', 'landscape'] as const) {
             const options = { ...base, ...context, language, format, templates: [template] };
             const payload = contentObject(generateCreationPrompt(options));
-            expect(responseSchema(options, true).safeParse(payload).success).toBe(true);
-            expect(Object.keys(payload.posts[0].data).sort()).toEqual(cricketPromptFields(template).sort());
+            expect(payload.posts).toHaveLength(1);
+            expect(generateCreationPrompt(options)).not.toContain('JSON SCHEMA:');
+            expect(generateCreationPrompt(options)).not.toContain('"$defs"');
+            expect(Object.keys(payload.posts[0].data).sort()).toEqual(cricketPostOutputFields(template).sort());
             const [design] = digestCreationResponse(JSON.stringify(payload), options).designs;
             expect(design.cricket).toMatchObject({ template, language, sample: false, runs: null });
             if (context.fixture) expect(design.cricket?.matchDate).toBe(context.fixture.matchDate);
         }
+    });
+
+    it.each([
+        ['innings', ['runs', 'wickets', 'overs', 'target']],
+        ['playing-xi', ['lineup']],
+        ['toss', ['toss']],
+        ['rain', ['result']],
+        ['score', ['runs', 'wickets', 'overs', 'scoreInnings', 'target']],
+    ] as const)('requests only the individual %s output without unrelated metadata', (id, fields) => {
+        const payload = contentObject(generateCreationPrompt({ ...base, templates: [id], ...contexts[2] }));
+        expect(Object.keys(payload.posts[0].data).sort()).toEqual([...fields].sort());
+        expect(payload.match).not.toHaveProperty('matchDate');
+        expect(payload.match).not.toHaveProperty('venue');
+        expect(payload.match).not.toHaveProperty('updatedAt');
+        expect(payload).not.toHaveProperty('version');
+        expect(payload).not.toHaveProperty('title');
+    });
+
+    it('imports minimal wicket player objects without requiring bowling analysis', () => {
+        const options = { ...base, templates: ['wicket'], ...contexts[1] };
+        const payload = contentObject(generateCreationPrompt(options));
+        expect(Object.keys(payload.posts[0].data.bowler)).toEqual(['name']);
+        expect(payload.posts[0].data.batter).not.toHaveProperty('fours');
+        Object.assign(payload.posts[0].data, { runs: 80, wickets: 2, overs: '10.2', batter: { name: 'Confirmed batter', runs: 30, balls: 20, notOut: false }, bowler: { name: 'Confirmed bowler' }, wicketType: 'bowled', dismissal: 'Bowled' });
+        const result = digestCreationResponse(JSON.stringify(payload), options);
+        const design = result.designs[0];
+        expect(design.cricket?.bowler).toMatchObject({ name: 'Confirmed bowler', wickets: null, overs: '' });
+        expect(result.warnings.join(' ')).not.toContain('bowler.overs');
+        expect(result.warnings.join(' ')).not.toContain('Match.matchDate');
+    });
+
+    it('imports only the printed scorecard columns', () => {
+        const options = { ...base, templates: ['scorecard'], ...contexts[1] };
+        const payload = contentObject(generateCreationPrompt(options));
+        Object.assign(payload.posts[0].data, { runs: 100, wickets: 2, overs: '10', batting: [{ name: 'Confirmed batter', runs: 30, balls: 20, notOut: false }], bowling: [{ name: 'Confirmed bowler', overs: '2', runs: 10, wickets: 1 }] });
+        const design = digestCreationResponse(JSON.stringify(payload), options).designs[0];
+        expect(design.cricket?.batting[0]).toMatchObject({ runs: 30, fours: null });
+        expect(design.cricket?.bowling[0]).toMatchObject({ wickets: 1, maidens: null });
     });
 
     it.each(['breaking', 'explainer', 'quote'])('imports empty and completed %s news content without cricket instructions', template => {

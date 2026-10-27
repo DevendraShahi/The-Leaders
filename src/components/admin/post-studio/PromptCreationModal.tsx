@@ -33,7 +33,7 @@ export default function PromptCreationModal({ scope, onClose, onOpen, initialKin
     const lock = useRef(false), importId = useRef(''), contentRef = useRef<HTMLDivElement>(null), headingRef = useRef<HTMLHeadingElement>(null);
     const options: PromptOptions = useMemo(() => ({ ...settings, cricketStyle, templates: selection === 'auto' ? suggestPostTemplates(settings.kind, settings.brief) : [selection], ...(settings.kind === 'cricket' && teamId && opponentId ? { teams: { teamId, opponentId } } : {}), ...(settings.kind === 'cricket' && fixture ? { fixture } : {}) }), [settings, selection, teamId, opponentId, fixture, cricketStyle]);
     const canProceed = settings.kind === 'cricket' ? Boolean(teamId && opponentId && teamId !== opponentId) : Boolean(settings.brief.trim());
-    const masterPromptText = useMemo(() => (canProceed ? generateCreationPrompt(options) : ''), [canProceed, options]);
+    const postPromptText = useMemo(() => (canProceed ? generateCreationPrompt(options) : ''), [canProceed, options]);
     useEffect(() => { if (contentRef.current) contentRef.current.scrollTop = 0; headingRef.current?.focus(); }, [step]);
     const configure = (patch: Partial<typeof settings>, template = selection) => {
         setSettings(current => ({ ...current, ...patch })); setSelection(template);
@@ -114,11 +114,11 @@ export default function PromptCreationModal({ scope, onClose, onOpen, initialKin
                     <label className={css.field}><span>Language</span><select value={settings.language} onChange={event => configure({ language: event.target.value as PromptOptions['language'] })}><option value="en">English</option><option value="ne">नेपाली</option></select></label>
                     <label className={css.field}><span>Size</span><select value={settings.format} onChange={event => configure({ format: event.target.value as PromptOptions['format'] })}>{Object.entries(postOutputDimensions).map(([format, size]) => <option key={format} value={format}>{format} · {size.join(' × ')}</option>)}</select></label>
                 </div></details>
-                {canProceed && masterPromptText && (
+                {canProceed && postPromptText && (
                     <div className={css.masterPromptCard}>
                         <div className={css.promptPreviewHeader}>
                             <span className={css.promptPreviewTitle}>
-                                PREPARED MASTER PROMPT (READY FOR CLAUDE / CHATGPT / GEMINI):
+                                PROMPT FOR THIS POST:
                             </span>
                             <button
                                 type="button"
@@ -127,11 +127,11 @@ export default function PromptCreationModal({ scope, onClose, onOpen, initialKin
                                 onClick={() => void copyPromptOnly()}
                             >
                                 {promptCopied ? <Check size={13} color="var(--studio-green, #10b981)" /> : <Copy size={13} />}
-                                {promptCopied ? 'Prompt Copied to Clipboard!' : 'Copy Master Prompt'}
+                                {promptCopied ? 'Prompt Copied to Clipboard!' : 'Copy Post Prompt'}
                             </button>
                         </div>
-                        <div className={css.promptPreviewArea} tabIndex={0} role="region" aria-label="Generated master prompt preview">
-                            {masterPromptText}
+                        <div className={css.promptPreviewArea} tabIndex={0} role="region" aria-label="Generated post prompt preview">
+                            {postPromptText}
                         </div>
                     </div>
                 )}

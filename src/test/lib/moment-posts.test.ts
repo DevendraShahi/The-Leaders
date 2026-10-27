@@ -71,6 +71,6 @@ describe('Match moments and player portraits', () => {
  });
  it('instructs structured event facts and local portrait resolution', () => {
   const prompt = generateCreationPrompt({ kind:'cricket',templates:['four','six','wicket'],language:'en',format:'portrait',brief:'' });
-  expect(prompt).toContain('MATCH MOMENT'); expect(prompt).toContain('run-out'); expect(prompt).toContain('photo');
+  expect(prompt).toContain('WICKET:'); expect(prompt).toContain('run-out'); expect(prompt).toContain('photo');
  });
 });

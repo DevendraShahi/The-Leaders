@@ -48,6 +48,12 @@ secondary collapsible sections. Cricket's manual gallery is collapsed by default
    directly, while **Next: Paste AI Output** advances directly without compelling prompt copy;
    a live preview card allows inspecting or copying the prepared prompt anytime. A manual-copy fallback
    appears only when clipboard access fails.
+   **Copy Post Prompt** prepares instructions for the selected post only, with a
+   compact JSON example rather than the internal validation schema. Innings posts
+   request score, overs and target; XI posts request names; wicket posts request
+   dismissal details without bowling analysis. Dates and other match metadata are
+   requested only by layouts that need them. Studio supplies omitted internal
+   defaults when importing and continues to accept older complete responses.
 2. **Response:** paste the AI's reply and choose **Review post**. JSON code fences
    are accepted. Omitted content and per-post fields become empty editable values,
    never gallery example scores. Explicitly invalid data and mismatched post types

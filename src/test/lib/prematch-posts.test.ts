@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 vi.mock('@/lib/post-studio/storage', () => ({ default: { getItem: async () => null, setItem: async () => {} } }));
 import { createCricketDraftDesign } from '@/lib/post-studio/cricket-design';
 import { prematchHeadline, prematchIssues, lineupProblems, rebindCricketEvidence, redatePrematch, type PrematchId } from '@/lib/post-studio/prematch-posts';
-import { digestCreationResponse, generateCreationPrompt, generateCreationRepairPrompt, responseSchema, type PromptOptions } from '@/lib/post-studio/prompt-engine';
+import { digestCreationResponse, generateCreationPrompt, generateCreationRepairPrompt, type PromptOptions } from '@/lib/post-studio/prompt-engine';
 import { cricketFixtures } from '@/lib/post-studio/cricket-fixtures';
 import { shareStyles } from '@/lib/post-studio/shared-styles';
 import { creationGaps } from '@/lib/post-studio/creation-workflow';
@@ -23,12 +23,10 @@ describe('Pre-match template contracts', () => {
             const prompt = generateCreationPrompt(config);
             const raw = prompt.slice(prompt.indexOf('\n{', prompt.indexOf('RETURN THIS JSON OBJECT')) + 1);
             const content = JSON.parse(raw);
-            expect(responseSchema(config).safeParse(content).success).toBe(true);
             expect(digestCreationResponse(raw, config).designs[0].cricket?.lineup).toEqual([]);
             content.posts[0].data.lineup = lineup();
             expect(digestCreationResponse(JSON.stringify(content), config).designs[0].cricket?.lineup).toEqual(lineup());
             content.posts[0].data.lineup = lineup().slice(0, 8);
-            expect(responseSchema(config).safeParse(content).success).toBe(true);
             expect(digestCreationResponse(JSON.stringify(content), config).designs[0].cricket?.lineup).toHaveLength(8);
             expect(prompt).not.toContain('TOSS:');
             expect(prompt).not.toContain('TEAM SPOTLIGHT:');
@@ -44,7 +42,7 @@ describe('Pre-match template contracts', () => {
     });
     it.each(['toss', 'playing-xi', 'team'] as const)('imports %s into a complete managed draft', id => {
         const design = imported(id); expect(prematchIssues(design)).toEqual([]);
-        expect(generateCreationPrompt(options(id))).toContain('PRE-MATCH TEMPLATE CONTRACTS');
+        expect(generateCreationPrompt(options(id))).toContain('RETURN THIS JSON OBJECT');
         if (id === 'playing-xi') expect(generateCreationPrompt(options(id))).toContain('squad membership is not confirmation');
         expect(design.cricket?.runs).toBeNull();
     });
