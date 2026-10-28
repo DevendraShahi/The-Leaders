@@ -938,7 +938,6 @@
  .studio select option:disabled{opacity:.45;cursor:not-allowed}
  .studio select option::checkmark{order:1;margin-left:auto;font-size:12px;color:var(--studio-red)}
  .studio select optgroup{padding-block:4px}
- .studio select optgroup::label{padding:8px 12px 5px;color:var(--studio-secondary);font:11px/1.4 Onest_600SemiBold,sans-serif}
 }
 @media(max-width:640px){.studio select:not([multiple]):not([size]){font-size:16px!important;min-height:46px}}
 @media(prefers-reduced-motion:reduce){.studio select,.studio select::picker-icon{transition:none}}
