@@ -84,8 +84,8 @@ describe('Guided post creation', () => {
     });
     it('shows one task at a time and hides technical controls', async () => {
         render(<PromptCreationModal scope="editor" initialKind="news" onOpen={vi.fn()} onClose={vi.fn()} />);
-        expect(screen.getByRole('button', { name: '1-Click Copy Prompt' })).toBeDisabled();
-        expect(screen.getByRole('button', { name: 'Next: Paste AI Output' })).toBeDisabled();
+        expect(screen.getByRole('button', { name: '1-Click Copy Prompt' })).toBeEnabled();
+        expect(screen.getByRole('button', { name: 'Next: Paste AI Output' })).toBeEnabled();
         expect(screen.queryByLabelText('AI response')).not.toBeInTheDocument();
         expect(screen.queryByLabelText('Generated creation prompt')).not.toBeInTheDocument();
         expect(screen.getByLabelText('Language')).not.toBeVisible();
@@ -163,5 +163,27 @@ describe('Guided post creation', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Create post' }));
         await waitFor(() => expect(open).toHaveBeenCalledOnce());
         expect((await listDrafts('editor'))[0].design.cricket?.matchDate).toBe('2026-10-26');
+    });
+});
+
+
+describe('Research without a request', () => {
+    it.each(['daily', 'hot', 'report', 'do-you-know', 'interesting-facts'] as const)('%s offers a complete prompt immediately', async newsStyle => {
+        render(<PromptCreationModal scope="editor" initialKind="news" initialOptions={{ newsStyle, template: 'breaking' }} onOpen={vi.fn()} onClose={vi.fn()} />);
+        expect(screen.getByLabelText('Your request')).toHaveValue('');
+        expect(screen.getByLabelText('Your request')).not.toBeVisible();
+        expect(screen.getByRole('button', { name: '1-Click Copy Prompt' })).toBeEnabled();
+        fireEvent.click(screen.getByRole('button', { name: '1-Click Copy Prompt' }));
+        await waitFor(() => expect(clipboard).toHaveBeenCalledOnce());
+        expect(clipboard.mock.calls[0][0]).toContain('WEB RESEARCH DEFAULT');
+        expect(clipboard.mock.calls[0][0]).toContain('No topic supplied. Choose a subject');
+        fireEvent.click(screen.getByText('Your request (optional)'));
+        expect(screen.getByLabelText('Your request')).toBeVisible();
+        fireEvent.change(screen.getByLabelText('Your request'), { target: { value: 'Research Nepal’s architecture' } });
+        fireEvent.click(screen.getByRole('button', { name: '1-Click Copy Prompt' }));
+        await waitFor(() => expect(clipboard).toHaveBeenCalledTimes(2));
+        expect(clipboard.mock.calls[1][0]).toContain('Research Nepal’s architecture');
+        fireEvent.click(screen.getByRole('button', { name: 'Next: Paste AI Output' }));
+        expect(await screen.findByLabelText('AI response')).toBeInTheDocument();
     });
 });

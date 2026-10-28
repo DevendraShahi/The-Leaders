@@ -1,9 +1,9 @@
-.artwork{position:relative;overflow:hidden;color:#fff;background:#0c1820;isolation:isolate;--accent:#b71c1c}.artwork *{box-sizing:border-box}.photo{position:absolute;inset:0;overflow:hidden}.newsPhoto{width:100%;height:100%;display:block;object-fit:cover}.photoPlaceholder{position:absolute;inset:0;background:linear-gradient(135deg,#243942,#0b151c);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}.photoPlaceholder>span{font:52px/.9 Onest_700Bold;color:#ffffff0d;letter-spacing:-3px}.photoPlaceholder button{font:10px Onest_600SemiBold;color:#eee;background:#ffffff15;border:1px solid #ffffff30;border-radius:4px;padding:8px;cursor:pointer}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0710169c,transparent 30%,#07101622 40%,#071016ed 70%,#071016 100%)}
-.masthead{position:absolute;z-index:2;top:5.5%;left:6%;right:6%;display:flex;align-items:center;gap:9px;pointer-events:none}.masthead img{width:29px;height:29px}.masthead>span{font:10px Onest_700Bold;letter-spacing:1px}.masthead small{display:block;font:5px Onest_500Medium;letter-spacing:1.4px;margin-top:4px}.category{width:82px;height:20px;margin-left:auto;text-align:right;pointer-events:auto}.label{height:100%;width:100%}.copy{position:absolute;z-index:2;left:6%;right:6%;top:48%;bottom:12%;display:grid;grid-template-rows:20px minmax(0,1fr) minmax(0,.42fr);gap:12px}.kicker{max-width:100%;width:60%;min-height:0}.headlineSlot,.summarySlot{min-height:0;position:relative}.headline,.summary{height:100%;width:100%}.headline{letter-spacing:-1.4px}.summary{color:#d4dade}.footer{position:absolute;z-index:2;left:6%;right:6%;bottom:4.8%;height:18px;padding-top:5px;border-top:1px solid #ffffff40;display:flex;gap:10px}.byline,.credit{height:100%;width:50%}.credit{text-align:right}.artwork [data-selected=true]{outline:1px dashed #38bdb2;outline-offset:3px}.guides{position:absolute;inset:5%;border:1px dashed #38bdb2;pointer-events:none;z-index:4}.typeEcho{display:none}
+.artwork{position:relative;overflow:hidden;color:#24251f;background:#f4efe5;isolation:isolate;--accent:#b71c1c}.artwork *{box-sizing:border-box}.photo{position:absolute;inset:0;overflow:hidden}.newsPhoto{width:100%;height:100%;display:block;object-fit:cover}.photoPlaceholder{position:absolute;inset:0;background:#e6dfcf;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}.photoPlaceholder>span{font:52px/.9 Onest_700Bold;color:#c3b89f;letter-spacing:-3px}.photoPlaceholder button{font:10px Onest_600SemiBold;color:#51472e;background:#f4efe5;border:1px solid #b5a579;border-radius:4px;padding:8px;cursor:pointer}.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#0710169c,transparent 30%,#07101622 40%,#071016ed 70%,#071016 100%)}
+.masthead{position:absolute;z-index:2;top:5.5%;left:6%;right:6%;display:flex;align-items:center;gap:9px;pointer-events:none}.masthead img{width:29px;height:29px}.masthead>span{font:10px Onest_700Bold;letter-spacing:1px}.masthead small{display:block;font:5px Onest_500Medium;letter-spacing:1.4px;margin-top:4px}.category{width:82px;height:20px;margin-left:auto;text-align:right;pointer-events:auto}.label{height:100%;width:100%}.copy{position:absolute;z-index:2;left:6%;right:6%;top:48%;bottom:12%;display:grid;grid-template-rows:20px minmax(0,1fr) minmax(0,.42fr);gap:12px}.kicker{max-width:100%;width:60%;min-height:0}.headlineSlot,.summarySlot{min-height:0;position:relative}.headline,.summary{height:100%;width:100%}.headline{letter-spacing:-1.4px}.summary{color:#59564d}.footer{position:absolute;z-index:2;left:6%;right:6%;bottom:4.8%;height:18px;padding-top:5px;border-top:1px solid #bfb6a6;display:flex;gap:10px}.byline,.credit{height:100%;width:50%}.credit{text-align:right}.artwork [data-selected=true]{outline:1px dashed #38bdb2;outline-offset:3px}.guides{position:absolute;inset:5%;border:1px dashed #38bdb2;pointer-events:none;z-index:4}.typeEcho{display:none}
 /* Daily: headline leads, photograph anchors, context closes. */
 .artwork[data-news-style=daily]{color:#201e19;background:#f4efe5}.artwork[data-news-style=daily] .masthead{padding-bottom:12px;border-bottom:2px solid currentColor}.artwork[data-news-style=daily] .photo{inset:47% 6% 22%}.artwork[data-news-style=daily] .photo::after{content:'';position:absolute;left:0;bottom:0;width:20%;height:4px;background:var(--accent)}.artwork[data-news-style=daily] .shade{display:none}.artwork[data-news-style=daily] .copy{display:contents}.artwork[data-news-style=daily] .kicker{position:absolute;top:19%;left:6%;right:6%;height:18px;color:var(--accent);width:auto}.artwork[data-news-style=daily] .headlineSlot{position:absolute;top:25%;left:6%;right:6%;height:19%}.artwork[data-news-style=daily] .headline{letter-spacing:-1.25px}.artwork[data-news-style=daily] .summarySlot{position:absolute;top:81%;left:6%;right:6%;height:9%}.artwork[data-news-style=daily] .summary{color:#5b554d}.artwork[data-news-style=daily] .footer{border-color:#bfb6a6}
 /* Hot: unmistakable urgency through typography, with the subject still visible. */
-.artwork[data-news-style=hot]::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);pointer-events:none}.artwork[data-news-style=hot] .typeEcho{position:absolute;display:grid;top:17%;left:5%;right:-10%;font:normal 88px/.87 Onest_700Bold;letter-spacing:-6px;color:transparent;-webkit-text-stroke:1px #ffffff38;transform:rotate(-7deg);pointer-events:none;user-select:none}.artwork[data-news-style=hot] .typeEcho span:last-child{opacity:.4}.artwork[data-news-style=hot] .kicker{background:var(--accent);width:47%;padding:3px 7px}.artwork[data-news-style=hot] .copy{top:49%;bottom:12%;gap:12px;grid-template-rows:21px minmax(0,1fr) minmax(0,.38fr)}.artwork[data-news-style=hot] .headline{letter-spacing:-1.8px}
+.artwork[data-news-style=hot]::after{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent);pointer-events:none}.artwork[data-news-style=hot] .typeEcho{position:absolute;display:grid;top:17%;left:5%;right:-10%;font:normal 88px/.87 Onest_700Bold;letter-spacing:-6px;color:transparent;-webkit-text-stroke:1px #b71c1c28;transform:rotate(-7deg);pointer-events:none;user-select:none}.artwork[data-news-style=hot] .typeEcho span:last-child{opacity:.4}.artwork[data-news-style=hot] .kicker{background:var(--accent);color:#fff;width:47%;padding:3px 7px}.artwork[data-news-style=hot] .copy{top:49%;bottom:12%;gap:12px;grid-template-rows:21px minmax(0,1fr) minmax(0,.38fr)}.artwork[data-news-style=hot] .headline{letter-spacing:-1.8px}
 /* Report: a crisp editorial sheet overlaps the full-bleed photograph. */
 .artwork[data-news-style=report] .copy{left:6%;right:10%;top:50%;bottom:12%;background:#faf8f2;color:#20231f;padding:17px 17px 14px;gap:9px;grid-template-rows:18px minmax(0,1fr) minmax(0,.48fr)}.artwork[data-news-style=report] .copy::before{content:'';position:absolute;top:0;left:0;width:35%;height:4px;background:var(--accent)}.artwork[data-news-style=report] .kicker{color:var(--accent);width:100%}.artwork[data-news-style=report] .summary{color:#575b56}.artwork[data-news-style=report] .headline{letter-spacing:-1px}.artwork[data-news-style=report] .shade{background:linear-gradient(#07101690,transparent 35%,transparent 75%,#071016c9)}
 /* Wide editions preserve their hierarchy using a true side-by-side layout. */
@@ -15,3 +15,53 @@
 .artwork[data-format=landscape][data-news-style=report] .copy{top:22%;padding-block:8px}
 .artwork[data-format=landscape][data-news-style=report] .copy{padding-block:6px}
 .artwork[data-format=square][data-news-style=daily] .footer{bottom:3.5%}
+/* Curiosity editions: a warm question card and a paper fact sheet. */
+.artwork[data-news-style=do-you-know]{color:#24251f;background:#f4efe5}
+.artwork[data-news-style=do-you-know] .masthead{border-bottom:1px solid #24251f40;padding-bottom:12px}
+.artwork[data-news-style=do-you-know] .shade{display:none}
+.artwork[data-news-style=do-you-know] .copy{top:22%;bottom:38%;grid-template-rows:25px minmax(0,1fr) minmax(0,.65fr);gap:10px}
+.artwork[data-news-style=do-you-know] .kicker{width:100%;color:#6a4a0b;border-left:4px solid var(--accent);padding-left:9px}
+.artwork[data-news-style=do-you-know] .headline{font-family:Lora_700Bold;letter-spacing:-1px}
+.artwork[data-news-style=do-you-know] .summary{color:#59564d}
+.artwork[data-news-style=do-you-know] .photo{inset:66% 6% 12%;border-top:3px solid var(--accent)}
+.artwork[data-news-style=do-you-know] .photoPlaceholder{background:#e6dfcf;flex-direction:row;justify-content:space-between;padding:12px 18px}
+.artwork[data-news-style=do-you-know] .photoPlaceholder>span{color:#b99b5e;font:76px/.8 Lora_700Bold}
+.artwork[data-news-style=do-you-know] .photoPlaceholder button{color:#51472e;border-color:#b5a579;background:transparent}
+.artwork[data-news-style=do-you-know] .footer{border-color:#24251f40}
+.artwork[data-news-style=interesting-facts]{background:#f4efe5;color:#24251f}
+.artwork[data-news-style=interesting-facts] .masthead{border-bottom:1px solid #d7aa4655;padding-bottom:12px}
+.artwork[data-news-style=interesting-facts] .category{color:#6a4a0b}
+.artwork[data-news-style=interesting-facts] .shade{display:none}
+.artwork[data-news-style=interesting-facts] .copy{top:25%;bottom:16%;gap:15px;grid-template-rows:25px minmax(0,1fr) minmax(0,.6fr)}
+.artwork[data-news-style=interesting-facts] .kicker{width:100%;color:#6a4a0b;padding-bottom:5px;border-bottom:2px solid var(--accent)}
+.artwork[data-news-style=interesting-facts] .headline{letter-spacing:-1.5px}
+.artwork[data-news-style=interesting-facts] .summary{color:#59564d}
+.artwork[data-news-style=interesting-facts] .photo{inset:20% 6% 13% 59%;opacity:.28}
+.artwork[data-news-style=interesting-facts] .photoPlaceholder{background:transparent;justify-content:flex-end;padding-bottom:6px}
+.artwork[data-news-style=interesting-facts] .photoPlaceholder>span{font:180px/1 Lora_700Bold;color:#d7aa461c;position:absolute;top:0}
+.artwork[data-news-style=interesting-facts] .photoPlaceholder button{font-size:7px;z-index:3;color:#51472e;border-color:#b5a579;background:transparent}
+.artwork[data-news-style=interesting-facts] .footer{border-color:#d7aa4655}
+.artwork[data-news-style=interesting-facts][data-has-photo=true] .photo{opacity:1;inset:26% 6% 17% 60%}
+.artwork[data-news-style=interesting-facts][data-has-photo=true] .copy{right:45%}
+.artwork[data-format=landscape][data-news-style=do-you-know] .masthead,
+.artwork[data-format=landscape][data-news-style=interesting-facts] .masthead{padding-bottom:5px}
+.artwork[data-format=landscape][data-news-style=do-you-know] .copy{top:29%;bottom:18%;right:43%;gap:5px;grid-template-rows:15px minmax(0,1fr) minmax(0,.65fr)}
+.artwork[data-format=landscape][data-news-style=do-you-know] .photo{inset:30% 6% 19% 62%}
+.artwork[data-format=landscape][data-news-style=do-you-know] .photoPlaceholder{padding:7px;justify-content:center}
+.artwork[data-format=landscape][data-news-style=do-you-know] .photoPlaceholder>span{font-size:55px}
+.artwork[data-format=landscape][data-news-style=do-you-know] .photoPlaceholder button{font-size:6px;padding:4px}
+.artwork[data-format=landscape][data-news-style=interesting-facts] .copy{top:29%;bottom:18%;gap:5px;grid-template-rows:15px minmax(0,1fr) minmax(0,.6fr)}
+.artwork[data-format=landscape][data-news-style=interesting-facts] .photoPlaceholder>span{font-size:95px}
+
+/* Paper news editions keep photos inside the editorial page. */
+.artwork[data-news-style=hot] .shade,.artwork[data-news-style=report] .shade{display:none}
+.artwork[data-news-style=hot] .masthead,.artwork[data-news-style=report] .masthead{padding-bottom:12px;border-bottom:1px solid #bfb6a6}
+.artwork[data-news-style=hot] .photo{inset:19% 6% 54%}
+.artwork[data-news-style=hot] .typeEcho{display:none}
+.artwork[data-news-style=report] .photo{inset:19% 6% 47%}
+.artwork[data-news-style=report] .copy{border:1px solid #ded6c7}
+.artwork[data-format=landscape][data-news-style=hot] .masthead,.artwork[data-format=landscape][data-news-style=report] .masthead{padding-bottom:5px}
+.artwork[data-format=landscape][data-news-style=hot] .photo{inset:28% 6% 18% 58%}
+.artwork[data-format=landscape][data-news-style=hot] .copy{right:47%}
+.artwork[data-format=landscape][data-news-style=hot] .kicker{width:75%}
+.artwork[data-format=landscape][data-news-style=report] .photo{inset:25% 45% 18% 6%}

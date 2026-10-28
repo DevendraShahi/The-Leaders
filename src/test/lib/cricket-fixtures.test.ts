@@ -15,7 +15,7 @@ describe('Published NPL fixture context', () => {
     });
     it('retains both games and their individual start times on a double-header date', () => {
         const matches = fixturesForDate('2026-10-27');
-        expect(matches.map(match => match.startTime)).toEqual(['12:30', '16:30']);
+        expect(matches.map(match => match.startTime)).toEqual(['12:30', '17:00']);
         expect(matches.map(match => match.teamId)).toEqual(['biratnagar', 'karnali']);
         expect(dayFixtureRows('2026-10-27')).toHaveLength(2);
         expect(fixturesForDate('2026-10-26')).toHaveLength(1);
@@ -36,10 +36,11 @@ describe('Published NPL fixture context', () => {
     it('carries selected game metadata through prompt and import without mixing the other game', () => {
         const fixture = fixturesForDate('2026-10-27')[1];
         const options: PromptOptions = { kind: 'cricket', templates: ['matchday'], language: 'en', format: 'portrait', brief: '', fixture, teams: { teamId: fixture.teamId, opponentId: fixture.opponentId } };
-        expect(generateCreationPrompt(options)).toContain('do not substitute the other game');
+        expect(generateCreationPrompt(options)).toContain('EDITOR SELECTED MATCH: Karnali Yaks vs Janakpur Bolts');
+        expect(generateCreationPrompt(options)).toContain('are fixed');
         const response = { title: 'Game 2', posts: [{ headline: 'MATCHDAY', data: {} }] };
         const result = digestCreationResponse(JSON.stringify(response), options);
-        expect(result.designs[0]).toMatchObject({ fixtureId: fixture.id, cricket: { teamId: 'karnali', opponentId: 'janakpur', matchDate: '2026-10-27', startTime: '16:30', matchLabel: 'MATCH 03', runs: null } });
+        expect(result.designs[0]).toMatchObject({ fixtureId: fixture.id, cricket: { teamId: 'karnali', opponentId: 'janakpur', matchDate: '2026-10-27', startTime: '17:00', matchLabel: 'MATCH 03', runs: null } });
         const wrong = { ...response, match: { ...fixtureContext(fixture), teamId: fixture.teamId, opponentId: fixture.opponentId, oversLimit: 20, startTime: '12:30' } };
         expect(() => digestCreationResponse(JSON.stringify(wrong), options)).toThrow('match.startTime');
     });
@@ -50,17 +51,17 @@ describe('Published NPL fixture context', () => {
         expect(designs[0].fixtureId).not.toBe(designs[1].fixtureId);
     });
     it('retains the sheet rest days and all four playoff rounds without invented teams', () => {
-        expect(cricketRestDays).toEqual(['2026-10-30', '2026-11-04', '2026-11-08', '2026-11-11']);
+        expect(cricketRestDays).toEqual(['2026-10-30', '2026-11-04', '2026-11-08', '2026-11-11', '2026-11-20']);
         expect(cricketPlayoffs.map(item => item.matchDate)).toEqual(['2026-11-17', '2026-11-18', '2026-11-19', '2026-11-21']);
         expect(cricketPlayoffs.every(item => !('teamId' in item))).toBe(true);
         const confirmed = playoffFixture('2026-11-19', 'janakpur', 'chitwan')!;
-        expect(confirmed.label).toBe('Qualifier 2'); expect(confirmed.startTime).toBe('');
+        expect(confirmed.label).toBe('Qualifier 2'); expect(confirmed.startTime).toBe('17:00');
         expect(fixtureContext(confirmed).matchLabel).toBe('Qualifier 2');
     });
     it('applies a confirmed timing change to only the selected game, including daily-fixtures output', () => {
-        const fixture = { ...fixturesForDate('2026-10-27')[1], startTime: '17:00' };
+        const fixture = { ...fixturesForDate('2026-10-27')[1], startTime: '18:00' };
         const rows = dayFixtureRows(fixture.matchDate, fixture);
-        expect(rows[0].when).toContain('12:30'); expect(rows[1].when).toContain('17:00');
-        expect(fixturesForDate(fixture.matchDate)[1].startTime).toBe('16:30');
+        expect(rows[0].when).toContain('12:30'); expect(rows[1].when).toContain('18:00');
+        expect(fixturesForDate(fixture.matchDate)[1].startTime).toBe('17:00');
     });
 });

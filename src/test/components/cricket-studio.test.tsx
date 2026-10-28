@@ -63,7 +63,7 @@ describe('Cricket creation and editing', () => {
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         const [draft] = await listDrafts('cricket-test');
         expect(draft.design.headline).toBe('FIXTURES');
-        expect(draft.design.cricket?.fixtures.map(row => row.when)).toEqual(['2026-10-27 · 12:30 NPT', '2026-10-27 · 16:30 NPT']);
+        expect(draft.design.cricket?.fixtures.map(row => row.when)).toEqual(['2026-10-27 · 12:30 NPT', '2026-10-27 · 17:00 NPT']);
     });
     it('carries the visible post and team dropdown choices into guided creation', () => {
         render(<CricketStudio scope="cricket-test" onBack={vi.fn()} onOpenDraft={vi.fn()} />);
@@ -85,7 +85,7 @@ describe('Cricket creation and editing', () => {
         expect(screen.getByRole('button', { name: 'New cricket post' })).toBeDisabled();
         const game = screen.getByLabelText('Scheduled game');
         expect(game).toHaveTextContent('Game 1 · 12:30 NPT · Biratnagar Kings vs Chitwan Rhinos');
-        expect(game).toHaveTextContent('Game 2 · 16:30 NPT · Karnali Yaks vs Janakpur Bolts');
+        expect(game).toHaveTextContent('Game 2 · 17:00 NPT · Karnali Yaks vs Janakpur Bolts');
         fireEvent.change(game, { target: { value: 'npl-2026-league-2' } });
         expect(screen.getByRole('combobox', { name: 'Featured team' })).toHaveValue('biratnagar');
         fireEvent.change(game, { target: { value: 'npl-2026-league-3' } });
@@ -93,7 +93,7 @@ describe('Cricket creation and editing', () => {
         expect(screen.getByRole('combobox', { name: 'Opponent' })).toHaveValue('janakpur');
         fireEvent.click(screen.getByRole('button', { name: 'New cricket post' }));
         expect(screen.getByRole('dialog')).toHaveTextContent('2026-10-27');
-        expect(screen.getByRole('dialog')).toHaveTextContent('Match 3 · 16:30 NPT');
+        expect(screen.getByRole('dialog')).toHaveTextContent('Match 3 · 17:00 NPT');
     });
     it('shows rest days and playoff slots without guessing qualifying teams', () => {
         render(<CricketStudio scope="cricket-test" onBack={vi.fn()} onOpenDraft={vi.fn()} />);

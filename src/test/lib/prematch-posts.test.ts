@@ -21,7 +21,7 @@ describe('Pre-match template contracts', () => {
             const config: PromptOptions = { ...options('playing-xi'), language, fixture,
                 teams: fixture ? { teamId: fixture.teamId, opponentId: fixture.opponentId } : options('playing-xi').teams };
             const prompt = generateCreationPrompt(config);
-            const raw = prompt.slice(prompt.indexOf('\n{', prompt.indexOf('RETURN THIS JSON OBJECT')) + 1);
+            const raw = prompt.slice(prompt.indexOf('\n{', prompt.indexOf('RETURN THIS JSON OBJECT')) + 1).split('\n```')[0];
             const content = JSON.parse(raw);
             expect(digestCreationResponse(raw, config).designs[0].cricket?.lineup).toEqual([]);
             content.posts[0].data.lineup = lineup();

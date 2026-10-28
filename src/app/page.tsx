@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { NplWelcomePopup } from '@/components/home/NplWelcomePopup';
 import { NplHomeWidget } from "@/components/home/NplHomeWidget";
 import { getArticles } from "@/lib/data";
 import { getLeaders } from "@/lib/leaders-db";
@@ -153,6 +154,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(newsOrgJsonLd) }}
       />
+      <NplWelcomePopup />
       <div className="w-full bg-background">
         {/* Masthead, Live Dateline & Wire Ticker */}
         <NewsMasthead tickerItems={tickerItems} />

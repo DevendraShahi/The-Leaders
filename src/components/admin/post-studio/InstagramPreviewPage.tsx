@@ -1,4 +1,5 @@
 "use client";
+import PublicationChecklist from './PublicationChecklist';
 
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Bookmark, ChevronLeft, ChevronRight, Copy, Download, Heart, Instagram, MessageCircle, Pencil, Send } from 'lucide-react';
@@ -80,6 +81,7 @@ export default function InstagramPreviewPage({ slides, activeSlideIndex, onSelec
             <aside className={css.details} aria-label="Preview actions">
                 <div className={css.meta}><span>PAGE {currentIndex + 1} / {slides.length}</span><h2>{current.design.headline || current.name}</h2><p>{w} × {h} px · {current.design.format}</p></div>
                 <button className={styles.primary} disabled={busy} onClick={() => onEdit(currentIndex)}><Pencil size={16} />Edit this page</button>
+                <PublicationChecklist slides={slides} />
                 <button className={styles.button} disabled={busy} onClick={() => void exportFiles()}><Download size={16} />Download current PNG</button>
                 {slides.length > 1 && <button className={styles.button} disabled={busy} onClick={() => void exportFiles(true)}><Download size={16} />Download all as ZIP</button>}
                 <label className={styles.field}><span>Caption for this post</span><textarea className={styles.input} readOnly rows={5} value={caption} /></label>

@@ -181,7 +181,7 @@ describe('Book Review Templates & Generator', () => {
     it('keeps quoted book inputs valid JSON and preserves unavailable ratings through draft creation', () => {
         const title = 'A "Quoted" Book', author = 'A. Writer';
         const prompt = generateBookReviewMasterPrompt(title, author, 'Context with "quotes"');
-        const raw = prompt.slice(prompt.indexOf('\n{', prompt.indexOf('RETURN THIS JSON OBJECT')) + 1);
+        const raw = prompt.slice(prompt.indexOf('\n{', prompt.indexOf('RETURN THIS JSON OBJECT')) + 1).split('\n```')[0];
         const input = JSON.parse(raw);
         expect(Object.keys(input)).toHaveLength(13);
         expect(input.title).toBe(title);

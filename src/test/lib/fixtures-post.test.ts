@@ -13,8 +13,8 @@ describe('Daily fixtures benchmark', () => {
         const design = digestCreationResponse(JSON.stringify(response()), options).designs[0];
         expect(design.cricket?.fixtures).toEqual(dayFixtureRows('2026-10-27'));
         expect(fixturesPostIssues(design)).toEqual([]); expect(design.cricket?.runs).toBeNull();
-        expect(generateCreationPrompt(options)).toContain('FIXTURES CONTENT CONTRACT');
-        expect(generateCreationPrompt(options)).toContain('Copy ALL games');
+        expect(generateCreationPrompt(options)).toContain('FIXTURES:');
+        expect(generateCreationPrompt(options)).toContain('Include every game on that date');
     });
     it('rejects dropped, swapped, retimed or substituted supplied fixtures', () => {
         for (const mutate of [

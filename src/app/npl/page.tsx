@@ -10,12 +10,12 @@ import {
 } from "@/lib/npl-data";
 import { NplHubClient } from "@/components/npl/NplHubClient";
 
-export const revalidate = 3600; // Cache for 1 hour
+export const revalidate = 60; // Revalidate published editorial data; this does not fetch a live score feed.
 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Nepal Premier League (NPL) 2026 | Squads, Fixtures, Standings & Stats | The Leaders";
   const description =
-    "Official Nepal Premier League (NPL) 2026 coverage by The Leaders. Explore 8 franchise squads, 145 player cutouts, career statistics, match fixtures, DRS rules, and tournament standings.";
+    "Nepal Premier League (NPL) 2026 coverage by The Leaders. Explore 8 franchise squads, 145 player cutouts, career statistics, match fixtures, DRS rules, and tournament standings.";
 
   return constructMetadata({
     title,
@@ -104,6 +104,7 @@ export default function NplPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <NplHubClient
+        initialNow={new Date().toISOString()}
         teams={teams}
         players={players}
         fixtures={fixtures}

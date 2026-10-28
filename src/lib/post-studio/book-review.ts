@@ -1,3 +1,4 @@
+import { jsonPromptExample, jsonResponseInstructions } from './prompt-output';
 import { imageFirstSourceInstructions } from './prompt-sources';
 import type { PostDesign, PostFormat } from "./types";
 import { defaultPostDesign } from "./types";
@@ -345,7 +346,8 @@ export function generateBookReviewMasterPrompt(bookName: string, author = "", an
         assumptionIdeology: "", relevanceApplication: "", keyTakeaways: "", whyItMatters: "", criticSays: "", accent: "#B71C1C",
     };
     return [
-        'Write an analytical book review for The Leaders, focused on the book’s thesis, evidence, assumptions and civic relevance. Return one JSON object for the five-slide book-review importer. No Markdown fences, commentary or extra keys.',
+        'Write an analytical book review for The Leaders, focused on the book’s thesis, evidence, assumptions and civic relevance. Return one JSON object for the five-slide book-review importer. No commentary or extra keys.',
+        jsonResponseInstructions,
         imageFirstSourceInstructions('the book cover, title page, contents or relevant excerpts'),
         `Book: ${JSON.stringify(cleanBook || 'Identify the book from the supplied source material; leave title empty if unknown.')}`,
         `Author: ${JSON.stringify(author.trim() || 'Identify only if confirmed; otherwise leave author empty.')}`,
@@ -356,7 +358,7 @@ export function generateBookReviewMasterPrompt(bookName: string, author = "", an
         'FIELD CONTENT: title is the book’s display title; author names its actual author(s); tag is an uppercase subject category. rating is your clearly editorial assessment, not a claimed external rating (for example ★★★★☆ 4.0); leave it empty if you cannot assess the book. centralThesis states the core claim; purpose explains the author’s aim; argumentEvidence describes actual evidence; assumptionIdeology identifies the underlying worldview; relevanceApplication connects it to the requested context; whyItMatters explains its value to readers.',
         'keyTakeaways is one string with three short numbered insights separated by JSON-escaped newline characters (\\n). Do not put literal line breaks inside a JSON string or return an array. criticSays is your original editorial verdict, not an invented quotation from a named critic. Do not invent quotations, citations, book contents, dates or claims of verification. Use the attached source material first; research only when no image/photo is attached and tools permit it.',
         'accent is a solid hex color such as #B71C1C, #C5A059 or #1E3A8A, or a CSS gradient string supported by Studio. Keep it separate from the editorial text fields. Do not return image URLs, slide layouts or design settings.',
-        `RETURN THIS JSON OBJECT with the review filled in, keeping the same keys and string types:\n${JSON.stringify(template, null, 2)}`,
+        `RETURN THIS JSON OBJECT with the review filled in, keeping the same keys and string types:\n${jsonPromptExample(template)}`,
     ].join('\n\n');
 }
 

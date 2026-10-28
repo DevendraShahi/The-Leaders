@@ -1,4 +1,5 @@
 "use client";
+import PublicationChecklist from './PublicationChecklist';
 
 import { useRef, useState } from 'react';
 import { Copy, Download, ExternalLink, Instagram, X } from 'lucide-react';
@@ -74,6 +75,7 @@ export default function InstagramSharePanel({ slides, activeIndex, getNode, pers
         catch { setStatus('Select and copy the caption below. Clipboard access is unavailable.'); }
     }
     return <section className={styles.instagramShare} aria-labelledby="instagram-share-title">
+        <PublicationChecklist slides={chosen} />
         <div className={styles.instagramShareHeading}>
             <div><h2 id="instagram-share-title"><Instagram size={18} />Share to Instagram</h2><p>Choose Instagram in your device’s share sheet, then finish your post there.</p></div>
             <button className={styles.iconButton} aria-label="Close Instagram sharing" disabled={working} onClick={onClose}><X size={18} /></button>

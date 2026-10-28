@@ -42,7 +42,7 @@ export default function HistoryStudio({ scope, onBack, onOpenDraft }: { scope: s
         <header className={css.header}>
             <button className={css.back} onClick={onBack}><ArrowLeft size={15} />Back to Studio</button>
             <span className={css.eyebrow}>THE LEADERS / HISTORY DESK</span>
-            <h1>Today in History<span>इतिहासमा आज</span></h1>
+            <h1>Today in History<span>इतिहासमा आजको दिन</span></h1>
             <p>One Nepal event and one international event, each in Nepali and English.</p>
         </header>
         <section className={css.setup} aria-label="History post setup">

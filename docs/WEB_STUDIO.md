@@ -337,3 +337,86 @@ The editor's Preview button saves the current draft and navigates to `/admin/soc
 The preview is a scrolling page rather than a modal or fixed phone shell. Artwork scales to its measured container and retains its original aspect ratio, including tall Story pages. Sticky previous/next controls and a page picker support the full collection; horizontal swipes change pages while vertical gestures remain scrolling. Arrow keys navigate outside form fields. Current-page captions use the shared caption builder; fabricated engagement counts, timestamps, and promotional claims were removed. PNG and ZIP downloads use the verified export pipeline.
 
 Verification: `scripts/check-instagram-preview.cjs` checks 48 size/language/format cases at phone, landscape-phone, tablet and desktop sizes, plus swipe/keyboard boundaries, returning to the selected edit page, and a PNG download. Preview/editor tests cover pending-save persistence and save failures.
+
+
+## Knowledge and curiosity templates
+
+The News desk includes **Do You Know?** (warm paper, question label and photo strip)
+and **Interesting Facts** (warm paper background, gold accents and an optional side photo).
+Both support English/Nepali and square, portrait, story and landscape output. Blank
+posts start without example claims. The existing editor, local draft storage, PNG
+export and source-aware captions apply. The AI prompt flow requests one verified
+fact with context and primary-source URLs; it does not automatically verify claims.
+
+
+## Studio home organization
+
+The Studio home exposes News, Cricket, History and Photo/video desks together,
+followed by Do You Know?, Interesting Facts and Book Review cards. Section links
+jump to creation, browser-local drafts and daily editions. Drafts support name
+search and newest/oldest/name sorting in both the active library and recoverable
+Trash. Basic layouts and legacy imports remain under Blank templates & imports;
+daily editions still load only on explicit request. The home layout has its own
+CSS module so artwork and editor layouts keep their existing styles.
+
+## Research-first news and facts
+
+News, Do You Know? and Interesting Facts prompts are available with no typed
+request. Copy the prompt into an AI chat with browsing enabled: it requests a
+recent Nepal-related story for news, or a verified evergreen fact for curiosity
+posts, together with consulted source URLs. Your request is an optional collapsed
+section for narrowing the topic or adding source material. The existing attachment
+evidence rules, JSON import, review and local draft workflow still apply. Studio
+prepares these instructions; it does not execute a web search or AI request itself.
+
+
+News and curiosity prompts use a dedicated copy contract without cricket fields or
+match terminology. Fact posts focus on one claim, omit labels already printed by
+the template, preserve approximate dates, and require consulted URLs that directly
+support the claim. The JSON example explicitly includes sources, while retaining
+Studio’s internal breaking template key for news and fact artwork.
+
+
+All Studio creation and repair prompts request one fenced `json` code block so
+chat applications can offer a code-copy button. JSON examples use the same format.
+Source links must be plain URL strings rather than Markdown links. Existing raw
+JSON and fenced JSON imports remain supported.
+
+
+## Editorial safeguards and portable drafts
+
+- Research creation offers independent region (automatic, Nepal, international)
+  and topic controls. Up to 40 unique recent local draft headlines, including
+  Trash, are sent as an explicitly untrusted exclusion list in the copied prompt.
+  Similar-headline warnings also appear during response review and in the editor;
+  matching is a local text heuristic, not semantic or cross-language proof.
+- Response cleanup previews HTML-entity decoding, line-ending backslash removal,
+  Markdown underscore escapes and Markdown-wrapped source links. It never writes
+  a draft until the editor accepts the cleanup and validates the resulting JSON.
+  Incomplete or ambiguous JSON is not guessed.
+- Text → Sources & fact check records per-copy-section evidence links, notes and
+  a human review status. Verification requires selected saved evidence or a
+  descriptive supplied-evidence note. Source links alone are not verification.
+  Changes to the copy, structured facts, language, sources or printed metadata
+  invalidate the review; purely visual edits preserve it.
+- A publication checklist is shown in export options, Instagram preview and share
+  preparation. Direct editor downloads with outstanding checks first open the
+  checklist. It is an editorial review aid: the editor may continue deliberately.
+  Existing hard checks for text fit, fonts, unavailable images and malformed
+  structured artwork remain in force. Known layout errors now fail before font
+  downloads. The checklist does not claim to read or validate external sources.
+- Text → Series identity adds an optional topic label and issue number to the
+  news/fact masthead. It remains specific to the page and survives draft backups.
+- Studio home → Back up & restore exports up to 500 selected recent drafts to a
+  versioned JSON file with embedded raster photos, image layers, page grouping,
+  sources, review notes and optional Trash. Images are fetched only for an explicit
+  backup; failed images stop the download. Individual remote images are capped at
+  20 MB and the complete backup at 60 MB. Fixed artwork assets/fonts ship with Studio.
+  Restore validates and previews the file, then atomically adds new-ID copies;
+  existing drafts are never overwritten. Retrying a failed restore reuses IDs.
+
+Verification includes automated review invalidation, duplicate detection, JSON
+cleanup, atomic restore and image-embedding checks, plus a browser flow through
+research settings, malformed-response cleanup, duplicate warning, review reset,
+series rendering, actual PNG download, backup download/restore and mobile layout.
+Disposable browser verification drafts are in recoverable Trash.

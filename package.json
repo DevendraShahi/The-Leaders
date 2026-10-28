@@ -13,7 +13,8 @@
     "test:watch": "vitest --watch",
     "seo:audit": "node scripts/seo-audit.mjs",
     "analyze": "ANALYZE=true npm run build",
-    "build:production": "NODE_ENV=production next build"
+    "build:production": "NODE_ENV=production next build",
+    "npl:check": "vitest run src/test/lib/npl-data.test.ts src/test/lib/npl-season-update.test.ts src/test/lib/npl-spotlight.test.ts src/test/lib/cricket-fixtures.test.ts src/test/components/npl-match-spotlight.test.tsx"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.10",

@@ -17,6 +17,7 @@ import {
   Info
 } from "lucide-react";
 import { useLanguage } from "@/components/providers/language-provider";
+import { cricketFixtures } from '@/lib/post-studio/cricket-fixtures';
 import type { CompletedMatchScorecard } from "@/lib/npl-match-data";
 
 interface NplScorecardModalProps {
@@ -47,6 +48,8 @@ export function NplScorecardModal({ scorecard, onClose }: NplScorecardModalProps
   }, [scorecard, onClose]);
 
   if (!scorecard) return null;
+  const fixture = cricketFixtures.find(item => item.matchNumber === scorecard.matchNumber && item.matchDate === scorecard.matchDate);
+  const matchDate = new Intl.DateTimeFormat(isNe ? 'ne-NP' : 'en-GB', { dateStyle: 'full', timeZone: 'Asia/Kathmandu' }).format(new Date(`${scorecard.matchDate}T12:00:00+05:45`));
 
   const { innings1, innings2, playerOfTheMatch } = scorecard;
 
@@ -75,7 +78,7 @@ export function NplScorecardModal({ scorecard, onClose }: NplScorecardModalProps
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2 text-xs font-mono text-muted-foreground uppercase tracking-wider">
                 <span className="font-bold text-foreground">
-                  Match #{scorecard.matchNumber} · Official Scorecard
+                  Match #{scorecard.matchNumber} · Scorecard
                 </span>
                 <span>•</span>
                 <span>{scorecard.matchDate}</span>
@@ -494,15 +497,15 @@ export function NplScorecardModal({ scorecard, onClose }: NplScorecardModalProps
                   <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
                       <dt className="text-muted-foreground font-mono">Match</dt>
-                      <dd className="font-semibold text-foreground">NPL 2026 Match #1 (League Phase)</dd>
+                      <dd className="font-semibold text-foreground">NPL 2026 Match #{scorecard.matchNumber}</dd>
                     </div>
                     <div>
                       <dt className="text-muted-foreground font-mono">Date & Time</dt>
-                      <dd className="font-semibold text-foreground">Monday, October 26, 2026 · 16:30 NPT</dd>
+                      <dd className="font-semibold text-foreground">{matchDate}{fixture?.startTime ? ` · ${fixture.startTime} NPT` : ''}</dd>
                     </div>
                     <div>
                       <dt className="text-muted-foreground font-mono">Venue</dt>
-                      <dd className="font-semibold text-foreground">TU International Cricket Ground, Kirtipur</dd>
+                      <dd className="font-semibold text-foreground">{isNe ? scorecard.venueNe : scorecard.venue}</dd>
                     </div>
                     <div>
                       <dt className="text-muted-foreground font-mono">Toss</dt>
@@ -521,22 +524,7 @@ export function NplScorecardModal({ scorecard, onClose }: NplScorecardModalProps
                   </dl>
                 </div>
 
-                <div className="rounded-lg border border-border p-4 bg-muted/10 space-y-2">
-                  <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-muted-foreground">
-                    Match Notes & Highlights
-                  </h4>
-                  <ul className="list-disc list-inside text-xs text-muted-foreground space-y-1.5 leading-relaxed">
-                    <li>
-                      <strong className="text-foreground">Dominant Chase:</strong> Lumbini Lions hunted down the target of 88 in just 9.5 overs, registering a crushing +4.599 Net Run Rate.
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Opening Fireworks:</strong> Australian international D&apos;Arcy Short hammered 40 off 18 deliveries (4 fours, 3 sixes) at an extraordinary strike rate of 222.22.
-                    </li>
-                    <li>
-                      <strong className="text-foreground">Deadly Spin & Seam Tandem:</strong> Kishore Mahato dismantled the top order with 4/22 in 4.0 overs, while Sher Malla registered a match-winning 3/11 with an economy of 2.75 to earn Player of the Match.
-                    </li>
-                  </ul>
-                </div>
+
               </div>
             )}
           </div>
@@ -545,7 +533,7 @@ export function NplScorecardModal({ scorecard, onClose }: NplScorecardModalProps
           <div className="p-3 sm:p-4 border-t border-border bg-muted/30 flex items-center justify-between text-xs font-mono text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <Tv className="h-3.5 w-3.5 text-foreground" />
-              Official NPL Match Center · Star Sports Network
+              The Leaders · NPL Match Centre
             </span>
             <button
               onClick={onClose}

@@ -41,7 +41,7 @@ export const HistoryArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({
         </svg>
         <div className={s.overlays}>{(['back', 'middle', 'front'] as const).map(layer => <ArtworkPlacedImages key={layer} layerFilter={layer} images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />)}</div>
         <div className={s.content}>
-            <header className={s.header}><div className={s.brand}><img src="/studio/leaders.png" alt="The Leaders" /><span>THE LEADERS<small>{t('HISTORY DESK', 'इतिहास डेस्क')}</small></span></div>{fitted(t('TODAY IN HISTORY', 'इतिहासमा आज'), s.stamp, wide ? 6 : 7.5, 4.5, 'label')}</header>
+            <header className={s.header}><div className={s.brand}><img src="/studio/leaders.png" alt="The Leaders" /><span>THE LEADERS<small>{t('HISTORY DESK', 'इतिहास डेस्क')}</small></span></div>{fitted(t('TODAY IN HISTORY', 'इतिहासमा आजको दिन'), s.stamp, wide ? 6 : 7.5, 4.5, 'label')}</header>
             <div className={s.kicker} {...select('kicker')}>{fitted(hidden('kicker') ? '' : data.subject, s.subject, 7.5, 4.5, 'label')}{fitted([data.dateLabel, paragraph ? year : ''].filter(Boolean).join(' · '), s.date, 7, 4.5, 'label')}</div>
             {paragraph ? <main className={s.paragraph}>
                 <div className={s.paragraphHeading} {...select('headline')}>{!hidden('headline') && fitted(design.headline, s.headline, (story ? 30 : wide ? 20 : 26) * design.headlineScale, 9, 'display', 'artwork-headline')}</div>
@@ -50,7 +50,7 @@ export const HistoryArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({
                 <div className={s.yearHero}>{fitted(year, s.year, story ? 120 : wide ? 66 : 100, wide ? 26 : 32, 'display', 'artwork-year')}<span className={s.timeline} aria-hidden="true"><i /></span></div>
                 <div className={s.coverCopy}><div className={s.coverHeading} {...select('headline')}>{!hidden('headline') && fitted(design.headline, s.headline, (story ? 32 : wide ? 20 : 28) * design.headlineScale, wide ? 6.5 : 10, 'display', 'artwork-headline')}</div><div className={s.context} {...select('supporting')}>{!hidden('supporting') && fitted(context, s.prose, story ? 13 : wide ? 9 : 11, wide ? 5 : 6, 'body', 'artwork-deck')}</div></div>
             </main>}
-            <footer className={s.footer} {...select('footer')}>{fitted(hidden('footer') ? '' : design.author, s.byline, 6, 4, 'label')}{fitted(t('TODAY IN HISTORY', 'इतिहासमा आज'), s.footerLabel, 6, 4, 'label')}</footer>
+            <footer className={s.footer} {...select('footer')}>{fitted(hidden('footer') ? '' : design.author, s.byline, 6, 4, 'label')}{fitted(t('TODAY IN HISTORY', 'इतिहासमा आजको दिन'), s.footerLabel, 6, 4, 'label')}</footer>
         </div>
         <Echo11Promotion variant={design.echo11Variant} seed={design.headline} language={data.language} />
         {guides && <div className={s.guides} aria-hidden="true" />}

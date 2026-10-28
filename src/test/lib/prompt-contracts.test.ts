@@ -8,7 +8,7 @@ import { cricketPostOutputFields, digestCreationResponse, generateCreationPrompt
 function contentObject(prompt: string) {
     const marker = prompt.indexOf('RETURN THIS JSON OBJECT');
     expect(marker).toBeGreaterThan(-1);
-    return JSON.parse(prompt.slice(prompt.indexOf('\n{', marker) + 1).split('\n\nREPAIR REQUEST:')[0]);
+    return JSON.parse(prompt.slice(prompt.indexOf('\n{', marker) + 1).split('\n```')[0].split('\n\nREPAIR REQUEST:')[0]);
 }
 const base: PromptOptions = { kind: 'cricket', templates: ['matchday'], language: 'en', format: 'portrait', brief: '' };
 const fixture = cricketFixtures[1];

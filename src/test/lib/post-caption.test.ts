@@ -29,7 +29,7 @@ describe('Post-specific social captions', () => {
         const nepali = createHistoryDesign('on-this-day', 'portrait', 'ne'); nepali.history!.storyScope = 'national';
         const english = createHistoryDesign('on-this-day'); english.history!.storyScope = 'international'; english.headline = 'An international historical event';
         const caption = generateInstagramCaption([draft(nepali), draft(english, 1)]);
-        expect(caption).toContain('इतिहासमा आज'); expect(caption).toContain('Today in History');
+        expect(caption).toContain('इतिहासमा आजको दिन'); expect(caption).toContain('Today in History');
         expect(caption).toContain(nepali.history!.fact); expect(caption).toContain(english.history!.fact);
         expectContentOnly(caption);
     });

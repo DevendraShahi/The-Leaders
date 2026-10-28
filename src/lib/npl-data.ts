@@ -1,3 +1,6 @@
+import { standingsFromResults } from './npl-season-update';
+import { nplCompletedMatches } from './npl-match-data';
+import { confirmedNplFixtures } from './npl-spotlight';
 import { nplTeams, nplTeam, type NplTeamId, nplTournamentLogo, nplTournamentIcon } from './post-studio/cricket-catalog';
 import { cricketFixtures, cricketPlayoffs, cricketRestDays, type CricketFixture } from './post-studio/cricket-fixtures';
 import biratnagarRaw from '@/data/npl/biratnagar-kings-stats.json';
@@ -226,7 +229,7 @@ export function getNplPlayerById(id: string): { player: NplPlayer; team: NplTeam
 }
 
 export function getNplFixtures(): CricketFixture[] {
-  return cricketFixtures;
+  return confirmedNplFixtures(cricketFixtures, nplCompletedMatches);
 }
 
 export function getNplPlayoffs() {
@@ -238,17 +241,7 @@ export function getNplRestDays(): string[] {
 }
 
 export function getNplStandings(): NplStanding[] {
-  // Official standings after Match #1 (Lumbini Lions vs Sudurpaschim Royals)
-  return [
-    { rank: 1, teamId: 'lumbini', played: 1, won: 1, lost: 0, tied: 0, nr: 0, points: 2, nrr: '+4.599' },
-    { rank: 2, teamId: 'biratnagar', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 3, teamId: 'chitwan', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 4, teamId: 'janakpur', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 5, teamId: 'karnali', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 6, teamId: 'kathmandu', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 7, teamId: 'pokhara', played: 0, won: 0, lost: 0, tied: 0, nr: 0, points: 0, nrr: '+0.000' },
-    { rank: 8, teamId: 'sudurpaschim', played: 1, won: 0, lost: 1, tied: 0, nr: 0, points: 0, nrr: '-4.599' }
-  ];
+  return standingsFromResults(nplTeams.map(team => team.id));
 }
 
 export const nplTournamentMeta = {

@@ -20,6 +20,9 @@ import { ColorPicker, Modal, Section, Slider } from './Controls';
 import StudioMediaModal from './StudioMediaModal';
 import InstagramSharePanel from './InstagramSharePanel';
 import ExportOptionsModal from './ExportOptionsModal';
+import SourceReview from './SourceReview';
+import { StudioDisclosure } from './StudioDisclosure';
+import { publicationChecks, similarTopics } from '@/lib/post-studio/editorial';
 import styles from './PostStudio.module.css';
 import CricketInspector from './CricketInspector';
 import HistoryInspector from './HistoryInspector';
@@ -58,6 +61,7 @@ const baseTools = [
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
 export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; onPreviewDraft?: (draft: PostDraft) => void; canExport?: boolean }) {
+    const [topicHistory, setTopicHistory] = useState<{ headline: string; name: string }[]>([]);
     const [slides, setSlides] = useState<PostDraft[]>([draft]);
     const [activeId, setActiveId] = useState(draft.id);
     const slidesRef = useRef(slides), activeIdRef = useRef(activeId);
@@ -204,6 +208,7 @@ export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canE
             const current = all.find(item => item.id === draft.id && !item.trashedAt);
             if (!current) throw new Error('This page is unavailable. Return to the library to restore it from Trash.');
             const found = findCarouselSiblings(current, all);
+            setTopicHistory(all.filter(item => !found.some(page => page.id === item.id)).map(item => ({ name: item.name, headline: item.design.headline })));
             const carouselId = canonicalCarouselId(current);
             const loaded = found.map((item, index) => ({ ...item, carouselId, carouselOrder: index }));
             if (current.design.template === 'history' && current.carouselId && current.carouselId !== carouselId) {
@@ -517,7 +522,8 @@ export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canE
         } catch (failure) { setIssue(failure instanceof Error ? failure.message : 'Could not open the preview.'); }
         finally { previewLock.current = false; setOpeningPreview(false); setBusy(false); }
     };
-    const exportPost = async (index = activeSlideIndex) => {
+    const exportPost = async (index = activeSlideIndex, checklistSeen = false) => {
+        if (!checklistSeen && publicationChecks(slides[index].design).some(check => check.level !== 'pass')) { setExportMenuOpen(true); return; }
         if (exportLock.current) return;
         const blocker = getExportBlockReason();
         if (blocker) {
@@ -588,7 +594,8 @@ export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canE
             exportLock.current = false; setExportProgress(''); setExporting(false);
         }
     };
-    const exportAll = async () => {
+    const exportAll = async (checklistSeen = false) => {
+        if (!checklistSeen && slides.some(slide => publicationChecks(slide.design).some(check => check.level !== 'pass'))) { setExportMenuOpen(true); return; }
         if (exportLock.current) return;
         const blocker = getExportBlockReason({ isAll: true });
         if (blocker) {
@@ -812,7 +819,11 @@ export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canE
             </div>
         </header>
         {exporting && <div className={styles.exportProgress} role="status" aria-live="polite"><Download size={15} /><span>{exportProgress || 'Preparing export…'}</span><progress aria-label="Export in progress" /></div>}
-        {exportMenuOpen && <ExportOptionsModal slides={slides} activeIndex={activeSlideIndex} disabled={exporting || busy} onClose={() => setExportMenuOpen(false)} onCurrent={() => { setExportMenuOpen(false); void exportPost(); }} onAll={() => { setExportMenuOpen(false); void exportAll(); }} onCopyCaption={() => void copyCaption()} />}
+        {exportMenuOpen && <ExportOptionsModal slides={slides} activeIndex={activeSlideIndex} disabled={exporting || busy} technicalChecks={[
+            { level: ready && !overflow ? 'pass' : 'warning', label: ready ? overflow ? 'Current page text overflows. Auto-fit or shorten the copy.' : 'Current page text fits the measured boundaries.' : 'Current page is still loading.' },
+            { level: imageIssue ? 'error' : 'pass', label: imageIssue || 'Current page photo has no known loading error.' },
+            { level: saveState === 'saved' ? 'pass' : 'warning', label: saveState === 'saved' ? 'Draft changes are saved.' : saveState === 'error' ? 'Draft save failed. Retry before export.' : 'Draft changes are saving.' },
+        ]} onReview={() => { setExportMenuOpen(false); setTool('text'); }} onClose={() => setExportMenuOpen(false)} onCurrent={() => { setExportMenuOpen(false); void exportPost(activeSlideIndex, true); }} onAll={() => { setExportMenuOpen(false); void exportAll(true); }} onCopyCaption={() => void copyCaption()} />}
         {!canExport && <div className={styles.permissionAlertBanner} role="status">
             <ShieldAlert size={15} />
             <span>Exporting is restricted for this account (View & Edit only). Tap export anytime to view details or contact an admin.</span>
@@ -921,6 +932,9 @@ export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canE
                         </div>
                         {tool === 'cricket' && <CricketInspector key={activeId} design={design} onChange={apply} />}
                         {tool === 'history' && <HistoryInspector key={activeId} design={design} onChange={apply} />}
+                        {tool === 'text' && similarTopics(design.headline, topicHistory).length > 0 && <StudioDisclosure title="Possible repeat topic" description="This headline resembles another draft. Check whether you want an update."><ul>{similarTopics(design.headline, topicHistory).map((item, index) => <li key={index}>{item.headline}</li>)}</ul></StudioDisclosure>}
+                        {tool === 'text' && <SourceReview key={activeId} design={design} onChange={next => apply(next)} />}
+                        {tool === 'text' && managedNews && <Section title="Series identity (optional)"><label className={styles.field}><span>Topic label</span><input className={styles.input} maxLength={40} value={design.series?.topic ?? ''} onChange={event => update('series', { topic: event.target.value, issue: design.series?.issue ?? '' })} placeholder="Science" /></label><label className={styles.field}><span>Issue number</span><input className={styles.input} maxLength={12} value={design.series?.issue ?? ''} onChange={event => update('series', { topic: design.series?.topic ?? '', issue: event.target.value })} placeholder="012" /></label></Section>}
                         {tool === 'text' && managed && <>
                             <p className={styles.subtle}>This template fits text automatically into reserved areas. {managedNews ? 'Edit the headline, context and byline below.' : managedHistory ? 'Edit the event in Event.' : 'Edit post data in Match.'} Manual text positions and alignment are replaced by the managed layout.</p>
                             <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>

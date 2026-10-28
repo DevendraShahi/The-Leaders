@@ -153,40 +153,11 @@ export const nplMatch1Scorecard: CompletedMatchScorecard = {
       { name: "Abhinash Bohara", nameNe: "अविनाश बोहरा", overs: "2.0", maidens: 0, runs: 16, wickets: 0, economy: "8.00" },
       { name: "Saif Zaib", nameNe: "सैफ जैब", overs: "1.5", maidens: 0, runs: 15, wickets: 0, economy: "8.18" }
     ],
-    fow: [
-      { score: "71-1", player: "D'Arcy Short", over: "6.2" },
-      { score: "82-2", player: "Aasif Sheikh", over: "8.4" },
-      { score: "82-3", player: "Niroshan Dickwella", over: "8.7" }
-    ]
+    // Withheld: the previous transcription contained impossible over 8.7.
+    fow: []
   }
 };
 
 export const nplCompletedMatches: Record<number, CompletedMatchScorecard> = {
   1: nplMatch1Scorecard
-};
-
-// Current Live Tournament Leaders after Match #1
-export const nplSeasonLiveLeaders = {
-  orangeCap: [
-    { rank: 1, name: "D'Arcy Short", nameNe: "डार्सी सर्ट", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", runs: 40, innings: 1, strikeRate: "222.22", hs: "40", image: "/studio/cricket/players/darcy-short.webp" },
-    { rank: 2, name: "Aasif Sheikh", nameNe: "आसिफ शेख", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", runs: 32, innings: 1, strikeRate: "128.00", hs: "32", image: "/studio/cricket/players/aasif-sheikh.webp" },
-    { rank: 3, name: "Dipendra Singh Airee", nameNe: "दिपेन्द्र सिंह ऐरी", teamId: "sudurpaschim" as NplTeamId, teamName: "Sudurpaschim Royals", runs: 27, innings: 1, strikeRate: "117.39", hs: "27", image: "/studio/cricket/players/dipendra-singh-airee.webp" },
-    { rank: 4, name: "Anil Kharel", nameNe: "अनिल खरेल", teamId: "sudurpaschim" as NplTeamId, teamName: "Sudurpaschim Royals", runs: 15, innings: 1, strikeRate: "78.94", hs: "15*", image: "/studio/cricket/players/anil-kharel.webp" },
-    { rank: 5, name: "Saif Zaib", nameNe: "सैफ जैब", teamId: "sudurpaschim" as NplTeamId, teamName: "Sudurpaschim Royals", runs: 13, innings: 1, strikeRate: "92.85", hs: "13", image: "/studio/cricket/players/saif-zaib.webp" }
-  ],
-  purpleCap: [
-    { rank: 1, name: "Kishore Mahato", nameNe: "किशोर महतो", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", wickets: 4, overs: "4.0", economy: "5.50", bbi: "4/22", image: "/studio/cricket/players/kishore-mahato.webp" },
-    { rank: 2, name: "Sher Malla", nameNe: "शेर मल्ल", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", wickets: 3, overs: "4.0", economy: "2.75", bbi: "3/11", isPotm: true, image: "/studio/cricket/players/sher-malla.webp" },
-    { rank: 3, name: "Anil Kharel", nameNe: "अनिल खरेल", teamId: "sudurpaschim" as NplTeamId, teamName: "Sudurpaschim Royals", wickets: 2, overs: "2.0", economy: "14.00", bbi: "2/28", image: "/studio/cricket/players/anil-kharel.webp" },
-    { rank: 4, name: "Rohit Kumar Paudel", nameNe: "रोहित कुमार पौडेल", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", wickets: 1, overs: "2.2", economy: "4.29", bbi: "1/10", image: "/studio/cricket/players/rohit-paudel.webp" },
-    { rank: 5, name: "Dipendra Singh Airee", nameNe: "दिपेन्द्र सिंह ऐरी", teamId: "sudurpaschim" as NplTeamId, teamName: "Sudurpaschim Royals", wickets: 1, overs: "2.0", economy: "7.00", bbi: "1/14", image: "/studio/cricket/players/dipendra-singh-airee.webp" },
-    { rank: 6, name: "Tilak Bhandari", nameNe: "तिलक भण्डारी", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", wickets: 1, overs: "4.0", economy: "4.50", bbi: "1/18", image: "/studio/cricket/players/tilak-bhandari.webp" },
-    { rank: 7, name: "Shadley van Schalkwyk", nameNe: "शादली भ्यान शाल्कविक", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", wickets: 1, overs: "3.0", economy: "6.33", bbi: "1/19", image: "/studio/cricket/players/shadley-van-schalkwyk.webp" }
-  ],
-  mvp: [
-    { rank: 1, name: "Sher Malla", nameNe: "शेर मल्ल", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", points: 85, impact: "Player of the Match (3/11 in 4.0 ov, Econ 2.75)", image: "/studio/cricket/players/sher-malla.webp" },
-    { rank: 2, name: "Kishore Mahato", nameNe: "किशोर महतो", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", points: 80, impact: "4/22 breakthrough spell destroying top/middle order", image: "/studio/cricket/players/kishore-mahato.webp" },
-    { rank: 3, name: "D'Arcy Short", nameNe: "डार्सी सर्ट", teamId: "lumbini" as NplTeamId, teamName: "Lumbini Lions", points: 70, impact: "Blistering 40 runs in 18 balls (SR 222.22)", image: "/studio/cricket/players/darcy-short.webp" },
-    { rank: 4, name: "Dipendra Singh Airee", nameNe: "दिपेन्द्र सिंह ऐरी", teamId: "sudurpaschim" as NplTeamId, teamName: "Sudurpaschim Royals", points: 55, impact: "Top scored 27 runs & took 1 wicket (1/14)", image: "/studio/cricket/players/dipendra-singh-airee.webp" }
-  ]
 };

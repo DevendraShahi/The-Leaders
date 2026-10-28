@@ -15,7 +15,7 @@ import { postDesignSchema } from '@/lib/post-studio/drafts';
 const options: PromptOptions = { kind: 'cricket', templates: ['wicket'], language: 'en', format: 'portrait', brief: '', teams: { teamId: 'lumbini', opponentId: 'sudurpaschim' }, fixture: cricketFixtures[0] };
 function response(config = options) {
     const prompt = generateCreationPrompt(config), marker = prompt.indexOf('RETURN THIS JSON OBJECT');
-    return JSON.parse(prompt.slice(prompt.indexOf('\n{', marker) + 1));
+    return JSON.parse(prompt.slice(prompt.indexOf('\n{', marker) + 1).split('\n```')[0]);
 }
 function wicket() {
     const design = createCricketDraftDesign('wicket', 'lumbini', 'sudurpaschim');
@@ -68,7 +68,7 @@ describe('Fixture identity and per-post team context', () => {
         payload.posts[1].data.bowler.name = 'Rohit Paudel';
         payload.posts[2].data.awardPerformance = 'bowling'; payload.posts[2].data.bowler.name = 'Dipendra Singh Airee';
         Object.assign(payload.posts[2].data, { opponentRuns: 100, opponentWickets: 9, opponentOvers: '20' });
-        payload.posts[3].data.batter.name = 'Rohit Paudel';
+        payload.posts[3].teamId = 'lumbini'; // Compact score posts identify the side directly; they do not request batter fields.
         const designs = digestCreationResponse(JSON.stringify(payload), config).designs;
         expect(designs.map(design => design.cricket?.teamId)).toEqual(['sudurpaschim', 'lumbini', 'sudurpaschim', 'lumbini']);
         expect(designs[2].cricket).toMatchObject({ opponentRuns: 100, opponentWickets: 9, opponentOvers: '20' });

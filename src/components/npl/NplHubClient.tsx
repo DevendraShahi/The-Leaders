@@ -32,11 +32,12 @@ import type { NplTeamExtended, NplPlayer, NplStanding } from "@/lib/npl-data";
 import type { CricketFixture } from "@/lib/post-studio/cricket-fixtures";
 import type { NplTeamId } from "@/lib/post-studio/cricket-catalog";
 import { nplTournamentMeta } from "@/lib/npl-data";
+import { nplUpdate, nplResultUpdates } from '@/lib/npl-season-update';
+import { NplMatchSpotlight } from '@/components/npl/NplMatchSpotlight';
+import { completedFixture, fixtureScorecard } from '@/lib/npl-spotlight';
 import { NplScorecardModal } from "@/components/npl/NplScorecardModal";
 import {
-  nplMatch1Scorecard,
   nplCompletedMatches,
-  nplSeasonLiveLeaders,
   type CompletedMatchScorecard
 } from "@/lib/npl-match-data";
 
@@ -46,6 +47,7 @@ interface NplHubClientProps {
   fixtures: CricketFixture[];
   playoffs: any[];
   standings: NplStanding[];
+  initialNow?: string;
 }
 
 type TabType = "overview" | "franchises" | "players" | "fixtures" | "standings" | "commercials";
@@ -70,7 +72,8 @@ export function NplHubClient({
   players,
   fixtures,
   playoffs,
-  standings
+  standings,
+  initialNow
 }: NplHubClientProps) {
   const { language } = useLanguage();
   const isNe = language === "ne";
@@ -84,7 +87,6 @@ export function NplHubClient({
   const [selectedTeamModal, setSelectedTeamModal] = React.useState<NplTeamExtended | null>(null);
   const [fixtureStageFilter, setFixtureStageFilter] = React.useState<"all" | "league" | "playoffs">("all");
   const [selectedScorecardMatch, setSelectedScorecardMatch] = React.useState<CompletedMatchScorecard | null>(null);
-  const [spotlightView, setSpotlightView] = React.useState<"result" | "upcoming">("result");
   const [leaderboardMode, setLeaderboardMode] = React.useState<"tournament" | "career">("tournament");
 
   // Filter players
@@ -140,13 +142,6 @@ export function NplHubClient({
       .slice(0, 4);
   }, [players]);
 
-  // Match 1 (Yesterday's result) and Today's Upcoming Match
-  const match1 = fixtures[0];
-  const todayMatch = fixtures[1] || fixtures[0];
-  const m1Team1 = teams.find((t) => t.id === match1?.teamId);
-  const m1Team2 = teams.find((t) => t.id === match1?.opponentId);
-  const tmTeam1 = teams.find((t) => t.id === todayMatch?.teamId);
-  const tmTeam2 = teams.find((t) => t.id === todayMatch?.opponentId);
 
   return (
     <div className="npl-sports-hub min-h-screen bg-background text-foreground selection:bg-primary/20 font-sans">
@@ -216,177 +211,9 @@ export function NplHubClient({
               </div>
             </div>
 
-            {/* Quick Match Spotlight Card with Result vs Upcoming Toggle */}
-            <div className="w-full lg:w-[400px] shrink-0 rounded-lg border border-border bg-card p-4 sm:p-5 relative overflow-hidden shadow-xs">
-              {/* Card Mode Toggle Pills */}
-              <div className="flex items-center justify-between pb-3 border-b border-border">
-                <div className="inline-flex items-center rounded-md bg-muted/40 p-0.5 border border-border/60">
-                  <button
-                    onClick={() => setSpotlightView("result")}
-                    className={`px-2.5 py-1 text-[11px] font-semibold rounded transition flex items-center gap-1 ${
-                      spotlightView === "result"
-                        ? "bg-background text-foreground shadow-xs font-bold"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    <CheckCircle2 className="h-3 w-3 text-emerald-500" />
-                    {isNe ? "हिजोको नतिजा" : "Yesterday's Result"}
-                  </button>
-                  <button
-                    onClick={() => setSpotlightView("upcoming")}
-                    className={`px-2.5 py-1 text-[11px] font-semibold rounded transition flex items-center gap-1 ${
-                      spotlightView === "upcoming"
-                        ? "bg-background text-foreground shadow-xs font-bold"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
-                    {isNe ? "आजको खेल" : "Today's Match"}
-                  </button>
-                </div>
-
-                <span className="font-mono text-[11px] text-muted-foreground">
-                  {spotlightView === "result" ? "Match #01 · Final" : "Match #02 · 12:30"}
-                </span>
-              </div>
-
-              {/* VIEW 1: YESTERDAY'S MATCH 1 RESULT */}
-              {spotlightView === "result" && m1Team1 && m1Team2 && (
-                <div className="pt-3 space-y-3">
-                  {/* Result Header Badge */}
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-semibold border border-emerald-500/20">
-                      Completed · 26 Oct 2026
-                    </span>
-                    <span className="text-[11px] text-muted-foreground font-mono">TU Ground, Kirtipur</span>
-                  </div>
-
-                  {/* Head-to-Head with Scores */}
-                  <div className="py-2 flex items-center justify-between gap-2">
-                    {/* Team 1: Lumbini Lions (Winner) */}
-                    <div className="flex flex-col items-center gap-1.5 text-center w-5/12">
-                      <div className="relative h-12 w-12 shrink-0 rounded bg-muted/20 p-1 border-2 border-emerald-500/40 shadow-xs">
-                        <Image src={m1Team1.logo} alt={m1Team1.name} fill className="object-contain p-0.5" />
-                      </div>
-                      <span className="font-bold text-xs md:text-sm leading-tight text-foreground truncate max-w-full">
-                        {isNe ? m1Team1.nameNe : m1Team1.name}
-                      </span>
-                      <div className="rounded bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20">
-                        <span className="text-xs font-mono font-extrabold text-emerald-600 dark:text-emerald-400 tabular-nums">
-                          88/3
-                        </span>
-                        <span className="text-[10px] font-mono text-muted-foreground ml-1">(9.5 ov)</span>
-                      </div>
-                    </div>
-
-                    {/* Defeated Marker */}
-                    <div className="flex flex-col items-center justify-center w-2/12">
-                      <span className="text-[10px] font-bold text-muted-foreground uppercase bg-muted/40 px-1.5 py-0.5 rounded border border-border/50">
-                        def.
-                      </span>
-                    </div>
-
-                    {/* Team 2: Sudurpaschim Royals */}
-                    <div className="flex flex-col items-center gap-1.5 text-center w-5/12">
-                      <div className="relative h-12 w-12 shrink-0 rounded bg-muted/20 p-1 border border-border/60">
-                        <Image src={m1Team2.logo} alt={m1Team2.name} fill className="object-contain p-0.5" />
-                      </div>
-                      <span className="font-semibold text-xs md:text-sm leading-tight text-foreground truncate max-w-full">
-                        {isNe ? m1Team2.nameNe : m1Team2.name}
-                      </span>
-                      <div className="rounded bg-muted/30 px-2 py-0.5 border border-border/50">
-                        <span className="text-xs font-mono font-bold text-foreground tabular-nums">
-                          87
-                        </span>
-                        <span className="text-[10px] font-mono text-muted-foreground ml-1">(17.2 ov)</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Result & POTM Footnote */}
-                  <div className="rounded-md bg-muted/20 border border-border/60 p-2 text-xs space-y-1">
-                    <p className="font-semibold text-foreground text-[11px] leading-tight text-center">
-                      {isNe ? "लुम्बिनी लायन्स ७ विकेटले विजयी (६१ बल बाँकी)" : "Lumbini Lions won by 7 wickets (61 balls remaining)"}
-                    </p>
-                    <div className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground font-mono">
-                      <Award className="h-3 w-3 text-amber-500" />
-                      <span>POTM: <strong className="text-foreground">Sher Malla (3/11 in 4.0 ov)</strong></span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="pt-2 border-t border-border flex items-center justify-between text-xs">
-                    <button
-                      onClick={() => setSelectedScorecardMatch(nplMatch1Scorecard)}
-                      className="inline-flex items-center gap-1 px-3 py-1.5 rounded bg-foreground text-background font-semibold text-xs hover:opacity-90 transition shadow-xs"
-                    >
-                      <span>{isNe ? "विस्तृत स्कोरकार्ड" : "View Scorecard"}</span>
-                      <ChevronRight className="h-3 w-3" />
-                    </button>
-                    <button
-                      onClick={() => setActiveTab("fixtures")}
-                      className="font-medium text-foreground hover:text-primary transition flex items-center gap-0.5 text-xs underline underline-offset-2"
-                    >
-                      {isNe ? "३२ खेल तालिका" : "All 32 Fixtures"}
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* VIEW 2: TODAY'S UPCOMING MATCH 2 */}
-              {spotlightView === "upcoming" && tmTeam1 && tmTeam2 && (
-                <div className="pt-3 space-y-3">
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-[10px] font-mono uppercase tracking-wider text-red-600 dark:text-red-400 bg-red-500/10 px-2 py-0.5 rounded font-semibold border border-red-500/20 flex items-center gap-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-600 animate-pulse" />
-                      Today · 12:30 NPT
-                    </span>
-                    <span className="text-[11px] text-muted-foreground font-mono">TU Ground, Kirtipur</span>
-                  </div>
-
-                  <div className="py-3 flex items-center justify-between gap-3">
-                    <div className="flex flex-col items-center gap-1.5 text-center w-5/12">
-                      <div className="relative h-12 w-12 shrink-0 rounded bg-muted/20 p-1 border border-border/60">
-                        <Image src={tmTeam1.logo} alt={tmTeam1.name} fill className="object-contain p-0.5" />
-                      </div>
-                      <span className="font-semibold text-xs md:text-sm leading-tight text-foreground truncate max-w-full">
-                        {isNe ? tmTeam1.nameNe : tmTeam1.name}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground font-mono">{tmTeam1.captain} (C)</span>
-                    </div>
-
-                    <div className="flex flex-col items-center justify-center w-2/12">
-                      <span className="text-xs font-bold text-muted-foreground uppercase bg-muted/30 px-2 py-0.5 rounded border border-border/40">
-                        VS
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col items-center gap-1.5 text-center w-5/12">
-                      <div className="relative h-12 w-12 shrink-0 rounded bg-muted/20 p-1 border border-border/60">
-                        <Image src={tmTeam2.logo} alt={tmTeam2.name} fill className="object-contain p-0.5" />
-                      </div>
-                      <span className="font-semibold text-xs md:text-sm leading-tight text-foreground truncate max-w-full">
-                        {isNe ? tmTeam2.nameNe : tmTeam2.name}
-                      </span>
-                      <span className="text-[10px] text-muted-foreground font-mono">{tmTeam2.captain} (C)</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-2 border-t border-border flex items-center justify-between text-xs">
-                    <span className="text-muted-foreground flex items-center gap-1 text-[11px] font-mono">
-                      <Tv className="h-3.5 w-3.5 text-foreground shrink-0" />
-                      Star Sports HD · NetTV
-                    </span>
-                    <button
-                      onClick={() => setActiveTab("fixtures")}
-                      className="font-medium text-foreground hover:text-primary transition flex items-center gap-0.5 text-xs underline underline-offset-2"
-                    >
-                      {isNe ? "खेल तालिका" : "All 32 Fixtures"}
-                      <ChevronRight className="h-3 w-3" />
-                    </button>
-                  </div>
-                </div>
-              )}
+            <div className="w-full lg:w-[400px] shrink-0 space-y-3">
+            <p className="text-xs leading-relaxed text-muted-foreground">{isNe ? 'अन्तिम जाँच' : 'Last checked'}: <time dateTime={nplUpdate.checkedAt}>{new Intl.DateTimeFormat(isNe ? 'ne-NP' : 'en-GB', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kathmandu' }).format(new Date(nplUpdate.checkedAt))} NPT</time> · {isNe ? 'सम्पादकीय अपडेट' : 'Editorial updates'}</p>
+            <NplMatchSpotlight teams={teams} fixtures={fixtures} scorecards={nplCompletedMatches} initialNow={initialNow} isNe={isNe} onScorecard={setSelectedScorecardMatch} onFixtures={() => setActiveTab('fixtures')} />
             </div>
           </div>
 
@@ -686,11 +513,11 @@ export function NplHubClient({
                     </span>
                     <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-mono text-[10px] px-1.5 py-0.5 font-bold border border-emerald-500/20">
                       <CheckCircle2 className="h-2.5 w-2.5" />
-                      Post Match #1
+                      {nplResultUpdates.length} {isNe ? "खेलको नतिजा" : "confirmed results"}
                     </span>
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-                    {isNe ? "अरेन्ज क्याप, पर्पल क्याप तथा एमभीपी" : "Season 3 Cap Standings & MVPs"}
+                    {isNe ? "सिजन ३ नतिजा र खेलाडी तथ्याङ्क" : "Season 3 Results & Player Stats"}
                   </h2>
                 </div>
 
@@ -704,7 +531,7 @@ export function NplHubClient({
                           : "text-muted-foreground hover:text-foreground"
                       }`}
                     >
-                      {isNe ? "एनपीएल २०२६ लाइभ" : "NPL 2026 Live (Match 1)"}
+                      {isNe ? "पुष्टि भएका नतिजा" : "Confirmed results"}
                     </button>
                     <button
                       onClick={() => setLeaderboardMode("career")}
@@ -728,172 +555,18 @@ export function NplHubClient({
                 </div>
               </div>
 
-              {/* LIVE NPL 2026 STATS AFTER MATCH 1 */}
-              {leaderboardMode === "tournament" && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                  {/* 1. Orange Cap: D'Arcy Short & Run-Scorers */}
-                  <div className="rounded-lg border border-border bg-card overflow-hidden">
-                    <div className="p-4 border-b border-border bg-amber-500/10 flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="h-2 w-2 rounded-full bg-amber-500" />
-                          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
-                            {isNe ? "अरेन्ज क्याप (उच्च रनकर्ता)" : "Orange Cap Leaders"}
-                          </h3>
-                        </div>
-                        <span className="text-[10px] text-muted-foreground font-mono">NPL 2026 Season Total</span>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-amber-600 dark:text-amber-400">Runs</span>
-                    </div>
-
-                    <div className="divide-y divide-border">
-                      {nplSeasonLiveLeaders.orangeCap.map((lead) => (
-                        <div
-                          key={lead.name}
-                          className="p-3 flex items-center justify-between hover:bg-muted/30 transition"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-xs font-mono font-bold text-muted-foreground w-4">
-                              #{lead.rank}
-                            </span>
-                            <div className="relative h-9 w-9 shrink-0 rounded bg-muted/20 overflow-hidden border border-border/60">
-                              <Image src={lead.image || `/studio/cricket/${lead.teamId}.png`} alt={lead.name} fill className="object-contain" />
-                            </div>
-                            <div>
-                              <h4 className="text-xs font-bold text-foreground leading-tight">
-                                {isNe ? lead.nameNe : lead.name}
-                              </h4>
-                              <span className="text-[10px] text-muted-foreground font-mono block">
-                                {lead.teamName}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="text-right">
-                            <strong className="text-sm font-bold text-foreground block leading-tight tabular-nums font-mono">
-                              {lead.runs}
-                            </strong>
-                            <span className="text-[10px] text-muted-foreground font-mono tabular-nums">
-                              SR {lead.strikeRate}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 2. Purple Cap: Kishore Mahato & Sher Malla */}
-                  <div className="rounded-lg border border-border bg-card overflow-hidden">
-                    <div className="p-4 border-b border-border bg-purple-500/10 flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <span className="h-2 w-2 rounded-full bg-purple-500" />
-                          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
-                            {isNe ? "पर्पल क्याप (उच्च विकेटकर्ता)" : "Purple Cap Leaders"}
-                          </h3>
-                        </div>
-                        <span className="text-[10px] text-muted-foreground font-mono">NPL 2026 Season Total</span>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-purple-600 dark:text-purple-400">Wickets</span>
-                    </div>
-
-                    <div className="divide-y divide-border">
-                      {nplSeasonLiveLeaders.purpleCap.slice(0, 5).map((lead) => (
-                        <div
-                          key={lead.name}
-                          className="p-3 flex items-center justify-between hover:bg-muted/30 transition"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-xs font-mono font-bold text-muted-foreground w-4">
-                              #{lead.rank}
-                            </span>
-                            <div className="relative h-9 w-9 shrink-0 rounded bg-muted/20 overflow-hidden border border-border/60">
-                              <Image src={lead.image || `/studio/cricket/${lead.teamId}.png`} alt={lead.name} fill className="object-contain" />
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-1.5">
-                                <h4 className="text-xs font-bold text-foreground leading-tight">
-                                  {isNe ? lead.nameNe : lead.name}
-                                </h4>
-                                {lead.isPotm && (
-                                  <span className="text-[9px] bg-amber-500/10 text-amber-600 dark:text-amber-400 px-1 py-0.2 rounded font-mono font-semibold">
-                                    POTM
-                                  </span>
-                                )}
-                              </div>
-                              <span className="text-[10px] text-muted-foreground font-mono block">
-                                {lead.teamName} · {lead.overs} ov
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="text-right">
-                            <strong className="text-sm font-bold text-foreground block leading-tight tabular-nums font-mono">
-                              {lead.wickets} W
-                            </strong>
-                            <span className="text-[10px] text-muted-foreground font-mono tabular-nums">
-                              Econ {lead.economy} (BBI {lead.bbi})
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 3. Tournament MVP: Sher Malla & Kishore Mahato */}
-                  <div className="rounded-lg border border-border bg-card overflow-hidden">
-                    <div className="p-4 border-b border-border bg-emerald-500/10 flex items-center justify-between">
-                      <div>
-                        <div className="flex items-center gap-1.5">
-                          <Award className="h-4 w-4 text-emerald-500" />
-                          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
-                            {isNe ? "एमभीपी दाबेदारहरू" : "Tournament MVPs"}
-                          </h3>
-                        </div>
-                        <span className="text-[10px] text-muted-foreground font-mono">Match Impact Score</span>
-                      </div>
-                      <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">Points</span>
-                    </div>
-
-                    <div className="divide-y divide-border">
-                      {nplSeasonLiveLeaders.mvp.map((lead) => (
-                        <div
-                          key={lead.name}
-                          className="p-3 flex items-center justify-between hover:bg-muted/30 transition"
-                        >
-                          <div className="flex items-center gap-3">
-                            <span className="text-xs font-mono font-bold text-muted-foreground w-4">
-                              #{lead.rank}
-                            </span>
-                            <div className="relative h-9 w-9 shrink-0 rounded bg-muted/20 overflow-hidden border border-border/60">
-                              <Image src={lead.image || `/studio/cricket/${lead.teamId}.png`} alt={lead.name} fill className="object-contain" />
-                            </div>
-                            <div>
-                              <h4 className="text-xs font-bold text-foreground leading-tight">
-                                {isNe ? lead.nameNe : lead.name}
-                              </h4>
-                              <span className="text-[10px] text-muted-foreground font-mono block truncate max-w-[150px]">
-                                {lead.impact}
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="text-right">
-                            <strong className="text-sm font-bold text-foreground block leading-tight tabular-nums font-mono">
-                              {lead.points}
-                            </strong>
-                            <span className="text-[10px] text-muted-foreground font-mono tabular-nums">
-                              PTS
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+              {leaderboardMode === "tournament" && <div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {nplResultUpdates.map(result => <a key={result.matchNumber} href={result.sourceUrl} target="_blank" rel="noopener noreferrer" className="rounded-lg border border-border bg-card p-5 hover:bg-muted/40 transition">
+                    <p className="text-xs text-muted-foreground">{isNe ? 'खेल' : 'Match'} #{result.matchNumber} · {result.matchDate}</p>
+                    {[result.teamId, result.opponentId].map((id, index) => { const team = teams.find(team => team.id === id); return <div key={id} className="mt-4 flex items-center gap-3"><Image src={team?.logo || ''} alt="" width={32} height={32} className="object-contain" /><span className="min-w-0 flex-1 text-sm font-semibold">{isNe ? team?.nameNe : team?.name}</span><span className="text-xs font-mono">{index ? result.opponentScore : result.teamScore}</span></div>; })}
+                    <p className="mt-4 text-sm font-semibold text-emerald-600 dark:text-emerald-400">{isNe ? result.resultNe : result.result}</p>
+                    <p className="mt-3 text-xs text-muted-foreground underline">{isNe ? 'स्रोत हेर्नुहोस्' : 'View source'} ↗</p>
+                  </a>)}
                 </div>
-              )}
+                <p className="mt-4 text-xs leading-relaxed text-muted-foreground">{isNe ? 'सबै खेलको पूर्ण व्यक्तिगत तथ्याङ्क पुष्टि भएपछि उच्च रनकर्ता र विकेट लिने खेलाडीको सूची थपिनेछ।' : 'Season batting and bowling leaders will be published after complete player statistics for all completed matches are verified.'}</p>
+              </div>}
 
-              {/* CAREER T20 OVERALL STATS */}
               {leaderboardMode === "career" && (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                   {/* 1. Orange Cap / Top Batters */}
@@ -999,9 +672,9 @@ export function NplHubClient({
                   <div className="p-4 border-b border-border bg-muted/20 flex items-center justify-between">
                     <div>
                       <h3 className="text-sm font-bold text-foreground uppercase tracking-wider">
-                        {isNe ? "एमभीपी / अलराउन्डरहरू" : "Tournament MVPs"}
+                        {isNe ? "करियर अलराउन्डर तथ्याङ्क" : "Career All-Rounders"}
                       </h3>
-                      <span className="text-[10px] text-muted-foreground">Dual Threat Impact</span>
+                      <span className="text-[10px] text-muted-foreground">Career T20 runs and wickets</span>
                     </div>
                     <span className="text-xs font-semibold text-muted-foreground">Runs / Wkts</span>
                   </div>
@@ -1454,7 +1127,8 @@ export function NplHubClient({
                     const logo2 = t2?.logo || `/studio/cricket/${f.opponentId}.png`;
                     const name1 = isNe ? (t1?.nameNe || f.teamId) : (t1?.name || f.teamId);
                     const name2 = isNe ? (t2?.nameNe || f.opponentId) : (t2?.name || f.opponentId);
-                    const isCompleted = f.status === "completed" || f.matchNumber === 1;
+                    const isCompleted = completedFixture(f, nplCompletedMatches);
+                    const scorecard = fixtureScorecard(f, nplCompletedMatches);
 
                     return (
                       <div
@@ -1511,7 +1185,7 @@ export function NplHubClient({
                           {/* VS / Result Marker */}
                           <div className="shrink-0 px-2 text-center">
                             <span className="text-[11px] font-mono font-bold text-muted-foreground uppercase bg-muted/30 px-1.5 py-0.5 rounded border border-border/40">
-                              {isCompleted ? "def." : "VS"}
+                              {"VS"}
                             </span>
                           </div>
 
@@ -1550,7 +1224,8 @@ export function NplHubClient({
                                   POTM: <strong className="text-foreground">{isNe ? (f.playerOfTheMatchNe || f.playerOfTheMatch) : f.playerOfTheMatch}</strong> ({f.playerOfTheMatchPerf})
                                 </span>
                                 <button
-                                  onClick={() => setSelectedScorecardMatch(nplMatch1Scorecard)}
+                                  disabled={!scorecard}
+                                  onClick={() => { if (scorecard) setSelectedScorecardMatch(scorecard); }}
                                   className="text-foreground hover:text-primary font-bold underline underline-offset-2 transition"
                                 >
                                   {isNe ? "स्कोरकार्ड हेर्नुहोस्" : "Scorecard"}
@@ -1604,7 +1279,7 @@ export function NplHubClient({
                           <span className="font-bold text-sm text-foreground">{po.label}</span>
                         </div>
                         <span className="font-mono text-xs text-muted-foreground">
-                          {po.matchDate} · 16:30 NPT
+                          {po.matchDate} · {po.startTime} NPT
                         </span>
                       </div>
 
@@ -1622,7 +1297,7 @@ export function NplHubClient({
 
                       <div className="pt-2 border-t border-border flex items-center justify-between text-[11px] font-mono text-muted-foreground">
                         <span>Linear Broadcast: Star Sports HD</span>
-                        <span className="text-foreground font-medium">Reserve Day Active</span>
+                        <span className="text-foreground font-medium">Scheduled playoff</span>
                       </div>
                     </div>
                   ))}
@@ -1637,12 +1312,14 @@ export function NplHubClient({
           <div className="space-y-8">
             <div className="border-b border-border pb-3">
               <span className="text-[11px] font-mono uppercase tracking-widest text-muted-foreground block">
-                {isNe ? "तालिका तथा नकआउट संरचना" : "Official League Table & Knockout Pathway"}
+                {isNe ? "तालिका तथा नकआउट संरचना" : "Calculated League Table & Knockout Pathway"}
               </span>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
                 {isNe ? "एनपीएल अंक तालिका र प्लेअफ संरचना" : "NPL Standings & Page Playoff Pathway"}
               </h2>
             </div>
+
+            <p className="text-xs leading-relaxed text-muted-foreground">{isNe ? `${nplResultUpdates.length} पुष्टि भएका लिग खेलको नतिजाबाट गणना गरिएको अंक र नेट रन रेट।` : `Points and net run rate calculated from ${nplResultUpdates.length} confirmed league results.`}</p>
 
             {/* Standings Table in Cricinfo Editorial High-Density Layout */}
             <div className="rounded-lg border border-border bg-card overflow-hidden">

@@ -7,7 +7,7 @@ import { historyEditions } from '@/lib/post-studio/history-prompt';
 import { creationGaps } from '@/lib/post-studio/creation-workflow';
 import { postOutputDimensions } from '@/lib/post-studio/types';
 const options: PromptOptions = { kind: 'history', templates: ['on-this-day'], language: 'en', format: 'portrait', brief: '', historyDate: '2026-03-04' };
-const extract = () => JSON.parse(generateCreationPrompt(options).split('RETURN THIS JSON OBJECT:\n')[1]);
+const extract = () => JSON.parse(generateCreationPrompt(options).split('RETURN THIS JSON OBJECT:\n```json\n')[1].split('\n```')[0]);
 const filled = () => ({ posts: historyEditions.map(({ scope, language }) => ({ template: 'on-this-day', scope, language,
     headline: `${scope} ${language} test event`, data: { year: scope === 'national' ? '1900 B.S.' : '1800', dateLabel: scope === 'national' ? 'Nepali month/day (B.S.)' : '4 MARCH', subject: `${scope} test event`, fact: 'Illustrative test fixture.' },
     sources: [`https://example.org/${scope}`], paragraphs: [] as { heading: string; body: string }[],

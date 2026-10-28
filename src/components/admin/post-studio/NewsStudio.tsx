@@ -22,7 +22,7 @@ export default function NewsStudio({ scope, onBack, onOpenDraft }: { scope: stri
         finally { lock.current = false; setBusy(false); }
     };
     return <div className={s.studio}><main className={css.desk}>
-        <header className={css.header}><button className={s.button} disabled={busy} onClick={onBack}><ArrowLeft size={16} />Studio</button><p className={css.eyebrow}>THE LEADERS / NEWS DESK</p><h1>The story comes first.</h1><p>Three formats for clear, credible reporting. Add your photo and confirmed facts in the editor.</p></header>
+        <header className={css.header}><button className={s.button} disabled={busy} onClick={onBack}><ArrowLeft size={16} />Studio</button><p className={css.eyebrow}>THE LEADERS / NEWS DESK</p><h1>The story comes first.</h1><p>News, curiosity and facts. Five formats for clear, credible storytelling. Add your photo and confirmed facts in the editor.</p></header>
         <div className={css.setup}><Newspaper size={24} /><label className={s.field}><span>Language</span><select className={s.input} value={language} onChange={event => setLanguage(event.target.value as 'en' | 'ne')}><option value="ne">नेपाली</option><option value="en">English</option></select></label><label className={s.field}><span>Canvas size</span><select className={s.input} value={format} onChange={event => setFormat(event.target.value as PostFormat)}>{Object.entries(postOutputDimensions).map(([id, size]) => <option value={id} key={id}>{id} · {size.join(' × ')}</option>)}</select></label></div>
         {error && <p className={s.error} role="alert">{error}</p>}
         <section className={css.grid} aria-label="News templates">{newsStyles.map((item, index) => <article key={item.id} className={css.card}>

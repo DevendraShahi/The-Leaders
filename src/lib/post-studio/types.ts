@@ -83,7 +83,11 @@ export type PostDesign = {
   backgroundGradient?: string | null;
   cricket?: CricketData;
   history?: HistoryData;
-  newsStyle?: 'daily' | 'hot' | 'report';
+  contentLanguage?: 'en' | 'ne';
+  researchTopic?: string;
+  series?: { topic: string; issue: string };
+  editorialReview?: import('./editorial').EditorialReview;
+  newsStyle?: 'daily' | 'hot' | 'report' | 'do-you-know' | 'interesting-facts';
   echo11Variant?: number;
   placedImages?: PlacedImage[];
   sourceUrls?: string[];
@@ -125,7 +129,7 @@ export const defaultPostDesign: PostDesign = {
 
 export const postTemplates: { key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }[] = [
   { key: 'cricket', title: 'Cricket', subtitle: 'NPL match coverage', patch: { cricket: blankCricketData(), category: 'NPL 2026', headline: 'MATCHDAY', summary: '', eyebrow: 'THE LEADERS / CRICKET', author: 'The Leaders Sports', format: 'portrait', accent: '#F1C64C', backgroundColor: '#321C30' } },
-  { key: 'history', title: 'Today in History', subtitle: 'इतिहासमा आज', patch: { history: blankHistoryData(), category: 'ON THIS DAY', headline: 'ON THIS DAY', summary: '', eyebrow: 'THE LEADERS / HISTORY DESK', author: 'The Leaders History Desk', format: 'portrait', accent: '#B71C1C', backgroundColor: '#F4EDE0' } },
+  { key: 'history', title: 'Today in History', subtitle: 'इतिहासमा आजको दिन', patch: { history: blankHistoryData(), category: 'ON THIS DAY', headline: 'ON THIS DAY', summary: '', eyebrow: 'THE LEADERS / HISTORY DESK', author: 'The Leaders History Desk', format: 'portrait', accent: '#B71C1C', backgroundColor: '#F4EDE0' } },
   {
     key: "breaking",
     title: "Breaking",

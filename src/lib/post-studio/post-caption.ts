@@ -15,7 +15,7 @@ export function generatePostCaption(slides: PostDraft[]): string {
             // shared alone still gets a caption using its actual prose.
             if (event.pageKind === 'paragraph' && slides.some(item => item.design.history?.pageKind === 'cover' && item.design.history?.language === event.language && item.design.history?.storyScope === event.storyScope && item.design.history?.subject === event.subject && item.design.history?.year === event.year)) continue;
             const scope = event.storyScope === 'national' ? ne ? 'नेपाल' : 'Nepal' : event.storyScope === 'international' ? ne ? 'विश्व' : 'World' : '';
-            const label = [ne ? 'इतिहासमा आज' : 'Today in History', scope].filter(Boolean).join(' · ');
+            const label = [ne ? 'इतिहासमा आजको दिन' : 'Today in History', scope].filter(Boolean).join(' · ');
             const year = event.year.trim() ? historyNumber(event.year, event.language) : '';
             const date = [event.dateLabel, year && !event.dateLabel.includes(event.year) ? year : ''].filter(Boolean).join(' · ');
             const context = event.pageKind === 'paragraph' ? event.body : event.fact || design.summary;

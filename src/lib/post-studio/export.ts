@@ -21,6 +21,9 @@ function fontCSS() {
     return embedded;
 }
 export async function artworkBytes(node: HTMLElement, format: PostFormat, onProgress?: (message: string) => void) {
+    if (node.dataset.exportError) throw new Error(node.dataset.exportError);
+    const loading = '[data-photo-ready="false"],[data-text-ready="false"]';
+    if (document.fonts?.status !== 'loading' && !node.querySelector(loading) && artworkFitIssues(node).length) throw new Error('Artwork content is clipped. Shorten the text, reduce the rows, or choose a taller format before exporting.');
     onProgress?.('Preparing fonts and images…');
     const embeddedFonts = await fontCSS();
     await document.fonts.ready;

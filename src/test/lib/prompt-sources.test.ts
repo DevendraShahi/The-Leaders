@@ -23,8 +23,11 @@ describe('Image-first evidence in every Studio prompt', () => {
     });
     it.each(['breaking', 'explainer', 'quote'])('uses the same hierarchy for %s', template => {
         const options: PromptOptions = { kind: 'news', templates: [template], language: 'en', format: 'portrait', brief: 'Confirmed reporting' };
-        expectImageFirst(generateCreationPrompt(options));
-        expectImageFirst(generateCreationRepairPrompt(options, '{bad', 'Invalid JSON'));
+        const prompt = generateCreationPrompt(options);
+        expect(prompt).toContain('WEB RESEARCH DEFAULT');
+        expect(prompt).toContain('If an image/photo is attached');
+        expect(prompt).toContain('do not browse or mix in unrelated findings');
+        expect(generateCreationRepairPrompt(options, '{bad', 'Invalid JSON')).toContain('do not browse, even when some fields are unreadable');
     });
     it('applies the same rule to book reviews and multi-post cricket packs', () => {
         expectImageFirst(generateBookReviewMasterPrompt('The Republic', 'Plato'));

@@ -45,7 +45,11 @@ export const postDesignSchema = z.object({
     backgroundGradient: z.string().nullable().optional(),
     cricket: cricketDataSchema.optional(),
     history: historyDataSchema.optional(),
-    newsStyle: z.enum(['daily', 'hot', 'report']).optional(),
+    contentLanguage: z.enum(['en', 'ne']).optional(),
+    researchTopic: z.string().max(80).optional(),
+    series: z.object({ topic: z.string().max(40), issue: z.string().max(12) }).optional(),
+    editorialReview: z.object({ fingerprint: z.string().max(100000), languageChecked: z.boolean(), claims: z.array(z.object({ text: z.string().max(10000), status: z.enum(['needs-checking', 'verified', 'unsupported']), sources: z.array(z.string().url().refine(value => /^https?:\/\//i.test(value))).max(10), note: z.string().max(2000) })).max(10) }).optional(),
+    newsStyle: z.enum(['daily', 'hot', 'report', 'do-you-know', 'interesting-facts']).optional(),
     echo11Variant: z.number().int().min(0).max(7).optional(),
     placedImages: z.array(placedImageSchema).optional(),
     sourceUrls: z.array(z.string().url().refine(value => /^https?:\/\//i.test(value))).max(10).optional(),
@@ -53,7 +57,7 @@ export const postDesignSchema = z.object({
     cricketStyle: z.enum(['stadium', 'editorial', 'classic']).optional(),
     playerPhotoId: z.string().min(1).optional(),
 });
-const draftSchema = z.object({ id: z.string().min(1), name: z.string().trim().min(1).max(100), createdAt: z.string().datetime(), updatedAt: z.string().datetime(), trashedAt: z.string().datetime().nullable(), design: postDesignSchema,
+export const draftSchema = z.object({ id: z.string().min(1), name: z.string().trim().min(1).max(100), createdAt: z.string().datetime(), updatedAt: z.string().datetime(), trashedAt: z.string().datetime().nullable(), design: postDesignSchema,
     carouselId: z.string().min(1).optional(), carouselOrder: z.number().int().nonnegative().optional(),
 });
 const librarySchema = z.object({ version: z.literal(1), drafts: z.array(draftSchema) });
@@ -154,5 +158,20 @@ export function createDraftCollection(scope: string, entries: { id: string; name
         });
         for (const draft of prepared) if (!drafts.some(existing => existing.id === draft.id)) drafts.push(draft);
         return prepared;
+    });
+}
+
+
+/** Restore a validated backup atomically as copies, preserving existing local work. */
+export function restoreDraftCopies(scope: string, copies: PostDraft[]) {
+    return change(scope, drafts => {
+        if (!copies.length || copies.length > 500 || new Set(copies.map(draft => draft.id)).size !== copies.length) throw new Error('Invalid backup draft set.');
+        const prepared = copies.map(draft => draftSchema.parse(draft));
+        for (const draft of prepared) {
+            const existing = drafts.find(item => item.id === draft.id);
+            if (existing && JSON.stringify(existing) !== JSON.stringify(draft)) throw new Error('An imported copy changed. Choose the backup again to restore another copy.');
+        }
+        for (const draft of prepared) if (!drafts.some(item => item.id === draft.id)) drafts.push(draft);
+        return prepared.length;
     });
 }

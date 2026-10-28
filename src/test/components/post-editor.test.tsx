@@ -147,3 +147,21 @@ describe('Current Studio carousel editor', () => {
         expect(screen.getByLabelText('Edit headline')).toHaveValue('First page');
     });
 });
+
+it('warns about another draft topic and resets reviewed copy after an edit', async () => {
+    const drafts = await createDraftCollection('test-editor', [
+        { id: 'review-a', carouselId: 'one', name: 'Review test', design: { ...defaultPostDesign, headline: 'A remarkable fact about the natural world', sourceUrls: ['https://example.org/evidence'] } },
+        { id: 'review-b', carouselId: 'two', name: 'Previous topic', design: { ...defaultPostDesign, headline: 'A remarkable fact about the natural world' } },
+    ]);
+    render(<PostEditor scope="test-editor" draft={drafts[0]} onClose={vi.fn()} />);
+    expect(await screen.findByText('Possible repeat topic')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('Sources & fact check'));
+    const claim = screen.getByRole('region', { name: 'Copy review 1' });
+    fireEvent.click(within(claim).getByRole('checkbox', { name: 'Source 1' }));
+    fireEvent.change(within(claim).getByRole('combobox', { name: 'Review status' }), { target: { value: 'verified' } });
+    expect(within(screen.getByRole('region', { name: 'Copy review 1' })).getByRole('combobox', { name: 'Review status' })).toHaveValue('verified');
+    fireEvent.change(screen.getByLabelText('Edit headline'), { target: { value: 'An edited claim needs a fresh source check' } });
+    expect(within(screen.getByRole('region', { name: 'Copy review 1' })).getByRole('combobox', { name: 'Review status' })).toHaveValue('needs-checking');
+    fireEvent.click(screen.getByRole('button', { name: 'Export options' }));
+    expect(screen.getByRole('region', { name: 'Publication checklist' })).toHaveTextContent('copy sections still need a source review');
+});
