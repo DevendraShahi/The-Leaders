@@ -38,6 +38,17 @@ export const studioCraftRegistry: Record<PostTemplate, StudioCraftSpec> = {
             { key: 'visual', label: 'Player / match photo', role: 'Visual', description: 'Optional editorial photo', getPreview: d => d.imageUri ? 'Photo attached' : 'Team theme' },
         ],
     },
+    history: {
+        template: 'history', name: 'Today in History', badge: 'HISTORY', category: 'HISTORY',
+        description: 'One main page and optional paragraph pages for a historical story.',
+        layers: [
+            { key: 'kicker', label: 'Desk label', role: 'Kicker', description: 'History desk eyebrow', fieldKey: 'eyebrow', getPreview: d => d.eyebrow },
+            { key: 'headline', label: 'Event headline', role: 'Headline', description: 'The event in a headline', fieldKey: 'headline', getPreview: d => d.headline },
+            { key: 'supporting', label: 'Story text', role: 'Context', description: 'Cover context or paragraph text; edit in Event', getPreview: d => d.history?.pageKind === 'paragraph' ? d.history.body || 'No paragraph text yet' : d.history?.fact || d.summary || 'No cover context yet' },
+            { key: 'footer', label: 'History desk byline', role: 'Attribution', description: 'Editorial attribution', fieldKey: 'author', getPreview: d => d.author },
+            { key: 'visual', label: 'Archive photo', role: 'Visual', description: 'Optional archival photo', getPreview: d => d.imageUri ? 'Photo attached' : 'Paper texture' },
+        ],
+    },
     "book-review": {
         template: "book-review",
         name: "Book Review: Cover & Central Thesis",

@@ -1,7 +1,11 @@
 "use client";
 
+import { CricketTournamentMark } from './CricketTournamentMark';
+
+import { Echo11Credit, echo11FrameClass } from './Echo11Credit';
+
 import { forwardRef, type CSSProperties } from 'react';
-import { nplTeam, teamLogo, teamName, nplTournamentLogo } from '@/lib/post-studio/cricket-catalog';
+import { nplTeam, teamLogo, teamName } from '@/lib/post-studio/cricket-catalog';
 import { cricketNumber, blankCricketData } from '@/lib/post-studio/cricket-data';
 import { matchdayIssues, matchdayBackgrounds } from '@/lib/post-studio/matchday';
 import { postOutputDimensions, type PostLayer, type PostTextLayer } from '@/lib/post-studio/types';
@@ -47,15 +51,15 @@ export const MatchdayArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
             {text(teamName(identity, data.language), s.teamName, wide ? 12 : story ? 19 : 16, wide ? 8 : 10)}
         </section>;
     };
-    return <div ref={ref} className={`${s.artwork} ${paper ? s.paper : ''}`} style={{ width: 360, height, '--accent': design.accent } as CSSProperties} data-testid="post-artwork" data-cricket-template="matchday" data-layout="matchday" data-format={design.format} data-language={data.language} data-export-error={issues.join(' ')} data-managed-layout="true">
+    return <div ref={ref} className={`${echo11FrameClass} ${s.artwork} ${paper ? s.paper : ''}`} style={{ width: 360, height, '--accent': design.accent } as CSSProperties} data-testid="post-artwork" data-echo11-credit="true" data-cricket-template="matchday" data-layout="matchday" data-format={design.format} data-language={data.language} data-export-error={issues.join(' ')} data-managed-layout="true">
         <img className={s.background} src={paper ? '/studio/cricket/backgrounds/paper-001.jpg' : background.src} alt="" />
         {photo && <div className={s.photo}><ArtworkPhoto design={design} height={height} /></div>}
         <div className={s.overlays}>{(['back', 'middle', 'front'] as const).map(layer => <ArtworkPlacedImages key={layer} layerFilter={layer} images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />)}</div>
         <div className={s.scrim} />
-        <div className={s.content}>
+        <div className={s.content} data-credit-content>
             <header className={s.header}>
                 <div className={s.brand}><img src="/studio/leaders.png" alt="The Leaders" /><span>THE LEADERS<span>{t('SPORTS DESK', 'खेलकुद डेस्क')}</span></span></div>
-                <div className={s.tournamentLogo}><img src={nplTournamentLogo} alt="Nepal Premier League" /></div>
+                <CricketTournamentMark paper={paper} />
             </header>
             <div className={s.titleBlock} {...select('headline')}>
                 {!design.hiddenLayers.includes('kicker') && <div className={s.kicker} {...select('kicker')}>{text(data.matchLabel || t('MATCH PREVIEW', 'खेलको पूर्वावलोकन'), s.matchLabel, wide ? 7 : 8, wide ? 5 : 6)}</div>}
@@ -63,17 +67,15 @@ export const MatchdayArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>((
             </div>
             <div className={s.teams} {...select('visual')}>{badge(false)}<span className={s.versus}>{t('VS', 'विरुद्ध')}</span>{badge(true)}</div>
             <div className={s.details}>
-                <div className={s.dateBlock}>{text(date.toUpperCase(), s.date, wide ? 21 : 30, wide ? 13 : 19)}{text(weekday, s.weekday, wide ? 6 : 8, 5.5)}</div>
+                <div className={s.dateBlock}>{text(date.toUpperCase(), s.date, wide ? 21 : 30, wide ? 11 : 16)}{text(weekday, s.weekday, wide ? 6 : 8, 5.5)}</div>
                 <div className={s.timeBlock}>{text(data.startTime ? n(data.startTime) : t('TIME TBC', 'समय बाँकी'), s.time, wide ? 23 : 32, wide ? 11 : 16)}<span>{t('NEPAL TIME · NPT', 'नेपाल समय')}</span></div>
             </div>
             <div className={s.venueBlock}><span>{t('VENUE', 'मैदान')}</span>{text(data.venue || t('Venue to be confirmed', 'मैदान पुष्टि हुन बाँकी'), s.venue, wide ? 8 : 11, wide ? 6 : 8)}</div>
             <div className={s.summaryBlock} {...select('supporting')}>{!design.hiddenLayers.includes('supporting') && design.summary && text(design.summary, s.summary, wide ? 7 : 10, wide ? 5.5 : 8, 'supporting')}</div>
-            <footer className={s.footer} {...select('footer')}>
-                {text(design.hiddenLayers.includes('footer') ? '' : design.author, s.author, wide ? 5 : 6.5, 4.5, 'footer')}
-                {text('NPL 2026 | Cricket', s.footerLabel, wide ? 5 : 6.5, 4.5)}
-            </footer>
+
         </div>
         {guides && <div className={s.guides} aria-hidden="true" />}
-    </div>;
+    <Echo11Credit variant={design.echo11Variant} seed={design.headline} language={data.language} />
+        </div>;
 });
 MatchdayArtwork.displayName = 'MatchdayArtwork';

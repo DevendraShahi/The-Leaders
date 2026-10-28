@@ -1,0 +1,30 @@
+import { echo11Lines, echo11Variant } from '@/lib/post-studio/echo11-copy';
+import { cleanup, render, screen, within } from '@testing-library/react';
+import { afterEach, describe, expect, it } from 'vitest';
+import { echo11FrameClass } from '@/components/admin/post-studio/Echo11Credit';
+import { CricketArtwork } from '@/components/admin/post-studio/CricketArtwork';
+import { cricketTemplateIds } from '@/lib/post-studio/cricket-catalog';
+import { studioTemplateExamples } from '@/lib/post-studio/template-examples';
+const examples = studioTemplateExamples();
+afterEach(cleanup);
+describe('Cricket echo11 brand bar', () => {
+    it.each(cricketTemplateIds)('%s has echo11 agency branding and contact links', id => {
+        const design = structuredClone(examples.find(example => example.id === id)!.design);
+        render(<CricketArtwork design={design} />);
+        const credit = screen.getByTestId('echo11-credit');
+        expect(screen.getByTestId('post-artwork').querySelector('footer')).toBeNull();
+        expect(within(screen.getByTestId('cricket-tournament-mark')).getByText('NPL 2026 | Cricket')).toBeInTheDocument();
+        expect(screen.getByTestId('cricket-tournament-mark').closest('header')).not.toBeNull();
+        expect(screen.getByTestId('post-artwork')).toHaveClass(echo11FrameClass);
+        expect(credit).toHaveAccessibleName('echo11 · Web development agency');
+        expect(credit.textContent).not.toContain('THE LEADERS POSTS');
+        expect(within(credit).getByTestId('echo11-tagline')).toHaveTextContent(echo11Lines[echo11Variant(design.echo11Variant, design.headline)].en);
+        expect(within(credit).getByRole('link', { name: /echo11.tech/ })).toHaveAttribute('href', 'https://echo11.tech/');
+        expect(within(credit).getByRole('link', { name: 'echo11.labs@gmail.com' })).toHaveAttribute('href', 'mailto:echo11.labs@gmail.com');
+        expect(within(credit).getByText('WEB DEVELOPMENT AGENCY')).toBeInTheDocument();
+        expect(within(credit).getByTestId('echo11-subtext')).toHaveTextContent(echo11Lines[echo11Variant(design.echo11Variant, design.headline)].subtext.en);
+        expect(within(credit).getByAltText('echo11 logo')).toHaveAttribute('src', '/studio/echo11-logo.svg');
+        expect(credit.textContent).not.toContain('NPL');
+        expect(screen.getByTestId('post-artwork')).toHaveAttribute('data-export-error', '');
+    });
+});

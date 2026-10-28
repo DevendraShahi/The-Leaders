@@ -1,3 +1,4 @@
+import { generatePostCaption } from './post-caption';
 import { generateCricketCaption } from './cricket-caption';
 import type { DailyEdition } from './daily';
 import { defaultPostDesign, type PostDesign } from './types';
@@ -51,12 +52,25 @@ export function editionCaption(edition: DailyEdition) {
     return `${edition.caption.ne}\n\n${edition.caption.en}`;
 }
 
+/** Recover batches saved by the former scope-splitting History importer. */
+function splitHistoryBatch(draft: PostDraft): string | undefined {
+    if (draft.design.template !== 'history') return undefined;
+    return draft.carouselId?.match(/^(prompt-[0-9a-f-]{36})-(?:national|international)$/i)?.[1];
+}
+export function canonicalCarouselId(draft: PostDraft): string {
+    return splitHistoryBatch(draft) ?? draft.carouselId ?? `carousel:${draft.id}`;
+}
+
 /**
  * Finds all sibling drafts that belong to the same carousel pack.
  * Checks for ID prefixes (e.g. book-slug-timestamp-1..5) or name patterns ("Title · 1/5").
  */
 export function findCarouselSiblings(draft: PostDraft, allDrafts: PostDraft[]): PostDraft[] {
     const activeDrafts = allDrafts.filter(d => !d.trashedAt);
+
+    const legacyBatch = splitHistoryBatch(draft);
+    if (legacyBatch) return activeDrafts.filter(item => item.design.template === 'history' && canonicalCarouselId(item) === legacyBatch)
+        .sort((a, b) => (a.design.history?.storyScope === 'international' ? 1 : 0) - (b.design.history?.storyScope === 'international' ? 1 : 0) || (a.carouselOrder ?? 0) - (b.carouselOrder ?? 0));
 
     if (draft.carouselId) return activeDrafts.filter(item => item.carouselId === draft.carouselId)
         .sort((a, b) => (a.carouselOrder ?? 0) - (b.carouselOrder ?? 0));
@@ -102,33 +116,8 @@ export function getCarouselBaseTitle(name: string): string {
  * Generates an Instagram-ready caption from a carousel draft or series.
  */
 export function generateInstagramCaption(slides: PostDraft[]): string {
-    if (!slides.length) return "";
-    if (slides[0].design.template === 'cricket') return generateCricketCaption(slides);
-    const first = slides[0].design;
-    const cleanHeadline = first.headline || "The Leaders Analysis";
-    const cleanEyebrow = first.eyebrow ? `${first.eyebrow}\n\n` : "";
-    const cleanSummary = first.summary ? `${first.summary}\n\n` : "";
-    const category = first.category ? `#${first.category.replace(/[^a-zA-Z0-9]/g, "")}` : "#TheLeaders";
-
-    const slideSummaries = slides.length > 1
-        ? `\n\n📌 CAROUSEL BREAKDOWN (${slides.length} SLIDES):\n` +
-          slides
-              .map((s, idx) => `• Slide ${idx + 1}: ${s.design.headline || s.name}`)
-              .join("\n") + "\n\n"
-        : "\n\n";
-
-    const hashtags = [
-        category,
-        "#TheLeaders",
-        "#NepalPolitics",
-        "#Governance",
-        "#Leadership",
-        "#PoliticalEconomy",
-        "#PolicyAnalysis",
-        first.template.startsWith("book") ? "#BookReview #GoodReads" : "",
-    ].filter(Boolean).join(" ");
-
-    return `${cleanEyebrow}⚡ ${cleanHeadline}\n\n${cleanSummary}${slideSummaries}Swipe through the carousel for the full analysis.\n\n—\nAnalysis by The Leaders Editorial\n🌐 theleaders.com.np\n\n${hashtags}`;
+    if (!slides.length) return '';
+    return slides.every(slide => slide.design.template === 'cricket') ? generateCricketCaption(slides) : generatePostCaption(slides);
 }
 
 /**
@@ -137,8 +126,10 @@ export function generateInstagramCaption(slides: PostDraft[]): string {
 export async function exportCarouselZip(
     renderSlideNodes: HTMLElement[],
     slides: PostDraft[],
-    zipFilename = "the-leaders-carousel.zip"
+    zipFilename = "the-leaders-carousel.zip",
+    onProgress?: (message: string) => void
 ): Promise<void> {
+    if (!slides.length || renderSlideNodes.length !== slides.length || renderSlideNodes.some(node => !node)) throw new Error('Some pages are still preparing. Wait for all pages before downloading the ZIP.');
     const fileEntries: Record<string, Uint8Array> = {};
 
     for (let i = 0; i < renderSlideNodes.length; i++) {
@@ -146,7 +137,7 @@ export async function exportCarouselZip(
         const slide = slides[i];
         if (!node || !slide) continue;
 
-        const bytes = await artworkBytes(node, slide.design.format);
+        const bytes = await artworkBytes(node, slide.design.format, message => onProgress?.(`Page ${i + 1} of ${slides.length} · ${message}`));
         const indexStr = String(i + 1).padStart(2, "0");
         const safeTitle = (slide.design.headline || slide.name)
             .toLowerCase()
@@ -161,6 +152,7 @@ export async function exportCarouselZip(
     const caption = generateInstagramCaption(slides);
     fileEntries["caption.txt"] = strToU8(caption);
 
+    onProgress?.('Packaging the PNGs and caption…');
     const zipped = zipSync(fileEntries);
     download(zipped, zipFilename, "application/zip");
 }

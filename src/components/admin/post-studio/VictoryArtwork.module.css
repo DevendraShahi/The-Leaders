@@ -1,0 +1,41 @@
+.artwork{--victory-glow:#efcb73}
+.atmosphere{position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 40% 45%,#efcb7317,transparent 54%)}
+.content{position:absolute;inset:5% 6%;z-index:2;display:grid;grid-template-rows:8% 5% 54% 23% 4% 6%;pointer-events:none}
+.content>*{min-width:0;min-height:0}.content [role=button]{pointer-events:auto;cursor:pointer}.content [data-selected=true]{outline:1px dashed #49e8c7}.content [role=button]:focus-visible{outline:2px solid #49e8c7}
+.fill{width:100%;height:100%}.context{color:var(--muted);padding-top:2px}
+/* One winner composition: headline above, crest and result together beneath it. */
+.hero{position:relative;display:grid;grid-template-columns:36% minmax(0,1fr);grid-template-rows:40% 60%;gap:0 12px;min-height:0;isolation:isolate}
+.hero>*{min-width:0;min-height:0}.headline{grid-column:1/-1;grid-row:1;width:100%;height:100%;transform:rotate(-3deg) skewX(-5deg)}
+.headline svg{display:block;width:100%;height:100%;overflow:visible}
+.crest{grid-column:1;grid-row:2;position:relative;width:100%;height:100%;padding:9px 0;align-self:center}
+.crest img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 6px 10px #0004)}
+.winnerCopy{grid-column:2;grid-row:2;display:grid;grid-template-rows:minmax(0,40px) minmax(0,26px);gap:3px;align-self:center;min-height:0;min-width:0}
+.winnerCopy>*{min-height:0;min-width:0}.winnerName{width:100%;height:100%;display:flex;flex-direction:column;justify-content:safe center;letter-spacing:-.6px}
+.result{display:grid;min-height:0;min-width:0}.resultText{width:100%;height:100%;color:var(--accent);display:flex;flex-direction:column;justify-content:safe center}
+/* Both teams share the same columns; overs always sit right of the score. */
+.scores{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));border-top:2px solid var(--accent);border-bottom:1px solid var(--rule);padding:3px 0}
+.innings{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 52px;grid-template-rows:minmax(0,1fr);gap:10px;align-items:center;padding:3px 0;min-width:0;min-height:0}
+.innings>*{min-width:0;min-height:0}.innings+.innings{border-top:1px solid var(--rule)}
+.scoreIdentity{display:grid;grid-template-columns:20px minmax(0,1fr);grid-template-rows:minmax(0,1fr);gap:6px;height:100%;min-height:0;align-items:center}
+.scoreIdentity img{width:100%;height:100%;max-height:24px;object-fit:contain}
+.scoreTeam,.scoreValue,.scoreOvers{width:100%;height:100%;display:flex;flex-direction:column;justify-content:safe center}
+.scoreValue{white-space:nowrap;letter-spacing:-1px}.scoreOvers{color:var(--muted);text-align:right;white-space:nowrap}.summary{padding:2px 0;color:var(--muted)}
+.artwork[data-has-summary=false] .content{grid-template-rows:8% 5% 58% 23% 0% 6%}
+.artwork[data-format=story] .content{inset:6% 7%;grid-template-rows:7% 5% 57% 21% 4% 6%}
+.artwork[data-format=story][data-has-summary=false] .content{grid-template-rows:7% 5% 61% 21% 0% 6%}
+.artwork[data-format=story] .winnerCopy{grid-template-rows:minmax(0,48px) minmax(0,30px);gap:4px}
+.artwork[data-format=square] .content{grid-template-rows:9% 5% 51% 24% 4% 7%}
+.artwork[data-format=square][data-has-summary=false] .content{grid-template-rows:9% 5% 55% 24% 0% 7%}
+.artwork[data-format=square] .winnerCopy{grid-template-rows:minmax(0,36px) minmax(0,25px)}
+.artwork[data-format=square] .innings{gap:7px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 45px;padding:2px 0}
+.artwork[data-format=landscape] .content{inset:5%;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:14% 8% 63% 8% 7%;gap:0 16px}
+.artwork[data-format=landscape] .content>header,.artwork[data-format=landscape] .context,.artwork[data-format=landscape] .summary,.artwork[data-format=landscape] .content>footer{grid-column:1/-1}
+.artwork[data-format=landscape] .hero{grid-column:1;grid-row:3;grid-template-columns:36% minmax(0,1fr);gap:0 8px}
+.artwork[data-format=landscape] .winnerCopy{height:100%;max-height:68px;grid-template-rows:60% 40%;gap:0}
+.artwork[data-format=landscape] .crest{padding:5px 0}
+.artwork[data-format=landscape] .scores{grid-column:2;grid-row:3;padding:1px 0}
+.artwork[data-format=landscape] .innings{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) 32px;gap:5px;padding:1px 0}
+.artwork[data-format=landscape] .scoreIdentity{grid-template-columns:12px minmax(0,1fr);gap:3px}
+.artwork[data-format=landscape] .summary{grid-row:4;padding:0}.artwork[data-format=landscape] .content>footer{grid-row:5}
+.artwork[data-format=landscape][data-has-summary=false] .content{grid-template-rows:14% 8% 71% 0% 7%}
+.artwork[data-style=editorial] .resultText{color:var(--ink)}

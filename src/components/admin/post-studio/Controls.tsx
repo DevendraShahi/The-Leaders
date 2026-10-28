@@ -1,5 +1,7 @@
 "use client";
 
+import { StudioDisclosure } from './StudioDisclosure';
+
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { normalizeTextColor, textColorPalette } from '@/lib/post-studio/text-colors';
 import styles from './PostStudio.module.css';
@@ -18,7 +20,7 @@ export function Modal({ children, labelledBy, onClose, blocked = false, wide = f
 }
 
 export function Section({ title, children }: { title: string; children: ReactNode }) {
-    return <details className={styles.section}><summary>{title}</summary><div className={styles.sectionContent}>{children}</div></details>;
+    return <StudioDisclosure title={title}><div className={styles.sectionContent}>{children}</div></StudioDisclosure>;
 }
 export function Slider({ label, value, min, max, disabled, vertical, onStart, onChange, onEnd }: {
     label: string; value: number; min: number; max: number; disabled?: boolean; vertical?: boolean;

@@ -1,8 +1,9 @@
+import { prepareArtworkSnapshot } from './export-assets';
 import { artworkFitIssues } from './artwork-fit';
 import { toCanvas } from 'html-to-image';
 import { postOutputDimensions, postExportReferenceWidth, type PostFormat } from './types';
 
-const fonts = ['Onest_400Regular', 'Onest_500Medium', 'Onest_600SemiBold', 'Onest_700Bold', 'Hind_400Regular', 'Hind_600SemiBold', 'Hind_700Bold'];
+const fonts = ['Onest_400Regular', 'Onest_500Medium', 'Onest_600SemiBold', 'Onest_700Bold', 'Hind_400Regular', 'Hind_600SemiBold', 'Hind_700Bold', 'Lora_400Regular', 'Lora_700Bold'];
 let embedded: Promise<string> | undefined;
 function fontCSS() {
     if (!embedded) embedded = Promise.all(fonts.map(async name => {
@@ -19,39 +20,41 @@ function fontCSS() {
     })).then(parts => parts.join('\n')).catch(error => { embedded = undefined; throw error; });
     return embedded;
 }
-export async function artworkBytes(node: HTMLElement, format: PostFormat) {
+export async function artworkBytes(node: HTMLElement, format: PostFormat, onProgress?: (message: string) => void) {
+    onProgress?.('Preparing fonts and images…');
+    const embeddedFonts = await fontCSS();
     await document.fonts.ready;
     if (node.dataset.exportError) throw new Error(node.dataset.exportError);
-    await Promise.all(Array.from(node.querySelectorAll('img')).map(image => image.decode()));
-    await Promise.all(Array.from(node.querySelectorAll('svg image')).map(async photo => {
-        const uri = photo.getAttribute('href');
-        if (!uri) return;
-        const image = new Image(); image.src = uri;
-        try { await image.decode(); }
-        catch { throw new Error('A photo is unavailable. Replace it in the editor before exporting.'); }
-    }));
-    // Intrinsic photo bounds must finish updating before capturing the SVG.
-    if (node.querySelector('[data-photo-ready="false"]')) await new Promise<void>((resolve, reject) => {
-        const observer = new MutationObserver(() => {
-            if (!node.querySelector('[data-photo-ready="false"]')) { observer.disconnect(); clearTimeout(timeout); resolve(); }
-        });
-        const timeout = setTimeout(() => { observer.disconnect(); reject(new Error('Photo is still preparing. Retry export.')); }, 5000);
+    // Wait for intrinsic image dimensions and font fitting instead of failing during a normal load.
+    const pending = '[data-photo-ready="false"],[data-text-ready="false"]';
+    if (node.querySelector(pending)) await new Promise<void>((resolve, reject) => {
+        const finish = () => { observer.disconnect(); clearTimeout(timeout); resolve(); };
+        const observer = new MutationObserver(() => { if (!node.querySelector(pending)) finish(); });
+        const timeout = setTimeout(() => { observer.disconnect(); reject(new Error('The artwork is still loading a photo or fitting text. Wait a moment and retry export.')); }, 10000);
         observer.observe(node, { attributes: true, childList: true, subtree: true });
+        if (!node.querySelector(pending)) finish();
     });
-    await new Promise<void>(resolve => requestAnimationFrame(() => resolve()));
-    if (node.querySelector('[data-text-ready="false"]')) throw new Error('Text is still preparing. Retry export.');
+    await new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
     if (artworkFitIssues(node).length) throw new Error('Artwork content is clipped. Shorten the text, reduce the rows, or choose a taller format before exporting.');
+    onProgress?.('Embedding background, photos and logos…');
+    const snapshot = await prepareArtworkSnapshot(node);
     const [width, height] = postOutputDimensions[format];
-    const canvas = await toCanvas(node, {
-        width: postExportReferenceWidth, height: postExportReferenceWidth * height / width,
-        canvasWidth: width, canvasHeight: height, pixelRatio: 1,
-        fontEmbedCSS: await fontCSS(), backgroundColor: '#111318',
-        style: { position: 'relative', left: '0', top: '0', transform: 'none' },
-        onImageErrorHandler: () => { throw new Error('A photo or logo could not load. Replace the photo and retry.'); },
-    });
-    if (canvas.width !== width || canvas.height !== height) throw new Error('Incorrect PNG dimensions.');
-    const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('Could not create PNG.')), 'image/png'));
-    return new Uint8Array(await blob.arrayBuffer());
+    try {
+        onProgress?.('Rendering the full-resolution PNG…');
+        const background = getComputedStyle(node).backgroundColor;
+        const canvas = await toCanvas(snapshot, {
+            width: postExportReferenceWidth, height: postExportReferenceWidth * height / width,
+            canvasWidth: width, canvasHeight: height, pixelRatio: 1, includeQueryParams: true,
+            fontEmbedCSS: embeddedFonts, backgroundColor: background === 'rgba(0, 0, 0, 0)' ? '#111318' : background,
+            // Reset both logical and physical offsets copied from the offscreen snapshot.
+            style: { position: 'relative', inset: 'auto', insetInline: 'auto', insetBlock: 'auto', left: '0', top: '0', right: 'auto', bottom: 'auto', transform: 'none' },
+            onImageErrorHandler: () => { throw new Error('An embedded image could not render. Retry export; no incomplete file was downloaded.'); },
+        });
+        if (canvas.width !== width || canvas.height !== height) throw new Error('Incorrect PNG dimensions.');
+        const blob = await new Promise<Blob>((resolve, reject) => canvas.toBlob(value => value ? resolve(value) : reject(new Error('Could not create PNG.')), 'image/png'));
+        onProgress?.('PNG ready.');
+        return new Uint8Array(await blob.arrayBuffer());
+    } finally { snapshot.remove(); }
 }
 export function isMobileDevice(): boolean {
     if (typeof window === 'undefined' || typeof navigator === 'undefined') return false;

@@ -16,7 +16,7 @@ describe('Dedicated coverage artwork', () => {
     it('shows the opposition score on bowling awards', () => {
         render(<CricketArtwork design={examples.find(example => example.id === 'player-of-match-bowling')!.design} />);
         const score = screen.getByText('SR 179/8');
-        expect(score.parentElement).toHaveTextContent('OPPOSITION INNINGS');
+        expect(score.closest('[data-guide-section="snapshot"]')).toHaveTextContent('OPPOSITION INNINGS');
         expect(screen.getByText('Sher Malla')).toBeInTheDocument();
     });
     it('keeps target and innings total separate', () => {
@@ -29,5 +29,19 @@ describe('Dedicated coverage artwork', () => {
         render(<CricketArtwork design={examples.find(example => example.id === 'scorecard')!.design} />);
         expect(screen.getByRole('region', { name: 'LL · BATTING' })).toBeInTheDocument();
         expect(screen.getByRole('region', { name: 'SR · BOWLING' })).toBeInTheDocument();
+    });
+    it('keeps Victory scores with their respective teams and preserves the supplied result', () => {
+        const design = structuredClone(examples.find(example => example.id === 'result')!.design);
+        design.cricket!.matchDate = '';
+        render(<CricketArtwork design={design} />);
+        const featured = screen.getByRole('region', { name: 'Lumbini Lions' });
+        const opposition = screen.getByRole('region', { name: 'Sudurpaschim Royals' });
+        expect(featured).toHaveTextContent('180/3');
+        expect(featured).toHaveTextContent('19.2 OVERS');
+        expect(featured).not.toHaveTextContent('179/8');
+        expect(opposition).toHaveTextContent('179/8');
+        expect(opposition).toHaveTextContent('20 OVERS');
+        expect(screen.getByRole('region', { name: 'Match result' })).toHaveTextContent(design.cricket!.result);
+        expect(screen.getByTestId('post-artwork')).toHaveAttribute('data-export-error', '');
     });
 });

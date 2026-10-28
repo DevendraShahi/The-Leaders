@@ -1,0 +1,2 @@
+.mark{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;margin:0 0 0 auto;flex:none;width:60px;color:inherit}.mark img{display:block;width:52px;height:24px;object-fit:contain}.mark figcaption{font:4.4px/1.2 Onest_500Medium,sans-serif;white-space:nowrap;letter-spacing:0;opacity:.85}
+:global([data-format=landscape]) .mark{width:46px}:global([data-format=landscape]) .mark img{width:34px;height:15px}:global([data-format=landscape]) .mark figcaption{font-size:3.2px}

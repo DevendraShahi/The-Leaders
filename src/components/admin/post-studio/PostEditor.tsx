@@ -2,7 +2,7 @@
 import { coverageIds, coverageCopy, coverageIssues, isCoverageTemplate } from '@/lib/post-studio/coverage-posts';
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'react';
-import { AlertTriangle, ArrowDown, ArrowUp, Check, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Info, Instagram, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, RotateCcw, Share2, Shield, ShieldAlert, Sparkles, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
+import { AlertTriangle, ArrowDown, ArrowUp, Check, ChevronDown, ChevronLeft, ChevronRight, Copy, Download, Eye, EyeOff, Globe, ImagePlus, Info, Instagram, Landmark, Layers, Layers3, LayoutTemplate, Lock, LockOpen, Maximize2, Minimize2, Plus, Redo2, RotateCcw, Share2, Shield, ShieldAlert, Sparkles, Trash2, Trophy, Type, Undo2, Upload, X } from 'lucide-react';
 import { createDraft, listDrafts, saveDraftCollection, setDraftTrashed, type PostDraft } from '@/lib/post-studio/drafts';
 import { postOutputDimensions, postTemplates, type PostDesign, type PostLayer, type PostTextLayer, type PlacedImage, type PlacedImagePlacement, type PlacedImageLayer } from '@/lib/post-studio/types';
 import { getStudioCraft } from '@/lib/post-studio/studio-craft';
@@ -13,21 +13,24 @@ import { setTextTypography } from '@/lib/post-studio/typography';
 import { imageEffectControls, setImageEffect } from '@/lib/post-studio/image-effects';
 import { moveImage, replaceImage, resetImageAdjustments, setImageFit, wheelMovement } from '@/lib/post-studio/image-positioning';
 import { artworkBytes, download, isMobileDevice, canNativeShareFile, bytesToFile } from '@/lib/post-studio/export';
-import { findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip, generateInstagramCaption } from '@/lib/post-studio/carousel';
+import { canonicalCarouselId, findCarouselSiblings, getCarouselBaseTitle, exportCarouselZip, generateInstagramCaption } from '@/lib/post-studio/carousel';
 import { storyGradients, storyColors } from '@/lib/post-studio/story-backgrounds';
 import { Artwork } from './Artwork';
 import { ColorPicker, Modal, Section, Slider } from './Controls';
 import StudioMediaModal from './StudioMediaModal';
-import InstagramPreviewModal from './InstagramPreviewModal';
 import InstagramSharePanel from './InstagramSharePanel';
+import ExportOptionsModal from './ExportOptionsModal';
 import styles from './PostStudio.module.css';
 import CricketInspector from './CricketInspector';
+import HistoryInspector from './HistoryInspector';
 import CricketPlayerLibrary from './CricketPlayerLibrary';
 import CricketLogoLibrary from './CricketLogoLibrary';
 import { playerPhotoCredit, type NplPlayer } from '@/lib/post-studio/cricket-players';
 import { applyPlayerPortrait, playerPhotoSubject, selectPlayerPortrait } from '@/lib/post-studio/player-portraits';
 import { blankCricketData } from '@/lib/post-studio/cricket-data';
-import { artworkFitIssues } from '@/lib/post-studio/artwork-fit';
+import { newsCopy } from '@/lib/post-studio/news-design';
+import { blankHistoryData } from '@/lib/post-studio/history-data';
+import { artworkFitIssues, refitArtworkText } from '@/lib/post-studio/artwork-fit';
 import { matchdayCopy, matchdayIssues } from '@/lib/post-studio/matchday';
 import { fixturesCopy, fixturesPostIssues } from '@/lib/post-studio/fixtures-post';
 import { headToHeadCopy, headToHeadIssues } from '@/lib/post-studio/head-to-head';
@@ -35,8 +38,10 @@ import { prematchCopy, prematchIssues, prematchIds } from '@/lib/post-studio/pre
 import { momentIds, momentCopy, momentIssues } from '@/lib/post-studio/moment-posts';
 import { phaseIds, phaseCopy, phaseIssues } from '@/lib/post-studio/phase-posts';
 import { scoreCopy, scoreUpdateIssues } from '@/lib/post-studio/score-update';
+import { historyCopy, historyEyebrow, historyAuthor, historyIssues, createHistoryParagraphDesign } from '@/lib/post-studio/history-design';
+import { historyStamp } from '@/lib/post-studio/history-catalog';
 
-type Tool = 'text' | 'layout' | 'media' | 'layers' | 'pages' | 'cricket';
+type Tool = 'text' | 'layout' | 'media' | 'layers' | 'pages' | 'cricket' | 'history';
 type Change = PostDesign | ((current: PostDesign) => PostDesign);
 type Snapshot = { slides: PostDraft[]; activeId: string };
 const fields: { layer: PostTextLayer; key: 'headline' | 'summary' | 'eyebrow' | 'author'; label: string }[] = [
@@ -52,13 +57,13 @@ const baseTools = [
 ] as const;
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
-export default function PostEditor({ scope, draft, onClose, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; canExport?: boolean }) {
+export default function PostEditor({ scope, draft, onClose, onPreviewDraft, canExport = true }: { scope: string; draft: PostDraft; onClose: () => void; onPreviewDraft?: (draft: PostDraft) => void; canExport?: boolean }) {
     const [slides, setSlides] = useState<PostDraft[]>([draft]);
     const [activeId, setActiveId] = useState(draft.id);
     const slidesRef = useRef(slides), activeIdRef = useRef(activeId);
     const [ready, setReady] = useState(false), [busy, setBusy] = useState(false);
     const [loadAttempt, setLoadAttempt] = useState(0);
-    const [tool, setTool] = useState<Tool>(draft.design.template === 'cricket' ? 'cricket' : 'text');
+    const [tool, setTool] = useState<Tool>(draft.design.template === 'cricket' ? 'cricket' : draft.design.template === 'history' ? 'history' : 'text');
     const [selected, setSelected] = useState<PostLayer>('headline');
     const [selectedOverlayId, setSelectedOverlayId] = useState<string | null>(null);
     const [addAsOverlay, setAddAsOverlay] = useState(false);
@@ -68,6 +73,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const [saveState, setSaveState] = useState<'saved' | 'saving' | 'error'>('saved');
     const [issue, setIssue] = useState(''), [notice, setNotice] = useState(''), [imageIssue, setImageIssue] = useState('');
     const [overflow, setOverflow] = useState(false), [exporting, setExporting] = useState(false);
+    const [exportMenuOpen, setExportMenuOpen] = useState(false), [exportProgress, setExportProgress] = useState('');
+    const exportLock = useRef(false);
     const [exportAlert, setExportAlert] = useState<{
         title: string;
         message: string;
@@ -81,7 +88,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         filename: string;
         caption: string;
     } | null>(null);
-    const [mediaModalOpen, setMediaModalOpen] = useState(false), [previewOpen, setPreviewOpen] = useState(false);
+    const [mediaModalOpen, setMediaModalOpen] = useState(false), [openingPreview, setOpeningPreview] = useState(false);
     const [mediaSearchQuery, setMediaSearchQuery] = useState('');
     const [instagramShareOpen, setInstagramShareOpen] = useState(false);
     const [canvasFocused, setCanvasFocused] = useState(false);
@@ -111,9 +118,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
     const activeSlideIndex = Math.max(0, slides.findIndex(item => item.id === activeId));
     const activeSlide = slides[activeSlideIndex], design = activeSlide.design;
     const managedMatchday = design.template === 'cricket' && ['matchday', 'fixtures', 'head-to-head', 'score', ...prematchIds, ...momentIds, ...phaseIds, ...coverageIds].includes(design.cricket?.template ?? '');
-    const matchdayProblems = [...matchdayIssues(design), ...fixturesPostIssues(design), ...headToHeadIssues(design), ...prematchIssues(design), ...scoreUpdateIssues(design), ...momentIssues(design), ...phaseIssues(design), ...coverageIssues(design)];
-    const managedCopy = isCoverageTemplate(design.cricket?.template ?? '') ? coverageCopy : phaseIds.some(id => id === design.cricket?.template) ? phaseCopy : momentIds.some(id => id === design.cricket?.template) ? momentCopy : design.cricket?.template === 'score' ? scoreCopy : prematchIds.some(id => id === design.cricket?.template) ? prematchCopy : design.cricket?.template === 'fixtures' ? fixturesCopy : design.cricket?.template === 'head-to-head' ? headToHeadCopy : matchdayCopy;
-    const tools = design.template === 'cricket' ? [{ key: 'cricket' as const, label: 'Match', Icon: Trophy }, ...baseTools] : baseTools;
+    const managedHistory = design.template === 'history';
+    const managedNews = design.template === 'breaking' && Boolean(design.newsStyle);
+    const managed = managedMatchday || managedHistory || managedNews;
+    const matchdayProblems = [...matchdayIssues(design), ...fixturesPostIssues(design), ...headToHeadIssues(design), ...prematchIssues(design), ...scoreUpdateIssues(design), ...momentIssues(design), ...phaseIssues(design), ...coverageIssues(design), ...historyIssues(design)];
+    const managedCopy = managedNews ? newsCopy : managedHistory ? historyCopy : isCoverageTemplate(design.cricket?.template ?? '') ? coverageCopy : phaseIds.some(id => id === design.cricket?.template) ? phaseCopy : momentIds.some(id => id === design.cricket?.template) ? momentCopy : design.cricket?.template === 'score' ? scoreCopy : prematchIds.some(id => id === design.cricket?.template) ? prematchCopy : design.cricket?.template === 'fixtures' ? fixturesCopy : design.cricket?.template === 'head-to-head' ? headToHeadCopy : matchdayCopy;
+    const tools = design.template === 'cricket' ? [{ key: 'cricket' as const, label: 'Match', Icon: Trophy }, ...baseTools] : managedHistory ? [{ key: 'history' as const, label: 'Event', Icon: Landmark }, ...baseTools] : baseTools;
     const field = fields.find(item => item.layer === selected) ?? fields[0];
     const craft = getStudioCraft(design.template);
     const locked = design.lockedLayers.includes(selected);
@@ -194,8 +204,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             const current = all.find(item => item.id === draft.id && !item.trashedAt);
             if (!current) throw new Error('This page is unavailable. Return to the library to restore it from Trash.');
             const found = findCarouselSiblings(current, all);
-            const carouselId = current.carouselId ?? `carousel:${draft.id}`;
+            const carouselId = canonicalCarouselId(current);
             const loaded = found.map((item, index) => ({ ...item, carouselId, carouselOrder: index }));
+            if (current.design.template === 'history' && current.carouselId && current.carouselId !== carouselId) {
+                revision.current++; dirty.current = true; setSaveState('saving');
+            }
             slidesRef.current = loaded; setSlides(loaded); setReady(true);
         }).catch(error => { if (active) setIssue(error instanceof Error ? error.message : 'Could not load pages.'); });
         return () => { active = false; };
@@ -268,12 +281,23 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         return () => { active = false; };
     }, [design.imageUri]);
     useEffect(() => {
-        let active = true;
-        void document.fonts.ready.then(() => requestAnimationFrame(() => {
-            if (!active) return;
-            setOverflow(Boolean(exportRef.current && artworkFitIssues(exportRef.current).length));
-        }));
-        return () => { active = false; };
+        const node = exportRef.current;
+        if (!node) return;
+        let active = true, frame = 0;
+        const measure = () => {
+            cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => {
+                frame = requestAnimationFrame(() => {
+                    if (!active || node.querySelector('[data-text-ready="false"]')) return;
+                    setOverflow(artworkFitIssues(node).length > 0);
+                });
+            });
+        };
+        // Fitting completes after font/slot measurements, including manual re-fit.
+        const observer = new MutationObserver(measure);
+        observer.observe(node, { attributes: true, attributeFilter: ['style', 'data-text-ready'], childList: true, characterData: true, subtree: true });
+        void document.fonts.ready.then(() => { if (active) measure(); });
+        return () => { active = false; observer.disconnect(); cancelAnimationFrame(frame); };
     }, [design]);
     useEffect(() => {
         if (!notice) return;
@@ -298,12 +322,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         return () => window.removeEventListener('keydown', keyboard);
     });
 
-    const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : 'text'); setReposition(false); };
+    const select = (layer: PostLayer) => { setSelected(layer); setTool(layer === 'visual' ? 'media' : design.template === 'history' && (layer === 'supporting' || layer === 'kicker') ? 'history' : 'text'); setReposition(false); };
     const switchSlide = (index: number) => {
         const target = slidesRef.current[index];
         if (!target || busy || exporting) return;
         end(); install(slidesRef.current, target.id); setReposition(false);
-        if (tool === 'cricket' && target.design.template !== 'cricket') setTool('text');
+        if ((tool === 'cricket' && target.design.template !== 'cricket') || (tool === 'history' && target.design.template !== 'history')) setTool('text');
     };
     const update = <K extends keyof PostDesign>(key: K, value: PostDesign[K]) => apply(current => ({ ...current, [key]: value }));
     const toggleLayer = (key: 'hiddenLayers' | 'lockedLayers', layer: PostLayer) => apply(current => ({ ...current, [key]: current[key].includes(layer) ? current[key].filter(item => item !== layer) : [...current[key], layer] }));
@@ -326,10 +350,10 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         const grouped = list.map((item, index) => ({ ...item, carouselId, carouselOrder: index }));
         await saveDraftCollection(scope, grouped);
         const title = getCarouselBaseTitle(draft.name).slice(0, 72);
-        const item = await createDraft(scope, `${title} · ${list.length + 1}/${list.length + 1}${duplicate ? ' (copy)' : ''}`, duplicate ? current : { ...current, headline: '', summary: '' }, { carouselId, carouselOrder: list.length });
+        const item = await createDraft(scope, `${title} · ${list.length + 1}/${list.length + 1}${duplicate ? ' (copy)' : ''}`, duplicate ? current : current.template === 'history' ? createHistoryParagraphDesign(current) : { ...current, headline: '', summary: '' }, { carouselId, carouselOrder: list.length });
         undoRef.current = []; redoRef.current = [];
-        install([...grouped, item], item.id); updateHistory(); setSaveState('saved'); setTool('text');
-        setNotice(duplicate ? 'Page duplicated.' : 'New page added. Write its headline and summary.');
+        install([...grouped, item], item.id); updateHistory(); setSaveState('saved'); setTool(current.template === 'history' ? 'history' : 'text');
+        setNotice(duplicate ? 'Page duplicated.' : current.template === 'history' ? 'Paragraph page added. Write its heading and text in Event.' : 'New page added. Write its headline and summary.');
     });
     const deletePage = (id: string) => runPageOperation(async () => {
         const list = slidesRef.current;
@@ -480,7 +504,21 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         } catch (error) { setIssue(error instanceof Error ? error.message : 'Could not insert player photo.'); }
         finally { operation.current = false; setBusy(false); }
     };
+    const previewLock = useRef(false);
+    const openPreview = async () => {
+        if (previewLock.current || busy || exporting || !ready) return;
+        previewLock.current = true; setOpeningPreview(true); setBusy(true); setIssue('');
+        try {
+            if (!(await persist())) return;
+            const current = slidesRef.current.find(item => item.id === activeIdRef.current);
+            if (!current) throw new Error('This page is unavailable. Return to Studio and reopen it.');
+            if (onPreviewDraft) onPreviewDraft(current);
+            else window.location.assign(`/admin/social/preview?draft=${encodeURIComponent(current.id)}`);
+        } catch (failure) { setIssue(failure instanceof Error ? failure.message : 'Could not open the preview.'); }
+        finally { previewLock.current = false; setOpeningPreview(false); setBusy(false); }
+    };
     const exportPost = async (index = activeSlideIndex) => {
+        if (exportLock.current) return;
         const blocker = getExportBlockReason();
         if (blocker) {
             setExportAlert(blocker);
@@ -505,6 +543,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             });
             return;
         }
+        exportLock.current = true; setExportMenuOpen(false); setExportProgress('Saving your latest changes…');
         setExporting(true); setIssue('');
         try {
             const saved = await persist();
@@ -518,10 +557,10 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 });
                 return;
             }
-            const bytes = await artworkBytes(node, item.design.format);
+            const bytes = await artworkBytes(node, item.design.format, setExportProgress);
             const filename = `the-leaders-page-${index + 1}.png`;
             const file = bytesToFile(bytes, filename, 'image/png');
-            const caption = generateInstagramCaption(slidesRef.current);
+            const caption = generateInstagramCaption([item]);
 
             if (isMobileDevice()) {
                 const previewUrl = URL.createObjectURL(new Blob([bytes as BlobPart], { type: 'image/png' }));
@@ -546,15 +585,17 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 actionLabel: message.toLowerCase().includes('clipped') || message.toLowerCase().includes('overflow') ? 'Auto-fit Text Now' : undefined
             });
         } finally {
-            setExporting(false);
+            exportLock.current = false; setExportProgress(''); setExporting(false);
         }
     };
     const exportAll = async () => {
+        if (exportLock.current) return;
         const blocker = getExportBlockReason({ isAll: true });
         if (blocker) {
             setExportAlert(blocker);
             return;
         }
+        exportLock.current = true; setExportMenuOpen(false); setExportProgress('Saving your latest changes…');
         setExporting(true); setIssue('');
         try {
             const saved = await persist();
@@ -573,7 +614,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             if (missingIndex !== -1) {
                 throw new Error(`Slide ${missingIndex + 1} is still preparing. Please retry in a few moments.`);
             }
-            await exportCarouselZip(nodes as HTMLDivElement[], slides, 'the-leaders-carousel.zip');
+            await exportCarouselZip(nodes as HTMLDivElement[], slides, 'the-leaders-carousel.zip', setExportProgress);
             setNotice('Carousel ZIP downloaded.');
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Carousel export failed.';
@@ -583,11 +624,11 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 type: 'error'
             });
         } finally {
-            setExporting(false);
+            exportLock.current = false; setExportProgress(''); setExporting(false);
         }
     };
     const copyCaption = async () => {
-        try { await navigator.clipboard.writeText(generateInstagramCaption(slidesRef.current)); setNotice('Caption copied.'); }
+        try { await navigator.clipboard.writeText(generateInstagramCaption(slidesRef.current.filter(page => page.id === activeIdRef.current))); setNotice('Caption copied for this post.'); }
         catch { setIssue('Could not copy caption.'); }
     };
     const slider = (label: string, value: number, min: number, max: number, change: (value: number) => (current: PostDesign) => PostDesign, disabled = false) =>
@@ -667,8 +708,29 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
         }
     };
     const changeTool = (next: Tool) => { end(); setTool(next); setReposition(false); if (next === 'media') setSelected('visual'); else if (next === 'text' && selected === 'visual') setSelected('headline'); };
+    const switchTemplate = (key: PostDesign['template']) => {
+        apply(current => {
+            const next = { ...current, template: key };
+            if (key === 'cricket' && !current.cricket) next.cricket = blankCricketData();
+            if (key === 'history' && !current.history) {
+                next.history = blankHistoryData();
+                next.accent = '#B71C1C'; next.backgroundColor = '#F4EDE0'; next.imageTone = 'warm'; next.backgroundGradient = null;
+                next.category = historyStamp('on-this-day', 'en');
+                next.eyebrow = historyEyebrow('en'); next.author = historyAuthor('en');
+            }
+            return next;
+        });
+        if (key === 'cricket') setTool('cricket');
+        else if (key === 'history') { setTool('history'); setBackgroundTab('photo'); }
+        else if (tool === 'cricket' || tool === 'history') setTool('text');
+    };
     const lockedLabel = textLocked ? ' · Locked' : '';
     const fitText = () => {
+        if (managed && exportRef.current) {
+            refitArtworkText(exportRef.current);
+            setNotice('Recalculating text sizes for this layout.');
+            return;
+        }
         const nodes = exportRef.current?.querySelectorAll<HTMLElement>('[data-line-limit]');
         if (!nodes) return;
         apply(current => {
@@ -706,24 +768,10 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                         <Redo2 size={16} />
                     </button>
                 </div>
-                <button className={styles.button} aria-label="Preview Instagram post" onClick={() => setPreviewOpen(true)}>
+                <button className={styles.button} aria-label="Preview Instagram post" disabled={!ready || busy || exporting || openingPreview} onClick={() => void openPreview()}>
                     <Instagram size={16} />
-                    <span className={styles.actionLabel}>Preview</span>
+                    <span className={styles.actionLabel}>{openingPreview ? 'Saving…' : 'Preview'}</span>
                 </button>
-                {slides.length > 1 && <button
-                    className={`${styles.button} ${!canExport ? styles.btnActionBlocked : ''}`}
-                    aria-label="Export carousel ZIP"
-                    title={!canExport ? 'Export restricted: permissions required' : 'Export carousel ZIP'}
-                    disabled={exporting}
-                    onClick={() => {
-                        const blocker = getExportBlockReason({ isAll: true });
-                        if (blocker) setExportAlert(blocker);
-                        else void exportAll();
-                    }}
-                >
-                    <Layers3 size={16} />
-                    <span>Export all</span>
-                </button>}
                 <button
                     className={`${styles.button} ${!canExport ? styles.btnActionBlocked : ''}`}
                     aria-label="Share to Instagram"
@@ -744,6 +792,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                 >
                     <Share2 size={16} /><span className={styles.actionLabel}>Share</span>
                 </button>
+                <div className={styles.exportSplit}>
                 <button
                     className={`${styles.primary} ${(overflow || !canExport || Boolean(imageIssue) || !ready || busy) ? styles.btnActionBlocked : ''}`}
                     aria-label="Export current page PNG"
@@ -758,8 +807,12 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     <Download size={16} />
                     <span>{exporting ? 'Exporting…' : 'Export PNG'}</span>
                 </button>
+                <button className={styles.iconButton} aria-label="Export options" title="Export options: current PNG, all pages ZIP and caption" disabled={!ready || busy || exporting || !canExport} onClick={() => setExportMenuOpen(true)}><ChevronDown size={17} /></button>
+                </div>
             </div>
         </header>
+        {exporting && <div className={styles.exportProgress} role="status" aria-live="polite"><Download size={15} /><span>{exportProgress || 'Preparing export…'}</span><progress aria-label="Export in progress" /></div>}
+        {exportMenuOpen && <ExportOptionsModal slides={slides} activeIndex={activeSlideIndex} disabled={exporting || busy} onClose={() => setExportMenuOpen(false)} onCurrent={() => { setExportMenuOpen(false); void exportPost(); }} onAll={() => { setExportMenuOpen(false); void exportAll(); }} onCopyCaption={() => void copyCaption()} />}
         {!canExport && <div className={styles.permissionAlertBanner} role="status">
             <ShieldAlert size={15} />
             <span>Exporting is restricted for this account (View & Edit only). Tap export anytime to view details or contact an admin.</span>
@@ -768,7 +821,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             getNode={id => exportNodes.current.get(id)} persist={persist}
             disabled={!ready || busy || exporting || !canExport} setPreparing={setExporting} onClose={() => setInstagramShareOpen(false)} />}
         {(issue || imageIssue || overflow || matchdayProblems.length > 0) && <div className={styles.alertBanner} role="alert">
-            <span>{issue || imageIssue || matchdayProblems.join(' ') || 'Content does not fit. Shorten the text, reduce the rows, or choose a taller format.'}</span>{overflow && !managedMatchday && <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>}{issue && <button className={styles.button} onClick={() => { if (!ready) { setIssue(''); setLoadAttempt(value => value + 1); } else void persist(); }}>{ready ? 'Retry save' : 'Retry loading pages'}</button>}</div>}
+            <span>{issue || imageIssue || matchdayProblems.join(' ') || 'Content does not fit. Shorten the text, reduce the rows, or choose a taller format.'}</span>{overflow && <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>}{issue && <button className={styles.button} onClick={() => { if (!ready) { setIssue(''); setLoadAttempt(value => value + 1); } else void persist(); }}>{ready ? 'Retry save' : 'Retry loading pages'}</button>}</div>}
         {notice && <div className={styles.workspaceNotice} role="status">
             <Check size={14} />
             <span>{notice}</span>
@@ -863,17 +916,20 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                     <div className={styles.panel} id={`studio-panel-${tool}`} role="tabpanel" aria-labelledby={`studio-tab-${tool}`} tabIndex={0} key={tool}>
                         <div className={styles.panelHeading}>
                             <span className={styles.workspaceEyebrow}>{tool === 'pages' ? 'CAROUSEL' : `PAGE ${activeSlideIndex + 1}`}</span>
-                            <h2>{tool === 'cricket' ? 'The cricket desk' : tool === 'text' ? 'Words & typography' : tool === 'layout' ? 'Canvas & design' : tool === 'media' ? 'Image & background' : tool === 'layers' ? 'Layer System & Stacking' : 'Arrange your story'}</h2>
-                            <p>{tool === 'cricket' ? 'Teams, match data and every big moment.' : tool === 'text' ? 'Edit the copy, then refine its style.' : tool === 'layout' ? 'Set the format and visual identity.' : tool === 'media' ? 'Choose a visual and make it yours.' : tool === 'layers' ? 'Control layer depth, stacking order, visibility and lock states across text and visuals.' : 'Add, duplicate and reorder pages.'}</p>
+                            <h2>{tool === 'cricket' ? 'The cricket desk' : tool === 'history' ? 'The history desk' : tool === 'text' ? 'Words & typography' : tool === 'layout' ? 'Canvas & design' : tool === 'media' ? 'Image & background' : tool === 'layers' ? 'Layer System & Stacking' : 'Arrange your story'}</h2>
+                            <p>{tool === 'cricket' ? 'Teams, match data and every big moment.' : tool === 'history' ? 'Templates, verified dates and the facts behind the event.' : tool === 'text' ? 'Edit the copy, then refine its style.' : tool === 'layout' ? 'Set the format and visual identity.' : tool === 'media' ? 'Choose a visual and make it yours.' : tool === 'layers' ? 'Control layer depth, stacking order, visibility and lock states across text and visuals.' : 'Add, duplicate and reorder pages.'}</p>
                         </div>
                         {tool === 'cricket' && <CricketInspector key={activeId} design={design} onChange={apply} />}
-                        {tool === 'text' && managedMatchday && <>
-                            <p className={styles.subtle}>This template fits text automatically into reserved areas. Edit fixture facts in Match. Manual text positions and alignment are replaced by the managed layout.</p>
-                            {(['headline', 'summary', 'author'] as const).map(key => <label key={key} className={styles.field}><span>{key === 'headline' ? 'Headline' : key === 'summary' ? 'Supporting line (optional)' : 'Byline'}</span><textarea className={styles.input} aria-label={`Edit ${key === 'author' ? 'byline' : key}`} rows={2} maxLength={key === 'author' ? 100 : managedCopy[key]} value={design[key]} disabled={design.lockedLayers.includes(key === 'summary' ? 'supporting' : key === 'author' ? 'footer' : 'headline')} onChange={event => update(key, event.target.value)} /><small>{design[key].length}{key !== 'author' ? ` / ${managedCopy[key]}` : ''} characters</small></label>)}
+                        {tool === 'history' && <HistoryInspector key={activeId} design={design} onChange={apply} />}
+                        {tool === 'text' && managed && <>
+                            <p className={styles.subtle}>This template fits text automatically into reserved areas. {managedNews ? 'Edit the headline, context and byline below.' : managedHistory ? 'Edit the event in Event.' : 'Edit post data in Match.'} Manual text positions and alignment are replaced by the managed layout.</p>
+                            <button className={styles.button} disabled={!ready || busy || exporting} onClick={fitText}>Auto-fit text</button>
+                            {managedNews && (['eyebrow', 'category'] as const).map(key => <label className={styles.field} key={key}><span>{key === 'eyebrow' ? 'News label' : 'Category'}</span><input className={styles.input} aria-label={`Edit news ${key}`} maxLength={60} value={design[key]} disabled={design.lockedLayers.includes('kicker')} onChange={event => update(key, event.target.value)} /></label>)}
+                            {(['headline', 'summary', 'author'] as const).filter(key => !(managedHistory && key === 'summary')).map(key => <label key={key} className={styles.field}><span>{key === 'headline' ? 'Headline' : key === 'summary' ? (managedHistory ? 'Event summary' : 'Supporting line (optional)') : 'Byline'}</span><textarea className={styles.input} aria-label={`Edit ${key === 'author' ? 'byline' : key}`} rows={2} maxLength={key === 'author' ? 100 : managedCopy[key]} value={design[key]} disabled={design.lockedLayers.includes(key === 'summary' ? 'supporting' : key === 'author' ? 'footer' : 'headline')} onChange={event => update(key, event.target.value)} /><small>{design[key].length}{key !== 'author' ? ` / ${managedCopy[key]}` : ''} characters</small></label>)}
                             <button className={styles.button} onClick={() => apply(current => ({ ...current, hiddenLayers: current.hiddenLayers.filter(layer => layer !== 'headline') }))}>Show required headline</button>
                             {matchdayProblems.length > 0 && <p role="alert" className={styles.subtle}>{matchdayProblems.join(' ')}</p>}
                         </>}
-                        {tool === 'text' && !managedMatchday && <>
+                        {tool === 'text' && !managed && <>
                             <div className={styles.layerGrid} role="group" aria-label="Text layers">{fields.map(item => <button key={item.layer} className={`${styles.choice} ${selected === item.layer ? styles.active : ''}`} aria-pressed={selected === item.layer} onClick={() => select(item.layer)}>{item.label}</button>)}</div>
                             <label className={styles.field}>
                                 <span>{craft.layers.find(layer => layer.key === field.layer)?.label ?? field.label}{lockedLabel}</span>
@@ -920,7 +976,7 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             </Section>
                             <Section title="Page template">
                                 <p className={styles.helpText}>Change the page’s role. Your written copy stays in place.</p>
-                                <div className={styles.templateList}>{postTemplates.map(template => <button key={template.key} className={`${styles.choice} ${design.template === template.key ? styles.active : ''}`} aria-pressed={design.template === template.key} onClick={() => { apply(current => ({ ...current, template: template.key, ...(template.key === 'cricket' && !current.cricket ? { cricket: blankCricketData() } : {}) })); if (template.key === 'cricket') setTool('cricket'); }}>
+                                <div className={styles.templateList}>{postTemplates.map(template => <button key={template.key} className={`${styles.choice} ${design.template === template.key ? styles.active : ''}`} aria-pressed={design.template === template.key} onClick={() => switchTemplate(template.key)}>
                                     <span>{template.title}<small>{template.subtitle}</small>
                                     </span>{design.template === template.key && <Check size={15} />}</button>)}</div>
                             </Section>
@@ -928,13 +984,14 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                         {tool === 'media' && <>
                             <div className={styles.segmented} role="group" aria-label="Background type">
                                 {choice('Photo', backgroundTab === 'photo', () => setBackgroundTab('photo'))}
-                                {choice('Team & NPL logos', backgroundTab === 'logos', () => setBackgroundTab('logos'))}
+                                {!managedHistory && choice('Team & NPL logos', backgroundTab === 'logos', () => setBackgroundTab('logos'))}
                                 {design.template === 'cricket' && choice('Player photos', backgroundTab === 'players', () => setBackgroundTab('players'))}
                                 {!managedMatchday && choice('Color & gradient', backgroundTab === 'color', () => setBackgroundTab('color'))}
                             </div>
                             {managedMatchday && <p className={styles.helpText}>This template keeps photos and overlays behind the information. Choose Stadium or Editorial in Match; text placement stays protected.</p>}
+                            {managedHistory && <p className={styles.helpText}>Archive photos sit behind the paper wash, and portraits fill the band on Lives & legacies templates. Text placement stays protected.</p>}
                             {mediaLocked && <p className={styles.helpText}>This visual is locked. Unlock it below to make changes.</p>}
-                            {backgroundTab === 'logos' ? (
+                            {backgroundTab === 'logos' && !managedHistory ? (
                                 <CricketLogoLibrary
                                     disabled={mediaLocked || !ready || busy || exporting}
                                     currentImageUri={design.imageUri}
@@ -957,9 +1014,9 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                     <button className={styles.button} disabled={mediaLocked} onClick={() => fileRef.current?.click()}>
                                         <Upload size={15} />{design.imageUri ? 'Replace photo' : 'Upload photo'}</button>
                                     <button className={styles.button} disabled={mediaLocked} onClick={() => { setMediaSearchQuery(''); setMediaModalDefaultTab('search'); setMediaModalOpen(true); }}>Search library / web</button>
-                                    <button className={styles.button} disabled={mediaLocked} onClick={() => setBackgroundTab('logos')}>
+                                    {!managedHistory && <button className={styles.button} disabled={mediaLocked} onClick={() => setBackgroundTab('logos')}>
                                         <Shield size={15} />Team & NPL logos
-                                    </button>
+                                    </button>}
                                 </div>
                                 <Section title="Use an image URL">
                                     <label className={styles.field}>
@@ -1783,6 +1840,23 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                                         </div>
                                     )}
 
+                                    {design.template === 'history' && design.history && (
+                                        <div className={styles.layerCard} onClick={() => setTool('history')}>
+                                            <div className={styles.layerCardThumb}>
+                                                <Landmark size={18} />
+                                            </div>
+                                            <div className={styles.layerCardInfo}>
+                                                <div className={styles.layerCardHeader}>
+                                                    <span className={styles.layerCardTitle}>Event details</span>
+                                                    <span className={`${styles.layerBadge} ${styles.layerBadgeMatch}`}>History</span>
+                                                </div>
+                                                <span className={styles.layerCardDesc}>
+                                                    {design.history.year ? `${design.history.year}${design.history.subject ? ` · ${design.history.subject}` : ''}` : 'Add the year and subject'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+
                                     {/* 7. Backdrop Overlays (layer === 'back') */}
                                     {(design.placedImages || [])
                                         .map((img, originalIndex) => ({ img, originalIndex }))
@@ -1985,8 +2059,8 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
                             <p className={styles.helpText}>Page order saves with your carousel. Removed pages stay in recoverable Trash.</p>
                             <Section title="Caption & export">
                                 <button className={styles.button} onClick={() => void copyCaption()}>
-                                    <Copy size={14} />Copy carousel caption</button>
-                                <p className={styles.captionPreviewBox}>{generateInstagramCaption(slides)}</p>
+                                    <Copy size={14} />Copy this post’s caption</button>
+                                <p className={styles.captionPreviewBox}>{generateInstagramCaption(slides.filter(page => page.id === activeId))}</p>
                                 <button
                                     className={`${styles.primary} ${!canExport ? styles.btnActionBlocked : ''}`}
                                     disabled={exporting}
@@ -2047,7 +2121,6 @@ export default function PostEditor({ scope, draft, onClose, canExport = true }: 
             setMediaModalOpen(false);
             setAddAsOverlay(false);
         }} initialQuery={mediaSearchQuery || design.headline.slice(0, 40) || design.category} />}
-        {previewOpen && <InstagramPreviewModal slides={slides} activeSlideIndex={activeSlideIndex} onSelectSlide={switchSlide} onClose={() => setPreviewOpen(false)} onExportCurrent={exportPost} onExportAll={slides.length > 1 ? exportAll : undefined} />}
         {exportAlert && <Modal labelledBy="export-alert-title" onClose={() => setExportAlert(null)}>
             <div className={styles.exportAlertModal}>
                 <div className={styles.exportAlertHeader}>

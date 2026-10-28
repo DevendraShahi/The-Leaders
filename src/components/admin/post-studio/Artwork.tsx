@@ -8,6 +8,8 @@ import { artworkTextStyle } from '@/lib/post-studio/artwork-text';
 import { ArtworkPhoto } from './ArtworkPhoto';
 import { ArtworkPlacedImages } from './ArtworkPlacedImages';
 import { CricketArtwork } from './CricketArtwork';
+import { NewsArtwork } from './NewsArtwork';
+import { HistoryArtwork } from './HistoryArtwork';
 export { artworkTextStyle } from '@/lib/post-studio/artwork-text';
 
 
@@ -16,7 +18,9 @@ export const Artwork = forwardRef<HTMLDivElement, {
     onSelect?: (layer: PostLayer) => void; onChooseImage?: () => void;
     selectedPlacedImageId?: string; onSelectPlacedImage?: (id: string) => void;
 }>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
+    if (design.template === 'breaking' && design.newsStyle) return <NewsArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.template === 'cricket') return <CricketArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
+    if (design.template === 'history') return <HistoryArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} onChooseImage={onChooseImage} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     const [w, h] = postOutputDimensions[design.format];
     const height = 360 * h / w;
     const hidden = (layer: PostLayer) => design.hiddenLayers.includes(layer);

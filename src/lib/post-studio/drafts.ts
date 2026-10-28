@@ -1,7 +1,9 @@
+import { echo11Variant, randomEcho11Variant } from './echo11-copy';
 // Ported from mobile/src/features/post-designer; keep artwork behavior in sync.
 import AsyncStorage from "./storage";
 import { z } from "zod";
 import { cricketDataSchema } from './cricket-data';
+import { historyDataSchema } from './history-data';
 import { defaultPostDesign, defaultTextPositions, defaultTextColors, defaultTextTypography, type PostDesign, type PlacedImage } from "./types";
 
 const layer = z.enum(["visual", "kicker", "headline", "supporting", "footer"]);
@@ -26,7 +28,7 @@ export const placedImageSchema: z.ZodType<PlacedImage> = z.object({
     locked: z.boolean().optional(),
 });
 export const postDesignSchema = z.object({
-    template: z.enum(["breaking", "explainer", "quote", "book-review", "book-analysis", "book-takeaways", "book-verdict", "cricket"]), format: z.enum(["square", "portrait", "story", "landscape"]),
+    template: z.enum(["breaking", "explainer", "quote", "book-review", "book-analysis", "book-takeaways", "book-verdict", "cricket", "history"]), format: z.enum(["square", "portrait", "story", "landscape"]),
     category: z.string(), eyebrow: z.string(), headline: z.string(), summary: z.string(), author: z.string(),
     imageUri: z.string().nullable(), imageCredit: z.string().max(2000).default(''), accent: z.string().regex(/^#[\da-f]{6}$/i),
     headlineScale: z.number().finite().positive(), textAlign: z.enum(["left", "center"]), imageTone: z.enum(["ink", "clear", "warm"]),
@@ -42,6 +44,9 @@ export const postDesignSchema = z.object({
     backgroundColor: z.string().nullable().optional(),
     backgroundGradient: z.string().nullable().optional(),
     cricket: cricketDataSchema.optional(),
+    history: historyDataSchema.optional(),
+    newsStyle: z.enum(['daily', 'hot', 'report']).optional(),
+    echo11Variant: z.number().int().min(0).max(7).optional(),
     placedImages: z.array(placedImageSchema).optional(),
     sourceUrls: z.array(z.string().url().refine(value => /^https?:\/\//i.test(value))).max(10).optional(),
     fixtureId: z.string().min(1).optional(),
@@ -69,7 +74,7 @@ async function read(scope: string) {
     if (!stored) return [];
     const parsed = librarySchema.safeParse(JSON.parse(stored));
     if (!parsed.success) throw new Error("Your draft library could not be read. The saved data has been preserved.");
-    return parsed.data.drafts;
+    return parsed.data.drafts.map(draft => ({ ...draft, design: { ...draft.design, echo11Variant: echo11Variant(draft.design.echo11Variant, draft.id) } }));
 }
 async function change<T>(scope: string, operation: (drafts: PostDraft[]) => T) {
     const previous = queues.get(scope) ?? Promise.resolve();
@@ -98,7 +103,7 @@ export async function readDraft(scope: string, id: string) {
 export function createDraft(scope: string, name = "Untitled post", design: PostDesign = defaultPostDesign, carousel?: { carouselId: string; carouselOrder: number }) {
     return change(scope, drafts => {
         const now = new Date().toISOString();
-        const draft = draftSchema.parse({ id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`, name, createdAt: now, updatedAt: now, trashedAt: null, design, ...carousel });
+        const draft = draftSchema.parse({ id: `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`, name, createdAt: now, updatedAt: now, trashedAt: null, design: { ...design, echo11Variant: design.echo11Variant ?? randomEcho11Variant() }, ...carousel });
         drafts.push(draft); return draft;
     });
 }
@@ -145,7 +150,7 @@ export function createDraftCollection(scope: string, entries: { id: string; name
         const prepared = entries.map(entry => {
             const existing = drafts.find(draft => draft.id === entry.id);
             if (existing?.trashedAt) throw new Error("This carousel is in Trash. Restore it before opening it again.");
-            return existing ?? draftSchema.parse({ ...entry, createdAt: now, updatedAt: now, trashedAt: null });
+            return existing ?? draftSchema.parse({ ...entry, design: { ...entry.design, echo11Variant: entry.design.echo11Variant ?? randomEcho11Variant() }, createdAt: now, updatedAt: now, trashedAt: null });
         });
         for (const draft of prepared) if (!drafts.some(existing => existing.id === draft.id)) drafts.push(draft);
         return prepared;

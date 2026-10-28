@@ -1,4 +1,4 @@
-@font-face{font-family:Onest_400Regular;src:url('/studio/Onest_400Regular.ttf')}@font-face{font-family:Onest_500Medium;src:url('/studio/Onest_500Medium.ttf')}@font-face{font-family:Onest_600SemiBold;src:url('/studio/Onest_600SemiBold.ttf')}@font-face{font-family:Onest_700Bold;src:url('/studio/Onest_700Bold.ttf')}@font-face{font-family:Hind_400Regular;src:url('/studio/Hind_400Regular.ttf')}@font-face{font-family:Hind_600SemiBold;src:url('/studio/Hind_600SemiBold.ttf')}@font-face{font-family:Hind_700Bold;src:url('/studio/Hind_700Bold.ttf')}
+@font-face{font-family:Onest_400Regular;src:url('/studio/Onest_400Regular.ttf')}@font-face{font-family:Onest_500Medium;src:url('/studio/Onest_500Medium.ttf')}@font-face{font-family:Onest_600SemiBold;src:url('/studio/Onest_600SemiBold.ttf')}@font-face{font-family:Onest_700Bold;src:url('/studio/Onest_700Bold.ttf')}@font-face{font-family:Hind_400Regular;src:url('/studio/Hind_400Regular.ttf')}@font-face{font-family:Hind_600SemiBold;src:url('/studio/Hind_600SemiBold.ttf')}@font-face{font-family:Hind_700Bold;src:url('/studio/Hind_700Bold.ttf')}@font-face{font-family:Lora_400Regular;src:url('/studio/Lora_400Regular.ttf')}@font-face{font-family:Lora_700Bold;src:url('/studio/Lora_700Bold.ttf')}
 .studio{--studio-red:#b71c1c;--studio-bg:#fafafa;--studio-surface:#fff;--studio-muted:#f2f2f2;--studio-text:#171717;--studio-secondary:#52525b;--studio-border:#e1e1e5;background:var(--studio-bg);color:var(--studio-text);font:14px/1.5 Onest_400Regular,sans-serif;min-height:100dvh}
 :global([data-theme=dark]) .studio{--studio-bg:#111113;--studio-surface:#19191c;--studio-muted:#1d1d20;--studio-text:#f4f4f5;--studio-secondary:#b8b8be;--studio-border:#303034}
 .studio button,.studio input,.studio textarea,.studio select{font:inherit}.studio button{cursor:pointer}.studio button:disabled{opacity:.4;cursor:not-allowed}.studio button:focus-visible,.studio a:focus-visible,.studio input:focus-visible,.studio textarea:focus-visible,.studio summary:focus-visible{outline:2px solid var(--studio-red);outline-offset:3px}
@@ -917,3 +917,34 @@
 .mobileExportInstruction{display:flex;align-items:flex-start;gap:8px;background:var(--studio-muted);border:1px solid var(--studio-border);border-radius:8px;padding:9px 12px;font-size:11px;color:var(--studio-secondary);line-height:1.35}
 .mobileExportActionsStack{display:flex;flex-direction:column;gap:8px}
 
+
+/* Shared select treatment for every Studio desk, inspector and modal. */
+.studio select:not([multiple]):not([size]){appearance:none;box-sizing:border-box;min-width:0;max-width:100%;min-height:44px;border:1px solid var(--studio-border);border-radius:8px;background-color:var(--studio-surface);color:var(--studio-text);padding:10px 38px 10px 12px!important;font:13px/1.4 Onest_400Regular,sans-serif;cursor:pointer;text-overflow:ellipsis;color-scheme:light;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23717780' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;transition:border-color .15s,box-shadow .15s}
+:global([data-theme=dark]) .studio select{color-scheme:dark}
+.studio select:hover:not(:disabled){border-color:var(--studio-secondary)}
+.studio select:focus-visible{outline:2px solid var(--studio-red);outline-offset:2px;border-color:var(--studio-red)}
+.studio select:disabled{opacity:.5;cursor:not-allowed}
+.studio select option,.studio select optgroup{background:var(--studio-surface);color:var(--studio-text);font:13px/1.5 Onest_400Regular,sans-serif}
+.studio select optgroup{font-family:Onest_600SemiBold,sans-serif}
+@supports(appearance:base-select){
+ .studio select:not([multiple]):not([size]),.studio select:not([multiple]):not([size])::picker(select){appearance:base-select}
+ .studio select:not([multiple]):not([size]){display:flex;align-items:center;justify-content:space-between;gap:12px;background-image:none;padding-right:12px!important}
+ .studio select::picker-icon{color:var(--studio-secondary);transition:rotate .16s;font-size:12px}
+ .studio select:open::picker-icon{rotate:180deg}
+ .studio select::picker(select){box-sizing:border-box;background:var(--studio-surface);color:var(--studio-text);border:1px solid var(--studio-border);border-radius:10px;padding:5px;box-shadow:0 12px 32px #0003;max-height:min(360px,65dvh);max-width:calc(100vw - 24px);overflow-y:auto;margin-block:6px;font:13px/1.5 Onest_400Regular,sans-serif;overscroll-behavior:contain}
+ .studio select option{display:flex;align-items:center;gap:10px;min-height:38px;padding:9px 12px;border:0;border-radius:6px;white-space:normal;overflow-wrap:anywhere;cursor:pointer}
+ .studio select option:hover,.studio select option:focus{background:var(--studio-muted);outline:none}
+ .studio select option:checked{background:color-mix(in srgb,var(--studio-red) 9%,var(--studio-surface));color:var(--studio-red)}
+ .studio select option:disabled{opacity:.45;cursor:not-allowed}
+ .studio select option::checkmark{order:1;margin-left:auto;font-size:12px;color:var(--studio-red)}
+ .studio select optgroup{padding-block:4px}
+ .studio select optgroup::label{padding:8px 12px 5px;color:var(--studio-secondary);font:11px/1.4 Onest_600SemiBold,sans-serif}
+}
+@media(max-width:640px){.studio select:not([multiple]):not([size]){font-size:16px!important;min-height:46px}}
+@media(prefers-reduced-motion:reduce){.studio select,.studio select::picker-icon{transition:none}}
+
+.studio{--studio-select-accent:#a41616}:global([data-theme=dark]) .studio{--studio-select-accent:#f28080}.studio select option:checked{color:var(--studio-select-accent)}.studio select:open{border-color:var(--studio-select-accent)}
+
+.exportProgress{display:flex;align-items:center;gap:10px;min-height:42px;padding:10px 20px;border-bottom:1px solid var(--studio-border);background:var(--studio-surface);color:var(--studio-secondary);font-size:12px}.exportProgress>svg{color:var(--studio-red);flex:none}.exportProgress>span{flex:1}.exportProgress progress{width:90px;height:4px;accent-color:var(--studio-red)}
+
+.exportSplit{display:inline-flex;align-items:stretch;flex-shrink:0}.exportSplit>.primary{border-radius:8px 0 0 8px}.exportSplit>.iconButton{border-radius:0 8px 8px 0;border-color:var(--studio-red);border-left:1px solid #ffffff40;background:var(--studio-red);color:#fff;min-width:36px}

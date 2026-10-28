@@ -58,14 +58,15 @@ describe("carousel helpers", () => {
         expect(siblings[1].id).toBe("id-beta");
     });
 
-    it("generates Instagram-ready caption with carousel breakdown and hashtags", () => {
+    it("generates a content caption without slide counts or unrelated hashtags", () => {
         const slide1 = makeDraft("s1", "Title · 1/2");
         const slide2 = makeDraft("s2", "Title · 2/2");
 
         const caption = generateInstagramCaption([slide1, slide2]);
         expect(caption).toContain("The Leaders");
-        expect(caption).toContain("CAROUSEL BREAKDOWN (2 SLIDES)");
-        expect(caption).toContain("#NepalPolitics");
+        expect(caption).not.toContain("CAROUSEL BREAKDOWN");
+        expect(caption).not.toContain("Swipe through");
+        expect(caption).not.toContain("#NepalPolitics");
         expect(caption).toContain("#TheLeaders");
     });
 

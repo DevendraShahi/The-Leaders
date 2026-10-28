@@ -22,12 +22,12 @@ beforeEach(() => {
     Object.defineProperty(document, 'fonts', { configurable: true, value: { ready: Promise.resolve() } });
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
-async function mount(imageUri: string | null = null) {
+async function mount(imageUri: string | null = null, onPreviewDraft?: (draft: PostDraft) => void) {
     const drafts = await createDraftCollection('test-editor', [
         { id: 'deck-1', name: 'Test deck · 1/2', design: { ...defaultPostDesign, imageUri, headline: 'First page' } },
         { id: 'deck-2', name: 'Test deck · 2/2', design: { ...defaultPostDesign, headline: 'Second page' } },
     ]);
-    render(<PostEditor scope="test-editor" draft={drafts[0]} onClose={vi.fn()} />);
+    render(<PostEditor scope="test-editor" draft={drafts[0]} onClose={vi.fn()} onPreviewDraft={onPreviewDraft} />);
     await waitFor(() => expect(screen.getByRole('button', { name: 'All 2 pages' })).toBeEnabled());
 }
 async function save() {
@@ -35,6 +35,36 @@ async function save() {
     await waitFor(() => expect(screen.getByRole('button', { name: 'Save changes' })).toHaveTextContent('Saved'));
 }
 describe('Current Studio carousel editor', () => {
+    it('saves pending edits before navigating to the standalone preview', async () => {
+        const preview = vi.fn(); await mount(null, preview);
+        fireEvent.change(screen.getByLabelText('Edit headline'), { target: { value: 'Latest preview headline' } });
+        fireEvent.click(screen.getByRole('button', { name: 'Preview Instagram post' }));
+        await waitFor(() => expect(preview).toHaveBeenCalledTimes(1));
+        expect((await readDraft('test-editor', 'deck-1')).design.headline).toBe('Latest preview headline');
+        expect(preview.mock.calls[0][0].id).toBe('deck-1');
+        expect(screen.queryByRole('dialog', { name: 'Instagram Feed Simulator' })).not.toBeInTheDocument();
+    });
+    it('keeps the editor open if saving before preview fails', async () => {
+        const preview = vi.fn(); await mount(null, preview);
+        fireEvent.change(screen.getByLabelText('Edit headline'), { target: { value: 'Unsaved changes' } });
+        storage.fail = true;
+        fireEvent.click(screen.getByRole('button', { name: 'Preview Instagram post' }));
+        await waitFor(() => expect(screen.getByRole('button', { name: 'Retry saving' })).toBeInTheDocument());
+        expect(preview).not.toHaveBeenCalled();
+    });
+
+    it('groups PNG, ZIP and caption actions in clear export options', async () => {
+        await mount();
+        fireEvent.click(screen.getByRole('button', { name: 'Export options' }));
+        const dialog = screen.getByRole('dialog', { name: 'Download your artwork' });
+        expect(within(dialog).getByText('Current page')).toBeInTheDocument();
+        expect(within(dialog).getByText('All pages')).toBeInTheDocument();
+        expect(within(dialog).getByRole('button', { name: 'Download this PNG' })).toBeEnabled();
+        expect(within(dialog).getByRole('button', { name: 'Download all as ZIP' })).toBeEnabled();
+        expect(within(dialog).getByText(/1080 × 1080 px/)).toBeInTheDocument();
+        fireEvent.click(within(dialog).getByRole('button', { name: 'Close export options' }));
+        expect(screen.queryByRole('dialog', { name: 'Download your artwork' })).not.toBeInTheDocument();
+    });
     it('restores the image scroll ball with keyboard panning, centering, and undo', async () => {
         await mount('test-photo');
         fireEvent.click(screen.getByRole('tab', { name: 'Image' }));

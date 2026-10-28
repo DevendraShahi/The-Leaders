@@ -18,6 +18,9 @@ export function textLineLimit(format: PostFormat, layer: "headline" | "supportin
     if (template === "cricket") {
         return format === "landscape" ? 6 : format === "story" ? 18 : 12;
     }
+    if (template === "history") {
+        return format === "landscape" ? 5 : format === "story" ? 12 : 8;
+    }
     if (template === "explainer") {
         return format === "landscape" ? 5 : format === "story" ? 12 : 8;
     }

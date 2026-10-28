@@ -1,9 +1,11 @@
 "use client";
 
+import { StudioDisclosure } from './StudioDisclosure';
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { BookOpen, Copy, Pencil, Plus, RotateCcw, Trash2, Trophy } from 'lucide-react';
+import { BookOpen, Copy, Pencil, Plus, RotateCcw, Trash2, Trophy, Landmark } from 'lucide-react';
 import { useAuth } from '@/components/admin/AuthProvider';
 import { createDraft, duplicateDraft, listDrafts, readDraft, readPreviousLocalDesign, setDraftTrashed, updateDraft, type PostDraft } from '@/lib/post-studio/drafts';
 import { defaultPostDesign, postTemplates, type PostDesign, type PostTemplate } from '@/lib/post-studio/types';
@@ -59,14 +61,17 @@ export default function PostStudio() {
     };
     const open = (item: PostDraft) => router.push(`/admin/social?draft=${encodeURIComponent(item.id)}`);
     if (!scope) return null;
-    if (draft && draft.id === draftId && !loading) return <PostEditor key={`${scope}:${draft.id}`} scope={scope} draft={draft} canExport={true} onClose={() => router.replace(params.get('from') === 'cricket' ? '/admin/social/cricket' : '/admin/social')} />;
+    if (draft && draft.id === draftId && !loading) return <PostEditor key={`${scope}:${draft.id}`} scope={scope} draft={draft} canExport={true} onPreviewDraft={item => { const next = new URLSearchParams({ draft: item.id }); const origin = params.get('from'); if (origin && ['cricket', 'history', 'news'].includes(origin)) next.set('from', origin); router.push(`/admin/social/preview?${next.toString()}`); }} onClose={() => router.replace(params.get('from') === 'cricket' ? '/admin/social/cricket' : params.get('from') === 'history' ? '/admin/social/history' : params.get('from') === 'news' ? '/admin/social/news' : '/admin/social')} />;
     const active = drafts.filter(item => !item.trashedAt), discarded = drafts.filter(item => item.trashedAt);
     const visible = (trash ? discarded : active).filter(item => `${item.name} ${item.design.headline}`.toLowerCase().includes(search.toLowerCase().trim()));
     return <div className={styles.studio}><div className={styles.library}>
         <header className={styles.between}><div><h1>Studio</h1><p className={styles.subtle}>Create a post or continue your work.</p></div><div className={styles.row}><Link href="/admin" prefetch={false} className={styles.button}>Dashboard</Link><button className={styles.primary} disabled={busy || loading} onClick={() => setPromptModalOpen(true)}><Plus size={18} />New post</button></div></header>
         <p><a href="/studio/template-guide/index.html" target="_blank" rel="noopener noreferrer" className={styles.subtle}>Editor field guide · filled examples and section maps ↗</a></p>
-        <details className={styles.section}><summary>Other creation tools</summary><div className={styles.sectionContent}>
+        <section className={styles.cricketEntry} aria-label="News desk"><Pencil size={25} /><div><h2>News desk</h2><p>Daily News, Hot News and News Report templates.</p></div><Link href="/admin/social/news" prefetch={false} className={styles.button}>Open News desk</Link></section>
+        <section className={styles.cricketEntry} aria-label="Photo and video overlays"><Pencil size={25} /><div><h2>Photo & video overlays</h2><p>Add The Leaders branding to your photos and footage.</p></div><Link href="/admin/social/overlays" prefetch={false} className={styles.button}>Open overlay studio</Link></section>
+        <StudioDisclosure title="Other creation tools" variant="feature" description="Blank templates, cricket, history, and book reviews." icon={<Plus size={18} />}><div className={styles.sectionContent}>
         <section className={styles.cricketEntry} aria-label="Cricket desk"><Trophy size={25} /><div><h2>Cricket desk</h2><p>Browse cricket templates and coverage packs.</p></div><Link href="/admin/social/cricket" prefetch={false} className={styles.button}>Browse cricket templates</Link></section>
+        <section className={styles.cricketEntry} aria-label="History desk"><Landmark size={25} /><div><h2>Today in History</h2><p>One cover with paragraph pages when the story needs them.</p></div><Link href="/admin/social/history" prefetch={false} className={styles.button}>Open History desk</Link></section>
         <p className={styles.subtle}>Start with a blank template when you already have your content.</p>
         <div className={styles.templates}>{postTemplates.filter(item => item.key !== 'cricket').map(item => <button className={`${styles.choice} ${template === item.key ? styles.active : ''}`} key={item.key} aria-pressed={template === item.key} onClick={() => setTemplate(item.key)}>{item.title}<small>{item.subtitle}</small></button>)}</div>
         <div className={styles.row}>
@@ -74,8 +79,8 @@ export default function PostStudio() {
             <button className={styles.button} style={{ borderColor: 'var(--studio-red)', color: 'var(--studio-red)' }} disabled={busy || loading} onClick={() => setBookModalOpen(true)}><BookOpen size={18} />New book review</button>
         </div>
         {previous && <button className={styles.button} disabled={busy || loading} onClick={() => { void run(async () => { open(await createDraft(scope, 'Previous local design', previous)); }); }}>Import previous local design</button>}
-        </div></details>
-        <details className={styles.section}><summary>Daily social editions</summary><div className={styles.sectionContent}><DailyEditions scope={scope} onOpen={open} canExport={true} canEdit={permission('edit')} canSubmit={permission('submit')} canApprove={permission('approve')} /></div></details>
+        </div></StudioDisclosure>
+        <StudioDisclosure title="Daily social editions" variant="feature" description="Build and review your daily collection of posts." icon={<BookOpen size={18} />}><div className={styles.sectionContent}><DailyEditions scope={scope} onOpen={open} canExport={true} canEdit={permission('edit')} canSubmit={permission('submit')} canApprove={permission('approve')} /></div></StudioDisclosure>
         <div><h2>Your post drafts</h2><p className={styles.subtle}>Drafts are saved in this browser for your account.</p></div>
         <div className={styles.row}><button className={`${styles.button} ${!trash ? styles.active : ''}`} onClick={() => setTrash(false)}>Drafts · {active.length}</button><button className={`${styles.button} ${trash ? styles.active : ''}`} onClick={() => setTrash(true)}>Trash · {discarded.length}</button></div>
         <input className={styles.input} aria-label="Search drafts" placeholder="Search drafts" value={search} onChange={event => setSearch(event.target.value)} />

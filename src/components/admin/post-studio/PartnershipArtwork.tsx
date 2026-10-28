@@ -1,7 +1,11 @@
 "use client";
 
+import { CricketTournamentMark } from './CricketTournamentMark';
+
+import { Echo11Credit, echo11FrameClass } from './Echo11Credit';
+
 import { forwardRef, type CSSProperties } from 'react';
-import { nplTeam, nplTournamentLogo, teamLogo, teamName } from '@/lib/post-studio/cricket-catalog';
+import { nplTeam, teamLogo, teamName } from '@/lib/post-studio/cricket-catalog';
 import { blankCricketData, cricketNumber, cricketScore, strikeRate } from '@/lib/post-studio/cricket-data';
 import { phaseIssues } from '@/lib/post-studio/phase-posts';
 import { matchingPortraitFor, portraitIsCurrent } from '@/lib/post-studio/player-portraits';
@@ -150,9 +154,9 @@ export const PartnershipArtwork = forwardRef<HTMLDivElement, CricketArtworkProps
     return (
         <div
             ref={ref}
-            className={`${s.artwork} ${paper ? s.paper : ''}`}
+            className={`${echo11FrameClass} ${s.artwork} ${paper ? s.paper : ''}`}
             style={{ width: 360, height, '--accent': design.accent } as CSSProperties}
-            data-testid="post-artwork"
+            data-testid="post-artwork" data-echo11-credit="true"
             data-cricket-template="partnership"
             data-format={design.format}
             data-language={data.language}
@@ -178,16 +182,14 @@ export const PartnershipArtwork = forwardRef<HTMLDivElement, CricketArtworkProps
             </div>
             <div className={s.scrim} />
 
-            <div className={s.content}>
+            <div className={s.content} data-credit-content>
                 {/* 1. Masthead Header */}
                 <header className={s.header}>
                     <div className={s.brand}>
                         <img src="/studio/leaders.png" alt="The Leaders" />
                         <span>THE LEADERS<small>{t('SPORTS DESK', 'खेलकुद डेस्क')}</small></span>
                     </div>
-                    <div className={s.tournamentLogo}>
-                        <img src={nplTournamentLogo} alt="Nepal Premier League" />
-                    </div>
+                    <CricketTournamentMark paper={paper} />
                 </header>
 
                 {/* 2. Context & Title Block */}
@@ -257,23 +259,23 @@ export const PartnershipArtwork = forwardRef<HTMLDivElement, CricketArtworkProps
                     data-testid="partnership-shared-stat"
                 >
                     <div className={s.stat}>
-                        {text(n(data.partnershipRuns), s.statNumber, wide ? 28 : 42, wide ? 10 : 14)}
+                        {text(n(data.partnershipRuns), s.statNumber, wide ? 28 : 42, wide || design.format === 'square' ? 9 : 11)}
                         {text(t('RUN PARTNERSHIP', 'रनको साझेदारी'), s.statLabel, wide ? 5 : 6.5, 3.8)}
                     </div>
                     <div className={s.stat}>
-                        {text(n(data.partnershipBalls), s.statNumber, wide ? 28 : 42, wide ? 10 : 14)}
+                        {text(n(data.partnershipBalls), s.statNumber, wide ? 28 : 42, wide || design.format === 'square' ? 9 : 11)}
                         {text(t('BALLS FACED', 'कुल बल'), s.statLabel, wide ? 5 : 6.5, 3.8)}
                     </div>
                     <div className={s.stat}>
-                        {text(n(partnershipRate), s.statNumber, wide ? 28 : 42, wide ? 10 : 14)}
+                        {text(n(partnershipRate), s.statNumber, wide ? 28 : 42, wide || design.format === 'square' ? 9 : 11)}
                         {text(t('RUN RATE', 'रन रेट'), s.statLabel, wide ? 5 : 6.5, 3.8)}
                     </div>
                 </div>
 
                 {/* 5. Scoreboard Status Strip */}
                 <div className={s.scoreboard}>
-                    <div className={s.scoreLeft}>
-                        <img src={teamLogo(data.teamId)} alt="" className={s.miniCrest} />
+                    <div className={s.scoreLeft} data-team-badge={data.teamId}>
+                        <img src={data.teamLogoUri || teamLogo(data.teamId)} alt={teamName(team, data.language)} className={s.miniCrest} />
                         {text(`${team.short} ${n(cricketScore(data.runs, data.wickets))}`, s.scoreTotal, wide ? 11 : 15, wide ? 7 : 9)}
                         {data.overs && <span className={s.scoreOvers}>({n(data.overs)} {t('OV', 'ओभर')})</span>}
                     </div>
@@ -290,13 +292,11 @@ export const PartnershipArtwork = forwardRef<HTMLDivElement, CricketArtworkProps
                 </div>
 
                 {/* 7. Footer */}
-                <footer className={s.footer} {...select('footer')}>
-                    {text(design.hiddenLayers.includes('footer') ? '' : design.author, s.author, wide ? 4.5 : 6, 3.5, undefined, undefined, 'footer')}
-                    {text('NPL 2026 | Cricket', s.footerLabel, wide ? 4.5 : 6, 3.5)}
-                </footer>
+
             </div>
 
             {guides && <div className={s.guides} aria-hidden="true" />}
+        <Echo11Credit variant={design.echo11Variant} seed={design.headline} language={data.language} />
         </div>
     );
 });

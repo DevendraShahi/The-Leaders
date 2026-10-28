@@ -1,0 +1,2 @@
+.promotion{position:absolute;bottom:0;left:0;right:0;height:56px;padding:5px var(--pad,6%);z-index:4;background:#eee5d5;color:#211b16;border-top:1px solid #c9b99a;box-sizing:border-box;pointer-events:none}
+:global([data-format=landscape])>.promotion{height:40px;padding-block:4px}

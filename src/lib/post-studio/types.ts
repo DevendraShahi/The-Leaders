@@ -1,8 +1,9 @@
 // Ported from mobile/src/features/post-designer; keep artwork behavior in sync.
 import { brand } from "./tokens";
 import { blankCricketData, type CricketData } from './cricket-data';
+import { blankHistoryData, type HistoryData } from './history-data';
 export type PostFormat = "square" | "portrait" | "story" | "landscape";
-export type PostTemplate = "breaking" | "explainer" | "quote" | "book-review" | "book-analysis" | "book-takeaways" | "book-verdict" | "cricket";
+export type PostTemplate = "breaking" | "explainer" | "quote" | "book-review" | "book-analysis" | "book-takeaways" | "book-verdict" | "cricket" | "history";
 export type TextAlignment = "left" | "center";
 export type ImageTone = "ink" | "clear" | "warm";
 export type CricketStyle = 'stadium' | 'editorial' | 'classic';
@@ -81,6 +82,9 @@ export type PostDesign = {
   backgroundColor?: string | null;
   backgroundGradient?: string | null;
   cricket?: CricketData;
+  history?: HistoryData;
+  newsStyle?: 'daily' | 'hot' | 'report';
+  echo11Variant?: number;
   placedImages?: PlacedImage[];
   sourceUrls?: string[];
   fixtureId?: string;
@@ -121,6 +125,7 @@ export const defaultPostDesign: PostDesign = {
 
 export const postTemplates: { key: PostTemplate; title: string; subtitle: string; patch: Partial<PostDesign> }[] = [
   { key: 'cricket', title: 'Cricket', subtitle: 'NPL match coverage', patch: { cricket: blankCricketData(), category: 'NPL 2026', headline: 'MATCHDAY', summary: '', eyebrow: 'THE LEADERS / CRICKET', author: 'The Leaders Sports', format: 'portrait', accent: '#F1C64C', backgroundColor: '#321C30' } },
+  { key: 'history', title: 'Today in History', subtitle: 'इतिहासमा आज', patch: { history: blankHistoryData(), category: 'ON THIS DAY', headline: 'ON THIS DAY', summary: '', eyebrow: 'THE LEADERS / HISTORY DESK', author: 'The Leaders History Desk', format: 'portrait', accent: '#B71C1C', backgroundColor: '#F4EDE0' } },
   {
     key: "breaking",
     title: "Breaking",

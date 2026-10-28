@@ -620,3 +620,13 @@
     width: 40px;
     height: 20px;
 }
+/* Matched portrait cards: equal frame, common baseline and reserved name/stat slots. */
+.artwork:not([data-format=landscape]) .content{grid-template-rows:8% 14% 50% 12% 7% 4% 5%}
+.playerCol{grid-template-rows:minmax(0,1fr) 24px 34px;gap:3px}
+.artwork[data-detailed=false] .playerCol{grid-template-rows:minmax(0,1fr) 24px}
+.portraitWrapper{border-bottom:2px solid var(--accent);background:linear-gradient(180deg,transparent,#ffffff09)}
+.playerName{height:100%;min-height:0;padding:0;margin:0}
+.playerName>[data-export-fit]{display:flex;flex-direction:column;justify-content:safe center}
+.artwork[data-format=landscape] .playerCol{grid-template-rows:minmax(0,1fr) 19px 24px;gap:2px}
+.artwork[data-format=landscape][data-detailed=false] .playerCol{grid-template-rows:minmax(0,1fr) 19px}
+.artwork[data-format=square] .content{grid-template-rows:8% 18% 50% 12% 7% 4% 1%}

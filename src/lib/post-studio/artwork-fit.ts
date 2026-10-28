@@ -1,4 +1,8 @@
 /** Shared preflight for the editor and export; transformed previews retain reference geometry. */
+export function refitArtworkText(node: HTMLElement): void {
+    node.dispatchEvent(new Event('studio:refit'));
+}
+
 export function artworkFitIssues(node: HTMLElement): HTMLElement[] {
     return Array.from(node.querySelectorAll<HTMLElement>('[data-line-limit],[data-export-fit]')).filter(text => {
         const lineHeight = parseFloat(getComputedStyle(text).lineHeight);

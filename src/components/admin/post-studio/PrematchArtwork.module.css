@@ -11,3 +11,4 @@
 .artwork[data-format=landscape][data-layout=confirmed-xi] .body{grid-template-columns:31% minmax(0,1fr)}
 .lineup{min-height:0;min-width:0}.lineup li{grid-template-rows:minmax(0,1fr)}
 .artwork[data-language=ne] .lineup li>span{font-family:Hind_700Bold,sans-serif}
+.artwork[data-format=square] .content{grid-template-rows:8% 17% 57% 12% 6% 0%}

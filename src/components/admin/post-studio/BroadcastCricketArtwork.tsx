@@ -1,5 +1,9 @@
 "use client";
 
+import { CricketTournamentMark } from './CricketTournamentMark';
+
+import { Echo11Credit, echo11FrameClass } from './Echo11Credit';
+
 import { cricketTeamIssues } from '@/lib/post-studio/cricket-team-context';
 import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import { blankCricketData, chaseEquation, cricketNumber, cricketScore, runRate, strikeRate } from '@/lib/post-studio/cricket-data';
@@ -69,21 +73,21 @@ export const BroadcastCricketArtwork = forwardRef<HTMLDivElement, CricketArtwork
             case 'table': return <>{headline}{data.template === 'points-table' ? <table className={s.table}><thead><tr>{[t('TEAM', 'टोली'), 'P', 'W', 'L', 'PTS', 'NRR'].map(label => <th key={label}>{label}</th>)}</tr></thead><tbody>{data.standings.map((row, index) => <tr key={row.teamId} data-featured={row.teamId === data.teamId}><td><span>{n(index + 1)}</span>{logo(row.teamId, 18)}<b>{nplTeam(row.teamId).short}</b></td><td>{n(row.played)}</td><td>{n(row.won)}</td><td>{n(row.lost)}</td><td><b>{n(row.points)}</b></td><td>{n(row.nrr)}</td></tr>)}</tbody></table> : <><div className={s.cardScore}>{team.short} <strong>{score}</strong><span>{n(data.overs)} {t('OV', 'ओभर')}</span></div><div className={s.scoreTables}><section><h3>{t('BATTING', 'ब्याटिङ')}</h3><table className={s.table}><thead><tr><th>{t('PLAYER', 'खेलाडी')}</th><th>R</th><th>B</th><th>SR</th></tr></thead><tbody>{data.batting.map((row, index) => <tr key={index}><td><span data-export-fit>{row.name}</span></td><td>{n(row.runs)}{row.notOut ? '*' : ''}</td><td>{n(row.balls)}</td><td>{n(strikeRate(row.runs, row.balls))}</td></tr>)}</tbody></table></section><section><h3>{t('BOWLING', 'बलिङ')}</h3><table className={s.table}><thead><tr><th>{t('PLAYER', 'खेलाडी')}</th><th>O</th><th>R</th><th>W</th></tr></thead><tbody>{data.bowling.map((row, index) => <tr key={index}><td><span data-export-fit>{row.name}</span></td><td>{n(row.overs)}</td><td>{n(row.runs)}</td><td>{n(row.wickets)}</td></tr>)}</tbody></table></section></div></>}</>;
         }
     };
-    const updated = data.updatedAt ? new Date(data.updatedAt).toLocaleTimeString(data.language === 'ne' ? 'ne-NP' : 'en-GB', { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: false }) : '';
-    return <div ref={ref} className={`${s.artwork} ${paper ? s.paper : ''}`} data-testid="post-artwork" data-cricket-template={data.template} data-export-error={cricketTeamIssues(data).join(' ')} data-style={design.cricketStyle} data-format={design.format} data-layout={layout} data-language={data.language} data-photo={photo} style={{ width: 360, height, '--accent': design.accent, '--team': team.primary, '--opponent': opponent.primary, '--secondary': team.secondary, '--team-dark': team.dark, '--opponent-dark': opponent.dark, '--hero-scale': (data.heroScale ?? 100) / 100, textAlign: design.textAlign, ...(design.backgroundGradient ? { background: design.backgroundGradient } : {}), fontFamily: data.language === 'ne' ? 'Hind_400Regular' : 'Onest_400Regular' } as CSSProperties}>
+    return <div ref={ref} className={`${echo11FrameClass} ${s.artwork} ${paper ? s.paper : ''}`} data-testid="post-artwork" data-echo11-credit="true" data-cricket-template={data.template} data-export-error={cricketTeamIssues(data).join(' ')} data-style={design.cricketStyle} data-format={design.format} data-layout={layout} data-language={data.language} data-photo={photo} style={{ width: 360, height, '--accent': design.accent, '--team': team.primary, '--opponent': opponent.primary, '--secondary': team.secondary, '--team-dark': team.dark, '--opponent-dark': opponent.dark, '--hero-scale': (data.heroScale ?? 100) / 100, textAlign: design.textAlign, ...(design.backgroundGradient ? { background: design.backgroundGradient } : {}), fontFamily: data.language === 'ne' ? 'Hind_400Regular' : 'Onest_400Regular' } as CSSProperties}>
         <img className={s.base} src={paper ? '/studio/cricket/backgrounds/paper-001.jpg' : '/studio/cricket/backgrounds/stadium-01.jpg'} alt="" aria-hidden="true" />
         <div className={s.photo}><ArtworkPhoto design={design} height={height} /></div>
         <div className={s.shade} />
         <ArtworkPlacedImages layerFilter="back" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         <ArtworkPlacedImages layerFilter="middle" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
-        <div className={s.inner}>
-            <header className={s.masthead}><img src="/studio/leaders.png" alt="The Leaders" width={25} height={25} /><div><b>{data.competition}</b>{!hide('kicker') && <span {...select('kicker')} style={type('kicker', landscape ? 5 : 6, design.eyebrow)}>{design.eyebrow}</span>}</div><span className={s.edition}>{data.matchLabel || 'NPL'}</span></header>
+        <div className={s.inner} data-credit-flow>
+            <header className={s.masthead}><img src="/studio/leaders.png" alt="The Leaders" width={25} height={25} /><div><b>{data.competition}</b>{!hide('kicker') && <span {...select('kicker')} style={type('kicker', landscape ? 5 : 6, design.eyebrow)}>{design.eyebrow}</span>}</div><CricketTournamentMark paper={paper} /></header>
             <main className={s.body} data-export-fit>{renderBody()}{!hide('supporting') && design.summary && <p {...select('supporting')} className={s.note} data-export-fit style={type('supporting', landscape ? 7 : 9, design.summary)}>{design.summary}</p>}</main>
-            {!hide('footer') && <footer className={s.footer} {...select('footer')} style={type('footer', landscape ? 4.5 : 5.5, design.author)}><strong>{design.author}</strong><span>{updated ? `${updated} NPT` : data.matchDate || 'CRICKET'}</span></footer>}
+
         </div>
         <ArtworkPlacedImages layerFilter="front" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         {guides && <div className={s.guides} aria-hidden="true" />}
         {onChooseImage && !photo && <button className={s.addPhoto} onClick={onChooseImage} aria-label="Add cricket photo">+ {t('PHOTO', 'फोटो')}</button>}
-    </div>;
+    <Echo11Credit variant={design.echo11Variant} seed={design.headline} language={data.language} />
+        </div>;
 });
 BroadcastCricketArtwork.displayName = 'BroadcastCricketArtwork';

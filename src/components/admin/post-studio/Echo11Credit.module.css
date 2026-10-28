@@ -1,0 +1,4 @@
+.credit{position:absolute;inset:auto 0 0;z-index:8;box-sizing:border-box;height:56px;padding:5px 6%;background:#f1ecdf;color:#211b16;border-top:1px solid #c9b99a;pointer-events:none}
+.frame>:global([data-credit-content]){bottom:max(5%,58px)!important}
+.frame>:global([data-credit-flow]){height:calc(100% - 56px)}
+.frame:global([data-format=landscape])>.credit{height:40px;padding-block:4px}.frame:global([data-format=landscape])>:global([data-credit-content]){bottom:max(5%,42px)!important}.frame:global([data-format=landscape])>:global([data-credit-flow]){height:calc(100% - 40px)}

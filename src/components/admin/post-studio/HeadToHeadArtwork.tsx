@@ -1,7 +1,11 @@
 "use client";
 
+import { CricketTournamentMark } from './CricketTournamentMark';
+
+import { Echo11Credit, echo11FrameClass } from './Echo11Credit';
+
 import { forwardRef, type CSSProperties } from 'react';
-import { nplTeam, nplTournamentLogo, teamLogo, teamName, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
+import { nplTeam, teamLogo, teamName, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
 import { blankCricketData, cricketNumber } from '@/lib/post-studio/cricket-data';
 import { headToHeadIssues } from '@/lib/post-studio/head-to-head';
 import { matchdayBackgrounds } from '@/lib/post-studio/matchday';
@@ -35,20 +39,21 @@ export const HeadToHeadArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>
         <div className={s.wins}>{text(n(wins), s.winCount, wide ? 32 : 46, wide ? 16 : design.format === 'square' ? 17 : 21, 'h2h-wins')}<span>{t('WINS', 'जित')}</span></div>
     </section>;
     const statistic = (label: string, value: number | null | undefined) => <div className={s.stat}>{text(n(value), s.statNumber, wide ? 15 : 22, wide ? 10 : 14, 'h2h-stats')}{text(label, s.statLabel, wide ? 5 : 7, wide ? 4 : 5)}</div>;
-    return <div ref={ref} className={`${base.artwork} ${s.artwork} ${paper ? base.paper : ''}`} data-testid="post-artwork" data-cricket-template="head-to-head" data-format={design.format} data-language={data.language} data-layout="head-to-head" data-managed-layout="true" data-export-error={headToHeadIssues(design).join(' ')} style={{ width: 360, height, '--accent': design.accent } as CSSProperties}>
+    return <div ref={ref} className={`${echo11FrameClass} ${base.artwork} ${s.artwork} ${paper ? base.paper : ''}`} data-testid="post-artwork" data-echo11-credit="true" data-cricket-template="head-to-head" data-format={design.format} data-language={data.language} data-layout="head-to-head" data-managed-layout="true" data-export-error={headToHeadIssues(design).join(' ')} style={{ width: 360, height, '--accent': design.accent } as CSSProperties}>
         <img className={base.background} src={paper ? '/studio/cricket/backgrounds/paper-001.jpg' : background.src} alt="" />
         {photo && <div className={base.photo}><ArtworkPhoto design={design} height={height} /></div>}
         <div className={base.overlays}>{(['back', 'middle', 'front'] as const).map(layer => <ArtworkPlacedImages key={layer} layerFilter={layer} images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />)}</div><div className={base.scrim} />
-        <div className={s.content}>
-            <header className={base.header}><div className={base.brand}><img src="/studio/leaders.png" alt="The Leaders" /><span>THE LEADERS<small>{t('SPORTS DESK', 'खेलकुद डेस्क')}</small></span></div><img className={base.npl} src={nplTournamentLogo} alt="Nepal Premier League" /></header>
+        <div className={s.content} data-credit-content>
+            <header className={base.header}><div className={base.brand}><img src="/studio/leaders.png" alt="The Leaders" /><span>THE LEADERS<small>{t('SPORTS DESK', 'खेलकुद डेस्क')}</small></span></div><CricketTournamentMark paper={paper} /></header>
             <div className={s.title} {...select('headline')}><span>{t('ALL NPL MEETINGS', 'एनपीएलका सबै भेट')}</span>{!design.hiddenLayers.includes('headline') && text(design.headline, s.headline, wide ? 25 : 33, wide ? 12 : 17, undefined, 'artwork-headline')}</div>
             <main className={s.comparison} {...select('visual')} data-export-fit>{identity(data.teamId, record?.teamWins, data.teamLogoUri)}<span className={s.vs}>VS</span>{identity(data.opponentId, record?.opponentWins, data.opponentLogoUri)}</main>
             <div className={s.facts}>{statistic(t('MATCHES PLAYED', 'खेलिएका खेल'), record?.played)}{statistic(t('TIED · NO WINNER', 'बराबरी · विजेता छैन'), record?.ties)}{statistic(t('NO RESULT', 'नतिजाविहीन'), record?.noResults)}</div>
             <div className={s.metadata}>{text(`${t('RECORD AS OF', 'तथ्याङ्क मिति')} ${date}`, s.cutoff, wide ? 5.5 : 7.5, wide ? 4.5 : 6)}</div>
             <div className={s.summary} {...select('supporting')}>{!design.hiddenLayers.includes('supporting') && design.summary && text(design.summary, s.summaryText, wide ? 6 : 8, wide ? 5 : 6)}</div>
-            <footer className={base.footer} {...select('footer')}>{text(design.hiddenLayers.includes('footer') ? '' : design.author, base.author, wide ? 4.5 : 6, 3.5)}{text('NPL 2026 | Cricket', base.footerLabel, wide ? 4.5 : 6, 3.5)}</footer>
+
         </div>
         {guides && <div className={base.guides} aria-hidden="true" />}
-    </div>;
+    <Echo11Credit variant={design.echo11Variant} seed={design.headline} language={data.language} />
+        </div>;
 });
 HeadToHeadArtwork.displayName = 'HeadToHeadArtwork';

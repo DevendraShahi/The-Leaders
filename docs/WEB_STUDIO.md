@@ -261,3 +261,79 @@ provenance. Full images are WebP at up to 1600px, with separate small thumbnails
 and preserved transparency. Run `node scripts/sync-npl-player-photos.mjs` to restore
 missing assets or add `--refresh` to re-fetch reviewed URLs. This command does not
 update squad assignments; roster changes require source review.
+
+## Today in History
+
+Open `/admin/social/history` from **Studio → Other creation tools → Open History desk**,
+or choose **Today in History** in New post. There is one design: a main cover followed
+by paragraph pages only when the story needs them. English/Nepali copy and all four
+canvas sizes are supported. Previous topic-based drafts remain readable.
+
+**New history post** prepares a web-research JSON prompt for one Nepal event and one international event, each in both languages. The JSON contains four editions in this order: National-Nepali, National-English, International-English, International-Nepali. Choose the Gregorian publication
+date in the Nepal editorial calendar; keep the original event year separate. No image attachment is expected. The AI chat must have web search enabled. For the national event it first verifies the publication day’s Bikram Sambat equivalent, then researches an anniversary on that Nepali month/day. The international event uses the Gregorian month/day. Both require source-page verification, and the national sources include the calendar-conversion reference. Each response story contains a cover, its own `sources` URLs and an optional `paragraphs` array. Studio saves all four editions in one carousel, in the requested order, with each cover immediately followed by its own optional paragraph pages. The total is limited to twenty pages, including all four covers. Sources remain attached to the appropriate event. It does not force additional pages or different topic templates.
+
+**Start blank story** creates one empty main page. Use **Event** for its date, year,
+subject and short cover context; use **Text** for the headline and byline. **Add page**
+creates a paragraph page with the same event identity and an empty body. Edit its
+prose in **Event → Paragraph content**. Add or remove continuation pages as needed.
+The watermark and the angled **TODAY IN HISTORY** seal appear on every page; the
+seal sits at the top right. Source URLs and update timestamps stay off the artwork.
+
+Lora is bundled under the SIL Open Font License for English; Hind handles Nepali.
+PNG exports embed the fonts and preserve the paper background. Run
+`node scripts/check-history-studio.cjs` for the cover/paragraph checks, long-copy and
+photo cases, eight PNG exports, and dropdown checks on desktop/mobile in both themes.
+Reports and sample PNGs are written to `/tmp/history-studio-audit.json` and `/tmp/`.
+
+History-only echo11 preview: a reserved promotional footer uses `/studio/echo11-logo.svg`, “Powered by echo11”, and a clearly labeled web-development advertisement. The editorial content fits above it. Cricket posts use a separate compact publisher credit, described below.
+
+History batches previously saved with separate national/international carousel IDs are recovered together when either main draft is opened. Saving normalizes their shared carousel ID; no draft content is removed or regenerated.
+
+Captions use the authored headline and content rather than carousel counts. Copy this post’s caption and single-page mobile exports use the selected page only. Sharing all selected pages or exporting a ZIP builds a content-based combined caption without slide lists or forced swipe text. History captions include the event date/year and context; cricket captions include relevant match/player figures. Generic news, quotes and book posts use their own copy and relevant tags rather than a fixed political hashtag list. Captions are limited to 2,200 characters.
+
+Cricket artwork includes a dedicated echo11 footer with a small **POWERED BY** eyebrow, the supplied logo, **Your vision. Built for the web.**, and website/email links. This credits The Leaders’ publishing output and is separate from the NPL and team branding. Managed layouts reserve the bottom strip and refit their content above it; compact Nepali score text can shrink within its slot. Run `node scripts/check-cricket-credit.cjs` to check all cricket examples across formats, languages and Stadium/Editorial styles.
+
+The full echo11 bar is agency branding: it contains no “The Leaders posts” wording or NPL sponsorship claim. Contact links point to `https://echo11.tech/` and `mailto:echo11.labs@gmail.com`. History uses the same branding content, with Nepali copy on Nepali editions.
+
+### The Leaders photo & video overlays
+
+Open **Studio → Photo & video overlays** (`/admin/social/overlays`). This separate visual desk uses The Leaders logo and watermark; it does not add NPL or echo11 branding.
+
+- Upload a photo or video. Choose **Signature**, **News lower third**, or **Editorial**. Headlines, labels, and attribution are optional; English and Nepali fonts are loaded locally.
+- Keep original proportions (maximum 1920 px on the longer edge) or use square, portrait, story, or landscape. Fill crops the frame; Show full frame letterboxes it. Framing sliders choose which edge to preserve.
+- Adjust the logo corner and size, watermark opacity, and text backdrop. Signature intentionally hides the headline and label, while retaining their values if another overlay is selected.
+- Export photos as PNG. Video is rendered locally at 30 fps with source audio, using MP4 when the browser supports its encoder, otherwise WebM. Recording takes the clip's duration; keep the tab open. The source preview starts muted independently of exported audio. Export starts at the beginning regardless of preview seeking.
+- Download a transparent overlay PNG for use on a separate timeline in a video editor. It contains branding, text and shading without the photo or footage.
+- Files and edits are kept only for the current session; they are not uploaded or saved as Studio drafts. Download results before navigating away. Cancelling an export keeps the current media and controls available.
+
+Verification: `npm run test:run -- src/test/lib/media-overlay.test.ts` and `node scripts/check-overlay-studio.cjs`. The browser check uses a generated test clip with audible tone to verify duration, dimensions, retained audio, cancellation, transparent PNG alpha, photo output, and mobile layout.
+
+### News desk
+
+Open `/admin/social/news` from Studio. Daily News uses a paper editorial layout, Hot News a full-photo layout, and News Report a distinct photo-and-copy layout. All three support Nepali/English, square/portrait/story/landscape, empty new drafts, uploaded photos, photo credits, and editable labels/bylines. The existing post editor saves and exports them; `newsStyle` is preserved through draft storage and JSON import without changing older breaking-news posts.
+
+Each “Create with AI prompt” action prepares one selected post. The prompt uses attached evidence first, otherwise internet research, and returns only the existing news JSON contract. It limits headline/context to 120/240 characters and rejects oversized responses; it does not invent breaking urgency or request unrelated post data. Photo placement remains an editor action. Captions use the actual story content.
+
+Verification: `src/test/lib/news-studio.test.ts`, Next CSS Modules purity tests, prompt contract tests, and `node scripts/check-news-studio.cjs` (48 layout cases, three PNG samples, desktop/mobile desk checks).
+
+The shared echo11 banner rotates through eight approved English/Nepali message pairs (`echo11-copy.ts`). New drafts receive a random `echo11Variant` once, including AI/batch imports; editing, reopening and repeat imports preserve it. Existing drafts use their stable draft ID to pick a message until the next save persists that choice. Language switches select the matching translation of the same pair. Live artwork renders use a deterministic fallback, never a render-time random call. The banner fits longer lines into its reserved slot and retains the agency logo, website and email.
+
+Cricket artwork no longer prints the bottom sports-desk byline/footer row. The shared `CricketTournamentMark` places `NPL 2026 | Cricket` directly below the top-right tournament logo in every cricket renderer, including classic/broadcast layouts. The echo11 agency banner remains a separate reserved section at the bottom. Draft author values remain stored for captions and compatibility.
+
+The echo11 image slot now uses eight original SVG service illustrations, one for each saved ad variant, replacing screenshot/device mockups. Storefront, launch, bespoke layout, social-to-website, planning, online store, business growth, and contact motifs are drawn directly from SVG primitives with no image-generation service. The illustration itself links to the contact email and keeps the existing headline/subtext pairing. The banner retains its three-column arrangement; wrapping uses word boundaries and balanced lines.
+
+### Reliable exports and download options
+
+The PNG button still downloads the current page directly. Its adjacent arrow opens **Export options**, grouping the current PNG (with page number and pixel dimensions), all-pages ZIP (numbered PNGs plus caption.txt), and current-post caption. Export preparation reports saving, image embedding and rendering status; batch status identifies the page being rendered. Duplicate clicks are locked while exporting. Validation messages replace the options panel rather than stacking dialogs.
+
+Before capture, `export-assets.ts` builds an isolated snapshot and embeds verified image bytes for HTML photos, SVG images, CSS backgrounds, masks, and pseudo-element images. Exact URLs, including query strings, are kept distinct. Network failures retry once; failures are not cached across exports and prevent incomplete downloads. Rendering resets offscreen logical and physical offsets and removes the snapshot after success or failure. The live artwork is not modified. ZIP export rejects incomplete page sets.
+
+Checks: `scripts/check-studio-export.cjs` inspects PNG pixels for image/background types, query variants, transient failures and recovery; `scripts/check-studio-export-ui.cjs` exercises desktop/mobile controls and downloaded PNG/ZIP files. Existing cricket and History export checks cover actual templates.
+
+### Standalone Instagram preview
+
+The editor's Preview button saves the current draft and navigates to `/admin/social/preview?draft=…` in the same tab. The authenticated preview reads only the signed-in account's local drafts, preserves the originating desk, and restores the selected page when returning to the editor. Page changes replace the preview URL, so refresh/deep links retain the selection without filling browser history with carousel clicks. Save failures keep the editor open.
+
+The preview is a scrolling page rather than a modal or fixed phone shell. Artwork scales to its measured container and retains its original aspect ratio, including tall Story pages. Sticky previous/next controls and a page picker support the full collection; horizontal swipes change pages while vertical gestures remain scrolling. Arrow keys navigate outside form fields. Current-page captions use the shared caption builder; fabricated engagement counts, timestamps, and promotional claims were removed. PNG and ZIP downloads use the verified export pipeline.
+
+Verification: `scripts/check-instagram-preview.cjs` checks 48 size/language/format cases at phone, landscape-phone, tablet and desktop sizes, plus swipe/keyboard boundaries, returning to the selected edit page, and a PNG download. Preview/editor tests cover pending-save persistence and save failures.

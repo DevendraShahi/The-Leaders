@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react';
-import { cricketTemplates, cricketTemplate, nplTeams, nplTeam, teamLogo, type NplTeamId, type CricketTemplateId } from '@/lib/post-studio/cricket-catalog';
+import { cricketTemplateOptionGroups, cricketTemplate, nplTeams, nplTeam, teamLogo, type NplTeamId, type CricketTemplateId } from '@/lib/post-studio/cricket-catalog';
 import { blankCricketData, oversToBalls, type CricketData } from '@/lib/post-studio/cricket-data';
 import type { PostDesign } from '@/lib/post-studio/types';
 import { cricketStyles, type CricketStyle } from '@/lib/post-studio/types';
@@ -124,7 +124,7 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
         {!managed && design.cricketStyle && design.cricketStyle !== 'classic' && <Slider label="Hero number size" value={data.heroScale ?? 100} min={70} max={130} disabled={design.lockedLayers.includes('headline')} onStart={() => {}} onChange={value => field('heroScale', value)} onEnd={() => {}} />}
         <label className={css.kitLabel}>
             <span>Cricket template</span>
-            <select aria-label="Cricket template" value={data.template} onChange={event => changePreset(event.target.value as CricketTemplateId)}>{cricketTemplates.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</select>
+            <select aria-label="Cricket template" value={data.template} onChange={event => changePreset(event.target.value as CricketTemplateId)}>{cricketTemplateOptionGroups.map(group => <optgroup key={group.label} label={group.label}>{group.items.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</optgroup>)}</select>
         </label>
 
         <div className={css.dataGrid}>
@@ -205,7 +205,7 @@ export default function CricketInspector({ design, onChange }: { design: PostDes
         </Section>}
         {subject && <Section title="Player portrait">
             <label className={css.kitLabel}><span><input type="checkbox" aria-label="Show player portrait" checked={data.showPlayerPhoto !== false} onChange={event => field('showPlayerPhoto', event.target.checked)} /> Show player portrait</span></label>
-            {data.template === 'wicket' && data.wicketType && bowlerCreditedTypes.includes(data.wicketType) && <label className={css.kitLabel}><span>Portrait subject</span><select aria-label="Portrait subject" value={subject.role} onChange={event => field('momentPhotoRole', event.target.value as 'batter' | 'bowler')}><option value="bowler">Credited bowler</option><option value="batter">Dismissed batter</option></select></label>}
+            {data.template === 'wicket' && data.wicketType && bowlerCreditedTypes.includes(data.wicketType) && <label className={css.kitLabel}><span>Portrait to edit</span><select aria-label="Portrait subject" value={subject.role} onChange={event => field('momentPhotoRole', event.target.value as 'batter' | 'bowler')}><option value="bowler">Credited bowler</option><option value="batter">Dismissed batter</option></select></label>}
             <label className={css.kitLabel}><span>Player photo · {nplTeam(subject.teamId).name}</span><select aria-label="Player photo" value={design.playerPhotoId ?? ''} onChange={event => { const player = findPlayers('all').find(item => item.id === event.target.value); if (player) onChange(current => selectPlayerPortrait(current, player)); }}><option value="">Exact name match or choose a player</option>{[subject.teamId, subject.teamId === data.teamId ? data.opponentId : data.teamId].map(id => <optgroup key={id} label={nplTeam(id).name}>{findPlayers(id).map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</optgroup>)}</select></label>
             <p className={css.fieldHint}>Choose either match team’s player. The post side follows the player’s role; changing sides clears the old score. Missing portraits use the team logo.</p>
         </Section>}

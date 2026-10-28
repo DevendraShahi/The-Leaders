@@ -1,3 +1,4 @@
+import { historyTemplates, historyFieldLabels } from './history-catalog';
 import { cricketTemplate, cricketTemplates, nplTeam, type CricketTemplateId } from './cricket-catalog';
 import type { PreparedImport, PromptOptions } from './prompt-engine';
 import type { PostDesign } from './types';
@@ -12,6 +13,7 @@ import { rebindCricketEvidence } from './prematch-posts';
 
 /** Suggestions are explicit defaults; editors can override them before copying. */
 export function suggestPostTemplates(kind: PromptOptions['kind'], brief: string): string[] {
+    if (kind === 'history') return ['on-this-day'];
     const rules: [string, RegExp][] = kind === 'news' ? [
         ['quote', /\b(quote|quotation)\b|भनाइ|उद्धरण/i], ['explainer', /\b(explainer|explain|analysis)\b|विश्लेषण/i],
     ] : [
@@ -34,7 +36,7 @@ export function suggestPostTemplates(kind: PromptOptions['kind'], brief: string)
 }
 
 export function postLabel(id: string) {
-    return cricketTemplates.find(item => item.id === id)?.title ?? ({ breaking: 'News update', explainer: 'Explainer', quote: 'Quote' }[id] || id);
+    return historyTemplates.find(item => item.id === id)?.title ?? cricketTemplates.find(item => item.id === id)?.title ?? ({ breaking: 'News update', explainer: 'Explainer', quote: 'Quote' }[id] || id);
 }
 
 export type ReviewColumn = { key: string; label: string; type: 'text' | 'number' | 'team' | 'checkbox' };
@@ -77,6 +79,17 @@ export function creationGaps(designs: PostDesign[]): CreationGap[] {
     }
     designs.forEach((design, page) => {
         add(page, 'headline', 'Headline');
+        if (design.template === 'history' && design.history) {
+            if (design.history.pageKind === 'paragraph') {
+                add(page, 'history.body', 'Paragraph text');
+                return;
+            }
+            for (const key of ['year', 'dateLabel', 'subject', 'fact'] as const) {
+                if (key === 'fact' && design.summary.trim()) continue;
+                add(page, `history.${key}`, historyFieldLabels[key]);
+            }
+            return;
+        }
         if (!design.cricket) return;
         const data = design.cricket, layout = data.template === 'player-of-match' && data.awardPerformance === 'bowling' ? 'bowler' : cricketTemplate(data.template).layout;
         const fields: string[] = [];
@@ -153,4 +166,4 @@ export function updateCreationValue(prepared: PreparedImport, page: number | nul
     return { ...prepared, designs };
 }
 
-export function templateId(design: PostDesign): CricketTemplateId | string { return design.cricket?.template ?? design.template; }
+export function templateId(design: PostDesign): CricketTemplateId | string { return design.template === 'history' ? design.history?.template ?? 'on-this-day' : design.cricket?.template ?? design.template; }

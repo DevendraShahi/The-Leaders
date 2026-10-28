@@ -227,3 +227,24 @@ export const cricketTemplates: CricketTemplate[] = [
     { id: 'champions', title: 'Champions', titleNe: 'च्याम्पियन', category: 'Results & tournament', layout: 'result', headline: 'CHAMPIONS', headlineNe: 'च्याम्पियन', description: 'The title-winning team in a gold-accented composition.' },
 ];
 export const cricketTemplate = (id: CricketTemplateId) => cricketTemplates.find(template => template.id === id)!;
+
+/** Match moments split by over-phase and event type so editors find the right post mid-innings. */
+export type MatchMomentGroupId = 'ball-events' | 'over-milestones' | 'innings-turns' | 'interruptions';
+export interface MatchMomentGroup {
+    id: MatchMomentGroupId; title: string; titleNe: string; description: string; templates: CricketTemplateId[];
+}
+export const matchMomentGroups: MatchMomentGroup[] = [
+    { id: 'ball-events', title: 'Ball events', titleNe: 'बल घटना', description: 'Instant posts off a single delivery.', templates: ['four', 'six', 'wicket'] },
+    { id: 'over-milestones', title: 'Over milestones', titleNe: 'ओभर माइलस्टोन', description: 'Running score and phase markers as the overs tick by.', templates: ['score', 'powerplay', 'partnership'] },
+    { id: 'innings-turns', title: 'Innings turns', titleNe: 'इनिङ्स परिवर्तन', description: 'Innings break, the chase, and revised targets.', templates: ['innings', 'target', 'dls'] },
+    { id: 'interruptions', title: 'Interruptions', titleNe: 'खेल अवरोध', description: 'Rain, delays and the resumption update.', templates: ['rain'] },
+];
+export const matchMomentGroup = (id: CricketTemplateId) => matchMomentGroups.find(group => group.templates.includes(id));
+
+/** Flat option groups for template selects: Match moments is split into its over/event sub-groups. */
+export const cricketTemplateOptionGroups: { label: string; items: { id: CricketTemplateId; title: string }[] }[] = [
+    { label: 'Before the match', items: cricketTemplates.filter(item => item.category === 'Before the match').map(({ id, title }) => ({ id, title })) },
+    ...matchMomentGroups.map(group => ({ label: `Match moments · ${group.title}`, items: group.templates.map(id => ({ id, title: cricketTemplate(id).title })) })),
+    { label: 'Player performances', items: cricketTemplates.filter(item => item.category === 'Player performances').map(({ id, title }) => ({ id, title })) },
+    { label: 'Results & tournament', items: cricketTemplates.filter(item => item.category === 'Results & tournament').map(({ id, title }) => ({ id, title })) },
+];

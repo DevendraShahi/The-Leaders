@@ -3,3 +3,13 @@
 .artwork[data-format=landscape] .content{inset:5%;grid-template-columns:52% 48%;grid-template-rows:14% 22% 19% 24% 7% 8% 6%}.artwork[data-format=landscape] .content>header,.artwork[data-format=landscape] .content>footer{grid-column:1/-1}.artwork[data-format=landscape] .title{grid-row:2;grid-column:1;padding:0 10px 0 0}.artwork[data-format=landscape] .identities{grid-row:3;grid-column:1;gap:8px;padding-right:10px}.artwork[data-format=landscape] .team{grid-template-columns:20px 1fr;gap:4px}.artwork[data-format=landscape] .heroBlock{grid-row:4;grid-column:1;padding-right:10px;grid-template-rows:75% 25%}.artwork[data-format=landscape] .feature{grid-row:2/4;grid-column:2;gap:8px;padding:0}.artwork[data-format=landscape] .snapshot{grid-row:4;grid-column:2}.artwork[data-format=landscape] .source{grid-row:5;grid-column:1;padding-right:10px;text-align:left}.artwork[data-format=landscape] .summary{grid-row:5;grid-column:2;padding:0}.artwork[data-format=landscape] .credit{grid-row:6;grid-column:1/-1;padding:0}.artwork[data-format=landscape] .content>footer{grid-row:7}.artwork[data-format=landscape] .hero{letter-spacing:-1.5px}
 .team{grid-template-rows:minmax(0,1fr);height:100%}.team>img,.teamName{min-height:0}
 .phaseNote{min-height:0;min-width:0}
+
+/* Keep the score and batting side; editorial workflow labels never appear on posts. */
+.artwork:not([data-format=landscape]) .content{grid-template-rows:8% 12% 10% 25% 25% 9% 5% 6%}
+.snapshot{grid-template-rows:100%}
+.artwork[data-format=landscape] .content{grid-template-rows:14% 22% 19% 24% 13% 8%}
+.artwork[data-format=landscape] .content>footer{grid-row:6}
+.teamName{display:flex;flex-direction:column;justify-content:safe center}
+.snapshot[data-team-badge]{grid-template-columns:18px minmax(0,1fr);gap:6px;align-items:center}
+.scoreLogo{width:100%;height:100%;object-fit:contain;max-height:24px}
+.artwork[data-format=square] .content{grid-template-rows:8% 16% 10% 25% 25% 9% 5% 2%}

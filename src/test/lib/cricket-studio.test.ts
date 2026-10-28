@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 const storage = vi.hoisted(() => ({ data: new Map<string, string>() }));
 vi.mock('@/lib/post-studio/storage', () => ({ default: { getItem: async (key: string) => storage.data.get(key) ?? null, setItem: async (key: string, value: string) => { storage.data.set(key, value); } } }));
-import { cricketTemplateIds, cricketTemplates, nplTeams } from '@/lib/post-studio/cricket-catalog';
+import { cricketTemplateIds, cricketTemplateOptionGroups, cricketTemplates, matchMomentGroup, matchMomentGroups, nplTeams } from '@/lib/post-studio/cricket-catalog';
 import { chaseEquation, cricketDataSchema, cricketNumber, defaultCricketData, oversToBalls, runRate, strikeRate } from '@/lib/post-studio/cricket-data';
 import { createCricketDesign } from '@/lib/post-studio/cricket-design';
 import { createDraft, postDesignSchema, readDraft, updateDraft } from '@/lib/post-studio/drafts';
@@ -12,7 +12,9 @@ describe('Cricket coverage templates', () => {
         const design = createCricketDesign(id, 'janakpur', 'kathmandu', 'portrait', 'ne');
         expect(postDesignSchema.parse(design)).toEqual(design);
         const saved = await createDraft('sports-editor', id, design);
-        expect((await readDraft('sports-editor', saved.id)).design).toEqual(design);
+        expect((await readDraft('sports-editor', saved.id)).design).toEqual({ ...design, echo11Variant: saved.design.echo11Variant });
+        expect(saved.design.echo11Variant).toBeGreaterThanOrEqual(0);
+        expect(saved.design.echo11Variant).toBeLessThan(8);
         expect(design.cricket?.sample).toBe(false);
         expect(design.headline).toBe(cricketTemplates.find(item => item.id === id)!.headlineNe);
     });
@@ -23,6 +25,20 @@ describe('Cricket coverage templates', () => {
             const design = createCricketDesign('matchday', team.id, team.id === 'lumbini' ? 'sudurpaschim' : 'lumbini');
             expect(design.accent).toBe(team.primary); expect(design.backgroundColor).toBe(team.dark);
         }
+    });
+    it('groups every match moment template into exactly one over/event sub-group', () => {
+        const moments = cricketTemplates.filter(item => item.category === 'Match moments').map(item => item.id);
+        const grouped = matchMomentGroups.flatMap(group => group.templates);
+        expect(grouped.length).toBe(moments.length);
+        expect(new Set(grouped).size).toBe(grouped.length);
+        expect([...grouped].sort()).toEqual([...moments].sort());
+        expect(matchMomentGroups.map(group => group.id)).toEqual(['ball-events', 'over-milestones', 'innings-turns', 'interruptions']);
+        for (const id of moments) expect(matchMomentGroup(id)).toBeDefined();
+        expect(matchMomentGroup('matchday')).toBeUndefined();
+        const optionIds = cricketTemplateOptionGroups.flatMap(group => group.items.map(item => item.id));
+        expect(new Set(optionIds).size).toBe(cricketTemplates.length);
+        expect(optionIds.filter(id => id === 'four').length).toBe(1);
+        expect(cricketTemplateOptionGroups.find(group => group.label.startsWith('Match moments'))).toMatchObject({ label: 'Match moments · Ball events' });
     });
     it('rejects invalid overs, impossible dates, duplicate table entries and same-team fixtures', () => {
         const valid = defaultCricketData();

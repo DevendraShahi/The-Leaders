@@ -1,5 +1,7 @@
 "use client";
 
+import { StudioDisclosure } from './StudioDisclosure';
+
 import { useState } from 'react';
 import { Check, ExternalLink, ImagePlus, Search, Users } from 'lucide-react';
 import { nplTeams, nplTeam, teamLogo, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
@@ -41,6 +43,6 @@ export default function CricketPlayerLibrary({ initialTeam, disabled, selectedPh
             </article>;
         })}</div>
         <p className={styles.note}>{readyCount} portraits ready for {team === 'all' ? 'all teams' : nplTeam(team).name}. Some players do not yet have a bundled portrait; use Find photo in the full roster.</p>
-        <details className={styles.credits}><summary>Sources & credits</summary><p>Team assignments checked {playerCatalogDate} against the <a href={playerRosterSource} target="_blank" rel="noopener noreferrer">league directory</a> ({nplPlayers.length} players). Photos can show earlier-season or national-team kits. Team photos retain their owners’ rights; individual source links show provenance. Commons photos retain their listed licenses and credits.</p><a href="/studio/cricket/players/catalog.json" target="_blank" rel="noopener noreferrer">Full photo credits</a></details>
+        <StudioDisclosure title="Sources & credits" className={styles.credits}><p>Team assignments checked {playerCatalogDate} against the <a href={playerRosterSource} target="_blank" rel="noopener noreferrer">league directory</a> ({nplPlayers.length} players). Photos can show earlier-season or national-team kits. Team photos retain their owners’ rights; individual source links show provenance. Commons photos retain their listed licenses and credits.</p><a href="/studio/cricket/players/catalog.json" target="_blank" rel="noopener noreferrer">Full photo credits</a></StudioDisclosure>
     </section>;
 }

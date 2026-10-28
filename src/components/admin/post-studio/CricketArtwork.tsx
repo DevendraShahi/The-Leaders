@@ -1,7 +1,12 @@
 "use client";
 
+import { CricketTournamentMark } from './CricketTournamentMark';
+
+import { Echo11Credit, echo11FrameClass } from './Echo11Credit';
+
 import { cricketTeamIssues } from '@/lib/post-studio/cricket-team-context';
 import { isCoverageTemplate } from '@/lib/post-studio/coverage-posts';
+import { VictoryArtwork } from './VictoryArtwork';
 import { CoverageArtwork } from './CoverageArtwork';
 import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import { hasDevanagari } from '@/lib/post-studio/typography';
@@ -31,6 +36,7 @@ export type CricketArtworkProps = {
     selectedPlacedImageId?: string; onSelectPlacedImage?: (id: string) => void;
 };
 export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({ design, selected, guides, onSelect, onChooseImage, selectedPlacedImageId, onSelectPlacedImage }, ref) => {
+    if (design.cricket?.template === 'result') return <VictoryArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.cricket && isCoverageTemplate(design.cricket.template)) return <CoverageArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.cricket?.template === 'partnership') return <PartnershipArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
     if (design.cricket && ['powerplay', 'partnership'].includes(design.cricket.template)) return <PhaseArtwork ref={ref} design={design} selected={selected} guides={guides} onSelect={onSelect} selectedPlacedImageId={selectedPlacedImageId} onSelectPlacedImage={onSelectPlacedImage} />;
@@ -250,8 +256,7 @@ export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({
                 </div>{data.template === 'team' && stats(data.statRows.map(row => [row.label, row.value]))}</>;
         }
     };
-    const updateTime = data.updatedAt ? new Date(data.updatedAt).toLocaleTimeString(data.language === 'ne' ? 'ne-NP' : 'en-GB', { timeZone: 'Asia/Kathmandu', hour: '2-digit', minute: '2-digit', hour12: false }) : '';
-    return <div ref={ref} data-testid="post-artwork" data-cricket-template={data.template} data-export-error={cricketTeamIssues(data).join(' ')} className={`${css.artwork} ${landscape ? css.landscape : ''} ${compact ? css.square : ''} ${design.format === 'story' ? css.story : ''}`} style={{ width: 360, height, background: design.backgroundGradient || design.backgroundColor || team.dark, '--cricket-accent': design.accent, '--cricket-secondary': team.secondary, textAlign: design.textAlign, fontFamily: data.language === 'ne' ? 'Hind_400Regular,sans-serif' : 'Onest_400Regular,sans-serif' } as CSSProperties}>
+    return <div ref={ref} data-testid="post-artwork" data-echo11-credit="true" data-format={design.format} data-cricket-template={data.template} data-export-error={cricketTeamIssues(data).join(' ')} className={`${echo11FrameClass} ${css.artwork} ${landscape ? css.landscape : ''} ${compact ? css.square : ''} ${design.format === 'story' ? css.story : ''}`} style={{ width: 360, height, background: design.backgroundGradient || design.backgroundColor || team.dark, '--cricket-accent': design.accent, '--cricket-secondary': team.secondary, textAlign: design.textAlign, fontFamily: data.language === 'ne' ? 'Hind_400Regular,sans-serif' : 'Onest_400Regular,sans-serif' } as CSSProperties}>
         <ArtworkPhoto design={design} height={height} />
         <div className={css.atmosphere} style={data.theme === 'split' ? { background: `linear-gradient(125deg,${team.dark}b0 45%,${opponent.dark}d9 45%)` } : undefined} />
         {design.imageUri && !hidden('visual') && <div className={css.photoShade} style={{ background: design.imageTone === 'clear' ? 'linear-gradient(0deg,#030713dd,transparent 85%)' : design.imageTone === 'warm' ? 'linear-gradient(0deg,#251408ee,#25140855)' : 'linear-gradient(0deg,#030713f5,#03071366)' }} />}
@@ -262,26 +267,24 @@ export const CricketArtwork = forwardRef<HTMLDivElement, CricketArtworkProps>(({
             <i />
         </div>
         <ArtworkPlacedImages layerFilter="middle" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
-        <div className={css.inner}>
+        <div className={css.inner} data-credit-flow>
             <header className={css.masthead}>
                 <img src="/studio/leaders.png" width={landscape ? 24 : 30} height={landscape ? 24 : 30} alt="The Leaders" />
                 <div>
                     <b>{data.competition}</b>{!hidden('kicker') && <span {...select('kicker')} className={selectedClass('kicker')} style={textStyle('kicker', landscape ? 6 : 7, design.eyebrow)}>{design.eyebrow}</span>}</div>
-                <span className={css.status}>{t('CRICKET', 'क्रिकेट')}</span>
+                <CricketTournamentMark />
             </header>
             <div className={css.matchMeta}>
                 <span>{data.matchLabel}</span>
                 <span>{team.short} <i>×</i> {opponent.short}</span>
             </div>
             <div className={`${css.body} ${css['layout' + spec.layout]}`} data-export-fit>{renderBody()}{!hidden('supporting') && design.summary && <div {...select('supporting')} className={`${css.note} ${selectedClass('supporting')}`} style={textStyle('supporting', landscape ? 8 : 10, design.summary)} data-line-limit={textLineLimit(design.format, 'supporting', 'cricket')}>{design.summary}</div>}</div>
-            {!hidden('footer') && <footer {...select('footer')} className={`${css.footer} ${selectedClass('footer')}`} style={textStyle('footer', landscape ? 5 : 6, design.author)}>
-                <span>{design.author}</span>
-                <span>{updateTime ? `${updateTime} NPT` : data.matchDate || 'NPL'}</span>
-            </footer>}
+
         </div>
         <ArtworkPlacedImages layerFilter="front" images={design.placedImages} canvasWidth={360} canvasHeight={height} selectedId={selectedPlacedImageId} onSelectImage={onSelectPlacedImage} isInteractive={Boolean(onSelectPlacedImage)} />
         {guides && <div className={css.safeGuides} aria-hidden="true" />}
         {onChooseImage && !design.imageUri && <button className={css.photoButton} onClick={onChooseImage} aria-label="Add cricket photo">＋ {t('PHOTO', 'फोटो')}</button>}
-    </div>;
+    <Echo11Credit variant={design.echo11Variant} seed={design.headline} language={data.language} />
+        </div>;
 });
 CricketArtwork.displayName = 'CricketArtwork';

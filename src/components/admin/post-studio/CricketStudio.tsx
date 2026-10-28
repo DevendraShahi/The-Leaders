@@ -1,8 +1,10 @@
 "use client";
 
+import { StudioDisclosure } from './StudioDisclosure';
+
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowUpRight, Check, ChevronDown, Layers3, Search, SlidersHorizontal } from 'lucide-react';
-import { cricketTemplates, nplTeams, type CricketCategory, type CricketLanguage, type CricketTemplateId, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
+import { cricketTemplateOptionGroups, cricketTemplates, matchMomentGroups, nplTeams, type CricketCategory, type CricketLanguage, type CricketTemplateId, type MatchMomentGroupId, type NplTeamId } from '@/lib/post-studio/cricket-catalog';
 import { createCricketDesign, createCricketDraftDesign } from '@/lib/post-studio/cricket-design';
 import { createDraftCollection, type PostDraft } from '@/lib/post-studio/drafts';
 import { cricketStyles, postOutputDimensions, type PostFormat, type CricketStyle } from '@/lib/post-studio/types';
@@ -42,6 +44,7 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
     const promptFixture = contentType === 'fixtures' ? fixture ?? dayGames[0] : fixture;
     const [language, setLanguage] = useState<CricketLanguage>('en'), [format, setFormat] = useState<PostFormat>('portrait');
     const [category, setCategory] = useState<CricketCategory | 'All'>('All'), [query, setQuery] = useState('');
+    const [momentGroup, setMomentGroup] = useState<MatchMomentGroupId | 'All'>('All');
     const [pack, setPack] = useState('match'), [busy, setBusy] = useState(false), [error, setError] = useState('');
     const lineupContext = `${fixtureDate}:${fixtureChoice}:${teamId}:${opponentId}`;
     const lineupText = pastedLineup.context === lineupContext ? pastedLineup.value : '';
@@ -60,7 +63,7 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
         const games = fixturesForDate(date);
         chooseFixture(games.length === 1 ? games[0].id : '');
     };
-    const visible = cricketTemplates.filter(item => (category === 'All' || item.category === category) && `${item.title} ${item.titleNe} ${item.description}`.toLowerCase().includes(query.trim().toLowerCase()));
+    const visible = cricketTemplates.filter(item => (category === 'All' || item.category === category) && (category !== 'Match moments' || momentGroup === 'All' || matchMomentGroups.find(group => group.id === momentGroup)!.templates.includes(item.id)) && `${item.title} ${item.titleNe} ${item.description}`.toLowerCase().includes(query.trim().toLowerCase()));
     useEffect(() => {
         const node = gridRef.current?.querySelector<HTMLElement>('[data-template-preview]');
         if (!node) return;
@@ -117,18 +120,18 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
                 <label className={css.kitLabel}><span>Match date · Nepal time</span><input type="date" value={fixtureDate} disabled={busy} onChange={event => chooseDate(event.target.value)} /></label>
                 <label className={css.kitLabel}><span>Scheduled game</span><select value={fixtureChoice} disabled={busy} onChange={event => chooseFixture(event.target.value)}><option value="">{dayGames.length ? `Choose game · ${dayGames.length} ${dayGames.length === 1 ? 'match' : 'matches'} on this date` : playoff ? `${playoff.label} · teams to confirm` : restDay ? 'Rest day' : 'No scheduled games on this date'}</option>{dayGames.map((match, index) => <option key={match.id} value={match.id}>{fixtureLabel(match, index)}</option>)}<option value="custom">{playoff ? `Choose confirmed teams · ${playoff.label}` : 'Custom match'}</option></select></label>
             </div>
-            <label className={css.kitLabel}><span>Post content type</span><select value={contentType} disabled={busy} onChange={event => setContentType(event.target.value as CricketTemplateId)}>{categories.filter(category => category !== 'All').map(category => <optgroup key={category} label={category}>{cricketTemplates.filter(item => item.category === category).map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</optgroup>)}</select></label>
+            <label className={css.kitLabel}><span>Post content type</span><select value={contentType} disabled={busy} onChange={event => setContentType(event.target.value as CricketTemplateId)}>{cricketTemplateOptionGroups.map(group => <optgroup key={group.label} label={group.label}>{group.items.map(item => <option key={item.id} value={item.id}>{item.title}</option>)}</optgroup>)}</select></label>
             <label className={css.kitLabel}><span>Featured team</span><select value={teamId} disabled={busy || !fixtureChoice} onChange={event => { const next = event.target.value as NplTeamId; setTeamId(next); if (next === opponentId) setOpponentId(teamId); }}>{nplTeams.filter(team => !selectedFixture || [selectedFixture.teamId, selectedFixture.opponentId].includes(team.id)).map(team => <option key={team.id} value={team.id}>{team.name}</option>)}</select></label>
             <label className={css.kitLabel}><span>Opponent</span><select value={opponentId} disabled={busy || !fixtureChoice || Boolean(selectedFixture)} onChange={event => setOpponentId(event.target.value as NplTeamId)}>{nplTeams.filter(team => team.id !== teamId && (!selectedFixture || [selectedFixture.teamId, selectedFixture.opponentId].includes(team.id))).map(team => <option key={team.id} value={team.id}>{team.name}</option>)}</select></label>
             {contentType === 'playing-xi' && <label className={css.kitLabel} style={{ gridColumn: '1 / -1' }}><span id="playing-xi-label">Playing XI names (optional)</span><textarea aria-labelledby="playing-xi-label" rows={6} maxLength={2000} value={lineupText} disabled={busy} aria-describedby="playing-xi-hint" onChange={event => { setPastedLineup({ context: lineupContext, value: event.target.value }); setError(''); }} placeholder="Paste eleven names, one per line" /><small id="playing-xi-hint">One player per line. Add (c) and (wk) if confirmed. Paste all eleven to create the post directly, or leave blank to use the prompt.</small>{lineupErrors.length > 0 && <small role="alert">{lineupErrors.join(' ')}</small>}</label>}
             <button className={styles.primary} disabled={busy || (contentType === 'playing-xi' && lineupErrors.length > 0) || (contentType === 'fixtures' ? !dayGames.length && !restDay && fixtureChoice !== 'custom' : !fixtureChoice)} onClick={() => contentType === 'fixtures' || (contentType === 'playing-xi' && lineup.length) ? void create([contentType]) : setPromptOpen(true)}>{contentType === 'fixtures' ? 'Create fixtures post' : contentType === 'playing-xi' && lineup.length ? 'Create Playing XI post' : 'New cricket post'}</button>
             {contentType === 'fixtures' && <button className={styles.button} disabled={busy || !promptFixture} onClick={() => setPromptOpen(true)}>Use prompt instead</button>}
             <div className={css.fixtureNote}>{fixture ? <><strong>{fixture.label ?? `Match ${fixture.matchNumber}`} · {fixture.startTime ? `${fixture.startTime} NPT` : 'Start time to confirm'}</strong><span>{fixture.venue}</span></> : <span>{playoff ? `${playoff.label} · ${playoff.participants}. Select the confirmed participants; teams are not inferred from standings.` : restDay ? 'Rest day on your fixture sheet. No match is scheduled.' : fixtureChoice === 'custom' ? 'Choose the teams for your custom match.' : dayGames.length > 1 ? 'Two games today. Select the specific game before creating a post.' : 'Choose a scheduled game or use Custom match.'}</span>}
-                <details><summary>Schedule source and start time</summary><a href={fixtureScheduleSource} target="_blank" rel="noreferrer">Your Season III fixture sheet</a><p>The sheet lists 12:30 and 16:30. A <a href={fixtureTimingSource} target="_blank" rel="noreferrer">reported revision</a> lists evening games at 17:00. Confirm or adjust the selected game's time here.</p>{fixture && <label className={css.kitLabel}><span>Start time · Nepal</span><input type="time" value={fixture.startTime} disabled={busy} onChange={event => setTimeOverride(event.target.value)} /></label>}</details>
+                <StudioDisclosure title="Schedule source and start time"><a href={fixtureScheduleSource} target="_blank" rel="noreferrer">Your Season III fixture sheet</a><p>The sheet lists 12:30 and 16:30. A <a href={fixtureTimingSource} target="_blank" rel="noreferrer">reported revision</a> lists evening games at 17:00. Confirm or adjust the selected game's time here.</p>{fixture && <label className={css.kitLabel}><span>Start time · Nepal</span><input type="time" value={fixture.startTime} disabled={busy} onChange={event => setTimeOverride(event.target.value)} /></label>}</StudioDisclosure>
             </div>
         </section>
         {promptOpen && <PromptCreationModal scope={scope} initialOptions={{ language, format, template: contentType, teams: contentType === 'fixtures' && promptFixture ? { teamId: promptFixture.teamId, opponentId: promptFixture.opponentId } : { teamId, opponentId }, fixture: promptFixture, cricketStyle: visualStyle }} onClose={() => setPromptOpen(false)} onOpen={onOpenDraft} />}
-        <details className={styles.section} style={{ margin: '0 24px 24px' }}><summary>Browse templates manually</summary>
+        <StudioDisclosure title="Browse templates manually" variant="feature" description="Choose a template, adjust the match, and start with a filled example." icon={<Layers3 size={18} />} badge={`${cricketTemplates.length} templates`} style={{ margin: '0 24px 24px' }}>
         <fieldset className={css.pageWorkspace} disabled={busy}>
             <aside className={css.setupPanel} aria-label="Match setup">
                 <div className={css.setupHeading}>
@@ -198,8 +201,9 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
                         <input aria-label="Search cricket templates" placeholder="Search templates…" value={query} onChange={event => setQuery(event.target.value)} />
                     </label>
                 </div>
-                <div className={css.pageCategories} role="group" aria-label="Cricket template categories">{categories.map(item => <button key={item} aria-label={item} aria-pressed={category === item} onClick={() => setCategory(item)}>{item}<span aria-hidden="true">{item === 'All' ? cricketTemplates.length : cricketTemplates.filter(template => template.category === item).length}</span>
+                <div className={css.pageCategories} role="group" aria-label="Cricket template categories">{categories.map(item => <button key={item} aria-label={item} aria-pressed={category === item} onClick={() => { setCategory(item); if (item !== 'Match moments') setMomentGroup('All'); }}>{item}<span aria-hidden="true">{item === 'All' ? cricketTemplates.length : cricketTemplates.filter(template => template.category === item).length}</span>
                 </button>)}</div>
+                {category === 'Match moments' && <div className={css.pageMomentGroups} role="group" aria-label="Match moment sub-groups">{[{ id: 'All' as const, title: 'All moments', count: cricketTemplates.filter(template => template.category === 'Match moments').length }, ...matchMomentGroups.map(group => ({ id: group.id, title: group.title, count: group.templates.length }))].map(item => <button key={item.id} aria-label={item.title} aria-pressed={momentGroup === item.id} onClick={() => setMomentGroup(item.id)}>{item.title}<span aria-hidden="true">{item.count}</span></button>)}</div>}
                 <label className={css.kitLabel} style={{ maxWidth: 320 }}><span>Preview style</span><select aria-label="Template preview style" value={visualStyle} onChange={event => setVisualStyle(event.target.value as CricketStyle)}>{cricketStyles.map(style => <option key={style.id} value={style.id}>{style.label}</option>)}</select></label>
                 <div className={css.galleryMeta}>
                     <span>{visible.length} {visible.length === 1 ? 'template' : 'templates'} · illustrative previews</span>
@@ -207,7 +211,8 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
                         <Check size={12} />{featured.short} vs {opponent.short} · {postOutputDimensions[format].join(' × ')}</span>
                 </div>
                 {error && <p role="alert" className={styles.error}>{error}</p>}
-                <div ref={gridRef} className={css.pageTemplateGrid}>{visible.map(template => {
+                <div ref={gridRef}>{(() => {
+                    const card = (template: typeof visible[number]) => {
                     const preview = createCricketDesign(template.id, teamId, opponentId, format, language, visualStyle);
                     const player = findPlayers(teamId)[0];
                     if (visualStyle !== 'classic' && player?.photo?.url && ['batter', 'bowler'].includes(template.layout)) {
@@ -240,14 +245,25 @@ export default function CricketStudio({ scope, onBack, onOpenDraft }: { scope: s
                             </button>
                         </div>
                     </article>;
-                })}</div>
+                    };
+                    if (category === 'Match moments' && momentGroup === 'All') return matchMomentGroups.map(group => {
+                        const items = visible.filter(template => group.templates.includes(template.id));
+                        if (!items.length) return null;
+                        return <section key={group.id} className={css.momentSection} aria-label={group.title}>
+                            <div className={css.momentSectionHeading}><h3>{group.title}</h3><p>{group.description}</p></div>
+                            <div className={css.pageTemplateGrid}>{items.map(card)}</div>
+                        </section>;
+                    });
+                    return <div className={css.pageTemplateGrid}>{visible.map(card)}</div>;
+                })()}
+                </div>
                 {!visible.length && <div className={css.emptyGallery}>
                     <Search size={25} />
                     <h3>No matching templates</h3>
                     <p>Try another name or browse all categories.</p>
-                    <button className={styles.button} onClick={() => { setQuery(''); setCategory('All'); }}>Show all templates</button>
+                    <button className={styles.button} onClick={() => { setQuery(''); setCategory('All'); setMomentGroup('All'); }}>Show all templates</button>
                 </div>}
             </section>
-        </fieldset></details>
+        </fieldset></StudioDisclosure>
     </div>;
 }
