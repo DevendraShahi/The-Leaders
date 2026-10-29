@@ -47,3 +47,33 @@ describe('NPL homepage welcome popup', () => {
         expect(localStorage.getItem(NPL_PROMO_KEY)).toBeNull(); other.remove();
     });
 });
+
+
+it('rotates while the pointer is over the hero, and resumes automatically after selecting a dot', () => {
+    render(<NplWelcomePopup />); reveal();
+    const slide = (number: number) => screen.getByRole('button', { name: `Slide ${number}` });
+    expect(slide(1)).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.mouseEnter(screen.getByTestId('npl-promo-carousel'));
+    act(() => vi.advanceTimersByTime(3200));
+    expect(slide(2)).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(slide(3));
+    expect(slide(3)).toHaveAttribute('aria-pressed', 'true');
+    act(() => vi.advanceTimersByTime(3199));
+    expect(slide(3)).toHaveAttribute('aria-pressed', 'true');
+    act(() => vi.advanceTimersByTime(1));
+    expect(slide(4)).toHaveAttribute('aria-pressed', 'true');
+    act(() => vi.advanceTimersByTime(3200));
+    expect(slide(1)).toHaveAttribute('aria-pressed', 'true');
+});
+it('pauses only through its explicit control and keeps manual navigation working while paused', () => {
+    render(<NplWelcomePopup />); reveal();
+    fireEvent.click(screen.getByRole('button', { name: 'Pause slideshow' }));
+    act(() => vi.advanceTimersByTime(6400));
+    expect(screen.getByRole('button', { name: 'Slide 1' })).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByRole('button', { name: 'Slide 3' }));
+    act(() => vi.advanceTimersByTime(3200));
+    expect(screen.getByRole('button', { name: 'Slide 3' })).toHaveAttribute('aria-pressed', 'true');
+    fireEvent.click(screen.getByRole('button', { name: 'Resume slideshow' }));
+    act(() => vi.advanceTimersByTime(3200));
+    expect(screen.getByRole('button', { name: 'Slide 4' })).toHaveAttribute('aria-pressed', 'true');
+});

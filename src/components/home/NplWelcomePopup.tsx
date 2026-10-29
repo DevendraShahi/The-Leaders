@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowUpRight, X } from 'lucide-react';
+import { ArrowUpRight, Pause, Play, X } from 'lucide-react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from '@/components/ui/dialog';
 import { useLanguage } from '@/components/providers/language-provider';
 import styles from './NplWelcomePopup.module.css';
@@ -53,7 +53,7 @@ export function NplWelcomePopup() {
         if (!open || paused) return;
         const id = window.setInterval(advance, SLIDE_INTERVAL);
         return () => window.clearInterval(id);
-    }, [open, paused, advance]);
+    }, [open, paused, active, advance]);
 
     // Campaign gate
     useEffect(() => {
@@ -91,11 +91,7 @@ export function NplWelcomePopup() {
             </header>
 
             {/* ── Hero carousel ── */}
-            <div
-                className={styles.visual}
-                onMouseEnter={() => setPaused(true)}
-                onMouseLeave={() => setPaused(false)}
-            >
+            <div className={styles.visual} data-testid="npl-promo-carousel">
                 {SLIDES.map((slide, i) => (
                     <div
                         key={slide.src}
@@ -122,16 +118,20 @@ export function NplWelcomePopup() {
                     <DialogTitle className={styles.title}>{isNe ? 'एनपीएल २०२६' : 'NPL 2026'}</DialogTitle>
                 </div>
 
+                <button type="button" className={styles.rotationToggle} onClick={() => setPaused(value => !value)} aria-label={isNe ? paused ? 'स्लाइड फेरि चलाउनुहोस्' : 'स्लाइड रोक्नुहोस्' : paused ? 'Resume slideshow' : 'Pause slideshow'}>
+                    {paused ? <Play size={15} /> : <Pause size={15} />}
+                </button>
+
                 {/* Dot indicators */}
-                <div className={styles.dots} role="tablist" aria-label={isNe ? 'स्लाइड नेभिगेसन' : 'Slide navigation'}>
+                <div className={styles.dots} role="group" aria-label={isNe ? 'स्लाइड नेभिगेसन' : 'Slide navigation'}>
                     {SLIDES.map((_, i) => (
                         <button
                             key={i}
-                            role="tab"
-                            aria-selected={i === active}
-                            aria-label={`Slide ${i + 1}`}
+                            type="button"
+                            aria-pressed={i === active}
+                            aria-label={isNe ? `स्लाइड ${i + 1}` : `Slide ${i + 1}`}
                             className={`${styles.dot} ${i === active ? styles.dotActive : ''}`}
-                            onClick={() => { setActive(i); setPaused(true); }}
+                            onClick={() => setActive(i)}
                         />
                     ))}
                 </div>
