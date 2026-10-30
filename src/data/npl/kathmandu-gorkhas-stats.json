@@ -17,7 +17,7 @@
       "category": "Domestic Marquee",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm fast-medium",
+      "bowlingStyle": "Right-arm fast",
       "stats": {
         "matches": 74,
         "innings": 46,
@@ -38,6 +38,12 @@
         "remote": "https://nplt20league.com/uploads/karan-kc-mv9avvmj-8058109c-3b06-4ece-bbd2-134108e89e2a.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/karan-kc-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/karan-kc/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -48,7 +54,7 @@
       "isCaptain": false,
       "isMarquee": true,
       "category": "Overseas",
-      "origin": "Australia",
+      "origin": "Australian",
       "battingStyle": "Left-hand bat",
       "bowlingStyle": "Right-arm legbreak",
       "stats": {
@@ -71,6 +77,12 @@
         "remote": "https://nplt20league.com/uploads/david-warner-mv9ahb1x-03ef708c-92ff-46bf-8dd2-9b2a29db0009.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/david-warner-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/david-warner/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -82,7 +94,7 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "India",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed",
       "bowlingStyle": "",
       "stats": {
         "matches": 82,
@@ -104,6 +116,12 @@
         "remote": "https://nplt20league.com/uploads/k-s-bharat-mv9hzbxg-0d6db712-a766-4693-b1dc-4707915a973e.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/ks-bharat-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ks-bharat/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -137,6 +155,12 @@
         "remote": "https://nplt20league.com/uploads/sahan-arachchinge-mv9auuhk-9ac686d8-b36e-46b6-a964-eb69066eca53.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/sahan-arachchige-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sahan-arachchige/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -148,7 +172,7 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Australia",
-      "battingStyle": "Left-hand bat",
+      "battingStyle": "Left-handed",
       "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 78,
@@ -161,15 +185,22 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/12",
-        "bowlingAverage": 36.0,
+        "bowlingAverage": 36,
         "economy": 7.8
       },
       "highlights": "Australia national ODI representative and Brisbane Heat / Hobart Hurricanes Big Bash League (BBL) title-winning strokemaker.",
       "image": {
-        "local": "/studio/cricket/players/sam-heazlett.webp",
-        "remote": "https://nplt20league.com/uploads/2894c1eb-c8e7-4411-998b-2fe7571e94c1-photoroom-mvnkmsf1-b4a9c2bb-0c17-4541-bdb8-03c4c3017a2c.png",
-        "source": "NPL T20 League / Kathmandu Gorkhas",
-        "thumbnail": "/studio/cricket/players/sam-heazlett-thumb.webp"
+        "local": "/studio/cricket/players/sam-heazlett-user-20261030.webp",
+        "remote": "",
+        "source": "User-supplied portrait",
+        "sourceUrl": "/studio/cricket/players/sam-heazlett-user-20261030.webp",
+        "thumbnail": "/studio/cricket/players/sam-heazlett-user-20261030-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sam-heazlett/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -180,7 +211,7 @@
       "isCaptain": false,
       "isMarquee": false,
       "category": "Overseas",
-      "origin": "USA",
+      "origin": "United States",
       "battingStyle": "Right-hand bat",
       "bowlingStyle": "",
       "stats": {
@@ -203,6 +234,12 @@
         "remote": "https://nplt20league.com/uploads/smit-patel-mvmb6xko-b9ef83d2-7ae5-4511-b744-cfc713a9a9dd.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/smit-patel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/smit-patel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -215,7 +252,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 38,
         "innings": 32,
@@ -227,7 +264,7 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/14",
-        "bowlingAverage": 32.0,
+        "bowlingAverage": 32,
         "economy": 7.2
       },
       "highlights": "Nepal national team middle-order backbone; renowned for crisis batting, textbook cover drives, and elite inner-ring fielding.",
@@ -236,6 +273,12 @@
         "remote": "https://nplt20league.com/uploads/bhim-sharki-mv9ag1ds-f470763c-1ace-4ac9-bf38-8c5e3fc19859.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/bhim-sharki-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bhim-sharki/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -247,8 +290,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Right-handed, lower-middle order",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 24,
         "innings": 20,
@@ -269,6 +312,12 @@
         "remote": "https://nplt20league.com/uploads/mohammad-aadil-alam-mv9at2dm-d2191f34-f60b-45ab-92a4-3466775fd199.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/mohammad-aadil-alam-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/mohammad-aadil-alam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -280,7 +329,7 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed, middle order",
       "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 28,
@@ -302,6 +351,12 @@
         "remote": "https://nplt20league.com/uploads/rashid-khan-mv9aksrd-8f0ab360-2fbf-49d4-bd15-74a46f55dc68.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/rashid-khan-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/rashid-khan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -335,6 +390,12 @@
         "remote": "https://nplt20league.com/uploads/santosh-yadav-mv9arpnk-26df495f-e2bf-467d-a5a2-fed667ab1b55.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/santosh-yadav-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/santosh-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -346,14 +407,14 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 14,
         "innings": 6,
         "runs": 32,
         "highestScore": "12*",
-        "battingAverage": 8.0,
+        "battingAverage": 8,
         "strikeRate": 94.11,
         "fifties": 0,
         "hundreds": 0,
@@ -368,6 +429,12 @@
         "remote": "https://nplt20league.com/uploads/krishna-poudel-mv9j3ef1-57b070c7-d9e2-4623-bfd0-3cbee65d4982.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/krishna-paudel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/krishna-paudel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -379,8 +446,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Slow left-arm orthodox",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Slow left-arm orthodox (left-arm spin)",
       "stats": {
         "matches": 35,
         "innings": 10,
@@ -401,6 +468,12 @@
         "remote": "https://nplt20league.com/uploads/shahab-alam-mv9ajsx0-e1e2920d-cdfd-43ff-9708-8f59896272df.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/shahab-alam-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/shahab-alam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -434,6 +507,12 @@
         "remote": "https://nplt20league.com/uploads/sahil-patel-mv9abmic-a04cf2d3-2251-41ff-a378-bce914e6cb7a.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/sahil-patel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sahil-patel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -446,7 +525,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm legbreak",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 12,
         "innings": 9,
@@ -467,6 +546,12 @@
         "remote": "https://nplt20league.com/uploads/prasiddha-jaishi-mv9aorno-48a882f9-c4a8-4f4a-a31a-9c43d3bb82c6.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/prashiddha-jaisi-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/prasiddha-jaishi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -478,14 +563,14 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Sources differ: ESPNcricinfo lists right-hand bat; Cricnepal lists left-hand bat",
+      "bowlingStyle": "Left-arm medium-fast (confirmed by both ESPNcricinfo and Cricnepal)",
       "stats": {
         "matches": 14,
         "innings": 6,
         "runs": 28,
         "highestScore": "11*",
-        "battingAverage": 7.0,
+        "battingAverage": 7,
         "strikeRate": 84.84,
         "fifties": 0,
         "hundreds": 0,
@@ -500,6 +585,12 @@
         "remote": "https://nplt20league.com/uploads/dayanand-mandal-mv9aimjs-c4a245b7-af28-4878-9ef7-7b4fa7481e0c.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/dayanand-mandal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dayanand-mandal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -512,7 +603,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm fast-medium",
+      "bowlingStyle": "Right-arm legbreak",
       "stats": {
         "matches": 12,
         "innings": 5,
@@ -533,6 +624,12 @@
         "remote": "https://nplt20league.com/uploads/sonu-devkota-mv9azh5m-004fd8f0-3324-44fe-83b4-618c2e9a6114.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/sonu-devkota-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sonu-devkota/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -544,8 +641,8 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 11,
         "innings": 7,
@@ -566,6 +663,12 @@
         "remote": "https://nplt20league.com/uploads/dev-shah-mv9alnq5-b3f393e2-850d-426c-b951-2082f055c5b5.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/dev-shah-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dev-shah/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -577,8 +680,8 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "",
+      "battingStyle": "Right-hand bat",
+      "bowlingStyle": "Not recorded — Koirala is listed purely as a batter",
       "stats": {
         "matches": 12,
         "innings": 12,
@@ -599,7 +702,177 @@
         "remote": "https://nplt20league.com/uploads/suryanshu-koirala-mv9b0cst-5ad637f9-32ea-44a2-8193-e252d576138a.webp",
         "source": "NPL T20 League / Kathmandu Gorkhas",
         "thumbnail": "/studio/cricket/players/suryanshu-koirala-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/suryanshu-koirala/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
+      }
+    },
+    {
+      "id": "harishankar-shah",
+      "name": "Harishankar Shah",
+      "nameNe": "Harishankar Shah",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Domestic",
+      "origin": "Nepal",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Right-arm medium",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/harishankar-shah.webp",
+        "thumbnail": "/studio/cricket/players/harishankar-shah-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/harishankar-shah-mvt9mse9-08e84498-00d9-4709-86e6-1dcc5b131203.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/harishankar-shah/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/harishankar-shah/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "jahandad-khan",
+      "name": "Jahandad Khan",
+      "nameNe": "Jahandad Khan",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Pakistan",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Left-arm medium-fast",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/jahandad-khan.webp",
+        "thumbnail": "/studio/cricket/players/jahandad-khan-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/jahandad-khan-mvtlbckd-6ad5d26a-99f6-48b2-89b9-29edcd8b8ad5.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/jahandad-khan/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/jahandad-khan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "ripon-mondol",
+      "name": "Ripon Mondol",
+      "nameNe": "Ripon Mondol",
+      "role": "Bowler",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Bangladesh",
+      "battingStyle": "",
+      "bowlingStyle": "",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/ripon-mondol.webp",
+        "thumbnail": "/studio/cricket/players/ripon-mondol-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/ripon-mondol-mvtln8yn-f3091a64-cdf7-45a7-9f28-4df22626253c.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/ripon-mondol/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ripon-mondol/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "will-bosisto",
+      "name": "Will Bosisto",
+      "nameNe": "Will Bosisto",
+      "role": "Player",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Unconfirmed",
+      "origin": "Not verified",
+      "battingStyle": "",
+      "bowlingStyle": "",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "User-supplied portrait. Current squad membership and career statistics await verification.",
+      "image": {
+        "local": "/studio/cricket/players/will-bosisto-user-20261030.webp",
+        "remote": "",
+        "source": "User-supplied portrait (confirmed as Will Bosisto)",
+        "sourceUrl": "/studio/cricket/players/will-bosisto-user-20261030.webp",
+        "thumbnail": "/studio/cricket/players/will-bosisto-user-20261030-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas/",
+        "checkedAt": "2026-10-30T04:12:06.704Z",
+        "status": "not-listed",
+        "statistics": "unavailable"
       }
     }
-  ]
+  ],
+  "sourceReview": {
+    "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas/",
+    "checkedAt": "2026-10-30T03:40:21.808Z"
+  }
 }

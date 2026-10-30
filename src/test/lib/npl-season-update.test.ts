@@ -21,8 +21,8 @@ describe('NPL editorial update integrity', () => {
     });
     it('calculates standings from aggregate legal balls, counting all-out innings as 20 overs', () => {
         const standings = getNplStandings();
-        expect(standings.map(row => row.teamId)).toEqual(['lumbini', 'karnali', 'chitwan', 'kathmandu', 'pokhara', 'biratnagar', 'janakpur', 'sudurpaschim']);
-        expect(standings.map(row => row.nrr)).toEqual(['+4.599', '+0.950', '+0.400', '+0.000', '+0.000', '-0.400', '-0.950', '-4.599']);
+        expect(standings.map(row => row.teamId)).toEqual(['karnali', 'lumbini', 'chitwan', 'janakpur', 'sudurpaschim', 'biratnagar', 'kathmandu', 'pokhara']);
+        expect(standings.map(row => row.nrr)).toEqual(['+0.533', '+4.599', '+0.400', '-0.041', '-1.430', '-0.261', '-0.942', '-1.542']);
         expect(standings.reduce((sum, row) => sum + row.played, 0)).toBe(nplResultUpdates.length * 2);
         expect(standings.reduce((sum, row) => sum + row.points, 0)).toBe(nplResultUpdates.length * 2);
         expect(standingsFromResults(nplTeams.map(row => row.id), []).every(row => row.points === 0 && row.played === 0)).toBe(true);
@@ -36,12 +36,12 @@ describe('NPL editorial update integrity', () => {
         expect(nplCompletedMatches[3]).toBeUndefined();
         expect(nplUpdate.pending.length).toBeGreaterThan(0);
     });
-    it('uses the revised evening schedule and retains a pending current match after its start', () => {
+    it('uses the revised evening schedule and advances past all six confirmed results', () => {
         expect(cricketFixtures.every(row => ['12:30', '17:00'].includes(row.startTime))).toBe(true);
         expect(cricketPlayoffs.every(row => row.startTime === '17:00')).toBe(true);
-        const selected = selectNplSpotlight(cricketFixtures, nplCompletedMatches, new Date('2026-10-28T18:00:00+05:45'));
-        expect(selected.featured?.fixture.matchNumber).toBe(4); expect(selected.featured?.state).toBe('awaiting-update');
-        expect(selected.result?.matchNumber).toBe(3);
+        const selected = selectNplSpotlight(cricketFixtures, nplCompletedMatches, new Date('2026-10-30T10:00:00+05:45'));
+        expect(selected.featured?.fixture.matchNumber).toBe(7); expect(selected.featured?.state).toBe('scheduled');
+        expect(selected.result?.matchNumber).toBe(6);
     });
     it('never displays impossible ball notation in retained scorecards', () => {
         for (const card of Object.values(nplCompletedMatches)) for (const innings of [card.innings1, card.innings2]) {

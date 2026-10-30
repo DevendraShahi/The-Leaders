@@ -15,7 +15,7 @@ export const revalidate = 60; // Revalidate published editorial data; this does 
 export async function generateMetadata(): Promise<Metadata> {
   const title = "Nepal Premier League (NPL) 2026 | Squads, Fixtures, Standings & Stats | The Leaders";
   const description =
-    "Nepal Premier League (NPL) 2026 coverage by The Leaders. Explore 8 franchise squads, 145 player cutouts, career statistics, match fixtures, DRS rules, and tournament standings.";
+    "Nepal Premier League (NPL) 2026 coverage by The Leaders. Explore 8 franchise squads, player profiles, career statistics, match fixtures, DRS rules, and tournament standings.";
 
   return constructMetadata({
     title,

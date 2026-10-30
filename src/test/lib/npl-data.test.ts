@@ -18,7 +18,7 @@ describe('NPL Data Provider', () => {
     ].sort());
   });
 
-  it('loads all 145 players with valid local cutouts', () => {
+  it('loads sourced player profiles with valid local cutouts', () => {
     const players = getAllNplPlayers();
     expect(players.length).toBeGreaterThanOrEqual(144);
     

@@ -4,7 +4,7 @@ import type { PostDesign } from './types';
 
 export const fixtureScheduleSource = '/studio/cricket/fixtures-season3.png';
 export const fixtureTimingSource = 'https://myrepublica.nagariknetwork.com/news/drs-to-be-used-in-all-npl-matches-schedule-revised-30-15.html';
-export const fixtureScheduleChecked = '2026-10-28';
+export const fixtureScheduleChecked = '2026-10-30';
 export interface CricketFixture {
     id: string; matchNumber: number; matchDate: string; startTime: string;
     teamId: NplTeamId; opponentId: NplTeamId; competition: string; venue: string; sourceUrl: string;
@@ -51,7 +51,7 @@ export const cricketFixtures: CricketFixture[] = league.map(([date, teamId, oppo
         opponentId,
         competition: 'NPL 2026',
         venue: 'Tribhuvan University International Cricket Ground, Kirtipur',
-        sourceUrl: '',
+        sourceUrl: 'https://nplt20league.com/matches/2026/',
         status: 'upcoming',
     };
 
@@ -74,7 +74,7 @@ export const cricketPlayoffs = [
 export function playoffFixture(date: string, teamId: NplTeamId, opponentId: NplTeamId): CricketFixture | undefined {
     const playoff = cricketPlayoffs.find(item => item.matchDate === date);
     if (!playoff) return undefined;
-    return { ...playoff, teamId, opponentId, competition: 'NPL 2026', venue: 'Tribhuvan University International Cricket Ground, Kirtipur', sourceUrl: '' };
+    return { ...playoff, teamId, opponentId, competition: 'NPL 2026', venue: 'Tribhuvan University International Cricket Ground, Kirtipur', sourceUrl: 'https://nplt20league.com/matches/2026/' };
 }
 export function fixturesForDate(date: string): CricketFixture[] {
     return cricketFixtures.filter(fixture => fixture.matchDate === date).sort((a, b) => a.startTime.localeCompare(b.startTime));

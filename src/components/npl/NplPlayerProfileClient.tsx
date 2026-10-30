@@ -55,6 +55,17 @@ export function NplPlayerProfileClient({
 
   return (
     <div className="npl-sports-hub min-h-screen bg-background text-foreground pb-24 font-sans">
+      {player.sourceReview && (
+        <div className="container mx-auto max-w-6xl px-4 py-3 text-xs text-muted-foreground">
+          <a href={player.sourceReview.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+            {isNe ? "खेलाडीको स्रोत" : "Player source"}
+          </a>{" · "}{player.sourceReview.checkedAt.slice(0, 10)}{" · "}
+          {player.sourceReview.statistics === 'unavailable'
+            ? (isNe ? "करियर तथ्याङ्क पुष्टि हुन बाँकी" : "Career statistics awaiting verification")
+            : (isNe ? "करियर तथ्याङ्क यस स्रोतबाट पुनःपुष्टि गरिएको छैन" : "Career statistics have not been reverified against this source")}
+          {player.sourceReview.status === 'not-listed' && (isNe ? " · हालको टोली सूचीमा पुष्टि हुन बाँकी" : " · Current squad membership awaiting confirmation")}
+        </div>
+      )}
       {/* 1. TOP EDITORIAL BREADCRUMB */}
       <div className="border-b border-border bg-card/40">
         <div className="container mx-auto px-4 max-w-6xl h-11 flex items-center justify-between text-xs gap-3">
@@ -161,7 +172,7 @@ export function NplPlayerProfileClient({
                 </div>
                 <div className="rounded-lg border border-border/70 bg-card p-2.5 sm:p-3 text-left">
                   <dt className="text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground font-semibold truncate">Squad Jersey</dt>
-                  <dd className="font-bold text-foreground mt-0.5 text-xs sm:text-sm truncate tabular-nums">#{meta.jerseyNumber}</dd>
+                  <dd className="font-bold text-foreground mt-0.5 text-xs sm:text-sm truncate tabular-nums">#{meta.jerseyNumber ?? "—"}</dd>
                 </div>
                 <div className="rounded-lg border border-border/70 bg-card p-2.5 sm:p-3 text-left">
                   <dt className="text-[10px] sm:text-[11px] uppercase tracking-wider text-muted-foreground font-semibold truncate">Auction Tier</dt>
@@ -198,7 +209,7 @@ export function NplPlayerProfileClient({
                 </div>
                 {/* Squad Jersey at Bottom Right */}
                 <div className="absolute bottom-2 right-2 text-xs font-bold text-foreground/80 bg-background/90 px-2 py-0.5 rounded border border-border/60 tabular-nums shadow-xs">
-                  #{meta.jerseyNumber}
+                  #{meta.jerseyNumber ?? "—"}
                 </div>
               </div>
             </div>
@@ -278,11 +289,11 @@ export function NplPlayerProfileClient({
                   <div className="grid grid-cols-4 gap-2 text-center">
                     <div className="rounded-lg border border-border/80 bg-card p-2 sm:p-3">
                       <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block">Matches</span>
-                      <strong className="text-sm sm:text-xl font-extrabold text-foreground tabular-nums block mt-0.5">{player.stats.matches}</strong>
+                      <strong className="text-sm sm:text-xl font-extrabold text-foreground tabular-nums block mt-0.5">{player.stats.matches ?? "—"}</strong>
                     </div>
                     <div className="rounded-lg border border-border/80 bg-card p-2 sm:p-3">
                       <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block">Runs</span>
-                      <strong className="text-sm sm:text-xl font-extrabold text-foreground tabular-nums block mt-0.5">{player.stats.runs}</strong>
+                      <strong className="text-sm sm:text-xl font-extrabold text-foreground tabular-nums block mt-0.5">{player.stats.runs ?? "—"}</strong>
                     </div>
                     <div className="rounded-lg border border-border/80 bg-card p-2 sm:p-3">
                       <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block">Strike Rate</span>
@@ -290,7 +301,7 @@ export function NplPlayerProfileClient({
                     </div>
                     <div className="rounded-lg border border-border/80 bg-card p-2 sm:p-3">
                       <span className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold block">Wickets</span>
-                      <strong className="text-sm sm:text-xl font-extrabold text-foreground tabular-nums block mt-0.5">{player.stats.wickets}</strong>
+                      <strong className="text-sm sm:text-xl font-extrabold text-foreground tabular-nums block mt-0.5">{player.stats.wickets ?? "—"}</strong>
                     </div>
                   </div>
 
@@ -320,14 +331,14 @@ export function NplPlayerProfileClient({
                         <tbody className="divide-y divide-border tabular-nums">
                           <tr>
                             <td className="py-3 px-3 font-sans font-medium text-foreground">T20 Career</td>
-                            <td className="py-3 px-3 text-right">{player.stats.matches}</td>
-                            <td className="py-3 px-3 text-right">{player.stats.innings}</td>
-                            <td className="py-3 px-3 text-right font-bold text-foreground">{player.stats.runs}</td>
+                            <td className="py-3 px-3 text-right">{player.stats.matches ?? "—"}</td>
+                            <td className="py-3 px-3 text-right">{player.stats.innings ?? "—"}</td>
+                            <td className="py-3 px-3 text-right font-bold text-foreground">{player.stats.runs ?? "—"}</td>
                             <td className="py-3 px-3 text-right font-medium">{player.stats.highestScore}</td>
                             <td className="py-3 px-3 text-right">{player.stats.battingAverage ?? "-"}</td>
                             <td className="py-3 px-3 text-right font-bold text-foreground">{player.stats.strikeRate ?? "-"}</td>
-                            <td className="py-3 px-3 text-right">{player.stats.fifties}</td>
-                            <td className="py-3 px-3 text-right">{player.stats.hundreds}</td>
+                            <td className="py-3 px-3 text-right">{player.stats.fifties ?? "—"}</td>
+                            <td className="py-3 px-3 text-right">{player.stats.hundreds ?? "—"}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -357,8 +368,8 @@ export function NplPlayerProfileClient({
                         <tbody className="divide-y divide-border tabular-nums">
                           <tr>
                             <td className="py-3 px-3 font-sans font-medium text-foreground">T20 Career</td>
-                            <td className="py-3 px-3 text-right">{player.stats.matches}</td>
-                            <td className="py-3 px-3 text-right font-bold text-foreground">{player.stats.wickets}</td>
+                            <td className="py-3 px-3 text-right">{player.stats.matches ?? "—"}</td>
+                            <td className="py-3 px-3 text-right font-bold text-foreground">{player.stats.wickets ?? "—"}</td>
                             <td className="py-3 px-3 text-right font-medium">{player.stats.bestBowling}</td>
                             <td className="py-3 px-3 text-right">{player.stats.bowlingAverage ?? "-"}</td>
                             <td className="py-3 px-3 text-right">{player.stats.economy ?? "-"}</td>
@@ -409,15 +420,15 @@ export function NplPlayerProfileClient({
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                   <div className="border border-border rounded-lg p-4 bg-card">
                     <span className="text-muted-foreground block font-mono">CAREER MATCHES</span>
-                    <strong className="text-2xl font-bold text-foreground block mt-1">{player.stats.matches}</strong>
+                    <strong className="text-2xl font-bold text-foreground block mt-1">{player.stats.matches ?? "—"}</strong>
                   </div>
                   <div className="border border-border rounded-lg p-4 bg-card">
                     <span className="text-muted-foreground block font-mono">TOTAL RUNS</span>
-                    <strong className="text-2xl font-bold text-foreground block mt-1">{player.stats.runs}</strong>
+                    <strong className="text-2xl font-bold text-foreground block mt-1">{player.stats.runs ?? "—"}</strong>
                   </div>
                   <div className="border border-border rounded-lg p-4 bg-card">
                     <span className="text-muted-foreground block font-mono">CAREER WICKETS</span>
-                    <strong className="text-2xl font-bold text-foreground block mt-1">{player.stats.wickets}</strong>
+                    <strong className="text-2xl font-bold text-foreground block mt-1">{player.stats.wickets ?? "—"}</strong>
                   </div>
                   <div className="border border-border rounded-lg p-4 bg-card">
                     <span className="text-muted-foreground block font-mono">STRIKE RATE</span>

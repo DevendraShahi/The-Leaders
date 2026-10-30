@@ -249,18 +249,30 @@ returns to the photo positioning tools. Player names and match statistics stay
 unchanged. Photo credit travels with the image and appears in cricket captions;
 replacing the photo clears the previous credit.
 
-The dated catalog contains 145 players and 83 available portraits: Biratnagar 6,
-Chitwan 10, Janakpur 5, Karnali 17, Kathmandu 1, Lumbini 15, Pokhara 16, and
-Sudurpaschim 13. Turn off **Photos ready** to browse the full roster; **Find photo**
-opens the existing image search with that player's name. Source links, owner
-credits, and licenses are retained per image. Earlier-season/national kits are
-possible; the Kathmandu archive portrait is explicitly labeled.
+The catalog now contains 166 canonical players with 166 available portraits.
+Turn off **Photos ready** to browse the full roster; **Find photo** opens the
+existing image search if a local image fails to load. Source links, credits and
+license notes are retained per image, including user-supplied replacements.
 
-See `public/studio/cricket/players/catalog.json` for the reviewed roster and photo
-provenance. Full images are WebP at up to 1600px, with separate small thumbnails
-and preserved transparency. Run `node scripts/sync-npl-player-photos.mjs` to restore
-missing assets or add `--refresh` to re-fetch reviewed URLs. This command does not
-update squad assignments; roster changes require source review.
+Cricket templates resolve full names, recorded aliases (including the existing
+Nepali names), punctuation and initial forms such as `D.S Airee`, `DS Airee` and
+`Dipendra Airee`. Matching ranks the full catalog before applying the post team's
+scope, so a full name from the other side cannot silently select someone else.
+Initials that match multiple teammates (for example `S. Patel` in Kathmandu) stay
+unmatched; choose the full name in **Player portrait**. First names, surnames and
+unrecorded misspellings alone do not trigger automatic portrait guesses.
+
+The same resolution applies to pasted JSON, team-side reconciliation, both
+partnership portraits, all-round awards and duplicate-player checks. Changing
+only a player's name format preserves their confirmed figures and portrait.
+Custom uploaded images and visual locks are preserved. Tracked library URLs
+refresh to the catalog's current version when the portrait is applied again.
+Prompts request full published names, but confirmed initials are accepted.
+
+See `public/studio/cricket/players/catalog.json` for name aliases and photo
+provenance. Full images are optimized transparent WebP files with separate small
+thumbnails. User-supplied replacements have versioned filenames and are maintained
+from the supplied assets; roster assignments still require a separate source review.
 
 ## Today in History
 

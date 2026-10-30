@@ -5,12 +5,14 @@ import { rebindScore } from './score-update';
 import { rebindMoment } from './moment-posts';
 import { rebindPhase } from './phase-posts';
 import { cricketTeamIssues, isOtherMatchSnapshot, resetCricketTemplate } from './cricket-team-context';
+import { resolveNplPlayer } from './cricket-players';
+import { playerNameKey } from './player-names';
 
 export const prematchIds = ['toss', 'playing-xi', 'team'] as const;
 export type PrematchId = typeof prematchIds[number];
 export const prematchCopy = { headline: 48, summary: 100 } as const;
 export const prematchHeadline = (id: PrematchId, language: CricketLanguage) => language === 'ne' ? cricketTemplate(id).headlineNe : cricketTemplate(id).headline;
-const playerIdentity = (name: string) => name.normalize('NFKC').replace(/\((?:c|wk|c\s*[/,]\s*wk)\)/gi, '').replace(/\s+/g, ' ').trim().toLocaleLowerCase();
+const playerIdentity = (name: string) => resolveNplPlayer(name)?.id ?? playerNameKey(name);
 export function lineupProblems(lineup: string[]): string[] {
     const issues: string[] = [];
     if (lineup.length !== 11) issues.push('A confirmed Playing XI must contain exactly eleven players.');

@@ -1,4 +1,5 @@
 import { cricketTeamIssues } from './cricket-team-context';
+import { samePlayerName } from './cricket-players';
 import { blankCricketData, chaseEquation, oversToBalls, type CricketData } from './cricket-data';
 import type { PostDesign } from './types';
 import type { NplTeamId } from './cricket-catalog';
@@ -11,7 +12,7 @@ export function scoreContradictions(data: CricketData): string[] {
     if (data.scoreInnings === 'first' && data.target !== null) issues.push('A first-innings update must not contain a chase target.');
     if (data.target !== null && data.target < 1) issues.push('A confirmed target must be at least one run.');
     const batters = [data.batter, data.secondBatter].filter(hasBatter);
-    if (batters.length === 2 && batters[0].name.trim() && batters[0].name.normalize('NFKC').trim().toLocaleLowerCase() === batters[1].name.normalize('NFKC').trim().toLocaleLowerCase()) issues.push('The same batter cannot occupy both batter slots.');
+    if (batters.length === 2 && batters[0].name.trim() && samePlayerName(batters[0].name, batters[1].name, data.teamId)) issues.push('The same batter cannot occupy both batter slots.');
     if (data.runs !== null && batters.reduce((sum, batter) => sum + (batter.runs ?? 0), 0) > data.runs) issues.push('The displayed batters’ runs exceed the team total.');
     batters.forEach((batter, index) => {
         if (batter.runs !== null && (batter.fours ?? 0) * 4 + (batter.sixes ?? 0) * 6 > batter.runs) issues.push(`Batter ${index + 1}: boundary runs exceed the batter’s score.`);

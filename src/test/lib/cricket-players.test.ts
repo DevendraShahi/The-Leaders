@@ -14,9 +14,10 @@ describe('Reviewed NPL player catalog', () => {
         for (const team of nplTeamIds) expect(findPlayers(team).length).toBeGreaterThan(0);
         for (const player of nplPlayers) {
             expect(nplTeamIds).toContain(player.teamId);
-            expect(player.profileUrl).toMatch(/^https:\/\/nepalpremierleague.org\/players\//);
+            expect(player.profileUrl).toMatch(/^https:\/\/(?:nepalpremierleague.org\/players|nplt20league.com\/player)\//);
             if (!player.photo?.url) continue;
-            expect(player.photo.sourceUrl).toMatch(/^https:\/\//);
+            if (player.photo.kind === 'user-supplied') expect(player.photo.sourceUrl).toBe(player.photo.url);
+            else expect(player.photo.sourceUrl).toMatch(/^https:\/\//);
             expect(player.photo.credit).toBeTruthy(); expect(player.photo.license).toBeTruthy();
             expect(existsSync(`public${player.photo.url}`)).toBe(true);
             expect(existsSync(`public${player.photo.thumbnailUrl}`)).toBe(true);

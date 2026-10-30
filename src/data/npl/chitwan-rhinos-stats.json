@@ -17,7 +17,7 @@
       "category": "Domestic Marquee",
       "origin": "Nepal",
       "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Slow left-arm orthodox",
+      "bowlingStyle": "Slow left-arm orthodox (left-arm spin)",
       "stats": {
         "matches": 68,
         "innings": 62,
@@ -38,6 +38,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/kushal-malla-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/kushal-malla-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kushal-malla/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -49,7 +55,7 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "England",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed",
       "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 485,
@@ -67,10 +73,17 @@
       },
       "highlights": "Legendary English international all-rounder with over 120 ODIs and 38 T20Is; globetrotting champion across IPL (Kings XI Punjab, Sunrisers Hyderabad), PSL, BBL, and BPL.",
       "image": {
-        "local": "/studio/cricket/players/ravi-bopara.webp",
-        "remote": "https://chitwanrhinos.com/uploads/players/season-3/ravi-bopara-s3.png",
-        "source": "Chitwan Rhinos Official Squad",
-        "thumbnail": "/studio/cricket/players/ravi-bopara-thumb.webp"
+        "local": "/studio/cricket/players/ravi-bopara-20261030.webp",
+        "thumbnail": "/studio/cricket/players/ravi-bopara-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/ravi-bopara-mv6z2sc8-0272c6c3-f389-4b3a-9c43-53d22ff53fc2.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/ravi-bopara/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ravi-bopara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -81,7 +94,7 @@
       "isCaptain": false,
       "isMarquee": false,
       "category": "Overseas",
-      "origin": "Zimbabwe",
+      "origin": "Zimbabwean",
       "battingStyle": "Right-hand bat",
       "bowlingStyle": "Right-arm offbreak",
       "stats": {
@@ -104,6 +117,12 @@
         "remote": "https://nplt20league.com/uploads/sikandar-raza-mv70b9ft-539858f3-8c4c-4164-b4d9-287487e4a12a.webp",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/sikandar-raza-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sikandar-raza/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -115,8 +134,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Pakistan",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm legbreak",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm leg spin",
       "stats": {
         "matches": 148,
         "innings": 64,
@@ -133,10 +152,17 @@
       },
       "highlights": "Pakistan national team wrist-spinner; leading wicket-taker in the Pakistan Super League (PSL) with Multan Sultans; proven BBL (Melbourne Stars) and The Hundred strike bowler.",
       "image": {
-        "local": "/studio/cricket/players/usama-mir.webp",
-        "remote": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/64016.png",
-        "source": "International Cricket Council (ICC)",
-        "thumbnail": "/studio/cricket/players/usama-mir-thumb.webp"
+        "local": "/studio/cricket/players/usama-mir-20261030.webp",
+        "thumbnail": "/studio/cricket/players/usama-mir-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/chitwan-rhinos-jersey-portrait-cutout-mv9nmkvn-4de1efc7-eec9-4e83-ab49-6b9c66a81edc.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/usama-mir/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/usama-mir/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -148,7 +174,7 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Canada",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed",
       "bowlingStyle": "Left-arm fast-medium",
       "stats": {
         "matches": 42,
@@ -170,6 +196,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/kaleem-sana-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/kaleem-sana-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kalim-sana/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -180,9 +212,9 @@
       "isCaptain": false,
       "isMarquee": false,
       "category": "Overseas",
-      "origin": "Sri Lanka",
+      "origin": "Sri Lankan",
       "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 48,
         "innings": 46,
@@ -194,8 +226,8 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/8",
-        "bowlingAverage": 28.0,
-        "economy": 7.0
+        "bowlingAverage": 28,
+        "economy": 7
       },
       "highlights": "Sri Lankan international top-order batter and wicketkeeper; starred for Colombo Stars and Galle Marvels in the Lanka Premier League (LPL).",
       "image": {
@@ -203,6 +235,12 @@
         "remote": "https://nplt20league.com/uploads/kamil-mishara-mvmoei2p-683ebeee-ce6b-479d-a283-d661416dfdc3.webp",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/kamil-mishara-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kamil-mishara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -236,6 +274,12 @@
         "remote": "https://nplt20league.com/uploads/dev-khanal-mv8f793f-98cb79f9-49fa-4d4b-bf0d-8e309e3e53a5.png",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/dev-khanal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dev-khanal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -248,7 +292,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "",
+      "bowlingStyle": "Does not bowl (no bowling record in international or NPL cricket)",
       "stats": {
         "matches": 28,
         "innings": 25,
@@ -269,6 +313,12 @@
         "remote": "https://nplt20league.com/uploads/arjun-saud-mv8f2dew-53e3e608-7c42-4262-9808-b6d83ebf6e79.webp",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/arjun-saud-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/arjun-saud/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -281,7 +331,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "bowlingStyle": "Right-arm offbreak",
       "stats": {
         "matches": 18,
         "innings": 17,
@@ -293,7 +343,7 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/12",
-        "bowlingAverage": 31.0,
+        "bowlingAverage": 31,
         "economy": 7.75
       },
       "highlights": "Key top-order strokemaker from Nepal's 2024 Under-19 World Cup campaign; gives Chitwan a steady opening batting foundation against pace.",
@@ -302,6 +352,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/deepak-bohara-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/deepak-bohara-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/deepak-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -314,7 +370,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Left-hand bat",
-      "bowlingStyle": "",
+      "bowlingStyle": "Does not bowl",
       "stats": {
         "matches": 19,
         "innings": 18,
@@ -335,6 +391,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/bipin-rawal-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/bipin-rawal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-rawal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -368,6 +430,12 @@
         "remote": "https://nplt20league.com/uploads/rijan-dhakal-mv8dzv6q-177e0699-f68f-4519-b5f1-4d3f2bbcb1e2.webp",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/rijan-dhakal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/rijan-dhakal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -380,7 +448,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 35,
         "innings": 15,
@@ -401,6 +469,12 @@
         "remote": "https://nplt20league.com/uploads/kamal-singh-airee-mv8dwz1y-0b595bea-b080-4ee0-8371-fb783e57fbe7.webp",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/kamal-singh-airee-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kamal-singh-airee/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -434,6 +508,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/bibek-kumar-yadav-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/bibek-yadav-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bibek-kumar-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -445,8 +525,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Right-hand bat (lower order)",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 16,
         "innings": 9,
@@ -467,6 +547,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/gautam-kc-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/gautam-kc-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/gautam-kc/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -478,14 +564,14 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Left-hand bat",
       "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 14,
         "innings": 5,
         "runs": 24,
         "highestScore": "10*",
-        "battingAverage": 8.0,
+        "battingAverage": 8,
         "strikeRate": 82.75,
         "fifties": 0,
         "hundreds": 0,
@@ -500,6 +586,12 @@
         "remote": "https://nplt20league.com/uploads/ranjeet-kumar-mv8dxujp-32d70ccb-e209-4ca9-9818-922cea86e40a.webp",
         "source": "NPL T20 League / Chitwan Rhinos",
         "thumbnail": "/studio/cricket/players/ranjeet-kumar-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ranjeet-kumar/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -512,7 +604,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm spin — sources vary between off-break and leg-break",
       "stats": {
         "matches": 15,
         "innings": 7,
@@ -533,6 +625,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/mousam-dhakal-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/mousom-dhakal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/mousom-dhakal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -545,7 +643,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 12,
         "innings": 7,
@@ -566,6 +664,12 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/ashok-dhami-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/ashok-dhami-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ashok-dhami/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -577,8 +681,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "battingStyle": "N/A",
+      "bowlingStyle": "N/A",
       "stats": {
         "matches": 14,
         "innings": 13,
@@ -590,7 +694,7 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/15",
-        "bowlingAverage": 35.0,
+        "bowlingAverage": 35,
         "economy": 7.9
       },
       "highlights": "Gritty middle-order batter for Chitwan Rhinos; specializes in strike rotation during the middle overs and aggressive placement against spinners.",
@@ -599,7 +703,217 @@
         "remote": "https://chitwanrhinos.com/uploads/players/season-3/salahuddin-khan-s3.png",
         "source": "Chitwan Rhinos Official Squad",
         "thumbnail": "/studio/cricket/players/salauddin-khan-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/salahuddin-khan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
+      }
+    },
+    {
+      "id": "daniel-richard-mousley",
+      "name": "Daniel Richard Mousley",
+      "nameNe": "Daniel Richard Mousley",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm off-break",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/daniel-richard-mousley.webp",
+        "thumbnail": "/studio/cricket/players/daniel-richard-mousley-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/npl-2026-mvqhn2po-0ff18417-e0ea-4bc2-b2ca-c5c98029ea1c.png",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/daniel-richard-mousley/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/daniel-richard-mousley/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "dawid-malan",
+      "name": "Dawid Malan",
+      "nameNe": "Dawid Malan",
+      "role": "Batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "English / British",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/dawid-malan.webp",
+        "thumbnail": "/studio/cricket/players/dawid-malan-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/chitwan-rhinos-athlete-portrait-mvq7lxgj-393ce946-9821-48c1-8dd4-8ffb67b176a1.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/dawid-malan/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dawid-malan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "hasan-ali",
+      "name": "Hasan Ali",
+      "nameNe": "Hasan Ali",
+      "role": "Bowler",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Pakistan",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm medium-fast",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/hasan-ali.webp",
+        "thumbnail": "/studio/cricket/players/hasan-ali-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/hasan-ali-mvnwcm8b-760381a5-79a0-4e6a-b59d-05b61859490c.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/hasan-ali/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/hasan-ali/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "muhammad-nawaz",
+      "name": "Muhammad Nawaz",
+      "nameNe": "Muhammad Nawaz",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Pakistani",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Slow left-arm orthodox",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/muhammad-nawaz.webp",
+        "thumbnail": "/studio/cricket/players/muhammad-nawaz-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/muhammad-nawaz-mvny15r5-4e343756-fbe4-4179-9563-c43cf8efecf2.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/muhammad-nawaz/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/muhammad-nawaz/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "tom-taylor",
+      "name": "Tom Taylor",
+      "nameNe": "Tom Taylor",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm medium-fast",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/tom-taylor.webp",
+        "thumbnail": "/studio/cricket/players/tom-taylor-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/chiwan-2026-mvqi7lt8-e94e8434-ad23-43bc-8128-58f6a2688469.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/tom-taylor/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/tom-taylor/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
       }
     }
-  ]
+  ],
+  "sourceReview": {
+    "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos/",
+    "checkedAt": "2026-10-30T03:40:21.808Z"
+  }
 }

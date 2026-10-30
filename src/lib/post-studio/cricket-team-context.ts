@@ -1,21 +1,17 @@
 import { blankCricketData, type CricketData } from './cricket-data';
 import { nplTeam, type CricketTemplateId, type NplTeamId } from './cricket-catalog';
-import { nplPlayers } from './cricket-players';
+import { resolveNplPlayer, samePlayerName } from './cricket-players';
 import type { PostDesign } from './types';
 
-const identity = (name: string) => name.normalize('NFKC').replace(/\((?:c|wk|c\s*[/,]\s*wk)\)/gi, '').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
 const fixedPairTemplates = new Set<CricketTemplateId>(['matchday', 'fixtures', 'head-to-head', 'toss']);
 export const hasPostTeam = (template: CricketTemplateId) => !fixedPairTemplates.has(template);
 export const isOtherMatchSnapshot = (template: CricketTemplateId) => ['batting', 'fifty', 'century', 'bowling', 'five-for', 'hat-trick', 'player-of-match', 'innings', 'target', 'dls', 'rain', 'result', 'qualified', 'champions', 'scorecard'].includes(template);
 export const postTeamLabel = (data: CricketData) => data.template === 'player-of-match' ? 'Award winner’s team' : ['bowling', 'five-for', 'hat-trick'].includes(data.template) ? 'Bowler’s team' : ['four', 'six', 'wicket', 'score', 'powerplay', 'partnership', 'innings', 'target', 'dls', 'batting', 'fifty', 'century', 'scorecard'].includes(data.template) ? 'Batting team' : data.template === 'playing-xi' ? 'Lineup team' : 'Post team';
 const creditedDismissals = new Set(['bowled', 'caught', 'lbw', 'stumped', 'hit-wicket']);
 
-/** Exact, unique identities only; a missing portrait does not hide a roster entry. */
-export function knownPlayerTeam(name: string): NplTeamId | undefined {
-    const key = identity(name);
-    if (!key) return undefined;
-    const teams = new Set(nplPlayers.filter(player => identity(player.name) === key).map(player => player.teamId));
-    return teams.size === 1 ? [...teams][0] : undefined;
+/** Resolve roster identity independently of photo availability. */
+export function knownPlayerTeam(name: string, teams?: readonly NplTeamId[]): NplTeamId | undefined {
+    return resolveNplPlayer(name, teams)?.teamId;
 }
 export function postPlayerRoles(data: CricketData): { role: 'batter' | 'secondBatter' | 'bowler'; opposition: boolean }[] {
     if (data.template === 'wicket') return [{ role: 'batter', opposition: false }, ...(data.wicketType && creditedDismissals.has(data.wicketType) ? [{ role: 'bowler' as const, opposition: true }] : [])];
@@ -37,7 +33,7 @@ export function cricketTeamIssues(data: CricketData): string[] {
         const actual = knownPlayerTeam(name), expected = opposition ? data.opponentId : data.teamId;
         return actual && actual !== expected ? [`${name} is listed with ${nplTeam(actual).name}; ${opposition ? 'the credited bowler must belong to the fielding side' : 'this player must belong to the post’s featured side'}. Confirm the player or correct the post team.`] : [];
     });
-    if (data.template === 'player-of-match' && data.awardPerformance === 'all-round' && data.batter.name.trim() && data.bowler.name.trim() && identity(data.batter.name) !== identity(data.bowler.name)) issues.push('An all-round award must use the same player for batting and bowling figures.');
+    if (data.template === 'player-of-match' && data.awardPerformance === 'all-round' && data.batter.name.trim() && data.bowler.name.trim() && !samePlayerName(data.batter.name, data.bowler.name, data.teamId)) issues.push('An all-round award must use the same player for batting and bowling figures.');
     return issues;
 }
 
@@ -46,7 +42,7 @@ export function resolveResponseTeam(data: CricketData, explicitTeam?: NplTeamId 
     if (!hasPostTeam(data.template)) return { data, warnings: [] };
     const pair = [data.teamId, data.opponentId];
     const candidates = participants(data).flatMap(({ name, opposition }) => {
-        const team = knownPlayerTeam(name);
+        const team = knownPlayerTeam(name, pair);
         return team && pair.includes(team) ? [opposition ? pair.find(id => id !== team)! : team] : [];
     });
     const detected = new Set(candidates);
@@ -64,13 +60,13 @@ export function resolveResponseTeam(data: CricketData, explicitTeam?: NplTeamId 
 export function reconcileEditedPlayerTeams(before: PostDesign, edited: PostDesign): PostDesign {
     const data = edited.cricket, previous = before.cricket;
     if (!data || !previous || data.template !== previous.template || !hasPostTeam(data.template)) return edited;
-    const changed = postPlayerRoles(data).filter(({ role }) => identity(previous[role].name) !== identity(data[role].name));
+    const changed = postPlayerRoles(data).filter(({ role, opposition }) => !samePlayerName(previous[role].name, data[role].name, opposition ? previous.opponentId : previous.teamId));
     if (!changed.length) return edited;
     const blank = blankCricketData(data.template);
     let next = { ...data };
     for (const { role } of changed) next = { ...next, [role]: { ...blank[role], name: data[role].name } };
     const teams = new Set(changed.flatMap(({ role, opposition }) => {
-        const team = knownPlayerTeam(data[role].name);
+        const team = knownPlayerTeam(data[role].name, [data.teamId, data.opponentId]);
         return team && [data.teamId, data.opponentId].includes(team) ? [opposition ? (team === data.teamId ? data.opponentId : data.teamId) : team] : [];
     }));
     const teamId = teams.size === 1 ? [...teams][0] : data.teamId;

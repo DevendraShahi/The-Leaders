@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { cricketFixtures, type CricketFixture } from '@/lib/post-studio/cricket-fixtures';
+import { cricketFixtures as latestFixtures, type CricketFixture } from '@/lib/post-studio/cricket-fixtures';
+// Historical checkpoint for selection behavior; independent of later published results.
+const cricketFixtures = latestFixtures.map(row => row.matchNumber <= 3 ? row : {
+    ...row, status: 'upcoming' as const, teamScore: undefined, opponentScore: undefined,
+    result: undefined, resultNe: undefined, winnerId: undefined, playerOfTheMatch: undefined,
+});
 import { nplCompletedMatches, nplMatch1Scorecard } from '@/lib/npl-match-data';
 import { completedFixture, confirmedNplFixtures, fixtureScorecard, fixtureTeamScore, selectNplSpotlight } from '@/lib/npl-spotlight';
 const at = (local: string) => new Date(`${local}+05:45`);

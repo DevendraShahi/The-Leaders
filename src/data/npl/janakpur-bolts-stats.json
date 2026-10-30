@@ -16,7 +16,7 @@
       "isCaptain": true,
       "isMarquee": false,
       "category": "Overseas",
-      "origin": "USA",
+      "origin": "United States (born in India)",
       "battingStyle": "Left-hand bat",
       "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
@@ -39,6 +39,12 @@
         "remote": "https://nplt20league.com/uploads/harmeet-singh-mv88wx5y-c9ee85a1-2f44-4993-984c-10a0fab20ea6.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/harmeet-singh-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/harmeet-singh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -72,6 +78,12 @@
         "remote": "https://boltsjanakpur.com/assets/img/player/player-69199760b9bd5Anil-K-Shah.png",
         "source": "Janakpur Bolts Official Squad",
         "thumbnail": "/studio/cricket/players/anil-sah-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/anil-sah/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -83,7 +95,7 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "New Zealand",
-      "battingStyle": "Left-hand bat",
+      "battingStyle": "Left-handed",
       "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 295,
@@ -105,6 +117,12 @@
         "remote": "https://nplt20league.com/uploads/jimmy-neesham-mv88ve5t-310e04d9-c1f7-4e79-9d8a-c23658d3ce17.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/james-neesham-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/james-neesham/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -116,8 +134,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "England",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 358,
         "innings": 312,
@@ -138,6 +156,12 @@
         "remote": "https://nplt20league.com/uploads/moeen-ali-mv88piki-ceab7c9d-079a-4104-8294-f9d58b244b1f.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/moeen-ali-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/moeen-ali/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -171,6 +195,12 @@
         "remote": "https://nplt20league.com/uploads/ifitkhar-ahmed-mv88xxr4-92fba09f-fbcb-4fa7-86f6-c392bebcda8b.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/iftikhar-ahmed-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -189,7 +219,7 @@
         "innings": 7,
         "runs": 18,
         "highestScore": "8*",
-        "battingAverage": 6.0,
+        "battingAverage": 6,
         "strikeRate": 85.71,
         "fifties": 0,
         "hundreds": 0,
@@ -200,10 +230,17 @@
       },
       "highlights": "Pakistan express pace sensation; younger brother of Naseem Shah; champion with Islamabad United in the 2024 PSL; clocks up to 145 km/h with fiery skiddy bounce.",
       "image": {
-        "local": "/studio/cricket/players/hunain-shah.webp",
-        "remote": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/80775.png",
-        "source": "International Cricket Council (ICC)",
-        "thumbnail": "/studio/cricket/players/hunain-shah-thumb.webp"
+        "local": "/studio/cricket/players/hunain-shah-user-20261030.webp",
+        "remote": "",
+        "source": "User-supplied portrait",
+        "sourceUrl": "/studio/cricket/players/hunain-shah-user-20261030.webp",
+        "thumbnail": "/studio/cricket/players/hunain-shah-user-20261030-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -215,7 +252,7 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed",
       "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 48,
@@ -237,6 +274,12 @@
         "remote": "https://boltsjanakpur.com/assets/img/player/player-69199a9355d6eLalit-Rajbanshi.png",
         "source": "Janakpur Bolts Official Squad",
         "thumbnail": "/studio/cricket/players/lalit-rajbanshi-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/lalit-rajbanshi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -270,6 +313,12 @@
         "remote": "https://boltsjanakpur.com/assets/img/player/player-6919b70d80537Mayan2.png",
         "source": "Janakpur Bolts Official Squad",
         "thumbnail": "/studio/cricket/players/mayan-yadav-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/mayan-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -282,7 +331,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "bowlingStyle": "Right-arm medium (occasional)",
       "stats": {
         "matches": 22,
         "innings": 21,
@@ -294,7 +343,7 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/16",
-        "bowlingAverage": 32.0,
+        "bowlingAverage": 32,
         "economy": 7.5
       },
       "highlights": "Former Nepal Under-19 captain; historic record-holder as the first Nepali batsman to score centuries at both U16 and U19 international levels.",
@@ -303,6 +352,12 @@
         "remote": "https://nplt20league.com/uploads/rit-gautam-mv8c4hij-554fe43c-c4a6-472c-94fe-d89702fef995.png",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/rit-gautam-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/rit-gautam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -315,7 +370,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 18,
         "innings": 17,
@@ -336,6 +391,12 @@
         "remote": "https://nplt20league.com/uploads/trit-raj-das-mv8c8z4o-b0d0e578-9ed9-4367-8799-2d009172ac5b.png",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/trit-raj-das-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/trit-raj-das/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -347,8 +408,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 14,
         "innings": 13,
@@ -360,7 +421,7 @@
         "hundreds": 0,
         "wickets": 1,
         "bestBowling": "1/12",
-        "bowlingAverage": 34.0,
+        "bowlingAverage": 34,
         "economy": 7.7
       },
       "highlights": "Young middle-order strokemaker from Janakpurdham; provides energetic running between the wickets and boundary clearing options.",
@@ -369,6 +430,12 @@
         "remote": "https://boltsjanakpur.com/assets/img/player/player-6919b4d3dcde7Aditya-Mahata--.png",
         "source": "Janakpur Bolts Official Squad",
         "thumbnail": "/studio/cricket/players/aaditya-mahata-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/aaditya-mahata/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -380,20 +447,20 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "N/A",
+      "bowlingStyle": "N/A",
       "stats": {
         "matches": 12,
         "innings": 11,
         "runs": 210,
         "highestScore": "51",
-        "battingAverage": 21.0,
+        "battingAverage": 21,
         "strikeRate": 125.74,
         "fifties": 1,
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/18",
-        "bowlingAverage": 31.0,
+        "bowlingAverage": 31,
         "economy": 7.75
       },
       "highlights": "Emerging top-order batter from regional circuits; scored an impressive fifty in provincial PM Cup matches with assertive off-side strokeplay.",
@@ -402,6 +469,12 @@
         "remote": "https://nplt20league.com/uploads/ashutosh-pandey-mv88riki-a32300dc-de45-47b2-b16d-a77207fd1618.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/aashutosh-pandey-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ashutosh-pandey/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -414,7 +487,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 26,
         "innings": 19,
@@ -435,6 +508,12 @@
         "remote": "https://nplt20league.com/uploads/amar-singh-rautela-mv8cvpfx-82c757f6-de0f-48e7-87a9-d6d2a8fa449f.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/amar-rautela-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/amar-singh-rautela/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -447,7 +526,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "",
+      "bowlingStyle": "Right-arm offbreak",
       "stats": {
         "matches": 15,
         "innings": 14,
@@ -468,6 +547,12 @@
         "remote": "https://nplt20league.com/uploads/santosh-karki-mv8c6ipc-850bdc58-bcaf-4da9-807a-8fbec1c5718f.png",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/santosh-karki-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/santosh-karki/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -480,13 +565,13 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 14,
         "innings": 9,
         "runs": 120,
         "highestScore": "26*",
-        "battingAverage": 15.0,
+        "battingAverage": 15,
         "strikeRate": 115.38,
         "fifties": 0,
         "hundreds": 0,
@@ -501,6 +586,12 @@
         "remote": "https://boltsjanakpur.com/assets/img/player/player-6919ba78c1da3BikashAgri.png",
         "source": "Janakpur Bolts Official Squad",
         "thumbnail": "/studio/cricket/players/bikash-aagri-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bikash-aagri/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -534,6 +625,12 @@
         "remote": "https://nplt20league.com/uploads/abhishek-tiwari-mv8cskai-b4500691-ebbd-493f-a0d9-5f0852557d53.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/abhishek-tiwari-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/abhishek-tiwari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -545,14 +642,14 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Left-arm medium",
       "stats": {
         "matches": 10,
         "innings": 6,
         "runs": 80,
         "highestScore": "21*",
-        "battingAverage": 16.0,
+        "battingAverage": 16,
         "strikeRate": 114.28,
         "fifties": 0,
         "hundreds": 0,
@@ -567,6 +664,12 @@
         "remote": "https://nplt20league.com/uploads/bishal-patel-mv8c23nn-79e75bec-34d7-4d37-a919-78712df2081c.png",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/bishal-patel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bishal-patel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -585,7 +688,7 @@
         "innings": 13,
         "runs": 240,
         "highestScore": "45",
-        "battingAverage": 20.0,
+        "battingAverage": 20,
         "strikeRate": 121.21,
         "fifties": 0,
         "hundreds": 0,
@@ -600,7 +703,177 @@
         "remote": "https://nplt20league.com/uploads/bishal-susling-mv8cqr3v-8e6c12e0-38f0-4e24-b032-d806f6a58974.webp",
         "source": "NPL T20 League / Janakpur Bolts",
         "thumbnail": "/studio/cricket/players/bishal-susling-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bishal-shusling/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
+      }
+    },
+    {
+      "id": "kusal-perera",
+      "name": "Kusal Perera",
+      "nameNe": "Kusal Perera",
+      "role": "Wicketkeeper-batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Sri Lanka",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/kusal-perera.webp",
+        "thumbnail": "/studio/cricket/players/kusal-perera-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/kusal-perera-mvp125c4-abeac6b8-69bf-43b1-8930-43bcce4d5fee.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/kusal-perera/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kusal-perera/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "parvez-hossain-emon",
+      "name": "Parvez Hossain Emon",
+      "nameNe": "Parvez Hossain Emon",
+      "role": "Wicketkeeper-batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Bangladesh",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/parvez-hossain-emon.webp",
+        "thumbnail": "/studio/cricket/players/parvez-hossain-emon-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/parvez-hossain-emon-mvt2nwrg-f3d06ad7-859e-4a8f-82a9-a0126c4f0278.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/parvez-hossain-emon/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/parvez-hossain-emon/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "rahul-yadav",
+      "name": "Rahul Yadav",
+      "nameNe": "Rahul Yadav",
+      "role": "Batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Domestic",
+      "origin": "Nepal",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm medium",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/rahul-yadav.webp",
+        "thumbnail": "/studio/cricket/players/rahul-yadav-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/janakpur-bolts-cricketer-portrait-mvqqqr3e-ca268ff0-6758-487d-96e5-d2ccf06750f7.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/rahul-yadav/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/rahul-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "saif-hassan",
+      "name": "Saif Hassan",
+      "nameNe": "Saif Hassan",
+      "role": "Batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Bangladesh",
+      "battingStyle": "Right-hand bat",
+      "bowlingStyle": "Right-arm off-break",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/saif-hassan.webp",
+        "thumbnail": "/studio/cricket/players/saif-hassan-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/saif-hassan-1-mvt2ohcb-27591d6c-6f2c-4754-a221-2b457329f863.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/saif-hassan/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/saif-hassan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
       }
     }
-  ]
+  ],
+  "sourceReview": {
+    "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts/",
+    "checkedAt": "2026-10-30T03:40:21.808Z"
+  }
 }

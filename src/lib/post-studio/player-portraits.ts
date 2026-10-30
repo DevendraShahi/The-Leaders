@@ -1,10 +1,9 @@
-import { findPlayers, nplPlayers, playerPhotoCredit, type NplPlayer } from './cricket-players';
+import { resolveNplPlayer, playerPhotoCredit, type NplPlayer } from './cricket-players';
 import { bowlerCreditedTypes } from './moment-posts';
 import type { PostDesign } from './types';
 import type { NplTeamId } from './cricket-catalog';
 import { reconcileEditedPlayerTeams } from './cricket-team-context';
 
-const identity = (name: string) => name.normalize('NFKC').trim().replace(/\s+/g, ' ').toLocaleLowerCase();
 export function playerPhotoSubject(design: PostDesign): { role: 'batter' | 'bowler'; name: string; teamId: NplTeamId } | null {
     const data = design.cricket;
     if (design.template !== 'cricket' || !data) return null;
@@ -24,23 +23,24 @@ export function matchingPlayerPhoto(design: PostDesign): NplPlayer | undefined {
 }
 export function matchingPortraitFor(name: string, teamId: NplTeamId): NplPlayer | undefined {
     if (!name.trim()) return undefined;
-    const matches = findPlayers(teamId).filter(player => identity(player.name) === identity(name));
-    return matches.length === 1 ? matches[0] : undefined;
+    const player = resolveNplPlayer(name, teamId);
+    return player?.photo?.url ? player : undefined;
 }
-/** Only exact name + team matches are automatic. A generic user-uploaded image is not replaced. */
+/** Only unique full-name, alias or initial matches on the correct team are automatic. */
 export function applyPlayerPortrait(design: PostDesign): PostDesign {
     const subject = playerPhotoSubject(design);
     if (!subject || design.cricket?.showPlayerPhoto === false || design.lockedLayers.includes('visual')) return design;
     if (design.imageUri && !design.playerPhotoId) return design;
     const match = matchingPlayerPhoto(design);
     if (!match?.photo?.url) return design.playerPhotoId ? { ...design, imageUri: null, imageCredit: '', playerPhotoId: undefined } : design;
-    if (design.playerPhotoId === match.id && design.imageUri) return design;
+    if (design.playerPhotoId === match.id && design.imageUri
+        && (!design.imageUri.startsWith('/studio/cricket/players/') || design.imageUri === match.photo.url)) return design;
     return { ...design, imageUri: match.photo.url, imageCredit: playerPhotoCredit(match), playerPhotoId: match.id, imageFit: 'contain', imageZoom: 1, imageOffsetX: 0, imageOffsetY: 0, imageTone: 'clear' };
 }
 export function portraitIsCurrent(design: PostDesign): boolean {
     if (!design.playerPhotoId) return true;
-    const subject = playerPhotoSubject(design), player = nplPlayers.find(item => item.id === design.playerPhotoId);
-    return Boolean(subject && player && player.teamId === subject.teamId && identity(player.name) === identity(subject.name));
+    const subject = playerPhotoSubject(design);
+    return Boolean(subject && resolveNplPlayer(subject.name, subject.teamId)?.id === design.playerPhotoId);
 }
 export function selectPlayerPortrait(design: PostDesign, player: NplPlayer, uri = player.photo?.url): PostDesign {
     const subject = playerPhotoSubject(design);

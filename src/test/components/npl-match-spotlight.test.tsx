@@ -2,7 +2,12 @@ import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NplMatchSpotlight } from '@/components/npl/NplMatchSpotlight';
 import { getNplTeamsData } from '@/lib/npl-data';
-import { cricketFixtures } from '@/lib/post-studio/cricket-fixtures';
+import { cricketFixtures as latestFixtures } from '@/lib/post-studio/cricket-fixtures';
+// Historical checkpoint for selection behavior; independent of later published results.
+const cricketFixtures = latestFixtures.map(row => row.matchNumber <= 3 ? row : {
+    ...row, status: 'upcoming' as const, teamScore: undefined, opponentScore: undefined,
+    result: undefined, resultNe: undefined, winnerId: undefined, playerOfTheMatch: undefined,
+});
 import { nplCompletedMatches, nplMatch1Scorecard } from '@/lib/npl-match-data';
 vi.mock('next/image', () => ({ default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} /> }));
 beforeEach(() => { vi.useFakeTimers(); vi.setSystemTime(new Date('2026-10-28T08:15:00Z')); });

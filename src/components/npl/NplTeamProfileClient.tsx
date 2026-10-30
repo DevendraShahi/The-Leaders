@@ -132,15 +132,15 @@ export function NplTeamProfileClient({
   // Statistical leaders inside the squad
   const topBattersInSquad = React.useMemo(() => {
     return [...team.players]
-      .filter((p) => p.stats.runs > 0)
-      .sort((a, b) => b.stats.runs - a.stats.runs)
+      .filter((p) => (p.stats.runs ?? 0) > 0)
+      .sort((a, b) => (b.stats.runs ?? 0) - (a.stats.runs ?? 0))
       .slice(0, 3);
   }, [team.players]);
 
   const topBowlersInSquad = React.useMemo(() => {
     return [...team.players]
-      .filter((p) => p.stats.wickets > 0)
-      .sort((a, b) => b.stats.wickets - a.stats.wickets)
+      .filter((p) => (p.stats.wickets ?? 0) > 0)
+      .sort((a, b) => (b.stats.wickets ?? 0) - (a.stats.wickets ?? 0))
       .slice(0, 3);
   }, [team.players]);
 
@@ -447,12 +447,12 @@ export function NplTeamProfileClient({
                     className="inline-block h-3 w-1 rounded-full shrink-0"
                     style={{ backgroundColor: team.primary }}
                   />
-                  {isNe ? `${team.nameNe} टोली रोस्टर` : `${team.name} Official Squad`}
+                  {isNe ? `${team.nameNe} टोली रोस्टर` : `${team.name} Squad`}
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   {isNe
-                    ? "१४५ खेलाडीको पारदर्शी प्रोफाइल, टी२० तथ्याङ्क र कटआउट"
-                    : "High-density player dossiers with verified T20 statistics"}
+                    ? `${team.players.length} खेलाडीको प्रोफाइल र उपलब्ध करियर तथ्याङ्क`
+                    : `${team.players.length} player profiles with available career reference statistics`}
                 </p>
               </div>
 
@@ -597,18 +597,18 @@ export function NplTeamProfileClient({
                       <div className="mt-2 pt-2 border-t border-border grid grid-cols-3 text-center text-xs">
                         <div>
                           <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">Mat</span>
-                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.matches}</strong>
+                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.matches ?? "—"}</strong>
                         </div>
                         <div className="border-x border-border/60">
                           <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">Runs</span>
-                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.runs}</strong>
+                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.runs ?? "—"}</strong>
                         </div>
                         <div>
                           <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">
-                            {player.stats.wickets > 0 ? "Wkts" : "SR"}
+                            {(player.stats.wickets ?? 0) > 0 ? "Wkts" : "SR"}
                           </span>
                           <strong className="font-semibold text-foreground tabular-nums text-xs">
-                            {player.stats.wickets > 0 ? player.stats.wickets : (player.stats.strikeRate || "-")}
+                            {(player.stats.wickets ?? 0) > 0 ? player.stats.wickets : (player.stats.strikeRate || "-")}
                           </strong>
                         </div>
                       </div>
@@ -838,7 +838,7 @@ export function NplTeamProfileClient({
                   <div className="flex items-center justify-between pt-2 border-t border-border text-xs">
                     <span className="text-muted-foreground">Career T20 Figures:</span>
                     <strong className="text-foreground">
-                      {captainPlayer.stats.matches} Mat · {captainPlayer.stats.runs} Runs · {captainPlayer.stats.wickets} Wkts
+                      {captainPlayer.stats.matches ?? "—"} Mat · {captainPlayer.stats.runs ?? "—"} Runs · {captainPlayer.stats.wickets ?? "—"} Wkts
                     </strong>
                   </div>
                 </div>
@@ -1029,7 +1029,7 @@ export function NplTeamProfileClient({
                           className="text-sm font-bold block tabular-nums"
                           style={{ color: team.primary }}
                         >
-                          {p.stats.runs} R
+                          {p.stats.runs ?? "—"} R
                         </strong>
                         <span className="text-[10px] text-muted-foreground tabular-nums">SR {p.stats.strikeRate ?? "-"}</span>
                       </div>
@@ -1078,7 +1078,7 @@ export function NplTeamProfileClient({
                           className="text-sm font-bold block tabular-nums"
                           style={{ color: team.secondary }}
                         >
-                          {p.stats.wickets} W
+                          {p.stats.wickets ?? "—"} W
                         </strong>
                         <span className="text-[10px] text-muted-foreground tabular-nums">Econ {p.stats.economy ?? "-"}</span>
                       </div>

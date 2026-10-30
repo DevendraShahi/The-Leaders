@@ -2,12 +2,15 @@
 
 ## Current editorial checkpoint
 
-Checked **28 October 2026, 14:52 Nepal time** (09:07 UTC).
+Checked **30 October 2026, 09:25 Nepal time** (03:40 UTC).
 
 - Match 1: Lumbini 88/3 (9.5), Sudurpaschim 87 (17.2); Lumbini won by seven wickets.
 - Match 2: Chitwan 157/3 (20), Biratnagar 149 all out (19.3); Chitwan won by eight runs.
 - Match 3: Karnali 132/9 (20), Janakpur 113 all out; Karnali won by 19 runs.
-- Match 4: Pokhara v Sudurpaschim, 28 October, **17:00 NPT**. No verified live score at this checkpoint.
+- Match 4: Pokhara 145/7 (20), Sudurpaschim 148/4 (16.5); Sudurpaschim won by six wickets.
+- Match 5: Janakpur 116/2 (17.2), Kathmandu 115 all out (19.3); Janakpur won by eight wickets.
+- Match 6: Karnali 187/6 (19.5), Biratnagar 186/7 (20); Karnali won by four wickets.
+- Next fixture: Match 7, Lumbini v Chitwan, October 31 at 12:30 NPT. No result inferred from scheduled time.
 - Evening starts, including playoffs, changed from 16:30 to 17:00; daytime starts remain 12:30. November 20 is the pre-final rest day.
 - Standings are **calculated from confirmed league results**, not copied from a stale table.
 
@@ -57,6 +60,14 @@ The results file is the single editorial source for summary results. A full scor
 This is an **editorially maintained snapshot**, not an automated live-score feed. The hero refreshes its clock every minute and on focus to select the correct scheduled match; it cannot fetch a missing score. The route's 60-second revalidation refreshes published data after deployment, not source websites. For continuous live scoring, add an approved provider with server-side caching, validated payloads, feed timestamps and failure handling; never scrape Google search cards as an API.
 
 ## Update log
+
+### 2026-10-30, 09:25 NPT
+
+Refreshed from the user-requested independent source NPLT20League.com. Added summary results for Matches 4–6, each with a direct source link; standings now aggregate six results. Match 4 cross-check: https://www.ipl.com/matches/nepal-premier-league-130224/pokhara-avengers-vs-sudurpaschim-royals-99953/live. Matches 5–6 agree with https://ekantipur.com/npl and Match 5 with https://www.onlinekhabar.com/cricket-match/319?tab=score. Match 6 also agrees with https://kathmandupost.com/cricket/2026/10/29/sompal-s-unbeaten-62-steers-karnali-to-last-over-win-over-biratnagar. Keep revised 17:00 evening times; other feeds still contain 16:30.
+
+Imported 32 source-provided transparent player images, added 20 source-listed squad profiles, merged three duplicate Studio identities, and reconciled public/Studio images. Individual profiles record source links, review dates and membership/statistics status. Existing uncorroborated membership records are retained with a not-listed flag; absence from one independent site does not prove departure. Career statistics were not copied because source format labels are inconsistent. New players have null statistics and no invented jersey numbers/records. Details and remaining photo issues: [source review](NPL_SOURCE_REVIEW.md).
+
+Pending: Match 3 overs disagreement remains; Match 5 Rahul Yadav award figures differ (3/31 in requested source versus 4/31 in Onlinekhabar); detailed scorecards/awards and season leaderboards remain withheld pending reconciliation. The source team-page fixture payload contains 2025 games, so it was not imported as the 2026 schedule. No ambiguous NRR inputs or guessed dismissals were added.
 
 ### 2026-10-28, 14:52 NPT
 

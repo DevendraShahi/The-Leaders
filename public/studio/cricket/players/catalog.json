@@ -1,6 +1,6 @@
 {
-  "checkedAt": "2026-10-26",
-  "rosterSource": "https://nepalpremierleague.org/players",
+  "checkedAt": "2026-10-30",
+  "rosterSource": "https://nplt20league.com/players/",
   "note": "Team assignment is a dated snapshot of the league directory. Team photos retain their owners’ rights; Commons licenses are listed individually.",
   "players": [
     {
@@ -8,7 +8,7 @@
       "name": "Dipendra Singh Airee",
       "teamId": "sudurpaschim",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/dipendra-singh-airee",
+      "profileUrl": "https://nplt20league.com/player/dipendra-singh-airee/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700449195-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -20,14 +20,22 @@
         "thumbnailUrl": "/studio/cricket/players/dipendra-singh-airee-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dipendra-singh-airee/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिपेन्द्र सिंह ऐरी"
+      ]
     },
     {
       "id": "harmeet-singh",
       "name": "Harmeet Singh",
       "teamId": "janakpur",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/harmeet-singh",
+      "profileUrl": "https://nplt20league.com/player/harmeet-singh/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/harmeet-singh-mv88wx5y-c9ee85a1-2f44-4993-984c-10a0fab20ea6.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -39,14 +47,22 @@
         "thumbnailUrl": "/studio/cricket/players/harmeet-singh-thumb.webp",
         "width": 1068,
         "height": 1473
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/harmeet-singh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "हरमित सिंह"
+      ]
     },
     {
       "id": "karan-kc",
       "name": "Karan KC",
       "teamId": "kathmandu",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/karan-kc",
+      "profileUrl": "https://nplt20league.com/player/karan-kc/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/karan-kc-mv9avvmj-8058109c-3b06-4ece-bbd2-134108e89e2a.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -58,14 +74,22 @@
         "thumbnailUrl": "/studio/cricket/players/karan-kc-thumb.webp",
         "width": 1092,
         "height": 1440
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/karan-kc/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "करण केसी"
+      ]
     },
     {
       "id": "kushal-bhurtel",
       "name": "Kushal Bhurtel",
       "teamId": "pokhara",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/kushal-bhurtel",
+      "profileUrl": "https://nplt20league.com/player/kushal-bhurtel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/pa-players-mvi16vxj-dc4f983e-7390-41aa-b49c-018a2501da71.png",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -77,14 +101,22 @@
         "thumbnailUrl": "/studio/cricket/players/kushal-bhurtel-thumb.webp",
         "width": 1080,
         "height": 1350
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kushal-bhurtel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "कुशल भुर्तेल"
+      ]
     },
     {
       "id": "kushal-malla",
       "name": "Kushal Malla",
       "teamId": "chitwan",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/kushal-malla",
+      "profileUrl": "https://nplt20league.com/player/kushal-malla/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/kushal-malla-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -96,14 +128,22 @@
         "thumbnailUrl": "/studio/cricket/players/kushal-malla-thumb.webp",
         "width": 804,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kushal-malla/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "कुशल मल्ल"
+      ]
     },
     {
       "id": "rohit-paudel",
       "name": "Rohit Paudel",
       "teamId": "lumbini",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/rohit-paudel",
+      "profileUrl": "https://nplt20league.com/player/rohit-paudel/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/rohit-1788156524-1-1-1789225622.png",
         "sourceUrl": "https://lumbinilions.com.np/rohit-paudel",
@@ -115,14 +155,22 @@
         "thumbnailUrl": "/studio/cricket/players/rohit-paudel-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/rohit-paudel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रोहित पौडेल"
+      ]
     },
     {
       "id": "sandeep-lamichhane",
       "name": "Sandeep Lamichhane",
       "teamId": "biratnagar",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/sandeep-lamichhane",
+      "profileUrl": "https://nplt20league.com/player/sandeep-lamichhane/profile/",
       "photo": {
         "originalUrl": "https://biratkings.com/assets/sandeep-lamichhane-nobg-DL9DhKuu.png",
         "sourceUrl": "https://biratkings.com/",
@@ -134,14 +182,22 @@
         "thumbnailUrl": "/studio/cricket/players/sandeep-lamichhane-thumb.webp",
         "width": 1073,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sandeep-lamichhane/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सन्दीप लामिछाने"
+      ]
     },
     {
       "id": "sompal-kami",
       "name": "Sompal Kami",
       "teamId": "karnali",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/sompal-kami",
+      "profileUrl": "https://nplt20league.com/player/sompal-kami/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Sompal%20Kami%20New.jpg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -153,14 +209,22 @@
         "thumbnailUrl": "/studio/cricket/players/sompal-kami-thumb.webp",
         "width": 716,
         "height": 1075
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sompal-kami/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सोमपाल कामी"
+      ]
     },
     {
       "id": "aaditya-mahata",
       "name": "Aaditya Mahata",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/aaditya-mahata",
+      "profileUrl": "https://nplt20league.com/player/aaditya-mahata/profile/",
       "photo": {
         "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-6919b4d3dcde7Aditya-Mahata--.png",
         "sourceUrl": "https://boltsjanakpur.com/squad",
@@ -172,14 +236,22 @@
         "thumbnailUrl": "/studio/cricket/players/aaditya-mahata-thumb.webp",
         "width": 718,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/aaditya-mahata/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आदित्य महता"
+      ]
     },
     {
       "id": "aakash-chand",
       "name": "Aakash Chand",
       "teamId": "pokhara",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/aakash-chand",
+      "profileUrl": "https://nplt20league.com/player/aakash-chand/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/akash-chand-muu2rypk-0f736270-27cd-4036-a067-e13b927c0635.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -191,14 +263,22 @@
         "thumbnailUrl": "/studio/cricket/players/aakash-chand-thumb.webp",
         "width": 500,
         "height": 650
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/aakash-chand/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आकाश चन्द"
+      ]
     },
     {
       "id": "aakash-tripathi",
       "name": "Aakash Tripathi",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/aakash-tripathi",
+      "profileUrl": "https://nplt20league.com/player/aakash-tripathi/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/akash-1791179157.png",
         "sourceUrl": "https://lumbinilions.com.np/aakash-tripathi",
@@ -210,14 +290,22 @@
         "thumbnailUrl": "/studio/cricket/players/aakash-tripathi-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/aakash-tripathi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आकाश त्रिपाठी"
+      ]
     },
     {
       "id": "aarif-sheikh",
       "name": "Aarif Sheikh",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/aarif-sheikh",
+      "profileUrl": "https://nplt20league.com/player/aarif-sheikh/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700218449-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -229,14 +317,22 @@
         "thumbnailUrl": "/studio/cricket/players/aarif-sheikh-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/aarif-sheikh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आरिफ शेख"
+      ]
     },
     {
       "id": "aashutosh-pandey",
       "name": "Aashutosh Pandey",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/aashutosh-pandey",
+      "profileUrl": "https://nplt20league.com/player/ashutosh-pandey/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/ashutosh-pandey-mv88riki-a32300dc-de45-47b2-b16d-a77207fd1618.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -248,14 +344,22 @@
         "thumbnailUrl": "/studio/cricket/players/aashutosh-pandey-thumb.webp",
         "width": 1041,
         "height": 1510
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ashutosh-pandey/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आशुतोष पाण्डे"
+      ]
     },
     {
       "id": "aasif-sheikh",
       "name": "Aasif Sheikh",
       "teamId": "lumbini",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/aasif-sheikh",
+      "profileUrl": "https://nplt20league.com/player/aasif-sheikh/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/asig-1791179059.png",
         "sourceUrl": "https://lumbinilions.com.np/aasif-sheikh",
@@ -267,14 +371,22 @@
         "thumbnailUrl": "/studio/cricket/players/aasif-sheikh-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/aasif-sheikh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आसिफ शेख"
+      ]
     },
     {
       "id": "abhishek-tiwari",
       "name": "Abhishek Tiwari",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/abhishek-tiwari",
+      "profileUrl": "https://nplt20league.com/player/abhishek-tiwari/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/abhishek-tiwari-mv8cskai-b4500691-ebbd-493f-a0d9-5f0852557d53.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -286,14 +398,22 @@
         "thumbnailUrl": "/studio/cricket/players/abhishek-tiwari-thumb.webp",
         "width": 1003,
         "height": 1568
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/abhishek-tiwari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अभिषेक तिवारी"
+      ]
     },
     {
       "id": "abhishesh-gautam",
       "name": "Abhishesh Gautam",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/abhishesh-gautam",
+      "profileUrl": "https://nplt20league.com/player/abhishesh-gautam/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/abhiseseh-1788154954-1789226262.png",
         "sourceUrl": "https://lumbinilions.com.np/abhishesh-gautam",
@@ -305,14 +425,22 @@
         "thumbnailUrl": "/studio/cricket/players/abhishesh-gautam-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/abhishesh-gautam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अभिषेक गौतम"
+      ]
     },
     {
       "id": "abinash-bohara",
       "name": "Abinash Bohara",
       "teamId": "sudurpaschim",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/abinash-bohara",
+      "profileUrl": "https://nplt20league.com/player/abinash-bohara/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700272584-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -324,14 +452,22 @@
         "thumbnailUrl": "/studio/cricket/players/abinash-bohara-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/abinash-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अविनाश बोहरा"
+      ]
     },
     {
       "id": "ajay-chauhan",
       "name": "Ajay Chauhan",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/ajay-chauhan",
+      "profileUrl": "https://nplt20league.com/player/ajay-chauhan/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/ajay-1791179394.png",
         "sourceUrl": "https://lumbinilions.com.np/ajay-chauhan",
@@ -343,14 +479,22 @@
         "thumbnailUrl": "/studio/cricket/players/ajay-chauhan-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ajay-chauhan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अजय चौहान"
+      ]
     },
     {
       "id": "akbar-ali",
       "name": "Akbar Ali",
       "teamId": "karnali",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/akbar-ali",
+      "profileUrl": "https://nplt20league.com/player/akbar-ali/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/akbar-ali-1-mvmn9ap2-da9a023f-9eca-4bf7-a01c-23595d3785b5.webp",
         "sourceUrl": "https://nplt20league.com/teams/karnali-yaks",
@@ -362,14 +506,22 @@
         "thumbnailUrl": "/studio/cricket/players/akbar-ali-thumb.webp",
         "width": 400,
         "height": 600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/akbar-ali/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अकबर अली"
+      ]
     },
     {
       "id": "amar-rautela",
       "name": "Amar Rautela",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/amar-rautela",
+      "profileUrl": "https://nplt20league.com/player/amar-singh-rautela/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/amar-singh-rautela-mv8cvpfx-82c757f6-de0f-48e7-87a9-d6d2a8fa449f.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -381,14 +533,22 @@
         "thumbnailUrl": "/studio/cricket/players/amar-rautela-thumb.webp",
         "width": 1153,
         "height": 1364
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/amar-singh-rautela/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अमर सिंह रौतेला"
+      ]
     },
     {
       "id": "andre-russell",
       "name": "Andre Russell",
       "teamId": "biratnagar",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/andre-russell",
+      "profileUrl": "https://nplt20league.com/player/andre-russell/profile/",
       "photo": {
         "originalUrl": "https://www.kkr.in/static-assets/images/players/12047.png",
         "sourceUrl": "https://www.kkr.in/",
@@ -400,33 +560,50 @@
         "thumbnailUrl": "/studio/cricket/players/andre-russell-thumb.webp",
         "width": 600,
         "height": 900
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/andre-russell/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आन्द्रे रसेल"
+      ]
     },
     {
       "id": "angelo-mathews",
       "name": "Angelo Mathews",
       "teamId": "biratnagar",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/angelo-mathews",
+      "profileUrl": "https://nplt20league.com/player/angelo-mathews/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/5244.png",
-        "sourceUrl": "https://www.icc-cricket.com/",
-        "credit": "International Cricket Council (ICC) Player Headshots",
-        "license": "Editorial / Tournament profile reuse",
-        "kind": "editorial",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/angelo-mathews.webp",
-        "thumbnailUrl": "/studio/cricket/players/angelo-mathews-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/angelo-mathews-mvmlx4k0-dba131d5-5fe3-4880-8dae-238c46167c31.webp",
+        "sourceUrl": "https://nplt20league.com/player/angelo-mathews/profile/",
+        "credit": "NPLT20League.com / biratnagar",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/angelo-mathews-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/angelo-mathews-20261030-thumb.webp",
+        "width": 487,
+        "height": 600,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/angelo-mathews/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "एन्जेलो म्याथ्युज"
+      ]
     },
     {
       "id": "anil-kharel",
       "name": "Anil Kharel",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/anil-kharel",
+      "profileUrl": "https://nplt20league.com/player/anil-kharel/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700894451-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -438,14 +615,22 @@
         "thumbnailUrl": "/studio/cricket/players/anil-kharel-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/anil-kharel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अनिल खरेल"
+      ]
     },
     {
       "id": "anil-sah",
       "name": "Anil Sah",
       "teamId": "janakpur",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/anil-sah",
+      "profileUrl": "https://nplt20league.com/player/anil-sah/profile/",
       "photo": {
         "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-69199760b9bd5Anil-K-Shah.png",
         "sourceUrl": "https://boltsjanakpur.com/squad",
@@ -457,14 +642,22 @@
         "thumbnailUrl": "/studio/cricket/players/anil-sah-thumb.webp",
         "width": 771,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/anil-sah/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अनिल कुमार साह"
+      ]
     },
     {
       "id": "aprajit-poudel",
       "name": "Aprajit Poudel",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/aprajit-poudel",
+      "profileUrl": "https://nplt20league.com/player/aparajit-poudel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/aprajit-poudel-mv9jwaem-bca5a10e-e71f-4393-b4fa-c8fee796e928.webp",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -476,33 +669,50 @@
         "thumbnailUrl": "/studio/cricket/players/aprajit-poudel-thumb.webp",
         "width": 1095,
         "height": 1437
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/aparajit-poudel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अपराजित पौडेल"
+      ]
     },
     {
       "id": "ariful-islam",
       "name": "Ariful Islam",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/ariful-islam",
+      "profileUrl": "https://nplt20league.com/player/ariful-islam/profile/",
       "photo": {
-        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Ariful%20Islam.JPG",
-        "sourceUrl": "https://karnaliyaks.com/our-yaks",
-        "credit": "Karnali Yaks",
-        "license": "Team website — reuse terms apply",
-        "kind": "team",
-        "checkedAt": "2026-10-25",
-        "url": "/studio/cricket/players/ariful-islam.webp",
-        "thumbnailUrl": "/studio/cricket/players/ariful-islam-thumb.webp",
-        "width": 507,
-        "height": 652
-      }
+        "originalUrl": "https://nplt20league.com/uploads/ariful-islam-mv6bsa6r-2b20513c-0fa3-440e-9f70-20c3930bd3d7.webp",
+        "sourceUrl": "https://nplt20league.com/player/ariful-islam/profile/",
+        "credit": "NPLT20League.com / karnali",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/ariful-islam-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/ariful-islam-20261030-thumb.webp",
+        "width": 1098,
+        "height": 1433,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ariful-islam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "आरिफुल इस्लाम"
+      ]
     },
     {
       "id": "arjun-gharti",
       "name": "Arjun Gharti",
       "teamId": "pokhara",
       "role": "Wicketkeeper-batter",
-      "profileUrl": "https://nepalpremierleague.org/players/arjun-gharti",
+      "profileUrl": "https://nplt20league.com/player/arjun-gharti/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/arjun-gharti-mv2087br-d1e5901c-581c-4a8c-8386-cec0f6eca5e5.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -514,14 +724,22 @@
         "thumbnailUrl": "/studio/cricket/players/arjun-gharti-thumb.webp",
         "width": 1080,
         "height": 1080
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/arjun-gharti/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अर्जुन घर्ती"
+      ]
     },
     {
       "id": "arjun-kumal",
       "name": "Arjun Kumal",
       "teamId": "pokhara",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/arjun-kumal",
+      "profileUrl": "https://nplt20league.com/player/arjun-kumal/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/arjun-kumal-muu2koyu-9856e7ec-044c-48da-8ffb-b67f54810ac5.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -533,14 +751,22 @@
         "thumbnailUrl": "/studio/cricket/players/arjun-kumal-thumb.webp",
         "width": 500,
         "height": 650
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/arjun-kumal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अर्जुन कुमाल"
+      ]
     },
     {
       "id": "arjun-saud",
       "name": "Arjun Saud",
       "teamId": "chitwan",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/arjun-saud",
+      "profileUrl": "https://nplt20league.com/player/arjun-saud/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/arjun-saud-mv8f2dew-53e3e608-7c42-4262-9808-b6d83ebf6e79.webp",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -552,14 +778,22 @@
         "thumbnailUrl": "/studio/cricket/players/arjun-saud-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/arjun-saud/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अर्जुन साउद"
+      ]
     },
     {
       "id": "arniko-yadav",
       "name": "Arniko Yadav",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/arniko-yadav",
+      "profileUrl": "https://nplt20league.com/player/arniko-prasad-yadav/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/arniko-1791179320.png",
         "sourceUrl": "https://lumbinilions.com.np/arniko-yadav",
@@ -571,14 +805,22 @@
         "thumbnailUrl": "/studio/cricket/players/arniko-yadav-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/arniko-prasad-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अर्निको यादव"
+      ]
     },
     {
       "id": "ashok-dhami",
       "name": "Ashok Dhami",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/ashok-dhami",
+      "profileUrl": "https://nplt20league.com/player/ashok-dhami/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/ashok-dhami-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -590,14 +832,22 @@
         "thumbnailUrl": "/studio/cricket/players/ashok-dhami-thumb.webp",
         "width": 824,
         "height": 1358
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ashok-dhami/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अशोक धामी"
+      ]
     },
     {
       "id": "ayub-chand",
       "name": "Ayub Chand",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/ayub-chand",
+      "profileUrl": "https://nplt20league.com/player/ayub-chand/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700729202-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -609,14 +859,22 @@
         "thumbnailUrl": "/studio/cricket/players/ayub-chand-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ayub-chand/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "अयुब चन्द"
+      ]
     },
     {
       "id": "basir-ahamad",
       "name": "Basir Ahamad",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/basir-ahamad",
+      "profileUrl": "https://nplt20league.com/player/basir-ahamad/profile/",
       "photo": {
         "originalUrl": "https://biratkings.com/assets/basir-ahmad-nobg-DyRY3aw0.png",
         "sourceUrl": "https://biratkings.com/",
@@ -628,14 +886,22 @@
         "thumbnailUrl": "/studio/cricket/players/basir-ahamad-thumb.webp",
         "width": 1073,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/basir-ahamad/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "बसिर अहमद"
+      ]
     },
     {
       "id": "bhim-sharki",
       "name": "Bhim Sharki",
       "teamId": "kathmandu",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/bhim-sharki",
+      "profileUrl": "https://nplt20league.com/player/bhim-sharki/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/bhim-sharki-mv9ag1ds-f470763c-1ace-4ac9-bf38-8c5e3fc19859.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -647,33 +913,22 @@
         "thumbnailUrl": "/studio/cricket/players/bhim-sharki-thumb.webp",
         "width": 1088,
         "height": 1445
-      }
-    },
-    {
-      "id": "bibek-magar",
-      "name": "Bibek Magar",
-      "teamId": "pokhara",
-      "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/bibek-magar",
-      "photo": {
-        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(11).png",
-        "sourceUrl": "https://pokharaavengers.com/squad/bibek-rana-magar",
-        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
-        "license": "Team website — reuse terms apply",
-        "kind": "team",
-        "checkedAt": "2026-10-25",
-        "url": "/studio/cricket/players/bibek-magar.webp",
-        "thumbnailUrl": "/studio/cricket/players/bibek-magar-thumb.webp",
-        "width": 1080,
-        "height": 1350
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bhim-sharki/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "भीम सार्की"
+      ]
     },
     {
       "id": "bibek-yadav",
       "name": "Bibek Yadav",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/bibek-yadav",
+      "profileUrl": "https://nplt20league.com/player/bibek-kumar-yadav/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/bibek-kumar-yadav-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -685,14 +940,22 @@
         "thumbnailUrl": "/studio/cricket/players/bibek-yadav-thumb.webp",
         "width": 535,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bibek-kumar-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "विवेक कुमार यादव"
+      ]
     },
     {
       "id": "bikash-aagri",
       "name": "Bikash Aagri",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/bikash-aagri",
+      "profileUrl": "https://nplt20league.com/player/bikash-aagri/profile/",
       "photo": {
         "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-6919ba78c1da3BikashAgri.png",
         "sourceUrl": "https://boltsjanakpur.com/squad",
@@ -704,14 +967,22 @@
         "thumbnailUrl": "/studio/cricket/players/bikash-aagri-thumb.webp",
         "width": 774,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bikash-aagri/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "विकास आग्री"
+      ]
     },
     {
       "id": "binod-bhandari",
       "name": "Binod Bhandari",
       "teamId": "sudurpaschim",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/binod-bhandari",
+      "profileUrl": "https://nplt20league.com/player/binod-bhandari/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700309343-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -723,33 +994,22 @@
         "thumbnailUrl": "/studio/cricket/players/binod-bhandari-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
-    },
-    {
-      "id": "bipin-archarya",
-      "name": "Bipin Archarya",
-      "teamId": "pokhara",
-      "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/bipin-archarya",
-      "photo": {
-        "originalUrl": "https://media.pokharaavengers.com/images/PA%20Players(16).png",
-        "sourceUrl": "https://pokharaavengers.com/squad/bipin-acharya",
-        "credit": "Pokhara Avengers Squad 2026: NPL Players List",
-        "license": "Team website — reuse terms apply",
-        "kind": "team",
-        "checkedAt": "2026-10-25",
-        "url": "/studio/cricket/players/bipin-archarya.webp",
-        "thumbnailUrl": "/studio/cricket/players/bipin-archarya-thumb.webp",
-        "width": 1080,
-        "height": 1350
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/binod-bhandari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "विनोद भण्डारी"
+      ]
     },
     {
       "id": "bipin-khatri",
       "name": "Bipin Khatri",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/bipin-khatri",
+      "profileUrl": "https://nplt20league.com/player/bipin-khatri/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/bipin-khatri-muu2i6p3-49fbefbf-8349-440c-bea5-d8f5ae011b3e.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -761,14 +1021,22 @@
         "thumbnailUrl": "/studio/cricket/players/bipin-khatri-thumb.webp",
         "width": 500,
         "height": 650
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-khatri/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "बिपिन खत्री"
+      ]
     },
     {
       "id": "bipin-rawal",
       "name": "Bipin Rawal",
       "teamId": "chitwan",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/bipin-rawal",
+      "profileUrl": "https://nplt20league.com/player/bipin-rawal/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/bipin-rawal-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -780,14 +1048,22 @@
         "thumbnailUrl": "/studio/cricket/players/bipin-rawal-thumb.webp",
         "width": 566,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-rawal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "बिपिन रावल"
+      ]
     },
     {
       "id": "bipin-sharma",
       "name": "Bipin Sharma",
       "teamId": "karnali",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/bipin-sharma",
+      "profileUrl": "https://nplt20league.com/player/bipin-sharma/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Bipin%20Sharma.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -799,14 +1075,22 @@
         "thumbnailUrl": "/studio/cricket/players/bipin-sharma-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-sharma/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "बिपिन शर्मा"
+      ]
     },
     {
       "id": "bishal-patel",
       "name": "Bishal Patel",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/bishal-patel",
+      "profileUrl": "https://nplt20league.com/player/bishal-patel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/bishal-patel-mv8c23nn-79e75bec-34d7-4d37-a919-78712df2081c.png",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -818,14 +1102,22 @@
         "thumbnailUrl": "/studio/cricket/players/bishal-patel-thumb.webp",
         "width": 1065,
         "height": 1476
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bishal-patel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "विशाल पटेल"
+      ]
     },
     {
       "id": "bishal-susling",
       "name": "Bishal Susling",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/bishal-susling",
+      "profileUrl": "https://nplt20league.com/player/bishal-shusling/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/bishal-susling-mv8cqr3v-8e6c12e0-38f0-4e24-b032-d806f6a58974.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -837,33 +1129,50 @@
         "thumbnailUrl": "/studio/cricket/players/bishal-susling-thumb.webp",
         "width": 1113,
         "height": 1414
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bishal-shusling/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "विशाल सुस्लिङ"
+      ]
     },
     {
       "id": "brandon-mcmullen",
       "name": "Brandon McMullen",
       "teamId": "sudurpaschim",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/brandon-mcmullen",
+      "profileUrl": "https://nplt20league.com/player/brandon-mcmullen/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/97960.png",
-        "sourceUrl": "https://www.icc-cricket.com/players/brandon-mcmullen",
-        "credit": "International Cricket Council (ICC)",
-        "license": "ICC Editorial Headshot",
-        "kind": "overseas",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/brandon-mcmullen.webp",
-        "thumbnailUrl": "/studio/cricket/players/brandon-mcmullen-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/brandon-mcmullen-mv96oqq2-cac97aa1-e822-456a-bf7c-3df5f5739f71.webp",
+        "sourceUrl": "https://nplt20league.com/player/brandon-mcmullen/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/brandon-mcmullen-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/brandon-mcmullen-20261030-thumb.webp",
+        "width": 1036,
+        "height": 1519,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/brandon-mcmullen/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "ब्रान्डन म्याकमुलन"
+      ]
     },
     {
       "id": "chamika-karunaratne",
       "name": "Chamika Karunaratne",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/chamika-karunaratne",
+      "profileUrl": "https://nplt20league.com/player/chamika-karunaratne/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/npl-2-mvf158gm-2065b7be-cdc5-482e-b8ce-c8c0cfcd5fad.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -875,33 +1184,50 @@
         "thumbnailUrl": "/studio/cricket/players/chamika-karunaratne-thumb.webp",
         "width": 592,
         "height": 600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/chamika-karunaratne/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "चामिका करुणारत्ने"
+      ]
     },
     {
       "id": "charith-asalanka",
       "name": "Charith Asalanka",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/charith-asalanka",
+      "profileUrl": "https://nplt20league.com/player/charith-asalanka/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/65038.png",
-        "sourceUrl": "https://www.icc-cricket.com/",
-        "credit": "International Cricket Council (ICC) Player Headshots",
-        "license": "Editorial / Tournament profile reuse",
-        "kind": "editorial",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/charith-asalanka.webp",
-        "thumbnailUrl": "/studio/cricket/players/charith-asalanka-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/charith-asalanka-mv99oqk9-de42718b-b82b-4e91-b280-6097337829de.png",
+        "sourceUrl": "https://nplt20league.com/player/charith-asalanka/profile/",
+        "credit": "NPLT20League.com / biratnagar",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/charith-asalanka-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/charith-asalanka-20261030-thumb.webp",
+        "width": 980,
+        "height": 1600,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/charith-asalanka/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "चरित असलंका"
+      ]
     },
     {
       "id": "d-arcy-short",
       "name": "D'Arcy Short",
       "teamId": "lumbini",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/d-arcy-short",
+      "profileUrl": "https://nplt20league.com/player/darcy-short/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/darcy-1788155140-1-1790752142.png",
         "sourceUrl": "https://lumbinilions.com.np/d%E2%80%99arcy-john-matthew-short",
@@ -913,14 +1239,22 @@
         "thumbnailUrl": "/studio/cricket/players/d-arcy-short-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/darcy-short/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "डि'आर्सी सर्ट"
+      ]
     },
     {
       "id": "david-miller",
       "name": "David Miller",
       "teamId": "karnali",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/david-miller",
+      "profileUrl": "https://nplt20league.com/player/david-miller/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/DavidMiller.jpg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -932,14 +1266,22 @@
         "thumbnailUrl": "/studio/cricket/players/david-miller-thumb.webp",
         "width": 861,
         "height": 873
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/david-miller/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "डेभिड मिलर"
+      ]
     },
     {
       "id": "david-warner",
       "name": "David Warner",
       "teamId": "kathmandu",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/david-warner",
+      "profileUrl": "https://nplt20league.com/player/david-warner/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/david-warner-mv9ahb1x-03ef708c-92ff-46bf-8dd2-9b2a29db0009.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -951,14 +1293,22 @@
         "thumbnailUrl": "/studio/cricket/players/david-warner-thumb.webp",
         "width": 1079,
         "height": 1457
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/david-warner/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "डेभिड वार्नर"
+      ]
     },
     {
       "id": "dayanand-mandal",
       "name": "Dayanand Mandal",
       "teamId": "kathmandu",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/dayanand-mandal",
+      "profileUrl": "https://nplt20league.com/player/dayanand-mandal/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/dayanand-mandal-mv9aimjs-c4a245b7-af28-4878-9ef7-7b4fa7481e0c.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -970,14 +1320,22 @@
         "thumbnailUrl": "/studio/cricket/players/dayanand-mandal-thumb.webp",
         "width": 1088,
         "height": 1445
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dayanand-mandal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दयानन्द मण्डल"
+      ]
     },
     {
       "id": "deepak-bohara",
       "name": "Deepak Bohara",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/deepak-bohara",
+      "profileUrl": "https://nplt20league.com/player/deepak-bohara/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/deepak-bohara-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -989,14 +1347,22 @@
         "thumbnailUrl": "/studio/cricket/players/deepak-bohara-thumb.webp",
         "width": 458,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/deepak-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दीपक बोहरा"
+      ]
     },
     {
       "id": "deepak-dumre",
       "name": "Deepak Dumre",
       "teamId": "karnali",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/deepak-dumre",
+      "profileUrl": "https://nplt20league.com/player/deepak-dumre/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/dipak-dumre-mv3rjv5v-ae34613a-d844-4aaf-a889-9342046d64ce.png",
         "sourceUrl": "https://nplt20league.com/teams/karnali-yaks",
@@ -1008,14 +1374,22 @@
         "thumbnailUrl": "/studio/cricket/players/deepak-dumre-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/deepak-dumre/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दीपक प्रसाद दुम्रे"
+      ]
     },
     {
       "id": "dev-khanal",
       "name": "Dev Khanal",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/dev-khanal",
+      "profileUrl": "https://nplt20league.com/player/dev-khanal/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/dev-khanal-mv8f793f-98cb79f9-49fa-4d4b-bf0d-8e309e3e53a5.png",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -1027,14 +1401,22 @@
         "thumbnailUrl": "/studio/cricket/players/dev-khanal-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dev-khanal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "देव खनाल"
+      ]
     },
     {
       "id": "dev-shah",
       "name": "Dev Shah",
       "teamId": "kathmandu",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/dev-shah",
+      "profileUrl": "https://nplt20league.com/player/dev-shah/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/dev-shah-mv9alnq5-b3f393e2-850d-426c-b951-2082f055c5b5.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -1046,14 +1428,22 @@
         "thumbnailUrl": "/studio/cricket/players/dev-shah-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dev-shah/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "देव शाह"
+      ]
     },
     {
       "id": "dhananjaya-lakshan",
       "name": "Dhananjaya Lakshan",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/dhananjaya-lakshan",
+      "profileUrl": "https://nplt20league.com/player/dhananjaya-lakshan/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/pa-players-15-mvi1hd8z-7a682117-8bd7-4753-842a-dbd6dc2dcee2.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -1065,14 +1455,22 @@
         "thumbnailUrl": "/studio/cricket/players/dhananjaya-lakshan-thumb.webp",
         "width": 1080,
         "height": 1350
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dhananjaya-lakshan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "धनञ्जय लक्षण"
+      ]
     },
     {
       "id": "dilip-nath",
       "name": "Dilip Nath",
       "teamId": "lumbini",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/dilip-nath",
+      "profileUrl": "https://nplt20league.com/player/dilip-nath/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dilip-nath-178815558-1789226588.png",
         "sourceUrl": "https://lumbinilions.com.np/dilip-nath",
@@ -1084,14 +1482,22 @@
         "thumbnailUrl": "/studio/cricket/players/dilip-nath-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dilip-nath/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिलिप नाथ"
+      ]
     },
     {
       "id": "dilsad-ali",
       "name": "Dilsad Ali",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/dilsad-ali",
+      "profileUrl": "https://nplt20league.com/player/dilsad-ali/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/dilsad-ali-mv9jix0k-472af244-d580-476d-b2c1-1b110b7508c8.webp",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -1103,14 +1509,22 @@
         "thumbnailUrl": "/studio/cricket/players/dilsad-ali-thumb.webp",
         "width": 1120,
         "height": 1404
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dilsad-ali/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिलसाद अली"
+      ]
     },
     {
       "id": "dinesh-adhikari",
       "name": "Dinesh Adhikari",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/dinesh-adhikari",
+      "profileUrl": "https://nplt20league.com/player/dinesh-adhikari/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dinesh-1788156820-1-1789226332.png",
         "sourceUrl": "https://lumbinilions.com.np/",
@@ -1122,14 +1536,22 @@
         "thumbnailUrl": "/studio/cricket/players/dinesh-adhikari-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dinesh-adhikari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिनेश अधिकारी"
+      ]
     },
     {
       "id": "dinesh-kharel",
       "name": "Dinesh Kharel",
       "teamId": "pokhara",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/dinesh-kharel",
+      "profileUrl": "https://nplt20league.com/player/dinesh-kharel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/dinesh-kharel-muu2lqgh-6baa6143-d323-4285-af68-5f123b65bebc.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -1141,14 +1563,22 @@
         "thumbnailUrl": "/studio/cricket/players/dinesh-kharel-thumb.webp",
         "width": 500,
         "height": 650
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dinesh-kharel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिनेश खरेल"
+      ]
     },
     {
       "id": "dipak-bohara",
       "name": "Dipak Bohara",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/dipak-bohara",
+      "profileUrl": "https://nplt20league.com/player/dipak-bohara/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700357441-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -1160,14 +1590,22 @@
         "thumbnailUrl": "/studio/cricket/players/dipak-bohara-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dipak-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दीपक बोहरा"
+      ]
     },
     {
       "id": "dipendra-rawat",
       "name": "Dipendra Rawat",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/dipendra-rawat",
+      "profileUrl": "https://nplt20league.com/player/dipendra-rawat/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Dipendra%20Rawat.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -1179,14 +1617,22 @@
         "thumbnailUrl": "/studio/cricket/players/dipendra-rawat-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dipendra-rawat/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिपेन्द्र रावत"
+      ]
     },
     {
       "id": "diwan-pun",
       "name": "Diwan Pun",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/diwan-pun",
+      "profileUrl": "https://nplt20league.com/player/diwan-pun/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Diwan%20Pun.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -1198,14 +1644,22 @@
         "thumbnailUrl": "/studio/cricket/players/diwan-pun-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/diwan-pun/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दिवान पुन"
+      ]
     },
     {
       "id": "durgesh-gupta",
       "name": "Durgesh Gupta",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/durgesh-gupta",
+      "profileUrl": "https://nplt20league.com/player/durgesh-gupta/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/durgesh-1788156628-1-1789226388.png",
         "sourceUrl": "https://lumbinilions.com.np/durgesh-gupta",
@@ -1217,14 +1671,22 @@
         "thumbnailUrl": "/studio/cricket/players/durgesh-gupta-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/durgesh-gupta/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "दुर्गेश गुप्ता"
+      ]
     },
     {
       "id": "gautam-kc",
       "name": "Gautam KC",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/gautam-kc",
+      "profileUrl": "https://nplt20league.com/player/gautam-kc/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/gautam-kc-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -1236,14 +1698,22 @@
         "thumbnailUrl": "/studio/cricket/players/gautam-kc-thumb.webp",
         "width": 527,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/gautam-kc/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "गौतम केसी"
+      ]
     },
     {
       "id": "gulshan-jha",
       "name": "Gulshan Jha",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/gulshan-jha",
+      "profileUrl": "https://nplt20league.com/player/gulshan-jha/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Gulshan%20Kumar%20Jha.jpg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -1255,7 +1725,15 @@
         "thumbnailUrl": "/studio/cricket/players/gulshan-jha-thumb.webp",
         "width": 1122,
         "height": 1402
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/gulshan-jha/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "गुल्शन झा"
+      ]
     },
     {
       "id": "haider-ali",
@@ -1264,24 +1742,33 @@
       "role": "Batter",
       "profileUrl": "https://nepalpremierleague.org/players/haider-ali",
       "photo": {
-        "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e9/Haider-Ali.png",
-        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Haider-Ali.png",
-        "credit": "Wikimedia Commons",
-        "license": "CC BY-SA 4.0",
-        "kind": "overseas",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/haider-ali.webp",
-        "thumbnailUrl": "/studio/cricket/players/haider-ali-thumb.webp",
-        "width": 533,
-        "height": 464
-      }
+        "originalUrl": "/studio/cricket/players/haider-ali-user-20261030.webp",
+        "sourceUrl": "/studio/cricket/players/haider-ali-user-20261030.webp",
+        "credit": "User-supplied portrait",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "user-supplied",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/haider-ali-user-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/haider-ali-user-20261030-thumb.webp",
+        "width": 1142,
+        "height": 1378,
+        "note": "Portrait supplied by the user as Haider Ali. Original PNG transparency preserved in optimized WebP and thumbnail; replaces the soft headshot."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/teams/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed"
+      },
+      "aliases": [
+        "हैदर अली"
+      ]
     },
     {
       "id": "hemant-dhami",
       "name": "Hemant Dhami",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/hemant-dhami",
+      "profileUrl": "https://nplt20league.com/player/hemant-dhami/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700488677-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -1293,14 +1780,22 @@
         "thumbnailUrl": "/studio/cricket/players/hemant-dhami-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/hemant-dhami/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "हेमन्त धामी"
+      ]
     },
     {
       "id": "hikmat-mahara",
       "name": "Hikmat Mahara",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/hikmat-mahara",
+      "profileUrl": "https://nplt20league.com/player/hikmat-mahara/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700524848-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -1312,45 +1807,71 @@
         "thumbnailUrl": "/studio/cricket/players/hikmat-mahara-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/hikmat-mahara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "हिक्मत महरा"
+      ]
     },
     {
       "id": "hunain-shah",
       "name": "Hunain Shah",
       "teamId": "janakpur",
-      "role": "Player",
+      "role": "Bowler",
       "profileUrl": "https://nepalpremierleague.org/players/hunain-shah",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/80775.png",
-        "sourceUrl": "https://www.icc-cricket.com/",
-        "credit": "International Cricket Council (ICC)",
-        "license": "Editorial / Tournament profile reuse",
-        "kind": "editorial",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/hunain-shah.webp",
-        "thumbnailUrl": "/studio/cricket/players/hunain-shah-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "/studio/cricket/players/hunain-shah-user-20261030.webp",
+        "sourceUrl": "/studio/cricket/players/hunain-shah-user-20261030.webp",
+        "credit": "User-supplied portrait",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "user-supplied",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/hunain-shah-user-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/hunain-shah-user-20261030-thumb.webp",
+        "width": 1145,
+        "height": 1374,
+        "note": "Portrait supplied by the user as Hunain Shah. Original PNG transparency preserved in optimized WebP and thumbnail; replaces the silhouette."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/teams/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed"
+      },
+      "aliases": [
+        "हुनैन शाह"
+      ]
     },
     {
       "id": "hussain-talat",
       "name": "Hussain Talat",
       "teamId": "karnali",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/hussain-talat",
+      "profileUrl": "https://nplt20league.com/player/hussain-talat/profile/",
       "photo": {
-        "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Hussain%20Talat.JPG",
-        "sourceUrl": "https://karnaliyaks.com/our-yaks",
-        "credit": "Karnali Yaks",
-        "license": "Team website — reuse terms apply",
-        "kind": "team",
-        "checkedAt": "2026-10-25",
-        "url": "/studio/cricket/players/hussain-talat.webp",
-        "thumbnailUrl": "/studio/cricket/players/hussain-talat-thumb.webp",
-        "width": 593,
-        "height": 763
-      }
+        "originalUrl": "https://nplt20league.com/uploads/hussain-talat-karnali-yaks-mvj3ljy4-aabbe93a-b784-483f-9027-8c056c7dd835.webp",
+        "sourceUrl": "https://nplt20league.com/player/hussain-talat/profile/",
+        "credit": "NPLT20League.com / karnali",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/hussain-talat-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/hussain-talat-20261030-thumb.webp",
+        "width": 1024,
+        "height": 1536,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/hussain-talat/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "हुसैन तलत"
+      ]
     },
     {
       "id": "iftikhar-ahmed",
@@ -1369,14 +1890,22 @@
         "thumbnailUrl": "/studio/cricket/players/iftikhar-ahmed-thumb.webp",
         "width": 1032,
         "height": 1523
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/teams/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed"
+      },
+      "aliases": [
+        "इफ्तिखार अहमद"
+      ]
     },
     {
       "id": "imran-sheikh",
       "name": "Imran Sheikh",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/imran-sheikh",
+      "profileUrl": "https://nplt20league.com/player/imran-sheikh/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/imran-sheikh-mv99gjdv-8a137ec4-0563-43ea-9e2e-34205c87ee26.png",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -1388,14 +1917,22 @@
         "thumbnailUrl": "/studio/cricket/players/imran-sheikh-thumb.webp",
         "width": 1129,
         "height": 1393
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/imran-sheikh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "इमरान शेख"
+      ]
     },
     {
       "id": "ishan-pandey",
       "name": "Ishan Pandey",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/ishan-pandey",
+      "profileUrl": "https://nplt20league.com/player/ishan-pandey/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700589376-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -1407,14 +1944,22 @@
         "thumbnailUrl": "/studio/cricket/players/ishan-pandey-thumb.webp",
         "width": 1066,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ishan-pandey/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "ईशान पाण्डे"
+      ]
     },
     {
       "id": "james-neesham",
       "name": "James Neesham",
       "teamId": "janakpur",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/james-neesham",
+      "profileUrl": "https://nplt20league.com/player/james-neesham/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/jimmy-neesham-mv88ve5t-310e04d9-c1f7-4e79-9d8a-c23658d3ce17.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -1426,40 +1971,51 @@
         "thumbnailUrl": "/studio/cricket/players/james-neesham-thumb.webp",
         "width": 1001,
         "height": 1570
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/james-neesham/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "जेम्स निशम"
+      ]
     },
     {
       "id": "jishan-alam",
       "name": "Jishan Alam",
       "teamId": "biratnagar",
-      "role": "Player",
+      "role": "Batter",
       "profileUrl": "https://nepalpremierleague.org/players/jishan-alam",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/1155/90266.png",
-        "sourceUrl": "https://www.icc-cricket.com/",
-        "credit": "International Cricket Council (ICC) U19 World Cup / Bangladesh Cricket Board",
-        "license": "Editorial / Tournament profile reuse",
-        "kind": "editorial",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/jishan-alam.webp",
-        "thumbnailUrl": "/studio/cricket/players/jishan-alam-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
-    },
-    {
-      "id": "k-s-bharat",
-      "name": "K. S. Bharat",
-      "teamId": "kathmandu",
-      "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/k-s-bharat"
+        "originalUrl": "/studio/cricket/players/jishan-alam-user-20261030.webp",
+        "sourceUrl": "/studio/cricket/players/jishan-alam-user-20261030.webp",
+        "credit": "User-supplied portrait",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "user-supplied",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/jishan-alam-user-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/jishan-alam-user-20261030-thumb.webp",
+        "width": 1086,
+        "height": 1448,
+        "note": "Portrait supplied by the user as Jisan Alam. Original PNG transparency preserved in optimized WebP and thumbnail; replaces the silhouette."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/teams/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed"
+      },
+      "aliases": [
+        "Jisan Alam",
+        "जिसान आलम"
+      ]
     },
     {
       "id": "kaleem-sana",
       "name": "Kaleem Sana",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/kaleem-sana",
+      "profileUrl": "https://nplt20league.com/player/kalim-sana/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/kaleem-sana-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -1471,14 +2027,22 @@
         "thumbnailUrl": "/studio/cricket/players/kaleem-sana-thumb.webp",
         "width": 497,
         "height": 1205
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kalim-sana/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "कलिम साना"
+      ]
     },
     {
       "id": "kamal-singh-airee",
       "name": "Kamal Singh Airee",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/kamal-singh-airee",
+      "profileUrl": "https://nplt20league.com/player/kamal-singh-airee/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/kamal-singh-airee-mv8dwz1y-0b595bea-b080-4ee0-8371-fb783e57fbe7.webp",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -1490,14 +2054,22 @@
         "thumbnailUrl": "/studio/cricket/players/kamal-singh-airee-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kamal-singh-airee/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "कमल सिंह ऐरी"
+      ]
     },
     {
       "id": "kamil-mishara",
       "name": "Kamil Mishara",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/kamil-mishara",
+      "profileUrl": "https://nplt20league.com/player/kamil-mishara/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/kamil-mishara-mvmoei2p-683ebeee-ce6b-479d-a283-d661416dfdc3.webp",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -1509,14 +2081,22 @@
         "thumbnailUrl": "/studio/cricket/players/kamil-mishara-thumb.webp",
         "width": 1082,
         "height": 1454
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kamil-mishara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "कामिल मिशारा"
+      ]
     },
     {
       "id": "kiran-thagunna",
       "name": "Kiran Thagunna",
       "teamId": "pokhara",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/kiran-thagunna",
+      "profileUrl": "https://nplt20league.com/player/kiran-thagunna/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/kiran-kumar-thagunna-muu2pnf3-8ea0aa25-3920-4609-850f-89efbd23e92c.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -1528,14 +2108,22 @@
         "thumbnailUrl": "/studio/cricket/players/kiran-thagunna-thumb.webp",
         "width": 500,
         "height": 650
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kiran-thagunna/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "किरण कुमार ठगुन्ना"
+      ]
     },
     {
       "id": "kishore-mahato",
       "name": "Kishore Mahato",
       "teamId": "lumbini",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/kishore-mahato",
+      "profileUrl": "https://nplt20league.com/player/kishore-mahato/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/kishore-1791179257.png",
         "sourceUrl": "https://lumbinilions.com.np/kishore-mahato",
@@ -1547,14 +2135,22 @@
         "thumbnailUrl": "/studio/cricket/players/kishore-mahato-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kishore-mahato/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "किशोर महतो"
+      ]
     },
     {
       "id": "krishna-paudel",
       "name": "Krishna Paudel",
       "teamId": "kathmandu",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/krishna-paudel",
+      "profileUrl": "https://nplt20league.com/player/krishna-paudel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/krishna-poudel-mv9j3ef1-57b070c7-d9e2-4623-bfd0-3cbee65d4982.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -1566,14 +2162,22 @@
         "thumbnailUrl": "/studio/cricket/players/krishna-paudel-thumb.webp",
         "width": 1087,
         "height": 1446
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/krishna-paudel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "कृष्ण पौडेल"
+      ]
     },
     {
       "id": "lalit-rajbanshi",
       "name": "Lalit Rajbanshi",
       "teamId": "janakpur",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/lalit-rajbanshi",
+      "profileUrl": "https://nplt20league.com/player/lalit-rajbanshi/profile/",
       "photo": {
         "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-69199a9355d6eLalit-Rajbanshi.png",
         "sourceUrl": "https://boltsjanakpur.com/squad",
@@ -1585,14 +2189,22 @@
         "thumbnailUrl": "/studio/cricket/players/lalit-rajbanshi-thumb.webp",
         "width": 850,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/lalit-rajbanshi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "ललित राजवंशी"
+      ]
     },
     {
       "id": "lokesh-bam",
       "name": "Lokesh Bam",
       "teamId": "biratnagar",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/lokesh-bam",
+      "profileUrl": "https://nplt20league.com/player/lokesh-bam/profile/",
       "photo": {
         "originalUrl": "https://biratkings.com/assets/lokesh-bam-nobg-CGCWVUyI.png",
         "sourceUrl": "https://biratkings.com/",
@@ -1604,14 +2216,22 @@
         "thumbnailUrl": "/studio/cricket/players/lokesh-bam-thumb.webp",
         "width": 1073,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/lokesh-bam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "लोकेश बम"
+      ]
     },
     {
       "id": "mahedi-hasan",
       "name": "Mahedi Hasan",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/mahedi-hasan",
+      "profileUrl": "https://nplt20league.com/player/mahedi-hasan/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/mahedi-hasan-mvi1nm4z-65af3025-71b7-4226-9abb-96b111ee5a9e.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -1623,14 +2243,22 @@
         "thumbnailUrl": "/studio/cricket/players/mahedi-hasan-thumb.webp",
         "width": 1254,
         "height": 1254
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/mahedi-hasan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "महेदी हसन"
+      ]
     },
     {
       "id": "mark-watt",
       "name": "Mark Watt",
       "teamId": "karnali",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/mark-watt",
+      "profileUrl": "https://nplt20league.com/player/mark-watt/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Mark%20Watt.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -1642,14 +2270,22 @@
         "thumbnailUrl": "/studio/cricket/players/mark-watt-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/mark-watt/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मार्क वाट"
+      ]
     },
     {
       "id": "mayan-yadav",
       "name": "Mayan Yadav",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/mayan-yadav",
+      "profileUrl": "https://nplt20league.com/player/mayan-yadav/profile/",
       "photo": {
         "originalUrl": "https://boltsjanakpur.com/assets/img/player/player-6919b70d80537Mayan2.png",
         "sourceUrl": "https://boltsjanakpur.com/squad",
@@ -1661,14 +2297,22 @@
         "thumbnailUrl": "/studio/cricket/players/mayan-yadav-thumb.webp",
         "width": 795,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/mayan-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मयन यादव"
+      ]
     },
     {
       "id": "milan-bohara",
       "name": "Milan Bohara",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/milan-bohara",
+      "profileUrl": "https://nplt20league.com/player/milan-bohara/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700624009-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -1680,14 +2324,22 @@
         "thumbnailUrl": "/studio/cricket/players/milan-bohara-thumb.webp",
         "width": 1066,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/milan-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मिलन बोहरा"
+      ]
     },
     {
       "id": "moeen-ali",
       "name": "Moeen Ali",
       "teamId": "janakpur",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/moeen-ali",
+      "profileUrl": "https://nplt20league.com/player/moeen-ali/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/moeen-ali-mv88piki-ceab7c9d-079a-4104-8294-f9d58b244b1f.webp",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -1699,14 +2351,22 @@
         "thumbnailUrl": "/studio/cricket/players/moeen-ali-thumb.webp",
         "width": 1142,
         "height": 1377
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/moeen-ali/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मोइन अली"
+      ]
     },
     {
       "id": "mohammad-aadil-alam",
       "name": "Mohammad Aadil Alam",
       "teamId": "kathmandu",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/mohammad-aadil-alam",
+      "profileUrl": "https://nplt20league.com/player/mohammad-aadil-alam/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/mohammad-aadil-alam-mv9at2dm-d2191f34-f60b-45ab-92a4-3466775fd199.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -1718,14 +2378,22 @@
         "thumbnailUrl": "/studio/cricket/players/mohammad-aadil-alam-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/mohammad-aadil-alam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मोहम्मद आदिल आलम"
+      ]
     },
     {
       "id": "mohammad-saifuddin",
       "name": "Mohammad Saifuddin",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/mohammad-saifuddin",
+      "profileUrl": "https://nplt20league.com/player/mohammad-saifuddin/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/pokhara-avengers-sign-mohammad-saifuddin-for-npl-2026-mvkxheit-3b747ed1-0e81-49c3-aa6e-fc7156164eb4.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -1737,14 +2405,22 @@
         "thumbnailUrl": "/studio/cricket/players/mohammad-saifuddin-thumb.webp",
         "width": 1122,
         "height": 1402
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/mohammad-saifuddin/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मोहम्मद सैफुद्दीन"
+      ]
     },
     {
       "id": "mousom-dhakal",
       "name": "Mousom Dhakal",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/mousom-dhakal",
+      "profileUrl": "https://nplt20league.com/player/mousom-dhakal/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/mousam-dhakal-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -1756,14 +2432,22 @@
         "thumbnailUrl": "/studio/cricket/players/mousom-dhakal-thumb.webp",
         "width": 446,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/mousom-dhakal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "मौसम ढकाल"
+      ]
     },
     {
       "id": "nandan-yadav",
       "name": "Nandan Yadav",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/nandan-yadav",
+      "profileUrl": "https://nplt20league.com/player/nandan-yadav/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Nandan%20Yadav.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -1775,14 +2459,22 @@
         "thumbnailUrl": "/studio/cricket/players/nandan-yadav-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/nandan-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "नन्दन यादव"
+      ]
     },
     {
       "id": "narayan-joshi",
       "name": "Narayan Joshi",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/narayan-joshi",
+      "profileUrl": "https://nplt20league.com/player/narayan-joshi/profile/",
       "photo": {
         "originalUrl": "https://biratkings.com/assets/narayan-joshi-nobg-DaRa962R.png",
         "sourceUrl": "https://biratkings.com/",
@@ -1794,14 +2486,22 @@
         "thumbnailUrl": "/studio/cricket/players/narayan-joshi-thumb.webp",
         "width": 1073,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/narayan-joshi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "नारायण जोशी"
+      ]
     },
     {
       "id": "naren-saud",
       "name": "Naren Saud",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/naren-saud",
+      "profileUrl": "https://nplt20league.com/player/naren-saud/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/naren-saud-mv99jufw-178805ea-7661-4bfa-b2c3-6fd4e2a98ae1.png",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -1813,14 +2513,22 @@
         "thumbnailUrl": "/studio/cricket/players/naren-saud-thumb.webp",
         "width": 1122,
         "height": 1402
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/naren-saud/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "नरेन साउद"
+      ]
     },
     {
       "id": "niroshan-dickwella",
       "name": "Niroshan Dickwella",
       "teamId": "lumbini",
       "role": "Wicket-keeper",
-      "profileUrl": "https://nepalpremierleague.org/players/niroshan-dickwella",
+      "profileUrl": "https://nplt20league.com/player/niroshan-dickwella/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dikka-1788155249-1-1789227302.png",
         "sourceUrl": "https://lumbinilions.com.np/niroshan-dickwella",
@@ -1832,14 +2540,22 @@
         "thumbnailUrl": "/studio/cricket/players/niroshan-dickwella-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/niroshan-dickwella/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "निरोशन डिकवेला"
+      ]
     },
     {
       "id": "pawan-sarraf",
       "name": "Pawan Sarraf",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/pawan-sarraf",
+      "profileUrl": "https://nplt20league.com/player/pawan-sarraf/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Pawan%20Sarraf.jpg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -1851,14 +2567,22 @@
         "thumbnailUrl": "/studio/cricket/players/pawan-sarraf-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/pawan-sarraf/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "पवन सर्राफ"
+      ]
     },
     {
       "id": "prashiddha-jaisi",
       "name": "Prashiddha Jaisi",
       "teamId": "kathmandu",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/prashiddha-jaisi",
+      "profileUrl": "https://nplt20league.com/player/prasiddha-jaishi/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/prasiddha-jaishi-mv9aorno-48a882f9-c4a8-4f4a-a31a-9c43d3bb82c6.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -1870,14 +2594,22 @@
         "thumbnailUrl": "/studio/cricket/players/prashiddha-jaisi-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/prasiddha-jaishi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "प्रसिद्व जैसी"
+      ]
     },
     {
       "id": "pratik-pokharel",
       "name": "Pratik Pokharel",
       "teamId": "pokhara",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/pratik-pokharel",
+      "profileUrl": "https://nplt20league.com/player/pratik-pokharel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/pratik-mv20f52j-319010d6-42f5-43ee-87ec-0d581bed216c.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -1889,14 +2621,22 @@
         "thumbnailUrl": "/studio/cricket/players/pratik-pokharel-thumb.webp",
         "width": 1080,
         "height": 1080
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/pratik-pokharel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "प्रतिक पोखरेल"
+      ]
     },
     {
       "id": "pratik-shrestha",
       "name": "Pratik Shrestha",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/pratik-shrestha",
+      "profileUrl": "https://nplt20league.com/player/pratik-shrestha/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/pratik-shrestha-mv99hs09-7d835477-62b2-4283-90bf-cb2cbb7f96d5.png",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -1908,14 +2648,22 @@
         "thumbnailUrl": "/studio/cricket/players/pratik-shrestha-thumb.webp",
         "width": 1195,
         "height": 1316
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/pratik-shrestha/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "प्रतिक श्रेष्ठ"
+      ]
     },
     {
       "id": "pratish-gc",
       "name": "Pratish GC",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/pratish-gc",
+      "profileUrl": "https://nplt20league.com/player/pratish-gc/profile/",
       "photo": {
         "originalUrl": "https://biratkings.com/assets/pratish-gc-nobg-DzvlCQOh.png",
         "sourceUrl": "https://biratkings.com/",
@@ -1927,14 +2675,22 @@
         "thumbnailUrl": "/studio/cricket/players/pratish-gc-thumb.webp",
         "width": 1073,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/pratish-gc/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "प्रतिश जि.सी."
+      ]
     },
     {
       "id": "ranjeet-kumar",
       "name": "Ranjeet Kumar",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/ranjeet-kumar",
+      "profileUrl": "https://nplt20league.com/player/ranjeet-kumar/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/ranjeet-kumar-mv8dxujp-32d70ccb-e209-4ca9-9818-922cea86e40a.webp",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -1946,14 +2702,22 @@
         "thumbnailUrl": "/studio/cricket/players/ranjeet-kumar-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ranjeet-kumar/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रन्जित कुमार"
+      ]
     },
     {
       "id": "rashid-khan",
       "name": "Rashid Khan",
       "teamId": "kathmandu",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/rashid-khan",
+      "profileUrl": "https://nplt20league.com/player/rashid-khan/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/rashid-khan-mv9aksrd-8f0ab360-2fbf-49d4-bd15-74a46f55dc68.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -1965,33 +2729,50 @@
         "thumbnailUrl": "/studio/cricket/players/rashid-khan-thumb.webp",
         "width": 1126,
         "height": 1397
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/rashid-khan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रशिद खान"
+      ]
     },
     {
       "id": "ravi-bopara",
       "name": "Ravi Bopara",
       "teamId": "chitwan",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/ravi-bopara",
+      "profileUrl": "https://nplt20league.com/player/ravi-bopara/profile/",
       "photo": {
-        "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/ravi-bopara-s3.png",
-        "sourceUrl": "https://chitwanrhinos.com/",
-        "credit": "Chitwan Rhinos",
-        "license": "Team website — reuse terms apply",
-        "kind": "team",
-        "checkedAt": "2026-10-25",
-        "url": "/studio/cricket/players/ravi-bopara.webp",
-        "thumbnailUrl": "/studio/cricket/players/ravi-bopara-thumb.webp",
-        "width": 561,
-        "height": 1241
-      }
+        "originalUrl": "https://nplt20league.com/uploads/ravi-bopara-mv6z2sc8-0272c6c3-f389-4b3a-9c43-53d22ff53fc2.webp",
+        "sourceUrl": "https://nplt20league.com/player/ravi-bopara/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/ravi-bopara-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/ravi-bopara-20261030-thumb.webp",
+        "width": 926,
+        "height": 1600,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ravi-bopara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रवि बोपारा"
+      ]
     },
     {
       "id": "rijan-dhakal",
       "name": "Rijan Dhakal",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/rijan-dhakal",
+      "profileUrl": "https://nplt20league.com/player/rijan-dhakal/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/rijan-dhakal-mv8dzv6q-177e0699-f68f-4519-b5f1-4d3f2bbcb1e2.webp",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -2003,14 +2784,22 @@
         "thumbnailUrl": "/studio/cricket/players/rijan-dhakal-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/rijan-dhakal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रिजन ढकाल"
+      ]
     },
     {
       "id": "rit-gautam",
       "name": "Rit Gautam",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/rit-gautam",
+      "profileUrl": "https://nplt20league.com/player/rit-gautam/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/rit-gautam-mv8c4hij-554fe43c-c4a6-472c-94fe-d89702fef995.png",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -2022,14 +2811,22 @@
         "thumbnailUrl": "/studio/cricket/players/rit-gautam-thumb.webp",
         "width": 1126,
         "height": 1397
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/rit-gautam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रित गौतम"
+      ]
     },
     {
       "id": "ruben-trumpelmann",
       "name": "Ruben Trumpelmann",
       "teamId": "lumbini",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/ruben-trumpelmann",
+      "profileUrl": "https://nplt20league.com/player/ruben-trumpelmann/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/trumpy-1788156290-1-1789227009.png",
         "sourceUrl": "https://lumbinilions.com.np/ruben-trumpelmann",
@@ -2041,14 +2838,22 @@
         "thumbnailUrl": "/studio/cricket/players/ruben-trumpelmann-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ruben-trumpelmann/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रुबेन ट्रम्पलम्यान"
+      ]
     },
     {
       "id": "rupesh-singh",
       "name": "Rupesh Singh",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/rupesh-singh",
+      "profileUrl": "https://nplt20league.com/player/rupesh-kumar-singh/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/rupesh-kumar-singh-mv99lzeg-879a4e9a-4019-40d4-975e-6071e89fb142.png",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -2060,14 +2865,22 @@
         "thumbnailUrl": "/studio/cricket/players/rupesh-singh-thumb.webp",
         "width": 1254,
         "height": 1254
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/rupesh-kumar-singh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "रुपेश कुमार सिंह"
+      ]
     },
     {
       "id": "sachin-bhatta",
       "name": "Sachin Bhatta",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/sachin-bhatta",
+      "profileUrl": "https://nplt20league.com/player/sachin-bhatt/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700068539-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -2079,14 +2892,22 @@
         "thumbnailUrl": "/studio/cricket/players/sachin-bhatta-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sachin-bhatt/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सचिन भट्ट"
+      ]
     },
     {
       "id": "sachin-sharma",
       "name": "Sachin Sharma",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/sachin-sharma",
+      "profileUrl": "https://nplt20league.com/player/sachin-sharma/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Sachin%20Sharma.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -2098,14 +2919,22 @@
         "thumbnailUrl": "/studio/cricket/players/sachin-sharma-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sachin-sharma/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सचिन शर्मा"
+      ]
     },
     {
       "id": "sagar-dhakal",
       "name": "Sagar Dhakal",
       "teamId": "pokhara",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/sagar-dhakal",
+      "profileUrl": "https://nplt20league.com/player/sagar-dhakal/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sagar-dhakal-muu2jito-1603db15-12f0-4c89-9cfa-abfb7852b576.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -2117,14 +2946,22 @@
         "thumbnailUrl": "/studio/cricket/players/sagar-dhakal-thumb.webp",
         "width": 500,
         "height": 650
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sagar-dhakal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सागर ढकाल"
+      ]
     },
     {
       "id": "sahan-arachchige",
       "name": "Sahan Arachchige",
       "teamId": "kathmandu",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/sahan-arachchige",
+      "profileUrl": "https://nplt20league.com/player/sahan-arachchige/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sahan-arachchinge-mv9auuhk-9ac686d8-b36e-46b6-a964-eb69066eca53.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2136,14 +2973,22 @@
         "thumbnailUrl": "/studio/cricket/players/sahan-arachchige-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sahan-arachchige/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सहान अराच्चिगे"
+      ]
     },
     {
       "id": "sahibzada-farhan",
       "name": "Sahibzada Farhan",
       "teamId": "karnali",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/sahibzada-farhan",
+      "profileUrl": "https://nplt20league.com/player/sahibzada-farhan/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Sahibzada%20Farhan.jpg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -2155,14 +3000,22 @@
         "thumbnailUrl": "/studio/cricket/players/sahibzada-farhan-thumb.webp",
         "width": 767,
         "height": 851
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sahibzada-farhan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "साहिबजादा फरहान"
+      ]
     },
     {
       "id": "sahil-patel",
       "name": "Sahil Patel",
       "teamId": "kathmandu",
       "role": "Wicketkeeper-batter",
-      "profileUrl": "https://nepalpremierleague.org/players/sahil-patel",
+      "profileUrl": "https://nplt20league.com/player/sahil-patel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sahil-patel-mv9abmic-a04cf2d3-2251-41ff-a378-bce914e6cb7a.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2174,33 +3027,50 @@
         "thumbnailUrl": "/studio/cricket/players/sahil-patel-thumb.webp",
         "width": 1088,
         "height": 1445
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sahil-patel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "साहिल पटेल"
+      ]
     },
     {
       "id": "saif-zaib",
       "name": "Saif Zaib",
       "teamId": "sudurpaschim",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/saif-zaib",
+      "profileUrl": "https://nplt20league.com/player/saif-zaib/profile/",
       "photo": {
-        "originalUrl": "https://resources.ecb.co.uk/photo-resources/2026/07/22/1115e98e-1aff-46b5-80f0-d7dc38078ba2/SB-Saif-Zaib.png?width=460&height=690",
-        "sourceUrl": "https://www.thehundred.com/players/saif-zaib",
-        "credit": "England and Wales Cricket Board (ECB / The Hundred)",
-        "license": "ECB Editorial Headshot",
-        "kind": "overseas",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/saif-zaib.webp",
-        "thumbnailUrl": "/studio/cricket/players/saif-zaib-thumb.webp",
-        "width": 460,
-        "height": 690
-      }
+        "originalUrl": "https://nplt20league.com/uploads/saif-zaib-mvt3ubzp-aa4dfb20-c2e5-47d7-86b2-2c4ee58b4733.webp",
+        "sourceUrl": "https://nplt20league.com/player/saif-zaib/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/saif-zaib-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/saif-zaib-20261030-thumb.webp",
+        "width": 1024,
+        "height": 1536,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/saif-zaib/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सैफ अली जेब"
+      ]
     },
     {
       "id": "salauddin-khan",
       "name": "Salauddin Khan",
       "teamId": "chitwan",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/salauddin-khan",
+      "profileUrl": "https://nplt20league.com/player/salahuddin-khan/profile/",
       "photo": {
         "originalUrl": "https://chitwanrhinos.com/uploads/players/season-3/salahuddin-khan-s3.png",
         "sourceUrl": "https://chitwanrhinos.com/",
@@ -2212,14 +3082,22 @@
         "thumbnailUrl": "/studio/cricket/players/salauddin-khan-thumb.webp",
         "width": 772,
         "height": 1290
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/salahuddin-khan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सलाउद्दीन खान"
+      ]
     },
     {
       "id": "santosh-karki",
       "name": "Santosh Karki",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/santosh-karki",
+      "profileUrl": "https://nplt20league.com/player/santosh-karki/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/santosh-karki-mv8c6ipc-850bdc58-bcaf-4da9-807a-8fbec1c5718f.png",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -2231,14 +3109,22 @@
         "thumbnailUrl": "/studio/cricket/players/santosh-karki-thumb.webp",
         "width": 1073,
         "height": 1466
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/santosh-karki/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सन्तोष कार्की"
+      ]
     },
     {
       "id": "santosh-yadav",
       "name": "Santosh Yadav",
       "teamId": "kathmandu",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/santosh-yadav",
+      "profileUrl": "https://nplt20league.com/player/santosh-yadav/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/santosh-yadav-mv9arpnk-26df495f-e2bf-467d-a5a2-fed667ab1b55.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2250,52 +3136,78 @@
         "thumbnailUrl": "/studio/cricket/players/santosh-yadav-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/santosh-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सन्तोष यादव"
+      ]
     },
     {
       "id": "scott-kuggeleijn",
       "name": "Scott Kuggeleijn",
       "teamId": "sudurpaschim",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/scott-kuggeleijn",
+      "profileUrl": "https://nplt20league.com/player/scott-kuggeleijn/profile/",
       "photo": {
-        "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Scott_Kuggeleijn.jpg",
-        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Scott_Kuggeleijn.jpg",
-        "credit": "Wikimedia Commons",
-        "license": "CC BY-SA 4.0",
-        "kind": "overseas",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/scott-kuggeleijn.webp",
-        "thumbnailUrl": "/studio/cricket/players/scott-kuggeleijn-thumb.webp",
-        "width": 968,
-        "height": 1600
-      }
+        "originalUrl": "https://nplt20league.com/uploads/scott-kuggeleijn-mv92r9t6-33c2980a-1b7c-4b40-a91a-23c2822794bf.webp",
+        "sourceUrl": "https://nplt20league.com/player/scott-kuggeleijn/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/scott-kuggeleijn-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/scott-kuggeleijn-20261030-thumb.webp",
+        "width": 1031,
+        "height": 1525,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/scott-kuggeleijn/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "स्कट कुगेलिन"
+      ]
     },
     {
       "id": "shadley-van-schalkwyk",
       "name": "Shadley van Schalkwyk",
       "teamId": "lumbini",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/shadley-van-schalkwyk",
+      "profileUrl": "https://nplt20league.com/player/shadley-van-schalkwyk/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/9795.png",
-        "sourceUrl": "https://www.icc-cricket.com/players/shadley-van-schalkwyk",
-        "credit": "International Cricket Council (ICC)",
-        "license": "ICC Editorial Headshot",
-        "kind": "team",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/shadley-van-schalkwyk.webp",
-        "thumbnailUrl": "/studio/cricket/players/shadley-van-schalkwyk-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/shadley-van-schalkwyk-mvo7eq5a-17246fce-daae-47f9-ae7c-245d2937f715.webp",
+        "sourceUrl": "https://nplt20league.com/player/shadley-van-schalkwyk/profile/",
+        "credit": "NPLT20League.com / lumbini",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/shadley-van-schalkwyk-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/shadley-van-schalkwyk-20261030-thumb.webp",
+        "width": 1096,
+        "height": 1435,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shadley-van-schalkwyk/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शाडली भ्यान शाल्कविक"
+      ]
     },
     {
       "id": "shahab-alam",
       "name": "Shahab Alam",
       "teamId": "kathmandu",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/shahab-alam",
+      "profileUrl": "https://nplt20league.com/player/shahab-alam/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/shahab-alam-mv9ajsx0-e1e2920d-cdfd-43ff-9708-8f59896272df.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2307,14 +3219,22 @@
         "thumbnailUrl": "/studio/cricket/players/shahab-alam-thumb.webp",
         "width": 1125,
         "height": 1398
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shahab-alam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शाहब आलम"
+      ]
     },
     {
       "id": "shakib-al-hasan",
       "name": "Shakib Al Hasan",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/shakib-al-hasan",
+      "profileUrl": "https://nplt20league.com/player/shakib-al-hasan/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/pa-players-13-mvi1av06-72b7fb68-2989-43d0-9bed-356e26000087.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -2326,33 +3246,50 @@
         "thumbnailUrl": "/studio/cricket/players/shakib-al-hasan-thumb.webp",
         "width": 1080,
         "height": 1350
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shakib-al-hasan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शाकिब अल हसन"
+      ]
     },
     {
       "id": "shamim-hossain",
       "name": "Shamim Hossain",
       "teamId": "lumbini",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/shamim-hossain",
+      "profileUrl": "https://nplt20league.com/player/shamim-hossain/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/70248.png",
-        "sourceUrl": "https://www.icc-cricket.com/players/shamim-hossain",
-        "credit": "International Cricket Council (ICC)",
-        "license": "ICC Editorial Headshot",
-        "kind": "team",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/shamim-hossain.webp",
-        "thumbnailUrl": "/studio/cricket/players/shamim-hossain-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/shamim-hossain-mvlfsint-ea78ef3b-da78-4a54-a22a-c1fc002069c1.webp",
+        "sourceUrl": "https://nplt20league.com/player/shamim-hossain/profile/",
+        "credit": "NPLT20League.com / lumbini",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/shamim-hossain-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/shamim-hossain-20261030-thumb.webp",
+        "width": 1024,
+        "height": 1536,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shamim-hossain/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शमिम हुसेन"
+      ]
     },
     {
       "id": "sher-malla",
       "name": "Sher Malla",
       "teamId": "lumbini",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/sher-malla",
+      "profileUrl": "https://nplt20league.com/player/sher-malla/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/sher-malla-178815580-1789226543.png",
         "sourceUrl": "https://lumbinilions.com.np/sher-malla",
@@ -2364,33 +3301,50 @@
         "thumbnailUrl": "/studio/cricket/players/sher-malla-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sher-malla/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शेर मल्ल"
+      ]
     },
     {
       "id": "sherfane-rutherford",
       "name": "Sherfane Rutherford",
       "teamId": "sudurpaschim",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/sherfane-rutherford",
+      "profileUrl": "https://nplt20league.com/player/sherfane-rutherford/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/67285.png",
-        "sourceUrl": "https://www.icc-cricket.com/players/sherfane-rutherford",
-        "credit": "International Cricket Council (ICC)",
-        "license": "ICC Editorial Headshot",
-        "kind": "overseas",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/sherfane-rutherford.webp",
-        "thumbnailUrl": "/studio/cricket/players/sherfane-rutherford-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/sherfane-rutherford-joins-sudurpaschim-royals-mvlz39yn-eedf5e23-9c6e-4a70-b4a8-c1df30dfa7f8.webp",
+        "sourceUrl": "https://nplt20league.com/player/sherfane-rutherford/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/sherfane-rutherford-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/sherfane-rutherford-20261030-thumb.webp",
+        "width": 1121,
+        "height": 1403,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sherfane-rutherford/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शेरफेन रदरफोर्ड"
+      ]
     },
     {
       "id": "shubh-kansakar",
       "name": "Shubh Kansakar",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/shubh-kansakar",
+      "profileUrl": "https://nplt20league.com/player/shubh-kansakar/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Shubh%20Kansakar.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -2402,14 +3356,22 @@
         "thumbnailUrl": "/studio/cricket/players/shubh-kansakar-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shubh-kansakar/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शुभ कंसाकार"
+      ]
     },
     {
       "id": "shubham-ranjane",
       "name": "Shubham Ranjane",
       "teamId": "biratnagar",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/shubham-ranjane",
+      "profileUrl": "https://nplt20league.com/player/shubham-ranjane/profile/",
       "photo": {
         "originalUrl": "https://www.seattleorcas.com/static-assets/images/players/62006.png?v=2.86",
         "sourceUrl": "https://www.seattleorcas.com/",
@@ -2421,14 +3383,22 @@
         "thumbnailUrl": "/studio/cricket/players/shubham-ranjane-thumb.webp",
         "width": 1030,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shubham-ranjane/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "शुभम राञ्जने"
+      ]
     },
     {
       "id": "sikandar-raza",
       "name": "Sikandar Raza",
       "teamId": "chitwan",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/sikandar-raza",
+      "profileUrl": "https://nplt20league.com/player/sikandar-raza/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sikandar-raza-mv70b9ft-539858f3-8c4c-4164-b4d9-287487e4a12a.webp",
         "sourceUrl": "https://nplt20league.com/teams/chitwan-rhinos",
@@ -2440,14 +3410,22 @@
         "thumbnailUrl": "/studio/cricket/players/sikandar-raza-thumb.webp",
         "width": 1017,
         "height": 1546
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sikandar-raza/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सिकन्दर रजा"
+      ]
     },
     {
       "id": "smit-patel",
       "name": "Smit Patel",
       "teamId": "kathmandu",
       "role": "Wicketkeeper-batter",
-      "profileUrl": "https://nepalpremierleague.org/players/smit-patel",
+      "profileUrl": "https://nplt20league.com/player/smit-patel/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/smit-patel-mvmb6xko-b9ef83d2-7ae5-4511-b744-cfc713a9a9dd.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2459,14 +3437,22 @@
         "thumbnailUrl": "/studio/cricket/players/smit-patel-thumb.webp",
         "width": 1133,
         "height": 1388
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/smit-patel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "स्मित पटेल"
+      ]
     },
     {
       "id": "sonu-devkota",
       "name": "Sonu Devkota",
       "teamId": "kathmandu",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/sonu-devkota",
+      "profileUrl": "https://nplt20league.com/player/sonu-devkota/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sonu-devkota-mv9azh5m-004fd8f0-3324-44fe-83b4-618c2e9a6114.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2478,14 +3464,22 @@
         "thumbnailUrl": "/studio/cricket/players/sonu-devkota-thumb.webp",
         "width": 1083,
         "height": 1453
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sonu-devkota/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सोनु देवकोटा"
+      ]
     },
     {
       "id": "subash-bhandari",
       "name": "Subash Bhandari",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/subash-bhandari",
+      "profileUrl": "https://nplt20league.com/player/subash-bhandari/profile/",
       "photo": {
         "originalUrl": "https://biratkings.com/assets/subash-bhandari-nobg-C51pnMvS.png",
         "sourceUrl": "https://biratkings.com/",
@@ -2497,14 +3491,22 @@
         "thumbnailUrl": "/studio/cricket/players/subash-bhandari-thumb.webp",
         "width": 1073,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/subash-bhandari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सुभाष भण्डारी"
+      ]
     },
     {
       "id": "sudip-aryal",
       "name": "Sudip Aryal",
       "teamId": "pokhara",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/sudip-aryal",
+      "profileUrl": "https://nplt20league.com/player/sudip-aryal/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sudip-aryal-mv20bd8r-3f6a417a-ffeb-49b7-bbca-53ec2e0c583f.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -2516,14 +3518,22 @@
         "thumbnailUrl": "/studio/cricket/players/sudip-aryal-thumb.webp",
         "width": 1080,
         "height": 1080
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sudip-aryal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सुदिप अर्याल"
+      ]
     },
     {
       "id": "sujan-thapaliya",
       "name": "Sujan Thapaliya",
       "teamId": "biratnagar",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/sujan-thapaliya",
+      "profileUrl": "https://nplt20league.com/player/sujan-thapaliya/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sujan-thapaliya-mv9jq545-36d48915-a9b7-4998-af89-f6c63f7a5455.webp",
         "sourceUrl": "https://nplt20league.com/teams/biratnagar-kings",
@@ -2535,14 +3545,22 @@
         "thumbnailUrl": "/studio/cricket/players/sujan-thapaliya-thumb.webp",
         "width": 1068,
         "height": 1472
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sujan-thapaliya/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सुजन थपलिया"
+      ]
     },
     {
       "id": "sundeep-jora",
       "name": "Sundeep Jora",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/sundeep-jora",
+      "profileUrl": "https://nplt20league.com/player/sundeep-jora/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/sunddep-1788155704-1-1789226093.png",
         "sourceUrl": "https://lumbinilions.com.np/sundeep-jora",
@@ -2554,14 +3572,22 @@
         "thumbnailUrl": "/studio/cricket/players/sundeep-jora-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sundeep-jora/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सन्दीप जोरा"
+      ]
     },
     {
       "id": "sunny-bk",
       "name": "Sunny BK",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/sunny-bk",
+      "profileUrl": "https://nplt20league.com/player/sunny-bk/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/sunny-bk-mv23aot8-65a80ce2-3782-46ca-8e9e-f8fb2e8413ba.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -2573,14 +3599,22 @@
         "thumbnailUrl": "/studio/cricket/players/sunny-bk-thumb.webp",
         "width": 1080,
         "height": 1080
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sunny-bk/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सन्नी विके"
+      ]
     },
     {
       "id": "surya-tamang",
       "name": "Surya Tamang",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/surya-tamang",
+      "profileUrl": "https://nplt20league.com/player/surya-tamang/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Surya%20Tamang.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -2592,14 +3626,22 @@
         "thumbnailUrl": "/studio/cricket/players/surya-tamang-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/surya-tamang/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सुर्य तामाङ"
+      ]
     },
     {
       "id": "suryanshu-koirala",
       "name": "Suryanshu Koirala",
       "teamId": "kathmandu",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/suryanshu-koirala",
+      "profileUrl": "https://nplt20league.com/player/suryanshu-koirala/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/suryanshu-koirala-mv9b0cst-5ad637f9-32ea-44a2-8193-e252d576138a.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2611,14 +3653,22 @@
         "thumbnailUrl": "/studio/cricket/players/suryanshu-koirala-thumb.webp",
         "width": 1088,
         "height": 1445
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/suryanshu-koirala/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "सुर्यांशु कोइराला"
+      ]
     },
     {
       "id": "tek-rawat",
       "name": "Tek Rawat",
       "teamId": "sudurpaschim",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/tek-rawat",
+      "profileUrl": "https://nplt20league.com/player/tek-rawat/profile/",
       "photo": {
         "originalUrl": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700688007-cropped-image.jpg",
         "sourceUrl": "https://sudurpaschimroyals.com/squad",
@@ -2630,14 +3680,22 @@
         "thumbnailUrl": "/studio/cricket/players/tek-rawat-thumb.webp",
         "width": 1280,
         "height": 1600
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/tek-rawat/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "टेक रावत"
+      ]
     },
     {
       "id": "tilak-bhandari",
       "name": "Tilak Bhandari",
       "teamId": "lumbini",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/tilak-bhandari",
+      "profileUrl": "https://nplt20league.com/player/tilak-bhandari/profile/",
       "photo": {
         "originalUrl": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/tilak-1788156715-1-1789226136.png",
         "sourceUrl": "https://lumbinilions.com.np/tilak-bhandari",
@@ -2649,14 +3707,22 @@
         "thumbnailUrl": "/studio/cricket/players/tilak-bhandari-thumb.webp",
         "width": 950,
         "height": 1100
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/tilak-bhandari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "तिलक भण्डारी"
+      ]
     },
     {
       "id": "trit-raj-das",
       "name": "Trit Raj Das",
       "teamId": "janakpur",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/trit-raj-das",
+      "profileUrl": "https://nplt20league.com/player/trit-raj-das/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/trit-raj-das-mv8c8z4o-b0d0e578-9ed9-4367-8799-2d009172ac5b.png",
         "sourceUrl": "https://nplt20league.com/teams/janakpur-bolts",
@@ -2668,14 +3734,22 @@
         "thumbnailUrl": "/studio/cricket/players/trit-raj-das-thumb.webp",
         "width": 1003,
         "height": 1568
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/trit-raj-das/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "त्रित राज दास"
+      ]
     },
     {
       "id": "unish-thakuri",
       "name": "Unish Thakuri",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/unish-thakuri",
+      "profileUrl": "https://nplt20league.com/player/unish-bikram-singh/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Unish%20BS%20Thakuri.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -2687,40 +3761,75 @@
         "thumbnailUrl": "/studio/cricket/players/unish-thakuri-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/unish-bikram-singh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "युनिश विक्रम सिंह ठकुरी"
+      ]
     },
     {
       "id": "usama-mir",
       "name": "Usama Mir",
       "teamId": "chitwan",
       "role": "Bowler",
-      "profileUrl": "https://nepalpremierleague.org/players/usama-mir",
+      "profileUrl": "https://nplt20league.com/player/usama-mir/profile/",
       "photo": {
-        "originalUrl": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/64016.png",
-        "sourceUrl": "https://www.icc-cricket.com/",
-        "credit": "International Cricket Council (ICC)",
-        "license": "Editorial / Tournament profile reuse",
-        "kind": "editorial",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/usama-mir.webp",
-        "thumbnailUrl": "/studio/cricket/players/usama-mir-thumb.webp",
-        "width": 434,
-        "height": 568
-      }
+        "originalUrl": "https://nplt20league.com/uploads/chitwan-rhinos-jersey-portrait-cutout-mv9nmkvn-4de1efc7-eec9-4e83-ab49-6b9c66a81edc.webp",
+        "sourceUrl": "https://nplt20league.com/player/usama-mir/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/usama-mir-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/usama-mir-20261030-thumb.webp",
+        "width": 1105,
+        "height": 1424,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/usama-mir/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "ओसामा मिर"
+      ]
     },
     {
       "id": "will-bosisto",
       "name": "Will Bosisto",
       "teamId": "kathmandu",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/will-bosisto"
+      "profileUrl": "https://nepalpremierleague.org/players/will-bosisto",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/teams/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed"
+      },
+      "photo": {
+        "originalUrl": "/studio/cricket/players/will-bosisto-user-20261030.webp",
+        "sourceUrl": "/studio/cricket/players/will-bosisto-user-20261030.webp",
+        "credit": "User-supplied portrait",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "user-supplied",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/will-bosisto-user-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/will-bosisto-user-20261030-thumb.webp",
+        "width": 1145,
+        "height": 1374,
+        "note": "User explicitly confirmed this portrait is for Will Bosisto despite the source filename Sam Heazlett.png. Original PNG transparency preserved in optimized WebP and thumbnail."
+      }
     },
     {
       "id": "yuvraj-khatri",
       "name": "Yuvraj Khatri",
       "teamId": "karnali",
       "role": "Player",
-      "profileUrl": "https://nepalpremierleague.org/players/yuvraj-khatri",
+      "profileUrl": "https://nplt20league.com/player/yuvraj-khatri/profile/",
       "photo": {
         "originalUrl": "https://app.karnaliyaks.com/storage/files/files/Yuvraj%20Khatri.jpeg",
         "sourceUrl": "https://karnaliyaks.com/our-yaks",
@@ -2732,14 +3841,22 @@
         "thumbnailUrl": "/studio/cricket/players/yuvraj-khatri-thumb.webp",
         "width": 1024,
         "height": 1536
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/yuvraj-khatri/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "युवराज खत्री"
+      ]
     },
     {
       "id": "ks-bharat",
       "name": "KS Bharat",
       "teamId": "kathmandu",
       "role": "Wicketkeeper-batter",
-      "profileUrl": "https://nepalpremierleague.org/players/ks-bharat",
+      "profileUrl": "https://nplt20league.com/player/ks-bharat/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/k-s-bharat-mv9hzbxg-0d6db712-a766-4693-b1dc-4707915a973e.webp",
         "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
@@ -2751,33 +3868,51 @@
         "thumbnailUrl": "/studio/cricket/players/ks-bharat-thumb.webp",
         "width": 1247,
         "height": 1261
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ks-bharat/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "केएस भरत",
+        "k s bharat"
+      ]
     },
     {
       "id": "sam-heazlett",
       "name": "Sam Heazlett",
       "teamId": "kathmandu",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/sam-heazlett",
+      "profileUrl": "https://nplt20league.com/player/sam-heazlett/profile/",
       "photo": {
-        "originalUrl": "https://nplt20league.com/uploads/2894c1eb-c8e7-4411-998b-2fe7571e94c1-photoroom-mvnkmsf1-b4a9c2bb-0c17-4541-bdb8-03c4c3017a2c.png",
-        "sourceUrl": "https://nplt20league.com/teams/kathmandu-gurkhas",
-        "credit": "NPL T20 League / Kathmandu Gorkhas",
-        "license": "Tournament player profile reuse",
-        "kind": "team",
-        "checkedAt": "2026-10-26",
-        "url": "/studio/cricket/players/sam-heazlett.webp",
-        "thumbnailUrl": "/studio/cricket/players/sam-heazlett-thumb.webp",
-        "width": 1079,
-        "height": 1457
-      }
+        "originalUrl": "/studio/cricket/players/sam-heazlett-user-20261030.webp",
+        "sourceUrl": "/studio/cricket/players/sam-heazlett-user-20261030.webp",
+        "credit": "User-supplied portrait",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "user-supplied",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/sam-heazlett-user-20261030.webp",
+        "thumbnailUrl": "/studio/cricket/players/sam-heazlett-user-20261030-thumb.webp",
+        "width": 1145,
+        "height": 1374,
+        "note": "Portrait supplied by the user as Sam Heazlett. Original PNG transparency preserved in optimized WebP and thumbnail; replaces the withheld suspect source image."
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sam-heazlett/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "साम हेजलेट"
+      ]
     },
     {
       "id": "bibek-rana-magar",
       "name": "Bibek Rana Magar",
       "teamId": "pokhara",
       "role": "Batter",
-      "profileUrl": "https://nepalpremierleague.org/players/bibek-rana-magar",
+      "profileUrl": "https://nplt20league.com/player/bibek-rana-magar/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/bibek-rana-magar-mv20d7wt-91837965-6318-49de-844a-61ce4f91b4fd.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -2789,14 +3924,23 @@
         "thumbnailUrl": "/studio/cricket/players/bibek-rana-magar-thumb.webp",
         "width": 1080,
         "height": 1080
-      }
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bibek-rana-magar/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "विवेक राना मगर",
+        "bibek magar"
+      ]
     },
     {
       "id": "bipin-acharya",
       "name": "Bipin Acharya",
       "teamId": "pokhara",
       "role": "All-rounder",
-      "profileUrl": "https://nepalpremierleague.org/players/bipin-acharya",
+      "profileUrl": "https://nplt20league.com/player/bipin-acharya/profile/",
       "photo": {
         "originalUrl": "https://nplt20league.com/uploads/bipin-acharya-1-mv208x4e-3be55dd4-1009-4efd-94eb-a09ea22ee2d9.webp",
         "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers",
@@ -2808,7 +3952,526 @@
         "thumbnailUrl": "/studio/cricket/players/bipin-acharya-thumb.webp",
         "width": 1080,
         "height": 1080
+      },
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-acharya/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "aliases": [
+        "बिपिन आचार्य",
+        "bipin archarya"
+      ]
+    },
+    {
+      "id": "ayush-neupane",
+      "name": "Ayush Neupane",
+      "teamId": "biratnagar",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/ayush-neupane/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ayush-neupane/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/ayush-neupane-2-mvmmpv0q-61975323-087e-4316-ac61-f1de49f7a6b8.webp",
+        "sourceUrl": "https://nplt20league.com/player/ayush-neupane/profile/",
+        "credit": "NPLT20League.com / biratnagar",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/ayush-neupane.webp",
+        "thumbnailUrl": "/studio/cricket/players/ayush-neupane-thumb.webp",
+        "width": 1130,
+        "height": 1392,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "shehan-jayasuriya",
+      "name": "Shehan Jayasuriya",
+      "teamId": "biratnagar",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/shehan-jayasuriya/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/shehan-jayasuriya/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/biratnagar-kings-cricketer-mvq6yysc-62baf57a-a186-45a0-b6c9-31c65a31cdbd.webp",
+        "sourceUrl": "https://nplt20league.com/player/shehan-jayasuriya/profile/",
+        "credit": "NPLT20League.com / biratnagar",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/shehan-jayasuriya.webp",
+        "thumbnailUrl": "/studio/cricket/players/shehan-jayasuriya-thumb.webp",
+        "width": 1130,
+        "height": 1392,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "daniel-richard-mousley",
+      "name": "Daniel Richard Mousley",
+      "teamId": "chitwan",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/daniel-richard-mousley/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/daniel-richard-mousley/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/npl-2026-mvqhn2po-0ff18417-e0ea-4bc2-b2ca-c5c98029ea1c.png",
+        "sourceUrl": "https://nplt20league.com/player/daniel-richard-mousley/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/daniel-richard-mousley.webp",
+        "thumbnailUrl": "/studio/cricket/players/daniel-richard-mousley-thumb.webp",
+        "width": 1023,
+        "height": 1538,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "dawid-malan",
+      "name": "Dawid Malan",
+      "teamId": "chitwan",
+      "role": "Batter",
+      "profileUrl": "https://nplt20league.com/player/dawid-malan/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/dawid-malan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/chitwan-rhinos-athlete-portrait-mvq7lxgj-393ce946-9821-48c1-8dd4-8ffb67b176a1.webp",
+        "sourceUrl": "https://nplt20league.com/player/dawid-malan/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/dawid-malan.webp",
+        "thumbnailUrl": "/studio/cricket/players/dawid-malan-thumb.webp",
+        "width": 1023,
+        "height": 1537,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "hasan-ali",
+      "name": "Hasan Ali",
+      "teamId": "chitwan",
+      "role": "Bowler",
+      "profileUrl": "https://nplt20league.com/player/hasan-ali/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/hasan-ali/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/hasan-ali-mvnwcm8b-760381a5-79a0-4e6a-b59d-05b61859490c.webp",
+        "sourceUrl": "https://nplt20league.com/player/hasan-ali/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/hasan-ali.webp",
+        "thumbnailUrl": "/studio/cricket/players/hasan-ali-thumb.webp",
+        "width": 1024,
+        "height": 1536,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "muhammad-nawaz",
+      "name": "Muhammad Nawaz",
+      "teamId": "chitwan",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/muhammad-nawaz/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/muhammad-nawaz/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/muhammad-nawaz-mvny15r5-4e343756-fbe4-4179-9563-c43cf8efecf2.webp",
+        "sourceUrl": "https://nplt20league.com/player/muhammad-nawaz/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/muhammad-nawaz.webp",
+        "thumbnailUrl": "/studio/cricket/players/muhammad-nawaz-thumb.webp",
+        "width": 1024,
+        "height": 1536,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "tom-taylor",
+      "name": "Tom Taylor",
+      "teamId": "chitwan",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/tom-taylor/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/tom-taylor/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/chiwan-2026-mvqi7lt8-e94e8434-ad23-43bc-8128-58f6a2688469.webp",
+        "sourceUrl": "https://nplt20league.com/player/tom-taylor/profile/",
+        "credit": "NPLT20League.com / chitwan",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/tom-taylor.webp",
+        "thumbnailUrl": "/studio/cricket/players/tom-taylor-thumb.webp",
+        "width": 1023,
+        "height": 1537,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "hikmat-bahadur-shahi",
+      "name": "Hikmat Bahadur Shahi",
+      "teamId": "karnali",
+      "role": "Batter",
+      "profileUrl": "https://nplt20league.com/player/hikmat-bahadur-shahi/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/hikmat-bahadur-shahi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/hikmat-bahadur-shahi-mvmnuyjw-c97616aa-8db0-4d89-9eda-f90d64e155d0.webp",
+        "sourceUrl": "https://nplt20league.com/player/hikmat-bahadur-shahi/profile/",
+        "credit": "NPLT20League.com / karnali",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/hikmat-bahadur-shahi.webp",
+        "thumbnailUrl": "/studio/cricket/players/hikmat-bahadur-shahi-thumb.webp",
+        "width": 400,
+        "height": 600,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "kusal-perera",
+      "name": "Kusal Perera",
+      "teamId": "janakpur",
+      "role": "Wicketkeeper-batter",
+      "profileUrl": "https://nplt20league.com/player/kusal-perera/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/kusal-perera/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/kusal-perera-mvp125c4-abeac6b8-69bf-43b1-8930-43bcce4d5fee.webp",
+        "sourceUrl": "https://nplt20league.com/player/kusal-perera/profile/",
+        "credit": "NPLT20League.com / janakpur",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/kusal-perera.webp",
+        "thumbnailUrl": "/studio/cricket/players/kusal-perera-thumb.webp",
+        "width": 1095,
+        "height": 1437,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "parvez-hossain-emon",
+      "name": "Parvez Hossain Emon",
+      "teamId": "janakpur",
+      "role": "Wicketkeeper-batter",
+      "profileUrl": "https://nplt20league.com/player/parvez-hossain-emon/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/parvez-hossain-emon/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/parvez-hossain-emon-mvt2nwrg-f3d06ad7-859e-4a8f-82a9-a0126c4f0278.webp",
+        "sourceUrl": "https://nplt20league.com/player/parvez-hossain-emon/profile/",
+        "credit": "NPLT20League.com / janakpur",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/parvez-hossain-emon.webp",
+        "thumbnailUrl": "/studio/cricket/players/parvez-hossain-emon-thumb.webp",
+        "width": 1096,
+        "height": 1435,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "rahul-yadav",
+      "name": "Rahul Yadav",
+      "teamId": "janakpur",
+      "role": "Batter",
+      "profileUrl": "https://nplt20league.com/player/rahul-yadav/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/rahul-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/janakpur-bolts-cricketer-portrait-mvqqqr3e-ca268ff0-6758-487d-96e5-d2ccf06750f7.webp",
+        "sourceUrl": "https://nplt20league.com/player/rahul-yadav/profile/",
+        "credit": "NPLT20League.com / janakpur",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/rahul-yadav.webp",
+        "thumbnailUrl": "/studio/cricket/players/rahul-yadav-thumb.webp",
+        "width": 1153,
+        "height": 1364,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "saif-hassan",
+      "name": "Saif Hassan",
+      "teamId": "janakpur",
+      "role": "Batter",
+      "profileUrl": "https://nplt20league.com/player/saif-hassan/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/saif-hassan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/saif-hassan-1-mvt2ohcb-27591d6c-6f2c-4754-a221-2b457329f863.webp",
+        "sourceUrl": "https://nplt20league.com/player/saif-hassan/profile/",
+        "credit": "NPLT20League.com / janakpur",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/saif-hassan.webp",
+        "thumbnailUrl": "/studio/cricket/players/saif-hassan-thumb.webp",
+        "width": 1197,
+        "height": 1314,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "harishankar-shah",
+      "name": "Harishankar Shah",
+      "teamId": "kathmandu",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/harishankar-shah/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/harishankar-shah/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/harishankar-shah-mvt9mse9-08e84498-00d9-4709-86e6-1dcc5b131203.webp",
+        "sourceUrl": "https://nplt20league.com/player/harishankar-shah/profile/",
+        "credit": "NPLT20League.com / kathmandu",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/harishankar-shah.webp",
+        "thumbnailUrl": "/studio/cricket/players/harishankar-shah-thumb.webp",
+        "width": 1093,
+        "height": 1439,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "jahandad-khan",
+      "name": "Jahandad Khan",
+      "teamId": "kathmandu",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/jahandad-khan/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/jahandad-khan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/jahandad-khan-mvtlbckd-6ad5d26a-99f6-48b2-89b9-29edcd8b8ad5.webp",
+        "sourceUrl": "https://nplt20league.com/player/jahandad-khan/profile/",
+        "credit": "NPLT20League.com / kathmandu",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/jahandad-khan.webp",
+        "thumbnailUrl": "/studio/cricket/players/jahandad-khan-thumb.webp",
+        "width": 1110,
+        "height": 1417,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "ripon-mondol",
+      "name": "Ripon Mondol",
+      "teamId": "kathmandu",
+      "role": "Bowler",
+      "profileUrl": "https://nplt20league.com/player/ripon-mondol/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/ripon-mondol/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/ripon-mondol-mvtln8yn-f3091a64-cdf7-45a7-9f28-4df22626253c.webp",
+        "sourceUrl": "https://nplt20league.com/player/ripon-mondol/profile/",
+        "credit": "NPLT20League.com / kathmandu",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/ripon-mondol.webp",
+        "thumbnailUrl": "/studio/cricket/players/ripon-mondol-thumb.webp",
+        "width": 482,
+        "height": 600,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "grant-stewart",
+      "name": "Grant Stewart",
+      "teamId": "lumbini",
+      "role": "Batter",
+      "profileUrl": "https://nplt20league.com/player/grant-stewart/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/grant-stewart/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/grant-stewart-mvqtfw30-dad74357-c5e9-421e-bcff-3db9c9782731.webp",
+        "sourceUrl": "https://nplt20league.com/player/grant-stewart/profile/",
+        "credit": "NPLT20League.com / lumbini",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/grant-stewart.webp",
+        "thumbnailUrl": "/studio/cricket/players/grant-stewart-thumb.webp",
+        "width": 1093,
+        "height": 1439,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "sadeera-samarawickrama",
+      "name": "Sadeera Samarawickrama",
+      "teamId": "pokhara",
+      "role": "Wicketkeeper-batter",
+      "profileUrl": "https://nplt20league.com/player/sadeera-samarawickrama/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/sadeera-samarawickrama/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/sadeera-samarawickrama-mvrwoqzd-1ee43909-6900-4cc3-87ab-dff4e54317c9.webp",
+        "sourceUrl": "https://nplt20league.com/player/sadeera-samarawickrama/profile/",
+        "credit": "NPLT20League.com / pokhara",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/sadeera-samarawickrama.webp",
+        "thumbnailUrl": "/studio/cricket/players/sadeera-samarawickrama-thumb.webp",
+        "width": 1075,
+        "height": 1463,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "fabian-allen",
+      "name": "Fabian Allen",
+      "teamId": "sudurpaschim",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/fabian-allen/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/fabian-allen/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/fabian-allen-signs-for-sudurpaschim-royals-in-npl-2026-mvnbk37y-8f9a0c41-5c0a-4bda-9e9e-a47bb3a0ba6a.webp",
+        "sourceUrl": "https://nplt20league.com/player/fabian-allen/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/fabian-allen.webp",
+        "thumbnailUrl": "/studio/cricket/players/fabian-allen-thumb.webp",
+        "width": 1024,
+        "height": 1536,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "tek-raj-thalal",
+      "name": "Tek Raj Thalal",
+      "teamId": "sudurpaschim",
+      "role": "Bowler",
+      "profileUrl": "https://nplt20league.com/player/tek-raj-thalal/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/tek-raj-thalal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/tek-raj-thalal-mvayk9hl-6a6d8084-2410-42e2-bbe1-d373c05aa81e.webp",
+        "sourceUrl": "https://nplt20league.com/player/tek-raj-thalal/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/tek-raj-thalal.webp",
+        "thumbnailUrl": "/studio/cricket/players/tek-raj-thalal-thumb.webp",
+        "width": 1123,
+        "height": 1400,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
+      }
+    },
+    {
+      "id": "tharindu-rathnayake",
+      "name": "Tharindu Rathnayake",
+      "teamId": "sudurpaschim",
+      "role": "All-rounder",
+      "profileUrl": "https://nplt20league.com/player/tharindu-rathnayake/profile/",
+      "rosterReview": {
+        "sourceUrl": "https://nplt20league.com/player/tharindu-rathnayake/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed"
+      },
+      "photo": {
+        "originalUrl": "https://nplt20league.com/uploads/tharindu-rathnayake-mvrv8gxv-95e732b0-634a-4e1c-8ddd-c6de695a1502.webp",
+        "sourceUrl": "https://nplt20league.com/player/tharindu-rathnayake/profile/",
+        "credit": "NPLT20League.com / sudurpaschim",
+        "license": "Rights retained by original owner; reuse license not verified",
+        "kind": "profile",
+        "checkedAt": "2026-10-30",
+        "url": "/studio/cricket/players/tharindu-rathnayake.webp",
+        "thumbnailUrl": "/studio/cricket/players/tharindu-rathnayake-thumb.webp",
+        "width": 1038,
+        "height": 1515,
+        "note": "Source-provided transparent cutout; alpha channel checked. Independent cricket website."
       }
     }
+  ],
+  "identityAliases": {
+    "k-s-bharat": "ks-bharat",
+    "bibek-magar": "bibek-rana-magar",
+    "bipin-archarya": "bipin-acharya"
+  },
+  "reviewNotes": [
+    "Independent source; membership is a source listing, not official certification.",
+    "Not-listed legacy records retained pending corroboration.",
+    "No usable replacement found for Jishan Alam, Hunain Shah, Haider Ali or Will Bosisto; Sam Heazlett image withheld."
   ]
 }

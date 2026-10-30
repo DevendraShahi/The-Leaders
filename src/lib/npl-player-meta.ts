@@ -1,7 +1,7 @@
 import type { NplPlayer, NplTeamExtended } from './npl-data';
 
 export interface PlayerComputedMeta {
-  jerseyNumber: number;
+  jerseyNumber: number | null;
   overallRating: number;
   roleCode: 'BAT' | 'BWL' | 'ALL' | 'WK';
   roleLabel: string;
@@ -74,15 +74,6 @@ const knownJerseys: Record<string, number> = {
   'charith-asalanka': 72
 };
 
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
-  }
-  return hash;
-}
-
 function toOrdinal(n: number): string {
   const pr = new Intl.PluralRules('en-US', { type: 'ordinal' });
   const suffixes: Record<string, string> = {
@@ -124,11 +115,12 @@ export function getPlayerComputedMeta(player: NplPlayer, team: NplTeamExtended):
   }
 
   // Jersey
-  const jerseyNumber = knownJerseys[player.id] || (Math.abs(hashString(player.id)) % 89 + 10);
+  const jerseyNumber = knownJerseys[player.id] ?? null;
 
   // Overall Impact Rating calculation based on real T20 cricket stats
   let ovr = 76;
-  const { matches, runs, wickets, strikeRate, economy } = player.stats;
+  const { matches: knownMatches, runs: knownRuns, wickets: knownWickets, strikeRate, economy } = player.stats;
+  const matches = knownMatches ?? 0, runs = knownRuns ?? 0, wickets = knownWickets ?? 0;
 
   if (player.isMarquee) ovr += 6;
   if (player.isCaptain) ovr += 3;
@@ -158,10 +150,10 @@ export function getPlayerComputedMeta(player: NplPlayer, team: NplTeamExtended):
 
   // Authentic Cricket Tactical Metrics (Percentages for radar/bar displays)
   const boundaryPercent = Math.min(78, Math.max(45, Math.round(52 + (strikeRate ? (strikeRate - 120) * 0.4 : 0))));
-  const strikeRotation = Math.min(88, Math.max(50, Math.round(62 + (player.stats.matches > 50 ? 8 : 0))));
+  const strikeRotation = Math.min(88, Math.max(50, Math.round(62 + ((player.stats.matches ?? 0) > 50 ? 8 : 0))));
   const deathOversImpact = Math.min(96, Math.max(55, Math.round(overallRating + (roleCode === 'ALL' || roleCode === 'BWL' ? 3 : -2))));
   const powerplayImpact = Math.min(94, Math.max(52, Math.round(overallRating + (roleCode === 'BAT' ? 4 : 0))));
-  const consistencyScore = Math.min(92, Math.max(60, Math.round(70 + (player.stats.matches > 30 ? 10 : 0))));
+  const consistencyScore = Math.min(92, Math.max(60, Math.round(70 + ((player.stats.matches ?? 0) > 30 ? 10 : 0))));
 
   // Ranking Tier
   let rankingTier = "National Grade A";
@@ -170,7 +162,7 @@ export function getPlayerComputedMeta(player: NplPlayer, team: NplTeamExtended):
   else if (overallRating >= 80) rankingTier = "Premier Domestic Tier 1";
 
   // Career Span
-  const careerSpan = player.stats.matches > 100 ? "2015 – 2026" : "2019 – 2026";
+  const careerSpan = "Not verified";
 
   // Teams list
   const teams = [
@@ -239,8 +231,8 @@ export function getPlayerComputedMeta(player: NplPlayer, team: NplTeamExtended):
       title: 'Top Run-Getter at 2021 T20 World Cup for SL',
       subtitle: '231 runs at strike rate of 147.1'
     });
-  } else if (player.stats.wickets > 0) {
-    const rankNum = Math.max(1, (jerseyNumber % 4) + 1);
+  } else if ((player.stats.wickets ?? 0) > 0) {
+    const rankNum = Math.max(1, ((jerseyNumber ?? 0) % 4) + 1);
     records.push({
       rank: toOrdinal(rankNum),
       title: `Career Best Bowling: ${player.stats.bestBowling}`,
@@ -252,7 +244,7 @@ export function getPlayerComputedMeta(player: NplPlayer, team: NplTeamExtended):
       subtitle: `Average of ${player.stats.bowlingAverage ?? '21.5'} in professional T20 cricket`
     });
   } else {
-    const rankNum = Math.max(1, (jerseyNumber % 4) + 1);
+    const rankNum = Math.max(1, ((jerseyNumber ?? 0) % 4) + 1);
     records.push({
       rank: toOrdinal(rankNum),
       title: `Career Highest Score: ${player.stats.highestScore}`,
@@ -281,6 +273,6 @@ export function getPlayerComputedMeta(player: NplPlayer, team: NplTeamExtended):
     rankingTier,
     careerSpan,
     teams,
-    records
+    records: knownMatches === null ? [] : records
   };
 }

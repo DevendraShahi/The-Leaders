@@ -17,7 +17,7 @@
       "category": "Domestic Marquee",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm offbreak / right-arm medium",
       "stats": {
         "matches": 102,
         "innings": 87,
@@ -38,6 +38,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700449195-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/dipendra-singh-airee-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dipendra-singh-airee/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -67,10 +73,17 @@
       },
       "highlights": "New Zealand international pace all-rounder; veteran of IPL (CSK), CPL (St Lucia Kings), and Super Smash.",
       "image": {
-        "local": "/studio/cricket/players/scott-kuggeleijn.webp",
-        "remote": "https://upload.wikimedia.org/wikipedia/commons/7/7f/Scott_Kuggeleijn.jpg",
-        "source": "Wikimedia Commons (CC BY-SA 4.0)",
-        "thumbnail": "/studio/cricket/players/scott-kuggeleijn-thumb.webp"
+        "local": "/studio/cricket/players/scott-kuggeleijn-20261030.webp",
+        "thumbnail": "/studio/cricket/players/scott-kuggeleijn-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/scott-kuggeleijn-mv92r9t6-33c2980a-1b7c-4b40-a91a-23c2822794bf.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/scott-kuggeleijn/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/scott-kuggeleijn/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -81,9 +94,9 @@
       "isCaptain": false,
       "isMarquee": false,
       "category": "Overseas",
-      "origin": "West Indies",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm fast-medium",
+      "origin": "West Indies (Guyana)",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 278,
         "innings": 248,
@@ -100,10 +113,17 @@
       },
       "highlights": "Explosive West Indian middle-order powerhouse; 2024 ICC T20 World Cup star; IPL finisher for KKR, DC, SRH, RCB.",
       "image": {
-        "local": "/studio/cricket/players/sherfane-rutherford.webp",
-        "remote": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/67285.png",
-        "source": "International Cricket Council (ICC)",
-        "thumbnail": "/studio/cricket/players/sherfane-rutherford-thumb.webp"
+        "local": "/studio/cricket/players/sherfane-rutherford-20261030.webp",
+        "thumbnail": "/studio/cricket/players/sherfane-rutherford-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/sherfane-rutherford-joins-sudurpaschim-royals-mvlz39yn-eedf5e23-9c6e-4a70-b4a8-c1df30dfa7f8.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/sherfane-rutherford/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sherfane-rutherford/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -115,8 +135,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Scotland",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 54,
         "innings": 54,
@@ -133,10 +153,17 @@
       },
       "highlights": "Scotland frontline batter & seamer; breakout hero in ICC Cricket World Cup qualifiers with back-to-back centuries.",
       "image": {
-        "local": "/studio/cricket/players/brandon-mcmullen.webp",
-        "remote": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/97960.png",
-        "source": "International Cricket Council (ICC)",
-        "thumbnail": "/studio/cricket/players/brandon-mcmullen-thumb.webp"
+        "local": "/studio/cricket/players/brandon-mcmullen-20261030.webp",
+        "thumbnail": "/studio/cricket/players/brandon-mcmullen-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/brandon-mcmullen-mv96oqq2-cac97aa1-e822-456a-bf7c-3df5f5739f71.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/brandon-mcmullen/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/brandon-mcmullen/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -166,10 +193,17 @@
       },
       "highlights": "Pakistan international top-order strokemaker; fifty on T20I debut vs England in Manchester; PSL mainstay.",
       "image": {
-        "local": "/studio/cricket/players/haider-ali.webp",
-        "remote": "https://www.pcb.com.pk/images/profile/46727.png",
-        "source": "Pakistan Cricket Board (PCB)",
-        "thumbnail": "/studio/cricket/players/haider-ali-thumb.webp"
+        "local": "/studio/cricket/players/haider-ali-user-20261030.webp",
+        "remote": "",
+        "source": "User-supplied portrait",
+        "sourceUrl": "/studio/cricket/players/haider-ali-user-20261030.webp",
+        "thumbnail": "/studio/cricket/players/haider-ali-user-20261030-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/teams/sudurpaschim-royals/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "not-listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -199,10 +233,17 @@
       },
       "highlights": "Northamptonshire Steelbacks and The Hundred spin bowling all-rounder with dynamic scoring abilities.",
       "image": {
-        "local": "/studio/cricket/players/saif-zaib.webp",
-        "remote": "https://resources.ecb.co.uk/photo-resources/2026/07/22/1115e98e-1aff-46b5-80f0-d7dc38078ba2/SB-Saif-Zaib.png?width=460&height=690",
-        "source": "England and Wales Cricket Board (ECB / The Hundred)",
-        "thumbnail": "/studio/cricket/players/saif-zaib-thumb.webp"
+        "local": "/studio/cricket/players/saif-zaib-20261030.webp",
+        "thumbnail": "/studio/cricket/players/saif-zaib-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/saif-zaib-mvt3ubzp-aa4dfb20-c2e5-47d7-86b2-2c4ee58b4733.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/saif-zaib/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/saif-zaib/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -215,7 +256,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": null,
+      "bowlingStyle": "Right-arm slow (occasional)",
       "stats": {
         "matches": 40,
         "innings": 31,
@@ -236,6 +277,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700309343-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/binod-bhandari-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/binod-bhandari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -247,8 +294,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "battingStyle": "Right-handed batsman",
+      "bowlingStyle": "Right-arm medium pace",
       "stats": {
         "matches": 51,
         "innings": 39,
@@ -269,6 +316,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700218449-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/aarif-sheikh-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/aarif-sheikh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -281,7 +334,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Right-arm medium (fast-medium)",
       "stats": {
         "matches": 62,
         "innings": 59,
@@ -302,6 +355,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700272584-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/abinash-bohara-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/abinash-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -314,7 +373,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm fast",
+      "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 14,
         "innings": 14,
@@ -335,6 +394,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700488677-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/hemant-dhami-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/hemant-dhami/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -368,6 +433,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700894451-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/anil-kharel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/anil-kharel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -380,7 +451,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm off-spin",
       "stats": {
         "matches": 18,
         "innings": 18,
@@ -401,6 +472,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700589376-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/ishan-pandey-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ishan-pandey/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -413,7 +490,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": null,
+      "bowlingStyle": "None — does not bowl",
       "stats": {
         "matches": 12,
         "innings": 12,
@@ -434,6 +511,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700357441-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/dipak-bohara-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dipak-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -446,7 +529,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 8,
         "innings": 7,
@@ -467,6 +550,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700624009-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/milan-bohara-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/milan-bohara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -478,8 +567,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm fast-medium",
+      "battingStyle": "Right-hand bat (lower order)",
+      "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 9,
         "innings": 9,
@@ -500,6 +589,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700524848-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/hikmat-mahara-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/hikmat-mahara/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -512,7 +607,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Right-arm legbreak",
       "stats": {
         "matches": 7,
         "innings": 7,
@@ -533,6 +628,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700068539-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/sachin-bhatta-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sachin-bhatt/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -545,7 +646,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": null,
+      "bowlingStyle": "Does not bowl (specialist wicketkeeper-batter)",
       "stats": {
         "matches": 6,
         "innings": 6,
@@ -566,6 +667,12 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700688007-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/tek-rawat-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/tek-rawat/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -577,8 +684,8 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": null,
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm leg spin",
       "stats": {
         "matches": 5,
         "innings": 5,
@@ -599,7 +706,137 @@
         "remote": "https://iwcgzmjvuwjuvhwcgozt.supabase.co/storage/v1/object/public/players/1792700729202-cropped-image.jpg",
         "source": "Sudurpaschim Royals Official Squad",
         "thumbnail": "/studio/cricket/players/ayub-chand-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ayub-chand/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
+      }
+    },
+    {
+      "id": "fabian-allen",
+      "name": "Fabian Allen",
+      "nameNe": "Fabian Allen",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "West Indies (Jamaica)",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Left-arm orthodox",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/fabian-allen.webp",
+        "thumbnail": "/studio/cricket/players/fabian-allen-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/fabian-allen-signs-for-sudurpaschim-royals-in-npl-2026-mvnbk37y-8f9a0c41-5c0a-4bda-9e9e-a47bb3a0ba6a.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/fabian-allen/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/fabian-allen/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "tek-raj-thalal",
+      "name": "Tek Raj Thalal",
+      "nameNe": "Tek Raj Thalal",
+      "role": "Bowler",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Domestic",
+      "origin": "Nepal",
+      "battingStyle": "Left-arm",
+      "bowlingStyle": "Left-arm medium",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/tek-raj-thalal.webp",
+        "thumbnail": "/studio/cricket/players/tek-raj-thalal-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/tek-raj-thalal-mvayk9hl-6a6d8084-2410-42e2-bbe1-d373c05aa81e.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/tek-raj-thalal/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/tek-raj-thalal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
+      }
+    },
+    {
+      "id": "tharindu-rathnayake",
+      "name": "Tharindu Rathnayake",
+      "nameNe": "Tharindu Rathnayake",
+      "role": "All-rounder",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Sri Lanka",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm off-break",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/tharindu-rathnayake.webp",
+        "thumbnail": "/studio/cricket/players/tharindu-rathnayake-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/tharindu-rathnayake-mvrv8gxv-95e732b0-634a-4e1c-8ddd-c6de695a1502.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/tharindu-rathnayake/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/tharindu-rathnayake/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
       }
     }
-  ]
+  ],
+  "sourceReview": {
+    "sourceUrl": "https://nplt20league.com/teams/sudurpaschim-royals/",
+    "checkedAt": "2026-10-30T03:40:21.808Z"
+  }
 }

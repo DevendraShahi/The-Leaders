@@ -1,4 +1,5 @@
 import { cricketTeamIssues } from './cricket-team-context';
+import { samePlayerName } from './cricket-players';
 import { blankCricketData, oversToBalls, type CricketData } from './cricket-data';
 import type { CricketLanguage, NplTeamId } from './cricket-catalog';
 import type { PostDesign } from './types';
@@ -15,8 +16,7 @@ export function phaseContradictions(data: CricketData): string[] {
   if (data.overs && oversToBalls(data.overs) !== end) issues.push('Use the team score at the confirmed powerplay endpoint.');
  }
  if (data.template === 'partnership') {
-  const a = data.batter.name.trim().normalize('NFKC').toLowerCase(), b = data.secondBatter.name.trim().normalize('NFKC').toLowerCase();
-  if (a && a === b) issues.push('Choose two different batters for the partnership.');
+  if (data.batter.name.trim() && samePlayerName(data.batter.name, data.secondBatter.name, data.teamId)) issues.push('Choose two different batters for the partnership.');
   if (data.partnershipRuns !== null && data.runs !== null && data.partnershipRuns > data.runs) issues.push('Partnership runs cannot exceed the team score.');
   for (const batter of [data.batter,data.secondBatter]) {
    if ((batter.runs!==null)!==(batter.balls!==null)) issues.push('Supply both runs and balls for an optional individual innings, or leave both empty.');

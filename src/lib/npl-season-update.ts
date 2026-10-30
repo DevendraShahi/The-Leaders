@@ -2,11 +2,11 @@ import type { NplTeamId } from './post-studio/cricket-catalog';
 
 /** Editorial snapshot. Update this file first; see docs/NPL_UPDATES.md. */
 export const nplUpdate = {
-    checkedAt: '2026-10-28T09:07:12Z',
+    checkedAt: '2026-10-30T03:40:21Z',
     scheduleSource: 'https://www.nepalpremierleague.org/news/npl-2026-season-preview',
     resultsSource: 'https://nplt20league.com/matches/2026/',
     crossCheckSource: 'https://ekantipur.com/npl',
-    pending: ['Match 3 final overs: sources disagree (19.2 / 19.3).', 'Complete scorecards and player awards for Matches 2–3; season cap standings require complete player statistics.'],
+    pending: ['Match 3 final overs: sources disagree (19.2 / 19.3).', 'Complete scorecards and awards for Matches 2–6; season cap standings require complete player statistics.', 'Match 5 award bowling figures conflict (Rahul Yadav 3/31 vs 4/31); withheld.'],
 };
 export interface NplResultUpdate {
     matchNumber: number; matchDate: string; teamId: NplTeamId; opponentId: NplTeamId;
@@ -28,6 +28,18 @@ export const nplResultUpdates: NplResultUpdate[] = [
         teamScore: '132/9 (20 ov)', opponentScore: '113 all out', teamRuns: 132, opponentRuns: 113, teamNrrBalls: 120, opponentNrrBalls: 120,
         result: 'Karnali Yaks won by 19 runs', resultNe: 'कर्णाली याक्स १९ रनले विजयी',
         sourceUrl: 'https://nplt20league.com/matches/2026/karnali-yaks-vs-janakpur-bolts-npl-3rd-match-2026/' },
+    { matchNumber: 4, matchDate: '2026-10-28', teamId: 'pokhara', opponentId: 'sudurpaschim', winnerId: 'sudurpaschim',
+        teamScore: '145/7 (20 ov)', opponentScore: '148/4 (16.5 ov)', teamRuns: 145, opponentRuns: 148, teamNrrBalls: 120, opponentNrrBalls: 101,
+        result: 'Sudurpaschim Royals won by 6 wickets', resultNe: 'सुदूरपश्चिम रोयल्स ६ विकेटले विजयी',
+        sourceUrl: 'https://nplt20league.com/matches/2026/pokhara-avengers-vs-sudurpaschim-royals-npl-4th-match-2026/' },
+    { matchNumber: 5, matchDate: '2026-10-29', teamId: 'janakpur', opponentId: 'kathmandu', winnerId: 'janakpur',
+        teamScore: '116/2 (17.2 ov)', opponentScore: '115 (19.3 ov)', teamRuns: 116, opponentRuns: 115, teamNrrBalls: 104, opponentNrrBalls: 120,
+        result: 'Janakpur Bolts won by 8 wickets', resultNe: 'जनकपुर बोल्ट्स ८ विकेटले विजयी',
+        sourceUrl: 'https://nplt20league.com/matches/2026/janakpur-bolts-vs-kathmandu-gurkhas-npl-5th-match-2026/' },
+    { matchNumber: 6, matchDate: '2026-10-29', teamId: 'karnali', opponentId: 'biratnagar', winnerId: 'karnali',
+        teamScore: '187/6 (19.5 ov)', opponentScore: '186/7 (20 ov)', teamRuns: 187, opponentRuns: 186, teamNrrBalls: 119, opponentNrrBalls: 120,
+        result: 'Karnali Yaks won by 4 wickets', resultNe: 'कर्णाली याक्स ४ विकेटले विजयी',
+        sourceUrl: 'https://nplt20league.com/matches/2026/karnali-yaks-vs-biratnagar-kings-npl-6th-match-2026/' },
 ];
 
 /** League results only; extend explicitly for ties/NR/DLS before entering those results. */

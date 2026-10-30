@@ -13,15 +13,15 @@ import pokharaRaw from '@/data/npl/pokhara-avengers-stats.json';
 import sudurpaschimRaw from '@/data/npl/sudurpaschim-royals-stats.json';
 
 export interface NplPlayerStats {
-  matches: number;
-  innings: number;
-  runs: number;
+  matches: number | null;
+  innings: number | null;
+  runs: number | null;
   highestScore: string;
   battingAverage: number | null;
   strikeRate: number | null;
-  fifties: number;
-  hundreds: number;
-  wickets: number;
+  fifties: number | null;
+  hundreds: number | null;
+  wickets: number | null;
   bestBowling: string;
   bowlingAverage: number | null;
   economy: number | null;
@@ -42,6 +42,7 @@ export interface NplPlayer {
   battingStyle: string;
   bowlingStyle: string;
   stats: NplPlayerStats;
+  sourceReview?: { sourceUrl: string; checkedAt: string; status: "listed" | "not-listed"; statistics: "unavailable" | "legacy-unverified" };
   highlights: string;
   image: {
     local: string;
@@ -144,7 +145,7 @@ const teamOwnershipMeta: Record<NplTeamId, {
     coach: "Misbah-ul-Haq",
     captain: "Dipendra Singh Airee",
     marqueePlayer: "Dipendra Singh Airee",
-    overseasStar: "Brandon McMullen / Chris Lynn"
+    overseasStar: "Brandon McMullen / Fabian Allen"
   },
   biratnagar: {
     owner: "MAD Dream Sports Pvt. Ltd.",

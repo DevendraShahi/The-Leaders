@@ -16,8 +16,8 @@
       "isMarquee": true,
       "category": "Domestic Marquee",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm legbreak",
+      "battingStyle": "Right-handed batsman",
+      "bowlingStyle": "Right-arm leg-break googly",
       "stats": {
         "matches": 62,
         "innings": 60,
@@ -38,6 +38,12 @@
         "remote": "https://nplt20league.com/uploads/pa-players-mvi16vxj-dc4f983e-7390-41aa-b49c-018a2501da71.png",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/kushal-bhurtel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kushal-bhurtel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -48,7 +54,7 @@
       "isCaptain": false,
       "isMarquee": false,
       "category": "Overseas",
-      "origin": "Bangladesh",
+      "origin": "Bangladeshi",
       "battingStyle": "Left-hand bat",
       "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
@@ -71,6 +77,12 @@
         "remote": "https://nplt20league.com/uploads/pa-players-13-mvi1av06-72b7fb68-2989-43d0-9bed-356e26000087.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/shakib-al-hasan-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/shakib-al-hasan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -82,8 +94,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Sri Lanka",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm fast-medium",
       "stats": {
         "matches": 112,
         "innings": 84,
@@ -104,6 +116,12 @@
         "remote": "https://nplt20league.com/uploads/npl-2-mvf158gm-2065b7be-cdc5-482e-b8ce-c8c0cfcd5fad.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/chamika-karunaratne-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/chamika-karunaratne/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -137,6 +155,12 @@
         "remote": "https://nplt20league.com/uploads/pa-players-15-mvi1hd8z-7a682117-8bd7-4753-842a-dbd6dc2dcee2.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/dhananjaya-lakshan-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dhananjaya-lakshan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -148,8 +172,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Bangladesh",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 168,
         "innings": 135,
@@ -170,6 +194,12 @@
         "remote": "https://nplt20league.com/uploads/mahedi-hasan-mvi1nm4z-65af3025-71b7-4226-9abb-96b111ee5a9e.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/mahedi-hasan-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/mahedi-hasan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -181,8 +211,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Bangladesh",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm fast-medium",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 128,
         "innings": 82,
@@ -203,6 +233,12 @@
         "remote": "https://nplt20league.com/uploads/pokhara-avengers-sign-mohammad-saifuddin-for-npl-2026-mvkxheit-3b747ed1-0e81-49c3-aa6e-fc7156164eb4.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/mohammad-saifuddin-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/mohammad-saifuddin/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -236,6 +272,12 @@
         "remote": "https://nplt20league.com/uploads/sunny-bk-mv23aot8-65a80ce2-3782-46ca-8e9e-f8fb2e8413ba.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/sunny-bk-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sunny-bk/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -247,14 +289,14 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed",
       "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 32,
         "innings": 9,
         "runs": 35,
         "highestScore": "11*",
-        "battingAverage": 7.0,
+        "battingAverage": 7,
         "strikeRate": 76.08,
         "fifties": 0,
         "hundreds": 0,
@@ -269,6 +311,12 @@
         "remote": "https://nplt20league.com/uploads/sagar-dhakal-muu2jito-1603db15-12f0-4c89-9cfa-abfb7852b576.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/sagar-dhakal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sagar-dhakal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -293,7 +341,7 @@
         "hundreds": 0,
         "wickets": 2,
         "bestBowling": "1/15",
-        "bowlingAverage": 35.0,
+        "bowlingAverage": 35,
         "economy": 7.3
       },
       "highlights": "Nepal Under-19 captain and record century-maker; prolific top-order batter celebrated for classical technique and temperament.",
@@ -302,6 +350,12 @@
         "remote": "https://nplt20league.com/uploads/arjun-kumal-muu2koyu-9856e7ec-044c-48da-8ffb-b67f54810ac5.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/arjun-kumal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/arjun-kumal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -313,15 +367,15 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "battingStyle": "Right-handed batsman",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 28,
         "innings": 24,
         "runs": 360,
         "highestScore": "42*",
-        "battingAverage": 20.0,
-        "strikeRate": 125.0,
+        "battingAverage": 20,
+        "strikeRate": 125,
         "fifties": 0,
         "hundreds": 0,
         "wickets": 31,
@@ -335,6 +389,12 @@
         "remote": "https://nplt20league.com/uploads/bipin-khatri-muu2i6p3-49fbefbf-8349-440c-bea5-d8f5ae011b3e.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/bipin-khatri-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-khatri/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -347,7 +407,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm fast-medium",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 24,
         "innings": 8,
@@ -368,6 +428,12 @@
         "remote": "https://nplt20league.com/uploads/akash-chand-muu2rypk-0f736270-27cd-4036-a067-e13b927c0635.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/aakash-chand-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/aakash-chand/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -380,7 +446,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "bowlingStyle": "Right-arm fast (occasional)",
       "stats": {
         "matches": 20,
         "innings": 18,
@@ -401,6 +467,12 @@
         "remote": "https://nplt20league.com/uploads/kiran-kumar-thagunna-muu2pnf3-8ea0aa25-3920-4609-850f-89efbd23e92c.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/kiran-thagunna-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kiran-thagunna/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -411,9 +483,9 @@
       "isCaptain": false,
       "isMarquee": false,
       "category": "Domestic Retained",
-      "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "origin": "Nepali (based in New Zealand)",
+      "battingStyle": "Left-handed batsman",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 16,
         "innings": 15,
@@ -425,7 +497,7 @@
         "hundreds": 0,
         "wickets": 1,
         "bestBowling": "1/16",
-        "bowlingAverage": 32.0,
+        "bowlingAverage": 32,
         "economy": 7.4
       },
       "highlights": "Gandaki top-order accumulator who controls innings during early overs with orthodox stroke selection.",
@@ -434,6 +506,12 @@
         "remote": "https://nplt20league.com/uploads/dinesh-kharel-muu2lqgh-6baa6143-d323-4285-af68-5f123b65bebc.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/dinesh-kharel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dinesh-kharel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -445,8 +523,8 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "",
+      "battingStyle": "Right-handed batsman",
+      "bowlingStyle": "Does not bowl (specialist wicketkeeper)",
       "stats": {
         "matches": 18,
         "innings": 16,
@@ -467,6 +545,12 @@
         "remote": "https://nplt20league.com/uploads/arjun-gharti-mv2087br-d1e5901c-581c-4a8c-8386-cec0f6eca5e5.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/arjun-gharti-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/arjun-gharti/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -479,13 +563,13 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Slow left-arm orthodox",
+      "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 12,
         "innings": 5,
         "runs": 18,
         "highestScore": "8*",
-        "battingAverage": 6.0,
+        "battingAverage": 6,
         "strikeRate": 78.26,
         "fifties": 0,
         "hundreds": 0,
@@ -500,6 +584,12 @@
         "remote": "https://nplt20league.com/uploads/sudip-aryal-mv20bd8r-3f6a417a-ffeb-49b7-bbca-53ec2e0c583f.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/sudip-aryal-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sudip-aryal/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -524,7 +614,7 @@
         "hundreds": 0,
         "wickets": 3,
         "bestBowling": "1/14",
-        "bowlingAverage": 28.0,
+        "bowlingAverage": 28,
         "economy": 7.2
       },
       "highlights": "Promising left-handed strokeplayer who navigates middle overs against spin with sharp footwork.",
@@ -533,6 +623,12 @@
         "remote": "https://nplt20league.com/uploads/bibek-rana-magar-mv20d7wt-91837965-6318-49de-844a-61ce4f91b4fd.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/bibek-rana-magar-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bibek-rana-magar/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -544,14 +640,14 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Left-arm medium-fast",
+      "battingStyle": "Right-hand bat (lower order)",
+      "bowlingStyle": "Right-arm fast medium",
       "stats": {
         "matches": 12,
         "innings": 4,
         "runs": 14,
         "highestScore": "6*",
-        "battingAverage": 7.0,
+        "battingAverage": 7,
         "strikeRate": 82.35,
         "fifties": 0,
         "hundreds": 0,
@@ -566,6 +662,12 @@
         "remote": "https://nplt20league.com/uploads/pratik-mv20f52j-319010d6-42f5-43ee-87ec-0d581bed216c.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/pratik-pokharel-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/pratik-pokharel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -577,7 +679,7 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Left-hand bat",
       "bowlingStyle": "Right-arm offbreak",
       "stats": {
         "matches": 11,
@@ -599,7 +701,57 @@
         "remote": "https://nplt20league.com/uploads/bipin-acharya-1-mv208x4e-3be55dd4-1009-4efd-94eb-a09ea22ee2d9.webp",
         "source": "NPL T20 League / Pokhara Avengers",
         "thumbnail": "/studio/cricket/players/bipin-acharya-thumb.webp"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/bipin-acharya/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
+      }
+    },
+    {
+      "id": "sadeera-samarawickrama",
+      "name": "Sadeera Samarawickrama",
+      "nameNe": "Sadeera Samarawickrama",
+      "role": "Wicketkeeper-batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Sri Lanka",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/sadeera-samarawickrama.webp",
+        "thumbnail": "/studio/cricket/players/sadeera-samarawickrama-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/sadeera-samarawickrama-mvrwoqzd-1ee43909-6900-4cc3-87ab-dff4e54317c9.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/sadeera-samarawickrama/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sadeera-samarawickrama/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
       }
     }
-  ]
+  ],
+  "sourceReview": {
+    "sourceUrl": "https://nplt20league.com/teams/pokhara-avengers/",
+    "checkedAt": "2026-10-30T03:40:21.808Z"
+  }
 }

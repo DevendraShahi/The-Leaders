@@ -18,7 +18,7 @@
       "isMarquee": true,
       "category": "Domestic Marquee",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
+      "battingStyle": "Right-handed",
       "bowlingStyle": "Right-arm offbreak",
       "stats": {
         "matches": 86,
@@ -40,6 +40,12 @@
         "thumbnail": "/studio/cricket/players/rohit-paudel-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/rohit-1788156524-1-1-1789225622.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/rohit-paudel/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -51,8 +57,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Australia",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Left-arm wrist spin",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Left-arm unorthodox spin (wrist-spin)",
       "stats": {
         "matches": 165,
         "innings": 160,
@@ -73,6 +79,12 @@
         "thumbnail": "/studio/cricket/players/d-arcy-short-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/darcy-1788155140-1-1790752142.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/darcy-short/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -84,7 +96,7 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Sri Lanka",
-      "battingStyle": "Left-hand bat",
+      "battingStyle": "Left-handed",
       "bowlingStyle": null,
       "stats": {
         "matches": 145,
@@ -106,6 +118,12 @@
         "thumbnail": "/studio/cricket/players/niroshan-dickwella-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dikka-1788155249-1-1789227302.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/niroshan-dickwella/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -139,6 +157,12 @@
         "thumbnail": "/studio/cricket/players/ruben-trumpelmann-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/trumpy-1788156290-1-1789227009.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ruben-trumpelmann/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -150,8 +174,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "USA / South Africa",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm medium",
       "stats": {
         "matches": 118,
         "innings": 78,
@@ -168,10 +192,17 @@
       },
       "highlights": "USA international and MLC star (LA Knight Riders); key pace all-rounder in USA's historic 2024 T20 World Cup campaign.",
       "image": {
-        "local": "/studio/cricket/players/shadley-van-schalkwyk.webp",
-        "thumbnail": "/studio/cricket/players/shadley-van-schalkwyk-thumb.webp",
-        "remote": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/13203/9795.png",
-        "source": "International Cricket Council (ICC)"
+        "local": "/studio/cricket/players/shadley-van-schalkwyk-20261030.webp",
+        "thumbnail": "/studio/cricket/players/shadley-van-schalkwyk-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/shadley-van-schalkwyk-mvo7eq5a-17246fce-daae-47f9-ae7c-245d2937f715.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/shadley-van-schalkwyk/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/shadley-van-schalkwyk/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -183,8 +214,8 @@
       "isMarquee": false,
       "category": "Overseas",
       "origin": "Bangladesh",
-      "battingStyle": "Left-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "battingStyle": "Left-handed",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 85,
         "innings": 76,
@@ -201,10 +232,17 @@
       },
       "highlights": "Bangladesh international middle-order power hitter; 2020 ICC U19 World Cup champion; BPL standout performer.",
       "image": {
-        "local": "/studio/cricket/players/shamim-hossain.webp",
-        "thumbnail": "/studio/cricket/players/shamim-hossain-thumb.webp",
-        "remote": "https://images.icc-cricket.com/image/upload/t_player-headshot-portrait-lg-webp/prd/assets/players/generic/colored/70248.png",
-        "source": "International Cricket Council (ICC)"
+        "local": "/studio/cricket/players/shamim-hossain-20261030.webp",
+        "thumbnail": "/studio/cricket/players/shamim-hossain-20261030-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/shamim-hossain-mvlfsint-ea78ef3b-da78-4a54-a22a-c1fc002069c1.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/shamim-hossain/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/shamim-hossain/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -217,7 +255,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": null,
+      "bowlingStyle": "Does not bowl",
       "stats": {
         "matches": 78,
         "innings": 77,
@@ -238,6 +276,12 @@
         "thumbnail": "/studio/cricket/players/aasif-sheikh-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/asig-1791179059.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/aasif-sheikh/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -250,7 +294,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Does not bowl regularly (specialist batter)",
       "stats": {
         "matches": 41,
         "innings": 36,
@@ -271,6 +315,12 @@
         "thumbnail": "/studio/cricket/players/sundeep-jora-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/sunddep-1788155704-1-1789226093.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sundeep-jora/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -283,7 +333,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Left-hand bat",
-      "bowlingStyle": null,
+      "bowlingStyle": "Occasional left-arm medium (rarely used; specialist batter in T20)",
       "stats": {
         "matches": 24,
         "innings": 20,
@@ -304,6 +354,12 @@
         "thumbnail": "/studio/cricket/players/dilip-nath-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dilip-nath-178815558-1789226588.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dilip-nath/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -337,6 +393,12 @@
         "thumbnail": "/studio/cricket/players/kishore-mahato-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/kishore-1791179257.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/kishore-mahato/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -348,7 +410,7 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Left-hand bat",
+      "battingStyle": "Right-hand bat",
       "bowlingStyle": "Left-arm medium-fast",
       "stats": {
         "matches": 16,
@@ -370,6 +432,12 @@
         "thumbnail": "/studio/cricket/players/durgesh-gupta-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/durgesh-1788156628-1-1789226388.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/durgesh-gupta/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -381,8 +449,8 @@
       "isMarquee": false,
       "category": "Domestic Retained",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 18,
         "innings": 18,
@@ -403,6 +471,12 @@
         "thumbnail": "/studio/cricket/players/sher-malla-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/sher-malla-178815580-1789226543.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/sher-malla/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -415,7 +489,7 @@
       "category": "Domestic Retained",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm legbreak",
+      "bowlingStyle": "Right-arm leg break (leg-spin)",
       "stats": {
         "matches": 15,
         "innings": 15,
@@ -436,6 +510,12 @@
         "thumbnail": "/studio/cricket/players/tilak-bhandari-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/tilak-1788156715-1-1789226136.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/tilak-bhandari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -448,7 +528,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm offbreak",
+      "bowlingStyle": "Right-arm off-break",
       "stats": {
         "matches": 14,
         "innings": 14,
@@ -469,6 +549,12 @@
         "thumbnail": "/studio/cricket/players/aakash-tripathi-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/akash-1791179157.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/aakash-tripathi/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -481,7 +567,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": null,
+      "bowlingStyle": "Slow left-arm orthodox (SLA)",
       "stats": {
         "matches": 10,
         "innings": 10,
@@ -502,6 +588,12 @@
         "thumbnail": "/studio/cricket/players/abhishesh-gautam-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/abhiseseh-1788154954-1789226262.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/abhishesh-gautam/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -514,7 +606,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "bowlingStyle": "Right-arm medium-fast",
       "stats": {
         "matches": 11,
         "innings": 9,
@@ -535,6 +627,12 @@
         "thumbnail": "/studio/cricket/players/dinesh-adhikari-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-09/dinesh-1788156820-1-1789226332.png",
         "source": "Lumbini Lions Official Squad"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/dinesh-adhikari/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -547,7 +645,7 @@
       "category": "Domestic Auction",
       "origin": "Nepal",
       "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium-fast",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 8,
         "innings": 8,
@@ -568,6 +666,12 @@
         "thumbnail": "/studio/cricket/players/ajay-chauhan-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/ajay-1791179394.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/ajay-chauhan/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
       }
     },
     {
@@ -579,8 +683,8 @@
       "isMarquee": false,
       "category": "Domestic Auction",
       "origin": "Nepal",
-      "battingStyle": "Right-hand bat",
-      "bowlingStyle": "Right-arm medium",
+      "battingStyle": "Left-hand bat",
+      "bowlingStyle": "Slow left-arm orthodox",
       "stats": {
         "matches": 6,
         "innings": 6,
@@ -601,7 +705,57 @@
         "thumbnail": "/studio/cricket/players/arniko-yadav-thumb.webp",
         "remote": "https://lumbinilions.com.np/storage/c4ca4238a0b923820dcc509a6f75849b/blogs/2026-10/arniko-1791179320.png",
         "source": "Lumbini Lions - Welcome to the Lion's den"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/arniko-prasad-yadav/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "legacy-unverified"
+      }
+    },
+    {
+      "id": "grant-stewart",
+      "name": "Grant Stewart",
+      "nameNe": "Grant Stewart",
+      "role": "Batter",
+      "isCaptain": false,
+      "isMarquee": false,
+      "category": "Overseas",
+      "origin": "Italy (Australian-born)",
+      "battingStyle": "Right-handed",
+      "bowlingStyle": "Right-arm medium-fast",
+      "stats": {
+        "matches": null,
+        "innings": null,
+        "runs": null,
+        "highestScore": "",
+        "battingAverage": null,
+        "strikeRate": null,
+        "fifties": null,
+        "hundreds": null,
+        "wickets": null,
+        "bestBowling": "",
+        "bowlingAverage": null,
+        "economy": null
+      },
+      "highlights": "",
+      "image": {
+        "local": "/studio/cricket/players/grant-stewart.webp",
+        "thumbnail": "/studio/cricket/players/grant-stewart-thumb.webp",
+        "remote": "https://nplt20league.com/uploads/grant-stewart-mvqtfw30-dad74357-c5e9-421e-bcff-3db9c9782731.webp",
+        "source": "NPLT20League.com",
+        "sourceUrl": "https://nplt20league.com/player/grant-stewart/profile/"
+      },
+      "sourceReview": {
+        "sourceUrl": "https://nplt20league.com/player/grant-stewart/profile/",
+        "checkedAt": "2026-10-30T03:40:21.808Z",
+        "status": "listed",
+        "statistics": "unavailable"
       }
     }
-  ]
+  ],
+  "sourceReview": {
+    "sourceUrl": "https://nplt20league.com/teams/lumbini-lions/",
+    "checkedAt": "2026-10-30T03:40:21.808Z"
+  }
 }

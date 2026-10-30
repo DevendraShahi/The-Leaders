@@ -19,6 +19,21 @@ function Editor() {
     return <><CricketInspector design={design} onChange={change => setDesign(current => applyPlayerPortrait(change(current)))} /><output data-testid="saved-context">{JSON.stringify({ team: design.cricket?.teamId, opponent: design.cricket?.opponentId, runs: design.cricket?.runs, fixture: design.fixtureId, portrait: design.playerPhotoId })}</output></>;
 }
 describe('Role-aware cricket editing', () => {
+    it('shows an abbreviated second batter as the correct selected portrait', () => {
+        const design = createCricketDraftDesign('partnership', 'sudurpaschim', 'lumbini');
+        design.cricket!.batter.name = 'B. Bhandari';
+        design.cricket!.secondBatter.name = 'D.S Airee';
+        render(<CricketInspector design={applyPlayerPortrait(design)} onChange={() => {}} />);
+        expect(screen.getByLabelText('Second batter photo')).toHaveValue('dipendra-singh-airee');
+    });
+    it('explains when an initial-only name matches multiple teammates', () => {
+        const design = createCricketDraftDesign('batting', 'kathmandu', 'lumbini');
+        design.cricket!.batter.name = 'S. Patel';
+        render(<CricketInspector design={design} onChange={() => {}} />);
+        fireEvent.click(screen.getByText('Player portrait', { exact: true }));
+        expect(screen.getByText(/No unique portrait match/)).toHaveTextContent('S. Patel');
+    });
+
     it('detects a dismissed-batter edit and shows the correct fielding team and portrait', () => {
         render(<Editor />);
         fireEvent.click(screen.getByText('Match event', { exact: true }));

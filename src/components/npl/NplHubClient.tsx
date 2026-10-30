@@ -123,22 +123,22 @@ export function NplHubClient({
   // Statistical Leaders & Cap Contenders
   const topBatters = React.useMemo(() => {
     return [...players]
-      .filter((p) => p.stats.runs > 0)
-      .sort((a, b) => b.stats.runs - a.stats.runs)
+      .filter((p) => (p.stats.runs ?? 0) > 0)
+      .sort((a, b) => (b.stats.runs ?? 0) - (a.stats.runs ?? 0))
       .slice(0, 4);
   }, [players]);
 
   const topBowlers = React.useMemo(() => {
     return [...players]
-      .filter((p) => p.stats.wickets > 0)
-      .sort((a, b) => b.stats.wickets - a.stats.wickets)
+      .filter((p) => (p.stats.wickets ?? 0) > 0)
+      .sort((a, b) => (b.stats.wickets ?? 0) - (a.stats.wickets ?? 0))
       .slice(0, 4);
   }, [players]);
 
   const topAllRounders = React.useMemo(() => {
     return [...players]
-      .filter((p) => p.role.toLowerCase().includes("all-round") || (p.stats.runs > 200 && p.stats.wickets > 15))
-      .sort((a, b) => (b.stats.runs + b.stats.wickets * 20) - (a.stats.runs + a.stats.wickets * 20))
+      .filter((p) => p.role.toLowerCase().includes("all-round") || ((p.stats.runs ?? 0) > 200 && (p.stats.wickets ?? 0) > 15))
+      .sort((a, b) => ((b.stats.runs ?? 0) + (b.stats.wickets ?? 0) * 20) - ((a.stats.runs ?? 0) + (a.stats.wickets ?? 0) * 20))
       .slice(0, 4);
   }, [players]);
 
@@ -158,7 +158,7 @@ export function NplHubClient({
                     {isNe ? "सिजन ३ (२०२६)" : "Season 3 (2026)"}
                   </span>
                   <span>·</span>
-                  <span>{isNe ? "आधिकारिक ब्युरो" : "Official Bureau"}</span>
+                  <span>{isNe ? "आधिकारिक ब्युरो" : "Editorial Desk"}</span>
                 </span>
                 <span className="hidden sm:inline text-border">|</span>
                 <span>{isNe ? "टियु मैदान, कीर्तिपुर" : "TU Ground, Kirtipur"}</span>
@@ -181,8 +181,8 @@ export function NplHubClient({
 
               <p className="text-xs sm:text-sm md:text-base text-muted-foreground max-w-2xl leading-relaxed">
                 {isNe
-                  ? "नेपालको सबैभन्दा ठूलो क्रिकेट महाकुम्भ। ८ फ्रेन्चाइज टिम, १४५ खेलाडी, ३२ खेल र रु ३ करोड पुरस्कार राशिसहितको सम्पूर्ण विवरण, प्रत्यक्ष खेल तालिका, खेलाडी प्रोफाइल र विश्लेषण।"
-                  : "The definitive digital command center for the Nepal Premier League (NPL). Featuring 8 regional franchises, 145 transparent player cutouts, complete 32-match schedule, DRS tracking, and franchise valuations."}
+                  ? `८ फ्रेन्चाइज टिम, ${players.length} खेलाडी प्रोफाइल र ३२ खेलको तालिका। पुष्टि भएका नतिजा, टोली र खेलाडीको विवरण।`
+                  : `Follow 8 franchises, ${players.length} player profiles and the 32-match schedule, with sourced results and squad updates.`}
               </p>
 
               {/* Quick Action Navigation Buttons - Responsive Equal Grid */}
@@ -199,7 +199,7 @@ export function NplHubClient({
                   className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-background px-4 py-2.5 text-xs sm:text-sm font-medium hover:bg-accent transition"
                 >
                   <Users className="h-4 w-4 text-muted-foreground shrink-0" />
-                  <span>{isNe ? "१४५ खेलाडी रोस्टर" : "145 Players & Stats"}</span>
+                  <span>{isNe ? `${players.length} खेलाडी रोस्टर` : `${players.length} Players & Stats`}</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("fixtures")}
@@ -252,7 +252,7 @@ export function NplHubClient({
           {[
             { id: "overview", labelEn: "Overview", labelNe: "सिंहावलोकन", icon: Trophy },
             { id: "franchises", labelEn: "Franchises (8)", labelNe: "८ फ्रेन्चाइजहरू", icon: Shield },
-            { id: "players", labelEn: "Players (145)", labelNe: "खेलाडी रोस्टर", icon: Users },
+            { id: "players", labelEn: `Players (${players.length})`, labelNe: "खेलाडी रोस्टर", icon: Users },
             { id: "fixtures", labelEn: "Fixtures & Results", labelNe: "खेल तालिका", icon: Calendar },
             { id: "standings", labelEn: "Standings", labelNe: "अंक तालिका", icon: Award },
             { id: "commercials", labelEn: "Financials & Rules", labelNe: "नियम तथा बोलकबोल", icon: Coins },
@@ -307,7 +307,7 @@ export function NplHubClient({
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
                 {players
-                  .filter((p) => p.category === "Overseas" && (p.isMarquee || p.stats.matches > 100))
+                  .filter((p) => p.category === "Overseas" && (p.isMarquee || (p.stats.matches ?? 0) > 100))
                   .slice(0, 6)
                   .map((player) => {
                     const playerTeam = teams.find((t) => t.id === player.teamId);
@@ -368,18 +368,18 @@ export function NplHubClient({
                           <div className="mt-2 pt-2 border-t border-border grid grid-cols-3 text-center text-xs">
                             <div>
                               <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">Mat</span>
-                              <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.matches}</strong>
+                              <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.matches ?? "—"}</strong>
                             </div>
                             <div className="border-x border-border/60">
                               <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">Runs</span>
-                              <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.runs}</strong>
+                              <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.runs ?? "—"}</strong>
                             </div>
                             <div>
                               <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">
-                                {player.stats.wickets > 0 ? "Wkts" : "SR"}
+                                {(player.stats.wickets ?? 0) > 0 ? "Wkts" : "SR"}
                               </span>
                               <strong className="font-semibold text-foreground tabular-nums text-xs">
-                                {player.stats.wickets > 0 ? player.stats.wickets : (player.stats.strikeRate || "-")}
+                                {(player.stats.wickets ?? 0) > 0 ? player.stats.wickets : (player.stats.strikeRate || "-")}
                               </strong>
                             </div>
                           </div>
@@ -549,7 +549,7 @@ export function NplHubClient({
                     onClick={() => setActiveTab("players")}
                     className="text-xs font-medium text-foreground hover:text-primary transition hidden sm:flex items-center gap-1 underline underline-offset-4 ml-2"
                   >
-                    {isNe ? "सबै १४५ खेलाडी" : "All 145 Players"}
+                    {isNe ? `सबै ${players.length} खेलाडी` : `All ${players.length} Players`}
                     <ChevronRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
@@ -607,7 +607,7 @@ export function NplHubClient({
 
                           <div className="text-right">
                             <strong className="text-sm font-bold text-foreground block leading-tight tabular-nums">
-                              {p.stats.runs}
+                              {p.stats.runs ?? "—"}
                             </strong>
                             <span className="text-[10px] text-muted-foreground tabular-nums">
                               SR {p.stats.strikeRate ?? "-"}
@@ -656,10 +656,10 @@ export function NplHubClient({
 
                         <div className="text-right">
                           <strong className="text-sm font-bold text-foreground block leading-tight tabular-nums">
-                            {p.stats.wickets} W
+                            {p.stats.wickets ?? "—"} W
                           </strong>
                           <span className="text-[10px] text-muted-foreground tabular-nums">
-                            {p.stats.economy ? `Econ ${p.stats.economy}` : `${p.stats.matches} M`}
+                            {p.stats.economy ? `Econ ${p.stats.economy}` : `${p.stats.matches ?? "—"} M`}
                           </span>
                         </div>
                       </div>
@@ -705,10 +705,10 @@ export function NplHubClient({
 
                         <div className="text-right">
                           <strong className="text-sm font-bold text-foreground block leading-tight tabular-nums">
-                            {p.stats.runs} R · {p.stats.wickets} W
+                            {p.stats.runs ?? "—"} R · {p.stats.wickets ?? "—"} W
                           </strong>
                           <span className="text-[10px] text-muted-foreground tabular-nums">
-                            {p.stats.highestScore ? `HS ${p.stats.highestScore}` : `${p.stats.matches} M`}
+                            {p.stats.highestScore ? `HS ${p.stats.highestScore}` : `${p.stats.matches ?? "—"} M`}
                           </span>
                         </div>
                       </div>
@@ -839,7 +839,7 @@ export function NplHubClient({
                   {isNe ? "खेलाडी रोस्टर र तथ्याङ्क" : "Official Player Dossier"}
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-                  {isNe ? "सबै १४५ खेलाडीहरूको प्रोफाइल र तथ्याङ्क" : "Explore All 145 Registered Players"}
+                  {isNe ? `सबै ${players.length} खेलाडीहरूको प्रोफाइल र तथ्याङ्क` : `Explore All ${players.length} Player Profiles`}
                 </h2>
               </div>
               <div className="text-xs text-muted-foreground font-medium">
@@ -1034,18 +1034,18 @@ export function NplHubClient({
                       <div className="mt-2 pt-2 border-t border-border grid grid-cols-3 text-center text-xs">
                         <div>
                           <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">Mat</span>
-                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.matches}</strong>
+                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.matches ?? "—"}</strong>
                         </div>
                         <div className="border-x border-border/60">
                           <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">Runs</span>
-                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.runs}</strong>
+                          <strong className="font-semibold text-foreground tabular-nums text-xs">{player.stats.runs ?? "—"}</strong>
                         </div>
                         <div>
                           <span className="text-[9px] uppercase tracking-wider text-muted-foreground block">
-                            {player.stats.wickets > 0 ? "Wkts" : "SR"}
+                            {(player.stats.wickets ?? 0) > 0 ? "Wkts" : "SR"}
                           </span>
                           <strong className="font-semibold text-foreground tabular-nums text-xs">
-                            {player.stats.wickets > 0 ? player.stats.wickets : (player.stats.strikeRate || "-")}
+                            {(player.stats.wickets ?? 0) > 0 ? player.stats.wickets : (player.stats.strikeRate || "-")}
                           </strong>
                         </div>
                       </div>
